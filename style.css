@@ -1,3 +1,13 @@
+
+/* ---- V1.1 ---- */
+.odds b{font-size:14px}
+.odds b+b{margin-top:2px}
+.na-blk{margin-top:14px;padding:8px 14px}
+details>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px}
+details>summary::before{content:"▸";font-size:11px;color:var(--muted)}
+details[open]>summary::before{content:"▾"}
+details.panel>summary{margin:-2px 0}
+details.panel[open]>summary{margin-bottom:6px}
 /* 運彩 101 原型樣式 — 單一色系、不用紅綠暗示方向 */
 :root{
   --bg:#F2F4F1; --surface:#FFFFFF; --sunk:#E6EAE4; --ink:#151F1A; --muted:#5E6B64; --line:#D5DCD3;
