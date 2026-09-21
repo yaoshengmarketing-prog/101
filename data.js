@@ -29,7 +29,7 @@ window.DATA = {
     ]},
     { key: "today", label: "今天", date: "9/22（二）", games: [
       g("824787","06:35","pre","TOR","藍鳥","77-79",null,"BAL","金鶯","75-81",null,"Trey Yesavage","R","5-5","3.65","Shane Baz","R","6-15","4.11","Camden Yards",{odds:{ml:["1.78","1.88"],rl:["-1.5 2.15","+1.5 1.58"],ou:["8.0","1.85","1.82"]},lineup:"partial",hints:[]}),
-      g("824221","06:40","pre","WSH","國民","73-83",null,"DET","老虎","73-83",null,"DJ Herz","L",null,null,"River Ryan","R",null,null,"Comerica Park",{odds:{ml:["1.85","1.80"],rl:["+1.5 1.55","-1.5 2.20"],ou:["8.5","1.80","1.80"]},lineup:"expected",hints:["雙方先發本季皆無大聯盟成績","國民牛棚近三日 4 人連續登板"],hasPage:true,lineup:"estimate"}),
+      g("824221","06:40","pre","WSH","國民","73-83",null,"DET","老虎","73-83",null,"DJ Herz","L",null,null,"River Ryan","R",null,null,"Comerica Park",{odds:{ml:["1.85","1.80"],rl:["+1.5 1.55","-1.5 2.20"],ou:["8.5","1.80","1.80"]},lineup:"estimate",hints:["雙方先發本季皆無大聯盟成績","國民牛棚近三日 4 人連續登板"],hasPage:true}),
       g("823169","09:45","pre","MIN","雙城","73-83",null,"SF","巨人","64-92",null,"Zebby Matthews","R","9-10","4.74","Blade Tidwell","R","1-2","4.56","Oracle Park",{odds:{ml:["1.90","1.75"],rl:["+1.5 1.50","-1.5 2.30"],ou:["7.5","1.83","1.80"]},lineup:"estimate",hints:[]})
     ]},
     { key: "tomorrow", label: "明天", date: "9/23（三）", games: [
@@ -55,7 +55,7 @@ window.DATA = {
   /* ---------- 單場頁：以 gamePk 為 key，game.html?pk=xxx 選場 ---------- */
   games: { "824221": {
     pk: "824221", sport: "MLB", dateLabel: "9/22（二）", time: "9/22（二）06:40", startISO: "2026-09-22T06:40:00+08:00", venue: "Comerica Park（底特律）", status: "賽前", updatedAt: "2026/09/21 15:40",
-    lineup: "expected",
+    lineup: "estimate",
     away: { ab:"WSH", name:"華盛頓國民", full:"Washington Nationals", rec:"73-83", pct:".468", home:"37-41", road:"36-42", l10:"6-4", rs:798, ra:786, gp:156, streak:"1 連敗", rank:"國聯東區第 4",
       ops:".747", bpEra:"5.04",
       sp: { name:"DJ Herz", hand:"L", age:25, mlb2026:null,
@@ -93,6 +93,9 @@ window.DATA = {
     /* ---- 打線（V1.2）：estimate＝預估（示範標記），official／late 為原型預覽用示範版本 ---- */
     lineups: {
       away: { state:"consensus", firstAt:"09/21 09:10", updatedAt:"09/21 15:40", sources:{agree:3,total:4}, basis:"9/20 @STL 實際打序＋各來源預估（來源數為示範）",
+        initial:{ at:"09/21 09:10", basis:"9/20 @STL 實際打序原樣沿用（Ruiz 當場為代打 PH，初版未調整）", slots:[
+          {n:1,name:"James Wood",pos:"DH"},{n:2,name:"Abimelec Ortiz",pos:"1B"},{n:3,name:"Jorbit Vivas",pos:"3B"},{n:4,name:"CJ Abrams",pos:"2B"},{n:5,name:"Dylan Crews",pos:"RF"},
+          {n:6,name:"Daylen Lile",pos:"LF"},{n:7,name:"Keibert Ruiz",pos:"PH"},{n:8,name:"Jacob Young",pos:"CF"},{n:9,name:"Nasim Nuñez",pos:"SS"} ] },
         slots:[
           {n:1,name:"James Wood",pos:"DH",agree:"4/4"},{n:2,name:"Abimelec Ortiz",pos:"1B",agree:"3/4",alt:["Andrés Chaparro（1B）"]},{n:3,name:"Jorbit Vivas",pos:"3B",agree:"4/4"},
           {n:4,name:"CJ Abrams",pos:"2B",agree:"4/4"},{n:5,name:"Dylan Crews",pos:"RF",agree:"4/4"},{n:6,name:"Daylen Lile",pos:"LF",agree:"4/4"},
@@ -114,6 +117,9 @@ window.DATA = {
         }
       },
       home: { state:"consensus", firstAt:"09/21 09:10", updatedAt:"09/21 15:40", sources:{agree:3,total:4}, basis:"9/20 @CWS 實際打序＋各來源預估（來源數為示範）",
+        initial:{ at:"09/21 09:10", basis:"9/20 @CWS 實際打序原樣沿用", slots:[
+          {n:1,name:"Kevin McGonigle",pos:"DH"},{n:2,name:"Gleyber Torres",pos:"2B"},{n:3,name:"Hao-Yu Lee",pos:"3B"},{n:4,name:"Riley Greene",pos:"LF"},{n:5,name:"Eduardo Valencia",pos:"C"},
+          {n:6,name:"Max Clark",pos:"CF"},{n:7,name:"Spencer Torkelson",pos:"1B"},{n:8,name:"Brett Callahan",pos:"RF"},{n:9,name:"John Peck",pos:"SS"} ] },
         slots:[
           {n:1,name:"Kevin McGonigle",pos:"DH",agree:"4/4"},{n:2,name:"Gleyber Torres",pos:"2B",agree:"4/4"},{n:3,name:"Hao-Yu Lee",pos:"3B",agree:"3/4",alt:["Colt Keith（3B）"]},
           {n:4,name:"Riley Greene",pos:"LF",agree:"4/4"},{n:5,name:"Eduardo Valencia",pos:"C",agree:"3/4",alt:["Dillon Dingler（C）"]},{n:6,name:"Max Clark",pos:"CF",agree:"4/4"},
