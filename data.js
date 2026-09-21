@@ -28,9 +28,9 @@ window.DATA = {
       g("824789","07:20","final","MIL","釀酒人","98-58",3,"BAL","金鶯","75-81",0,"Jacob Misiorowski","R","15-5","1.86","Brandon Young","R","9-5","3.62","Camden Yards")
     ]},
     { key: "today", label: "今天", date: "9/22（二）", games: [
-      g("824787","06:35","pre","TOR","藍鳥","77-79",null,"BAL","金鶯","75-81",null,"Trey Yesavage","R","5-5","3.65","Shane Baz","R","6-15","4.11","Camden Yards",{odds:{ml:["1.78","1.88"],rl:["-1.5 2.15","+1.5 1.58"],ou:["8.0","1.85","1.82"]},lineup:"expected",hints:[]}),
-      g("824221","06:40","pre","WSH","國民","73-83",null,"DET","老虎","73-83",null,"DJ Herz","L",null,null,"River Ryan","R",null,null,"Comerica Park",{odds:{ml:["1.85","1.80"],rl:["+1.5 1.55","-1.5 2.20"],ou:["8.5","1.80","1.80"]},lineup:"expected",hints:["雙方先發本季皆無大聯盟成績","國民牛棚近三日 4 人連續登板"],hasPage:true}),
-      g("823169","09:45","pre","MIN","雙城","73-83",null,"SF","巨人","64-92",null,"Zebby Matthews","R","9-10","4.74","Blade Tidwell","R","1-2","4.56","Oracle Park",{odds:{ml:["1.90","1.75"],rl:["+1.5 1.50","-1.5 2.30"],ou:["7.5","1.83","1.80"]},lineup:"expected",hints:[]})
+      g("824787","06:35","pre","TOR","藍鳥","77-79",null,"BAL","金鶯","75-81",null,"Trey Yesavage","R","5-5","3.65","Shane Baz","R","6-15","4.11","Camden Yards",{odds:{ml:["1.78","1.88"],rl:["-1.5 2.15","+1.5 1.58"],ou:["8.0","1.85","1.82"]},lineup:"partial",hints:[]}),
+      g("824221","06:40","pre","WSH","國民","73-83",null,"DET","老虎","73-83",null,"DJ Herz","L",null,null,"River Ryan","R",null,null,"Comerica Park",{odds:{ml:["1.85","1.80"],rl:["+1.5 1.55","-1.5 2.20"],ou:["8.5","1.80","1.80"]},lineup:"expected",hints:["雙方先發本季皆無大聯盟成績","國民牛棚近三日 4 人連續登板"],hasPage:true,lineup:"estimate"}),
+      g("823169","09:45","pre","MIN","雙城","73-83",null,"SF","巨人","64-92",null,"Zebby Matthews","R","9-10","4.74","Blade Tidwell","R","1-2","4.56","Oracle Park",{odds:{ml:["1.90","1.75"],rl:["+1.5 1.50","-1.5 2.30"],ou:["7.5","1.83","1.80"]},lineup:"estimate",hints:[]})
     ]},
     { key: "tomorrow", label: "明天", date: "9/23（三）", games: [
       g("823543","01:05","pre","TB","光芒","95-60",null,"NYY","洋基","89-66",null,"Nick Martinez","R","15-4","2.94","Carlos Rodón","L","6-3","2.95","Yankee Stadium",{note:"雙重賽 G1"}),
@@ -54,7 +54,7 @@ window.DATA = {
 
   /* ---------- 單場頁：以 gamePk 為 key，game.html?pk=xxx 選場 ---------- */
   games: { "824221": {
-    pk: "824221", sport: "MLB", dateLabel: "9/22（二）", time: "9/22（二）06:40", venue: "Comerica Park（底特律）", status: "賽前", updatedAt: "2026/09/21 15:40",
+    pk: "824221", sport: "MLB", dateLabel: "9/22（二）", time: "9/22（二）06:40", startISO: "2026-09-22T06:40:00+08:00", venue: "Comerica Park（底特律）", status: "賽前", updatedAt: "2026/09/21 15:40",
     lineup: "expected",
     away: { ab:"WSH", name:"華盛頓國民", full:"Washington Nationals", rec:"73-83", pct:".468", home:"37-41", road:"36-42", l10:"6-4", rs:798, ra:786, gp:156, streak:"1 連敗", rank:"國聯東區第 4",
       ops:".747", bpEra:"5.04",
@@ -90,6 +90,48 @@ window.DATA = {
                  log:[["9/18","Brieske 2.1/49、Hurter 1.2/21、Kinley 1.1/17、Sommers 2.0/22、Jansen 1.0/10（救援）"],["9/19","Waguespack 2.0/31"],["9/20","Holton 0.1/22、Madden 3.0/48、Hurter 1.0/25"]] },
       last5:[["9/16","客","TOR","1-5","敗","Keider Montero","6",null],["9/17","客","CWS","1-3","敗","Framber Valdez","4",null],["9/18","客","CWS","11-8","勝","Andrew Sears","19",null],["9/19","客","CWS","1-3","敗","Jackson Jobe","4",null],["9/20","客","CWS","1-8","敗","Troy Melton","9",null]]
     },
+    /* ---- 打線（V1.2）：estimate＝預估（示範標記），official／late 為原型預覽用示範版本 ---- */
+    lineups: {
+      away: { state:"consensus", firstAt:"09/21 09:10", updatedAt:"09/21 15:40", sources:{agree:3,total:4}, basis:"9/20 @STL 實際打序＋各來源預估（來源數為示範）",
+        slots:[
+          {n:1,name:"James Wood",pos:"DH",agree:"4/4"},{n:2,name:"Abimelec Ortiz",pos:"1B",agree:"3/4",alt:["Andrés Chaparro（1B）"]},{n:3,name:"Jorbit Vivas",pos:"3B",agree:"4/4"},
+          {n:4,name:"CJ Abrams",pos:"2B",agree:"4/4"},{n:5,name:"Dylan Crews",pos:"RF",agree:"4/4"},{n:6,name:"Daylen Lile",pos:"LF",agree:"4/4"},
+          {n:7,name:"Keibert Ruiz",pos:"C",agree:"3/4",alt:["Harry Ford（C）"]},{n:8,name:"Jacob Young",pos:"CF",agree:"4/4"},{n:9,name:"Nasim Nuñez",pos:"SS",agree:"2/4",alt:["José Tena（SS）","Brady House（3B，Vivas 移 SS）"]}
+        ],
+        versions:[
+          {at:"09/21 09:10",state:"initial",note:"初步預估：依 9/20 @STL 實際打序建立（Ruiz 當場為代打，預估回到先發 C）"},
+          {at:"09/21 15:40",state:"consensus",note:"多來源共識 3/4；第 2、7、9 棒有分歧，第 9 棒僅 2/4 同意"}
+        ],
+        preview:{
+          official:{ confirmedAt:"09/22 04:15", slots:[
+            {n:1,name:"James Wood",pos:"DH"},{n:2,name:"Abimelec Ortiz",pos:"1B"},{n:3,name:"Jorbit Vivas",pos:"3B"},{n:4,name:"CJ Abrams",pos:"2B"},{n:5,name:"Daylen Lile",pos:"LF"},
+            {n:6,name:"Dylan Crews",pos:"RF"},{n:7,name:"Keibert Ruiz",pos:"C"},{n:8,name:"Jacob Young",pos:"CF"},{n:9,name:"José Tena",pos:"SS"} ],
+            note:"官方打線公布（示範）：第 9 棒 Nuñez → Tena（人員）；第 5、6 棒 Crews／Lile 對調（棒次）" },
+          late:{ at:"09/22 06:05", slots:[
+            {n:1,name:"James Wood",pos:"DH"},{n:2,name:"Abimelec Ortiz",pos:"1B"},{n:3,name:"Jorbit Vivas",pos:"3B"},{n:4,name:"CJ Abrams",pos:"2B"},{n:5,name:"Daylen Lile",pos:"LF"},
+            {n:6,name:"Dylan Crews",pos:"RF"},{n:7,name:"Harry Ford",pos:"C"},{n:8,name:"Jacob Young",pos:"CF"},{n:9,name:"José Tena",pos:"SS"} ],
+            note:"臨場異動（示範）：開賽前 35 分鐘 Keibert Ruiz 移出打線，Harry Ford 補第 7 棒 C；原因官方未說明" }
+        }
+      },
+      home: { state:"consensus", firstAt:"09/21 09:10", updatedAt:"09/21 15:40", sources:{agree:3,total:4}, basis:"9/20 @CWS 實際打序＋各來源預估（來源數為示範）",
+        slots:[
+          {n:1,name:"Kevin McGonigle",pos:"DH",agree:"4/4"},{n:2,name:"Gleyber Torres",pos:"2B",agree:"4/4"},{n:3,name:"Hao-Yu Lee",pos:"3B",agree:"3/4",alt:["Colt Keith（3B）"]},
+          {n:4,name:"Riley Greene",pos:"LF",agree:"4/4"},{n:5,name:"Eduardo Valencia",pos:"C",agree:"3/4",alt:["Dillon Dingler（C）"]},{n:6,name:"Max Clark",pos:"CF",agree:"4/4"},
+          {n:7,name:"Spencer Torkelson",pos:"1B",agree:"4/4"},{n:8,name:"Brett Callahan",pos:"RF",agree:"2/4",alt:["Zach McKinstry（RF）","Ben Malgeri（RF）"]},{n:9,name:"John Peck",pos:"SS",agree:"3/4",alt:["Javier Báez（SS）"]}
+        ],
+        versions:[
+          {at:"09/21 09:10",state:"initial",note:"初步預估：依 9/20 @CWS 實際打序建立"},
+          {at:"09/21 15:40",state:"consensus",note:"多來源共識 3/4；第 3、5、8、9 棒有分歧，第 8 棒僅 2/4 同意"}
+        ],
+        preview:{
+          official:{ confirmedAt:"09/22 04:20", slots:[
+            {n:1,name:"Kevin McGonigle",pos:"DH"},{n:2,name:"Gleyber Torres",pos:"2B"},{n:3,name:"Hao-Yu Lee",pos:"3B"},{n:4,name:"Riley Greene",pos:"LF"},{n:5,name:"Eduardo Valencia",pos:"C"},
+            {n:6,name:"Max Clark",pos:"CF"},{n:7,name:"Spencer Torkelson",pos:"1B"},{n:8,name:"Zach McKinstry",pos:"RF"},{n:9,name:"John Peck",pos:"SS"} ],
+            note:"官方打線公布（示範）：第 8 棒 Callahan → McKinstry（人員）；其餘與預估相同" },
+          late:null
+        }
+      }
+    },
     odds: { /* demo */
       tw: { ml:["1.85","1.80"], rl:["國民 +1.5","1.55","老虎 -1.5","2.20"], ou:["8.5","1.80","1.80"], updated:"09/21 15:00" },
       intl: { open:{ml:["+105","-115"], rl:["+1.5 -165","-1.5 +145"], ou:"8.5"}, now:{ml:["+100","-110"], rl:["+1.5 -170","-1.5 +150"], ou:"8.0"}, updated:"09/21 15:30" }
@@ -102,5 +144,5 @@ function g(pk,time,status,aAb,aName,aRec,aScore,hAb,hName,hRec,hScore,aSp,aHand,
   return Object.assign({pk,time,status,venue,
     away:{ab:aAb,name:aName,rec:aRec,score:aScore,sp:aSp?{name:aSp,hand:aHand,wl:aWl,era:aEra}:null},
     home:{ab:hAb,name:hName,rec:hRec,score:hScore,sp:hSp?{name:hSp,hand:hHand,wl:hWl,era:hEra}:null},
-    odds:null,lineup:"expected",hints:[]},extra||{});
+    odds:null,lineup:"none",weather:false,hints:[]},extra||{});
 }
