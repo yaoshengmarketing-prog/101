@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>運彩 101｜本日比賽</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="index.html">運彩 101<small>把一場比賽該看的資料，整理在同一頁。</small></a>
+    <span class="demo">Prototype Demo Data／原型示範資料</span>
+  </header>
+  <nav class="sports" id="sports" aria-label="運動分類"></nav>
+  <div class="bar">
+    <div class="seg" id="days" aria-label="日期"></div>
+    <div class="seg" id="status" aria-label="比賽狀態"></div>
+    <span class="tz">所有時間為台灣時間（UTC+8）</span>
+  </div>
+  <main>
+    <h1 class="day" id="dayTitle"></h1>
+    <div class="grid" id="games"></div>
+    <p class="src">戰績、先發投手與比分：2026/09/21 15:40 MLB 官方數據快照，非即時。盤口、打線狀態為示範值。季中被交易的投手顯示全季合計。</p>
+  </main>
+</div>
+<script src="./data.js"></script>
+<script src="./app.js"></script>
+<script>renderHome();</script>
+</body>
+</html>
