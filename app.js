@@ -5,6 +5,9 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "
 const hand = h => h === "L" ? "左投" : h === "R" ? "右投" : "";
 const NA = '<span class="tag na">資料不足</span>';
 const STATUS = { pre: "賽前", live: "進行中", final: "已結束" };
+/* V1.2 打線狀態：none＝尚未完整、partial＝尚未完整、estimate＝預估已建立、official＝官方確認、late＝臨場異動 */
+const LU = { none: ["預估打線尚未完整", "na"], partial: ["預估打線尚未完整", "na"], estimate: ["預估打線已建立", "exp"], official: ["官方打線已確認", "ok"], late: ["臨場異動", "late"] };
+const luTag = k => { const [t, c] = LU[k] || LU.none; return `<span class="tag ${c}">${t}</span>`; };
 
 /* ================= 首頁 ================= */
 function renderHome() {
@@ -21,7 +24,15 @@ function renderHome() {
     h1.innerHTML = `${day.date} ${state.sport} 本日比賽 <small>${games.length} 場・${D.meta.tz}</small>`;
     if (state.sport !== "MLB") { listEl.innerHTML = `<div class="empty">本輪原型只完成 MLB。${state.sport} 將使用相同卡片結構。</div>`; return; }
     if (!games.length) { listEl.innerHTML = `<div class="empty">此篩選條件下沒有比賽。</div>`; return; }
-    listEl.innerHTML = games.map(cardHTML).join("");
+    const all = day.games, n = all.length;
+    const cnt = f => all.filter(f).length;
+    const summary = state.day === "yesterday" ? "" : `<div class="ready"><b>資料完成度</b>
+      <span>預計先發 <b class="num">${cnt(g => g.away.sp && g.home.sp)}/${n}</b></span>
+      <span>預估打線 <b class="num">${cnt(g => ["estimate", "official", "late"].includes(g.lineup))}/${n}</b></span>
+      <span>盤口 <b class="num">${cnt(g => g.odds)}/${n}</b>${cnt(g => g.odds) ? ' <i class="tag demo-tag">示範</i>' : ""}</span>
+      <span>天氣 <b class="num">${cnt(g => g.weather)}/${n}</b></span>
+      <small>快照 ${D.meta.snapshotAt}</small></div>`;
+    listEl.innerHTML = summary + games.map(cardHTML).join("");
   }
   function cardHTML(g) {
     const isFinal = g.status === "final";
@@ -35,7 +46,7 @@ function renderHome() {
       <div>讓分<b class="num">${g.away.ab} ${g.odds.rl[0]}</b><b class="num">${g.home.ab} ${g.odds.rl[1]}</b></div>
       <div>大小 ${g.odds.ou[0]}<b class="num">大 ${g.odds.ou[1]}</b><b class="num">小 ${g.odds.ou[2]}</b></div>
     </div>` : `<div class="small">盤口：${isFinal ? "已結束" : "尚未開盤"}</div>`;
-    const lineup = isFinal ? "" : g.lineup === "confirmed" ? `<span class="tag ok">打線已確認</span>` : `<span class="tag exp">打線預計</span>`;
+    const lineup = isFinal ? "" : luTag(g.lineup);
     const hints = (g.hints || []).map(h => `<span class="tag">${esc(h)}</span>`).join("");
     const note = g.note ? `<span class="tag">${esc(g.note)}</span>` : "";
     return `<article class="card">
@@ -76,9 +87,13 @@ function renderGame() {
       <span>球場 <b>${esc(G.venue)}</b></span>
       <span>狀態 <b>${G.status}</b></span>
       <span>預計先發 <b>${esc(A.sp.name)}（${hand(A.sp.hand)}）</b> vs <b>${esc(H.sp.name)}（${hand(H.sp.hand)}）</b></span>
-      <span>打線 ${G.lineup === "confirmed" ? '<span class="tag ok">已確認</span>' : '<span class="tag exp">預計（未確認）</span>'}</span>
+      <span>打線 ${luTag(G.lineup === "estimate" ? "estimate" : G.lineup)}</span>
+      <span>距開賽 <b class="num" id="countdown">—</b></span>
       <span>最後更新 <b class="num">${G.updatedAt}</b></span>
     </div>`;
+  const tick = () => { const el = $("#countdown"); if (!el || !G.startISO) return; const ms = new Date(G.startISO) - Date.now();
+    el.textContent = ms <= 0 ? "已開賽" : `${Math.floor(ms / 36e5)} 小時 ${String(Math.floor(ms % 36e5 / 6e4)).padStart(2, "0")} 分`; };
+  tick(); setInterval(tick, 30000);
   const v = x => x == null ? `<span class="v na">資料不足</span>` : `<span class="v">${x}</span>`;
   const row = (k, a, h, sub) => `<div class="r">${v(a)}<span class="k">${k}${sub ? `<i>${sub}</i>` : ""}</span>${v(h)}</div>`;
   const headBase = `<div class="r h"><span>${A.ab} ${A.name}</span><span class="k">客｜主</span><span>${H.ab} ${H.name}</span></div>`;
@@ -126,6 +141,42 @@ function renderGame() {
       <div class="pnote">${esc(p.note)}</div>
     </div>`; };
   const pitchers = `<section class="blk" id="sp"><h2>先發投手比較 <small>左＝客隊 ${A.ab}，右＝主隊 ${H.ab}</small></h2><div class="two">${pitcher(A)}${pitcher(H)}</div></section>`;
+
+  /* 2b. 預估打線（V1.2）：時效與資料狀態 */
+  const LSTATE = { initial: ["初步預估", "na"], consensus: ["多來源共識", "exp"], official: ["官方確認", "ok"], late: ["臨場異動", "late"] };
+  const lstate = k => { const [t, c] = LSTATE[k]; return `<span class="tag ${c}">${t}</span>`; };
+  const diffLineup = (est, off) => { const e = Object.fromEntries(est.map(x => [x.name, x.n])); let person = 0, order = 0;
+    off.forEach(x => { if (!(x.name in e)) person++; else if (e[x.name] !== x.n) order++; }); return { person, order }; };
+  const lineupCard = (t, L, view) => {
+    const isOff = view === "official" || view === "late";
+    const src = view === "late" ? L.preview.late : view === "official" ? L.preview.official : null;
+    const slots = src ? src.slots : L.slots;
+    const est = Object.fromEntries(L.slots.map(x => [x.n, x]));
+    const uncertain = L.slots.filter(x => x.alt).length;
+    const d = src ? diffLineup(L.slots, slots) : null;
+    const dLate = view === "late" && L.preview.official ? diffLineup(L.preview.official.slots, slots) : null;
+    const rows = slots.map(x => { const e = est[x.n]; const changed = src && (!e || e.name !== x.name);
+      return `<tr${changed ? ' class="chg"' : ""}><td class="n">${x.n}</td><td class="l">${esc(x.name)}${changed ? ` <span class="tag late">原預估 ${esc(e ? e.name : "—")}</span>` : ""}</td><td>${x.pos}</td>
+        <td>${src ? "" : `<span class="num">${x.agree}</span>`}</td><td class="l alt">${src ? "" : (x.alt ? x.alt.map(esc).join("、") : "—")}</td></tr>`; }).join("");
+    const meta = src
+      ? `<div class="lmeta"><span>官方確認 <b class="num">${view === "late" ? L.preview.official.confirmedAt : src.confirmedAt}</b></span>${view === "late" ? `<span>臨場異動 <b class="num">${src.at}</b></span>` : ""}
+         <span>與原預估相比 <b class="num">${d.person}</b> 人員、<b class="num">${d.order}</b> 棒次改變</span>${dLate ? `<span>與官方版相比 <b class="num">${dLate.person}</b> 人員改變</span>` : ""}</div>`
+      : `<div class="lmeta"><span>首次發布 <b class="num">${L.firstAt}</b></span><span>最後更新 <b class="num">${L.updatedAt}</b></span>
+         <span>來源共識 <b class="num">${L.sources.agree}/${L.sources.total}</b></span><span>不確定席位 <b class="num">${uncertain}</b></span></div>`;
+    const versions = L.versions.concat(src && view !== "initial" ? [{ at: L.preview.official.confirmedAt, state: "official", note: L.preview.official.note }] : [])
+      .concat(view === "late" ? [{ at: src.at, state: "late", note: src.note }] : []);
+    return `<div class="panel">
+      <div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${lstate(view === "initial" ? "initial" : view)} ${isOff ? "" : '<span class="tag demo-tag">預估非官方</span>'}</div>
+      ${meta}
+      <table class="tbl lu"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>${src ? "" : "共識"}</th><th class="l">${src ? "" : "備選（有分歧時）"}</th></tr></thead><tbody>${rows}</tbody></table>
+      <details><summary class="small">展開：版本變更紀錄（${versions.length} 筆）</summary>
+        <ol class="vlog">${versions.map(v => `<li><b class="num">${v.at}</b> ${lstate(v.state)} <span>${esc(v.note)}</span></li>`).join("")}</ol></details>
+      <p class="small" style="margin:6px 0 0">依據：${esc(L.basis)}</p>
+    </div>`; };
+  const lineupSec = `<section class="blk" id="lu"><h2>預估打線 <small>時效與資料狀態</small>
+      <span class="preview"><label for="luView">原型預覽：切換狀態</label><select id="luView"><option value="consensus">目前：多來源共識</option><option value="initial">初步預估</option><option value="official">官方確認（示範）</option><option value="late">臨場異動（示範）</option></select></span></h2>
+    <div class="two" id="luBody"></div>
+    <p class="small" style="margin:8px 0 0">狀態定義：初步預估＝單一依據建立；多來源共識＝多個來源交叉比對，顯示同意比例；官方確認＝MLB 官方公布打線；臨場異動＝官方確認後再變動。預估與官方永遠分開標示，預估不會被寫成官方。</p></section>`;
 
   /* 3. 打擊 */
   const HIT_TABS = [["matchup", "今日對位"], ["season", "本季"], ["l10", "近十場"], ["month", "本月（9 月）"], ["vl", "對左投"], ["vr", "對右投"]];
@@ -190,8 +241,12 @@ function renderGame() {
   /* 7. 觀察 */
   const obs = `<section class="blk" id="obs"><h2>運彩 101 簡短觀察 <small>${G.note.length} 字</small></h2><div class="panel obs">${esc(G.note)}</div></section>`;
 
-  root.innerHTML = overview + first5 + pitchers + hitting + bullpen + recent + odds + obs;
-  $("#subnav").innerHTML = [["overview", "比賽總覽"], ["sp", "先發投手"], ["hit", "打擊"], ["bp", "牛棚"], ["recent", "近期比賽"], ["odds", "盤口"], ["obs", "觀察"]].map(([id, l]) => `<a href="#${id}">${l}</a>`).join("");
+  root.innerHTML = overview + first5 + pitchers + lineupSec + hitting + bullpen + recent + odds + obs;
+  const drawLU = view => { const v = view === "consensus" ? "consensus" : view;
+    $("#luBody").innerHTML = lineupCard(A, G.lineups.away, v) + lineupCard(H, G.lineups.home, v === "late" && !G.lineups.home.preview.late ? "official" : v); };
+  drawLU("consensus");
+  $("#luView").addEventListener("change", e => drawLU(e.target.value));
+  $("#subnav").innerHTML = [["overview", "比賽總覽"], ["sp", "先發投手"], ["lu", "打線"], ["hit", "打擊"], ["bp", "牛棚"], ["recent", "近期比賽"], ["odds", "盤口"], ["obs", "觀察"]].map(([id, l]) => `<a href="#${id}">${l}</a>`).join("");
 
   /* 打擊 Tab */
   const drawHit = key => {
