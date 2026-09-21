@@ -87,7 +87,7 @@ function renderGame() {
       <span>球場 <b>${esc(G.venue)}</b></span>
       <span>狀態 <b>${G.status}</b></span>
       <span>預計先發 <b>${esc(A.sp.name)}（${hand(A.sp.hand)}）</b> vs <b>${esc(H.sp.name)}（${hand(H.sp.hand)}）</b></span>
-      <span>打線 ${luTag(G.lineup === "estimate" ? "estimate" : G.lineup)}</span>
+      <span>打線 ${luTag(G.lineup)}</span>
       <span>距開賽 <b class="num" id="countdown">—</b></span>
       <span>最後更新 <b class="num">${G.updatedAt}</b></span>
     </div>`;
@@ -148,6 +148,14 @@ function renderGame() {
   const diffLineup = (est, off) => { const e = Object.fromEntries(est.map(x => [x.name, x.n])); let person = 0, order = 0;
     off.forEach(x => { if (!(x.name in e)) person++; else if (e[x.name] !== x.n) order++; }); return { person, order }; };
   const lineupCard = (t, L, view) => {
+    const DEMO = '<span class="tag demo-tag">原型示範</span>';
+    if (view === "initial") { const I = L.initial;
+      return `<div class="panel">
+      <div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${lstate("initial")} <span class="tag demo-tag">預估非官方</span></div>
+      <div class="lmeta"><span>首次發布 <b class="num">${I.at}</b> ${DEMO}</span><span>來源共識 <b>尚未比對</b></span><span>不確定席位 <b>尚未比對</b></span></div>
+      <table class="tbl lu"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th></tr></thead><tbody>${I.slots.map(x => `<tr><td class="n">${x.n}</td><td class="l">${esc(x.name)}</td><td>${x.pos}</td></tr>`).join("")}</tbody></table>
+      <details><summary class="small">展開：版本變更紀錄（1 筆）</summary><ol class="vlog"><li><b class="num">${L.versions[0].at}</b> ${lstate("initial")} <span>${esc(L.versions[0].note)}</span></li></ol></details>
+      <p class="small" style="margin:6px 0 0">依據：${esc(I.basis)}（初版獨立快照，不含共識與備選）</p></div>`; }
     const isOff = view === "official" || view === "late";
     const src = view === "late" ? L.preview.late : view === "official" ? L.preview.official : null;
     const slots = src ? src.slots : L.slots;
@@ -159,21 +167,22 @@ function renderGame() {
       return `<tr${changed ? ' class="chg"' : ""}><td class="n">${x.n}</td><td class="l">${esc(x.name)}${changed ? ` <span class="tag late">原預估 ${esc(e ? e.name : "—")}</span>` : ""}</td><td>${x.pos}</td>
         <td>${src ? "" : `<span class="num">${x.agree}</span>`}</td><td class="l alt">${src ? "" : (x.alt ? x.alt.map(esc).join("、") : "—")}</td></tr>`; }).join("");
     const meta = src
-      ? `<div class="lmeta"><span>官方確認 <b class="num">${view === "late" ? L.preview.official.confirmedAt : src.confirmedAt}</b></span>${view === "late" ? `<span>臨場異動 <b class="num">${src.at}</b></span>` : ""}
+      ? `<div class="lmeta"><span>官方確認 <b class="num">${view === "late" ? L.preview.official.confirmedAt : src.confirmedAt}</b> ${DEMO}</span>${view === "late" ? `<span>臨場異動 <b class="num">${src.at}</b> ${DEMO}</span>` : ""}
          <span>與原預估相比 <b class="num">${d.person}</b> 人員、<b class="num">${d.order}</b> 棒次改變</span>${dLate ? `<span>與官方版相比 <b class="num">${dLate.person}</b> 人員改變</span>` : ""}</div>`
-      : `<div class="lmeta"><span>首次發布 <b class="num">${L.firstAt}</b></span><span>最後更新 <b class="num">${L.updatedAt}</b></span>
-         <span>來源共識 <b class="num">${L.sources.agree}/${L.sources.total}</b></span><span>不確定席位 <b class="num">${uncertain}</b></span></div>`;
-    const versions = L.versions.concat(src && view !== "initial" ? [{ at: L.preview.official.confirmedAt, state: "official", note: L.preview.official.note }] : [])
+      : `<div class="lmeta"><span>首次發布 <b class="num">${L.firstAt}</b> ${DEMO}</span><span>最後更新 <b class="num">${L.updatedAt}</b></span>
+         <span>來源共識 <b class="num">${L.sources.agree}/${L.sources.total}</b> ${DEMO}</span><span>不確定席位 <b class="num">${uncertain}</b></span></div>`;
+    const versions = L.versions.concat(src ? [{ at: L.preview.official.confirmedAt, state: "official", note: L.preview.official.note }] : [])
       .concat(view === "late" ? [{ at: src.at, state: "late", note: src.note }] : []);
     return `<div class="panel">
-      <div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${lstate(view === "initial" ? "initial" : view)} ${isOff ? "" : '<span class="tag demo-tag">預估非官方</span>'}</div>
+      <div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${lstate(view)} ${isOff ? DEMO + '<span class="small">此版本為原型示範，非 MLB 官方公布</span>' : '<span class="tag demo-tag">預估非官方</span>'}</div>
       ${meta}
       <table class="tbl lu"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>${src ? "" : "共識"}</th><th class="l">${src ? "" : "備選（有分歧時）"}</th></tr></thead><tbody>${rows}</tbody></table>
+      ${src ? "" : '<p class="small" style="margin:6px 0 0"><span class="tag demo-tag">原型示範</span> 首次發布時間、來源共識比例、備選名單為示範資料，非實際多來源比對；打序名單依據真實 9/20 打序。</p>'}
       <details><summary class="small">展開：版本變更紀錄（${versions.length} 筆）</summary>
         <ol class="vlog">${versions.map(v => `<li><b class="num">${v.at}</b> ${lstate(v.state)} <span>${esc(v.note)}</span></li>`).join("")}</ol></details>
       <p class="small" style="margin:6px 0 0">依據：${esc(L.basis)}</p>
     </div>`; };
-  const lineupSec = `<section class="blk" id="lu"><h2>預估打線 <small>時效與資料狀態</small>
+  const lineupSec = `<section class="blk" id="lu"><h2>預估打線 ${luTag(G.lineup)} <small>與首頁、頂部同一狀態</small>
       <span class="preview"><label for="luView">原型預覽：切換狀態</label><select id="luView"><option value="consensus">目前：多來源共識</option><option value="initial">初步預估</option><option value="official">官方確認（示範）</option><option value="late">臨場異動（示範）</option></select></span></h2>
     <div class="two" id="luBody"></div>
     <p class="small" style="margin:8px 0 0">狀態定義：初步預估＝單一依據建立；多來源共識＝多個來源交叉比對，顯示同意比例；官方確認＝MLB 官方公布打線；臨場異動＝官方確認後再變動。預估與官方永遠分開標示，預估不會被寫成官方。</p></section>`;
@@ -229,13 +238,13 @@ function renderGame() {
         ${row(`大小 ${O.tw.ou[0]}`, `${O.tw.ou[1]}<i>大</i>`, `${O.tw.ou[2]}<i>小</i>`)}
         <p class="small" style="margin:8px 0 0">最後更新 ${O.tw.updated}（示範）</p>
       </div>
-      <div class="panel"><table class="tbl"><caption>國際盤（美式賠率）</caption>
+      <div class="panel"><div class="scrollx"><table class="tbl"><caption>國際盤（美式賠率）</caption>
         <thead><tr><th class="l">項目</th><th>開盤</th><th>目前</th></tr></thead>
         <tbody>
           <tr><td class="l">不讓分 ${A.ab}／${H.ab}</td><td class="n">${O.intl.open.ml.join(" / ")}</td><td class="n">${O.intl.now.ml.join(" / ")}</td></tr>
           <tr><td class="l">讓分 ${A.ab}／${H.ab}</td><td class="n">${O.intl.open.rl.join(" / ")}</td><td class="n">${O.intl.now.rl.join(" / ")}</td></tr>
           <tr><td class="l">大小</td><td class="n">${O.intl.open.ou}</td><td class="n">${O.intl.now.ou}</td></tr>
-        </tbody></table><p class="small" style="margin:8px 0 0">最後更新 ${O.intl.updated}（示範）</p></div>
+        </tbody></table></div><p class="small" style="margin:8px 0 0">最後更新 ${O.intl.updated}（示範）</p></div>
     </div></section>`;
 
   /* 7. 觀察 */
