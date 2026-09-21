@@ -174,3 +174,14 @@ details.panel[open]>summary{margin-bottom:6px}
 .preview{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);font-weight:400}
 .preview select{font:inherit;font-size:12.5px;padding:3px 6px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
 @media (max-width:560px){.tbl.lu{font-size:12.5px}.tbl.lu th,.tbl.lu td{padding:5px 4px}.preview{margin-left:0;width:100%}}
+
+/* ---- V1.2.1：手機水平溢出修補 ---- */
+.two>*{min-width:0}
+.grid>*{min-width:0}
+.panel{min-width:0}
+.scrollx{overflow-x:auto;max-width:100%}
+.cmp .r>span{min-width:0;overflow-wrap:anywhere}
+.cmp .k i{overflow-wrap:anywhere}
+.tbl.lu td.l{white-space:normal;overflow-wrap:anywhere}
+.lhead .small{overflow-wrap:anywhere}
+@media (max-width:560px){.cmp .r{grid-template-columns:1fr minmax(84px,1fr) 1fr}.cmp .v{font-size:17px}}
