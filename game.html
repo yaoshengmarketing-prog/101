@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>運彩 101｜國民 @ 老虎 比賽資料</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="index.html">運彩 101<small>把一場比賽該看的資料，整理在同一頁。</small></a>
+    <span class="demo">Prototype Demo Data／原型示範資料</span>
+  </header>
+  <nav class="crumb"><a href="index.html">← 本日比賽</a>　MLB　9/22（二）</nav>
+
+  <div class="hero">
+    <div class="vs">
+      <div><div class="ab">WSH</div><div class="nm">華盛頓國民</div><div class="rc num">73-83・客隊</div></div>
+      <div class="at">@</div>
+      <div><div class="ab">DET</div><div class="nm">底特律老虎</div><div class="rc num">73-83・主隊</div></div>
+    </div>
+    <div class="facts">
+      <span>開賽 <b class="num">9/22（二）06:40</b> 台灣時間</span>
+      <span>球場 <b>Comerica Park</b></span>
+      <span>狀態 <b>賽前</b></span>
+      <span>預計先發 <b>DJ Herz（左投）</b> vs <b>River Ryan（右投）</b></span>
+      <span>打線 <span class="tag exp">預計（未確認）</span></span>
+      <span>最後更新 <b class="num">2026/09/21 15:40</b></span>
+    </div>
+  </div>
+
+  <nav class="subnav" aria-label="頁內分類">
+    <a href="#overview">比賽總覽</a><a href="#f5">前五局</a><a href="#sp">先發投手</a><a href="#hit">打擊</a><a href="#bp">牛棚</a><a href="#recent">近期比賽</a><a href="#odds">盤口</a>
+  </nav>
+
+  <main id="game"></main>
+
+  <p class="foot">資料標記：<span class="tag ok">已確認</span> 官方已公布　<span class="tag exp">預計</span> 尚待確認　<span class="tag demo-tag">示範</span> 純示範值，非真實盤口　<span class="tag na">資料不足</span> 原型未取得或無有效樣本，不以 0 填補。<br>
+  戰績、投手、打擊、牛棚、近五場：2026/09/21 15:40 MLB 官方數據快照（含 3A），非即時。盤口全部為示範。日期為美國當地比賽日。</p>
+</div>
+<script src="./data.js"></script>
+<script src="./app.js"></script>
+<script>renderGame();</script>
+</body>
+</html>
