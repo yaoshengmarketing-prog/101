@@ -52,9 +52,9 @@ window.DATA = {
     ]}
   ],
 
-  /* ---------- 單場頁：WSH @ DET（gamePk 824221） ---------- */
-  game: {
-    pk: "824221", time: "9/22（二）06:40", venue: "Comerica Park（底特律）", status: "賽前", updatedAt: "2026/09/21 15:40",
+  /* ---------- 單場頁：以 gamePk 為 key，game.html?pk=xxx 選場 ---------- */
+  games: { "824221": {
+    pk: "824221", sport: "MLB", dateLabel: "9/22（二）", time: "9/22（二）06:40", venue: "Comerica Park（底特律）", status: "賽前", updatedAt: "2026/09/21 15:40",
     lineup: "expected",
     away: { ab:"WSH", name:"華盛頓國民", full:"Washington Nationals", rec:"73-83", pct:".468", home:"37-41", road:"36-42", l10:"6-4", rs:798, ra:786, gp:156, streak:"1 連敗", rank:"國聯東區第 4",
       ops:".747", bpEra:"5.04",
@@ -95,7 +95,7 @@ window.DATA = {
       intl: { open:{ml:["+105","-115"], rl:["+1.5 -165","-1.5 +145"], ou:"8.5"}, now:{ml:["+100","-110"], rl:["+1.5 -170","-1.5 +150"], ou:"8.0"}, updated:"09/21 15:30" }
     },
     note: "雙方先發目前可用的大聯盟樣本有限，單看 ERA 不足以形成明確比較。老虎整季牛棚表現較佳，但仍需搭配近三日實際使用量判讀。本場賽前主要觀察點為正式打線與兩隊牛棚可用情況。"
-  }
+  } }
 };
 
 function g(pk,time,status,aAb,aName,aRec,aScore,hAb,hName,hRec,hScore,aSp,aHand,aWl,aEra,hSp,hHand,hWl,hEra,venue,extra){
