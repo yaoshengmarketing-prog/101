@@ -166,7 +166,7 @@
 
 # V1.2.1 正確性修補（2026-09-21）
 1. 打線狀態統一：`games[pk].lineup` 改為 `estimate`，全站不再出現 `expected`；首頁卡、單場頂部、打線區標題三處讀同一個值。
-2. 初步預估改用獨立快照 `lineups.*.initial`（9/20 實際打序原樣，含 Ruiz 當場 PH），切換時不顯示共識比例與備選。
+2. 初步預估改用獨立快照 `lineups.*.initial`（打序依 9/20 實際打序建立，守位為預估先發守位；Ruiz 上一場為代打 PH，初步預估列 C），切換時不顯示共識比例與備選。概念區分：Previous Lineup＝上一場實際打線（可保留 PH）；Initial Projection＝初步預估打線（用預估正式守位）。畫面顯示的是後者。
 3. 示範標示下沉到卡片內：官方確認／臨場異動卡帶「原型示範」＋「此版本為原型示範，非 MLB 官方公布」；預估卡的首次發布、來源共識各帶「原型示範」，並有一行說明備選名單為示範。
 4. 手機水平溢出：`.two>*`、`.grid>*`、`.panel` 加 `min-width:0`，國際盤表格外包 `.scrollx`（overflow-x:auto），比較列文字允許斷行。驗收 body.scrollWidth ≤ innerWidth：375／390／430 皆通過（修補前為 585）。
 5. 文件：README 狀態值統一為五種；ZIP 與 GitHub 同為扁平目錄；不再列 screenshots。
