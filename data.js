@@ -93,16 +93,16 @@ window.DATA = {
     /* ---- 打線（V1.2）：estimate＝預估（示範標記），official／late 為原型預覽用示範版本 ---- */
     lineups: {
       away: { state:"consensus", firstAt:"09/21 09:10", updatedAt:"09/21 15:40", sources:{agree:3,total:4}, basis:"9/20 @STL 實際打序＋各來源預估（來源數為示範）",
-        initial:{ at:"09/21 09:10", basis:"9/20 @STL 實際打序原樣沿用（Ruiz 當場為代打 PH，初版未調整）", slots:[
+        initial:{ at:"09/21 09:10", basis:"依 9/20 @STL 實際打序建立；守位為預估先發守位（Ruiz 上一場為代打 PH，預估回到先發 C）", slots:[
           {n:1,name:"James Wood",pos:"DH"},{n:2,name:"Abimelec Ortiz",pos:"1B"},{n:3,name:"Jorbit Vivas",pos:"3B"},{n:4,name:"CJ Abrams",pos:"2B"},{n:5,name:"Dylan Crews",pos:"RF"},
-          {n:6,name:"Daylen Lile",pos:"LF"},{n:7,name:"Keibert Ruiz",pos:"PH"},{n:8,name:"Jacob Young",pos:"CF"},{n:9,name:"Nasim Nuñez",pos:"SS"} ] },
+          {n:6,name:"Daylen Lile",pos:"LF"},{n:7,name:"Keibert Ruiz",pos:"C"},{n:8,name:"Jacob Young",pos:"CF"},{n:9,name:"Nasim Nuñez",pos:"SS"} ] },
         slots:[
           {n:1,name:"James Wood",pos:"DH",agree:"4/4"},{n:2,name:"Abimelec Ortiz",pos:"1B",agree:"3/4",alt:["Andrés Chaparro（1B）"]},{n:3,name:"Jorbit Vivas",pos:"3B",agree:"4/4"},
           {n:4,name:"CJ Abrams",pos:"2B",agree:"4/4"},{n:5,name:"Dylan Crews",pos:"RF",agree:"4/4"},{n:6,name:"Daylen Lile",pos:"LF",agree:"4/4"},
           {n:7,name:"Keibert Ruiz",pos:"C",agree:"3/4",alt:["Harry Ford（C）"]},{n:8,name:"Jacob Young",pos:"CF",agree:"4/4"},{n:9,name:"Nasim Nuñez",pos:"SS",agree:"2/4",alt:["José Tena（SS）","Brady House（3B，Vivas 移 SS）"]}
         ],
         versions:[
-          {at:"09/21 09:10",state:"initial",note:"初步預估：依 9/20 @STL 實際打序建立（Ruiz 當場為代打，預估回到先發 C）"},
+          {at:"09/21 09:10",state:"initial",note:"初步預估：依 9/20 @STL 實際打序建立，守位為預估先發守位（Ruiz 上一場為代打 PH，預估回到先發 C）"},
           {at:"09/21 15:40",state:"consensus",note:"多來源共識 3/4；第 2、7、9 棒有分歧，第 9 棒僅 2/4 同意"}
         ],
         preview:{
