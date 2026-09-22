@@ -73,17 +73,21 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   const box = {}, pks = [...need];
   for (let i = 0; i < pks.length; i += 6) await Promise.all(pks.slice(i, i + 6).map(async pk => { box[pk] = await soft(`boxscore ${pk}`, fetchJson(`${API}/game/${pk}/boxscore`)); }));
   const slotsOf = (bx, side) => {
-    const t = bx?.teams?.[side]; if (!t?.battingOrder?.length) return null;
-    return t.battingOrder.map((id, i) => { const p = t.players["ID" + id] || {}, b = p.seasonStats?.batting || {};
-      return { n: i + 1, id, name: p.person?.fullName || String(id), pos: p.allPositions?.[0]?.abbreviation || p.position?.abbreviation || null, avg: b.avg ?? null, ops: b.ops ?? null }; });
+    // 只取先發：players[].battingOrder 為 "100","200"…"900"（替補是 301、302…）；teams.battingOrder 陣列在賽後會是最後在場者，不能直接用
+    const t = bx?.teams?.[side]; if (!t) return null;
+    let st = Object.values(t.players || {}).filter(p => p.battingOrder && +p.battingOrder % 100 === 0).sort((x, y) => x.battingOrder - y.battingOrder);
+    if (!st.length && t.battingOrder?.length) st = t.battingOrder.map(id => t.players["ID" + id] || { person: { id } });
+    if (!st.length) return null;
+    return st.map((p, i) => { const b = p.seasonStats?.batting || {};
+      return { n: i + 1, id: p.person?.id, name: p.person?.fullName || String(p.person?.id), pos: p.allPositions?.[0]?.abbreviation || p.position?.abbreviation || null, avg: b.avg ?? null, ops: b.ops ?? null }; });
   };
 
   // 5) 逐場組資料＋首次看到時間；單場出錯只影響該場的選配欄位
   const out = {};
   for (const g of games) {
     const pk = g.gamePk, S = (state.games[pk] ||= { firstSeen: nowISO, sp: {}, lu: {}, late: {} });
-    const status = statusOf(g), tz = g.venue?.timezone?.id || null, tbd = !!g.status?.startTimeTBD;
-    const base = { pk, twDate: twDate(g.gameDate), usDate: g.officialDate, startUTC: g.gameDate, tbd, twTime: tbd ? null : twTime(g.gameDate), localTime: tbd ? null : localTime(g.gameDate, tz), tz,
+    const status = statusOf(g), tz = g.venue?.timeZone?.id || null, tbd = !!g.status?.startTimeTBD;
+    const base = { pk, twDate: twDate(g.gameDate), usDate: g.officialDate, startUTC: g.gameDate, tbd, twTime: tbd ? null : twTime(g.gameDate), localTime: tbd || !tz ? null : localTime(g.gameDate, tz), tz,
       venue: g.venue?.name || null, status, dh: g.doubleHeader && g.doubleHeader !== "N" ? `G${g.gameNumber}` : null,
       rescheduledFrom: g.rescheduledFrom || null, rescheduleDate: g.rescheduleDate || null, inning: g.linescore?.currentInningOrdinal || null, inningHalf: g.linescore?.inningHalf || null,
       firstSeen: S.firstSeen, updatedAt: nowISO, errors: [] };
