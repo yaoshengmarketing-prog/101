@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>運彩 101｜比賽資料（試營運）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./">運彩 101<small>把一場比賽該看的資料，整理在同一頁。</small></a>
+    <span class="demo">14 天公開試營運｜MLB 官方資料</span>
+  </header>
+  <nav class="crumb" id="crumb"><a href="./">← 本日比賽</a></nav>
+  <div class="hero" id="hero"><div class="empty">載入中…</div></div>
+  <main id="game"></main>
+  <p class="foot" id="foot">資料來源：MLB 官方 Stats API（statsapi.mlb.com）。<span class="tag ok">已確認</span> 官方已公布　<span class="tag exp">預計</span> 官方預計先發，可能更動　<span class="tag na">尚未取得</span> 本站目前沒有這項資料，不以 0 或示範值填補。本頁不提供盤口、預測或推薦。</p>
+</div>
+<script src="./assets/app.js"></script>
+<script>renderGame();</script>
+</body>
+</html>
