@@ -1,0 +1,48 @@
+name: live-data
+# 從 MLB 官方 StatsAPI 更新 /live/ 試營運資料（台灣時間今天＋明天）
+# Day 1 只開 workflow_dispatch（手動）；schedule 待人工審查通過後再加。
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: live-data
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: build（抓取＋標準化，寫到 .build）
+        run: node scripts/build-live.mjs .build
+      - name: QA
+        run: node scripts/qa-live.mjs .build
+      - name: publish（QA 通過才覆蓋 live/data）
+        run: |
+          mkdir -p live/data data research/daily-production/auto
+          cp -r .build/live-data/. live/data/
+          cp .build/state.json data/state.json
+          cat .build/events.jsonl >> data/events.jsonl
+          D=$(TZ=Asia/Taipei date +%F); T=$(TZ=Asia/Taipei date +%H%M)
+          cat .build/report.md .build/qa.md > research/daily-production/auto/$D-$T.md
+      - name: 失敗時只寫報告，保留上一版公開資料
+        if: failure()
+        run: |
+          mkdir -p research/daily-production/errors
+          D=$(TZ=Asia/Taipei date +%F-%H%M)
+          { echo "# 失敗 run ${{ github.run_id }}"; cat .build/report.md .build/qa.md 2>/dev/null; } > research/daily-production/errors/$D.md
+          git checkout -- live 2>/dev/null || true
+      - name: commit
+        if: always()
+        run: |
+          git config user.name "live-data-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A research/daily-production
+          git add -A live/data data 2>/dev/null || true
+          git diff --cached --quiet && echo "no change" && exit 0
+          git commit -m "live data $(TZ=Asia/Taipei date '+%m/%d %H:%M') run ${{ github.run_id }}"
+          git pull --rebase && git push
