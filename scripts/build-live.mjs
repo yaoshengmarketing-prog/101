@@ -144,7 +144,7 @@ export function report({ manifest, days, games, events, errors }) {
   }
   L.push(`## 錯誤（${errors.length}）`, "", ...(errors.length ? errors.map(e => `- ${e.what}：${e.error}`) : ["無"]), "",
     `本次事件：${events.length} 筆（先發變動、官方打線首次出現、臨場異動、狀態變化）`, "",
-    "未取得（本版不顯示）：初步預估打線、盤口、天氣、主審、傷兵、牛棚近期負荷、投手 3A／分項成績。");
+    "未取得（本版不顯示）：初步預估打線、盤口、天氣、主審、傷兵、投手 3A／分項成績。");
   return L.join("\n") + "\n";
 }
 
