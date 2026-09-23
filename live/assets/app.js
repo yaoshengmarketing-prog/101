@@ -38,19 +38,18 @@ async function freshness(M, extra = []) {
   const okRun = R?.find(x => x.ok), last = R?.[0];
   const checked = Math.max(Date.parse(M.generatedAt), okRun ? Date.parse(okRun.at) : 0);
   const today = twToday(), ageH = (Date.now() - checked) / 36e5, msgs = [];
-  if (M.days[0].date !== today) msgs.push(M.days[1]?.date === today && ageH <= STALE_H
-    ? ["warn", `<b>已過午夜，今天的賽程會在下次自動更新（約 00:07）後換上。</b>日期標籤已改用實際日期。`]
-    : ["bad", `<b>這不是今天的賽程。</b>目前的資料產生於 ${M.generatedAtTW}（台灣），當時的「今天」是 ${dayLabel(M.days[0].date)}；現在台灣日期是 ${dayLabel(today)}。自動更新可能中斷，日期標籤已改用實際日期。`]);
-  else if (ageH > (dense() ? DENSE_H : STALE_H)) msgs.push(["warn", !R
-    ? `<b>資料最後變動於 ${M.generatedAtTW}（${ago(ageH)}）</b>，目前無法連到 GitHub 確認自動更新是否正常。`
-    : dense() ? `<b>賽前時段應每 30 分鐘檢查一次，已 ${ago(ageH).replace("前", "")}沒有成功檢查</b>（最後成功 ${stamp(new Date(checked).toISOString())}）。官方打線、先發異動、牛棚可能還沒反映。`
-    : `<b>自動更新已 ${ageH.toFixed(1)} 小時沒有成功完成</b>（最後成功 ${stamp(new Date(checked).toISOString())}）。正常每 3 小時檢查一次；比賽狀態、先發、打線、牛棚可能已變動。`]);
+  // 黃色＝資料比預期舊（GitHub 排程可能延遲，不等於故障）；紅色＝確實有一次執行失敗
+  const at = stamp(new Date(checked).toISOString()), late = ageH > (dense() ? DENSE_H : STALE_H);
+  if (M.days[0].date !== today) msgs.push(["warn", M.days[1]?.date === today && ageH <= STALE_H
+    ? `<b>已過午夜，今天的賽程會在下次自動更新（約 00:07）後換上。</b>日期標籤已改用實際日期。`
+    : `<b>資料還沒更新到今天。</b>資料裡的「今天」是 ${dayLabel(M.days[0].date)}，現在台灣日期是 ${dayLabel(today)}；日期標籤已改用實際日期。`]);
   if (last ? last.bad : S?.lastAttemptOk === false) { const url = last ? last.url : S.runUrl;
-    msgs.push(["bad", `<b>最近一次自動更新失敗</b>（${stamp(last ? last.at : S.lastAttemptAt)}），目前顯示的是上一次成功的資料（${M.generatedAtTW}）。${url ? `<a href="${esc(url)}" rel="noopener">執行紀錄</a>` : ""}`]); }
+    msgs.push(["bad", `<b>最近一次自動更新執行失敗</b>（${stamp(last ? last.at : S.lastAttemptAt)}），目前顯示的是上一次成功取得的資料。${url ? `<a href="${esc(url)}" rel="noopener">執行紀錄</a>` : ""}`]); }
   msgs.push(...extra);
-  if (!msgs.length) msgs.push(["", R
-    ? `資料最後變動 <b>${M.generatedAtTW}</b>・最後檢查 <b>${stamp(new Date(checked).toISOString())}</b>（${ago(ageH)}）・${dense() ? "賽前時段每 30 分鐘" : "每 3 小時"}自動檢查，有變動才更新`
-    : `資料最後變動 <b>${M.generatedAtTW}</b>（${ago(ageH)}）・自動檢查，有變動才更新`]);
+  msgs.unshift([late ? "warn" : "", (late ? "<b>資料較舊</b>：" : "") + (R
+    ? `最後取得資料 <b>${at}</b>（${ago(ageH)}）・內容最後變動 ${M.generatedAtTW}`
+    : `資料取得 <b>${M.generatedAtTW}</b>（${ago(ageH)}）；目前連不到 GitHub，無法確認之後是否還有取得`)
+    + (late ? `。${dense() ? "賽前時段原定每 30 分鐘" : "原定每 3 小時"}取得一次，GitHub 排程有時會延遲數小時，這不代表已確認故障。` : `・${dense() ? "賽前時段每 30 分鐘" : "每 3 小時"}自動取得，內容有變才更新`)]);
   document.querySelectorAll("[data-fresh]").forEach(n => n.remove());
   $(".top").insertAdjacentHTML("afterend", msgs.map(([c, t]) => `<div class="notice ${c}" data-fresh role="${c ? "alert" : "status"}">${t}</div>`).join(""));
   return today;

@@ -3,7 +3,7 @@ name: live-data
 # 排程（UTC）：台灣 21:00–11:59 每 30 分鐘（官方打線、先發異動、雙重賽 G1 牛棚補進 G2 都在這段時間）；
 #   台灣 14:07、17:07、20:07 各一次。00:07 在密集時段內，換日後很快換上新的一天。也可手動觸發。
 # 資料沒有變動就不 commit（scripts/data-changed.mjs，忽略時間戳）。
-# 沒啟動：下一次啟動時 scripts/watch.mjs 發現間隔過長 → 開 issue「排程缺口」（@ 站長，寄信）。
+# 很久沒更新：每次開始時 scripts/watch.mjs 查距上次成功多久，超過 6 小時 → 開 issue（@ 站長，寄信）。GitHub 排程晚一兩小時屬常見，不通知。
 # 啟動後失敗：live/ 還原成上一版、status.json 記下失敗（網頁紅色警示）、job 標紅、開 issue「自動更新失敗」。
 # 恢復：下一次成功的 run 在 issue 留言並關閉。
 on:
@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 24
-      - name: 排程缺口檢查
+      - name: 更新間隔檢查（超過 6 小時才通知）
         run: node scripts/watch.mjs gap
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -85,7 +85,7 @@ jobs:
           git diff --cached --quiet && echo "no change" && exit 0
           git commit -m "live data $(TZ=Asia/Taipei date '+%m/%d %H:%M') run ${{ github.run_id }}"
           git pull --rebase && git push
-      - name: 恢復通知（關閉還開著的缺口／失敗 issue）
+      - name: 恢復通知（關閉還開著的間隔／失敗 issue）
         if: success()
         run: node scripts/watch.mjs ok
         env:
