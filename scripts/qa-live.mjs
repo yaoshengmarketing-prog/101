@@ -37,6 +37,19 @@ const bad = ["示範", "Mock", "mock", "原型", "demo", "3/4", "odds", "consens
 ok("無示範／Mock／盤口／共識字樣", !bad.length, bad.join("、"));
 ok("本次建置錯誤數（僅記錄，不擋）", true, `${M.errors.length} 筆`);
 
+// 牛棚（scripts/bullpen.mjs 的產出）：部分失敗照常發布並標示；全部失敗才擋
+const B = read(`${D}/bullpen/index.json`), pks = [...seen.keys()], BS = ["ok", "incomplete", "failed"];
+ok("牛棚：每場都有牛棚檔", pks.every(pk => fs.existsSync(`${D}/bullpen/${pk}.json`)), `${pks.filter(pk => fs.existsSync(`${D}/bullpen/${pk}.json`)).length}/${pks.length}`);
+ok("牛棚：狀態只用 ok/incomplete/failed", Object.values(B.games).every(g => BS.includes(g.status)));
+let inv = 0, invN = 0;
+for (const pk of pks) {
+  if (!fs.existsSync(`${D}/bullpen/${pk}.json`)) continue;
+  const b = read(`${D}/bullpen/${pk}.json`); if (b.status === "failed") continue;
+  for (const side of ["away", "home"]) for (const d of b.summary[side].days) { invN++; if (d.complete === (d.st === "played" && d.gamesMissing === 0) && (d.gamesMissing === 0 || !d.complete)) inv++; }
+}
+ok("牛棚：標為完整的日子都沒有缺場（complete ⇔ played 且缺 0 場）", inv === invN, `${inv}/${invN} 隊日`);
+ok("牛棚：不是全部失敗", !(B.counts.total > 0 && B.counts.failed === B.counts.total), `完整 ${B.counts.ok}／部分 ${B.counts.incomplete}／失敗 ${B.counts.failed}／共 ${B.counts.total} 場`);
+
 const fail = res.filter(r => !r.pass);
 const md = `# QA ${M.generatedAtTW}\n\n| 檢查 | 結果 | 細節 |\n|---|---|---|\n${res.map(r => `| ${r.name} | ${r.pass ? "PASS" : "FAIL"} | ${r.detail} |`).join("\n")}\n\n合計：${res.length - fail.length}/${res.length} 通過\n`;
 fs.writeFileSync(`${OUT}/qa.md`, md);

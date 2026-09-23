@@ -1,0 +1,43 @@
+/* /live/ 試營運專用：更新狀態提示、牛棚表。根目錄 style.css（V1.2.1 凍結）不動，共用其色票。 */
+.notice{margin:10px 0 0;padding:9px 12px;border-radius:8px;font-size:13px;line-height:1.55;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.notice b{color:var(--ink)}
+.notice.warn,.notice.bad{border-color:#E3B9A6;background:#F6E3DA;color:#6B2C16}
+.notice.warn b,.notice.bad b{color:#6B2C16}
+.notice.bad{border-width:2px}
+:root[data-theme="dark"] .notice.warn,:root[data-theme="dark"] .notice.bad{background:#3A241C;color:#F0C2AE;border-color:#6B3A28}
+:root[data-theme="dark"] .notice.warn b,:root[data-theme="dark"] .notice.bad b{color:#FFE2D4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .notice.warn,:root:not([data-theme="light"]) .notice.bad{background:#3A241C;color:#F0C2AE;border-color:#6B3A28}
+  :root:not([data-theme="light"]) .notice.warn b,:root:not([data-theme="light"]) .notice.bad b{color:#FFE2D4}}
+
+.bpt{margin-top:10px;overflow-x:auto}
+.bpt h3{font-size:15px;margin:0 0 6px}.bpt h3 span{font-size:11.5px;color:var(--muted);font-weight:400;margin-left:6px}
+table.bp{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+table.bp th,table.bp td{padding:5px 3px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle}
+table.bp thead th{font-size:12px;font-weight:600;color:var(--muted);border-bottom:2px solid var(--line)}
+table.bp thead th small{display:block;font-size:10px;font-weight:400}
+table.bp thead th.hl small{color:var(--accent);font-weight:600}
+table.bp .nm,table.bp tbody th{text-align:left;width:30%;font-weight:400;word-break:break-word}
+table.bp .sk{width:11%}
+table.bp tr.gms td,table.bp tr.gms th{font-size:11px;color:var(--muted);border-bottom:1px dashed var(--line)}
+table.bp tr.gms a{text-decoration:none}
+table.bp .gs{display:block;font-size:10px}
+table.bp .miss{display:block;font-size:10px;color:#8F3A1E;font-weight:600}
+table.bp tr.sum th{font-weight:600}
+table.bp tr.sum td b{font-family:var(--num);font-size:14px}
+table.bp tr.sum td small{display:block;font-size:10px;color:var(--muted);line-height:1.35}
+table.bp td.part{background:#F6E3DA}
+:root[data-theme="dark"] table.bp td.part{background:#3A241C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) table.bp td.part{background:#3A241C}}
+table.bp td.st{font-size:11.5px;color:var(--muted)}
+table.bp td.n{font-family:var(--num)}
+table.bp td.n small{display:block;font-family:inherit;font-size:9.5px;color:var(--muted)}
+table.bp td.unk{color:#8F3A1E;font-weight:600}
+table.bp tr.recent th{font-weight:700}
+table.bp .s1,table.bp .s2{display:inline-block;min-width:22px;font-family:var(--num);font-weight:700;border-radius:4px;padding:0 4px}
+table.bp .s2{background:var(--accent);color:#fff}
+table.bp .s1{background:var(--accent-soft);color:var(--accent)}
+table.bp .s0{color:var(--muted)}
+table.bp .sq{color:#8F3A1E;font-weight:700}
+table.bp td.empty{color:var(--muted);font-size:12px}
+.bpnote{font-size:12px;color:var(--muted);margin:8px 0 0;padding-left:18px}
+.bpnote li{margin-top:2px}

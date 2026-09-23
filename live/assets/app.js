@@ -14,15 +14,35 @@ const noteTags = g => [g.dh && `雙重賽 ${g.dh}`, g.tbd && "開賽時間未定
 async function load(f) { const r = await fetch(`./data/${f}?t=${Date.now()}`); if (!r.ok) throw new Error(`${f} HTTP ${r.status}`); return r.json(); }
 const fail = (el, e) => { el.innerHTML = `<div class="empty">資料載入失敗（${esc(e.message)}），請稍後重新整理。</div>`; };
 
+/* ================= 更新狀態：過期、失敗一定要看得出來 ================= */
+const STALE_H = 5; // 排程每 3 小時一次；超過 5 小時沒有新資料就警示
+const twToday = () => new Date(Date.now() + 8 * 36e5).toISOString().slice(0, 10);
+const nextDay = d => new Date(Date.parse(d + "T00:00:00Z") + 864e5).toISOString().slice(0, 10);
+async function freshness(M, extra = []) {
+  const S = await load("status.json").catch(() => null);
+  const today = twToday(), ageH = (Date.now() - Date.parse(M.generatedAt)) / 36e5, msgs = [];
+  if (M.days[0].date !== today) msgs.push(["bad", `<b>這不是今天的賽程。</b>目前的資料產生於 ${M.generatedAtTW}（台灣），當時的「今天」是 ${dayLabel(M.days[0].date)}；現在台灣日期是 ${dayLabel(today)}。自動更新可能中斷，日期標籤已改用實際日期。`]);
+  else if (ageH > STALE_H) msgs.push(["warn", `<b>資料已 ${ageH.toFixed(1)} 小時沒有更新</b>（最後更新 ${M.generatedAtTW}）。正常每 3 小時更新一次；比賽狀態、先發、打線、牛棚可能已變動。`]);
+  if (S && S.lastAttemptOk === false) msgs.push(["bad", `<b>最近一次自動更新失敗</b>（${stamp(S.lastAttemptAt)}），目前顯示的是上一次成功的資料（${M.generatedAtTW}）。${S.runUrl ? `<a href="${esc(S.runUrl)}" rel="noopener">執行紀錄</a>` : ""}`]);
+  msgs.push(...extra);
+  if (!msgs.length) msgs.push(["", `資料更新 <b>${M.generatedAtTW}</b>（${ageH < 1 ? `${Math.max(1, Math.round(ageH * 60))} 分鐘前` : `${ageH.toFixed(1)} 小時前`}）・每 3 小時自動更新`]);
+  $(".top").insertAdjacentHTML("afterend", msgs.map(([c, t]) => `<div class="notice ${c}" role="${c ? "alert" : "status"}">${t}</div>`).join(""));
+  return today;
+}
+
 /* ================= 首頁 ================= */
 async function renderHome() {
   let D; try { D = await load("manifest.json"); for (const d of D.days) d.games = (await load(`dates/${d.date}.json`)).games; } catch (e) { return fail($("#games"), e); }
+  const today = await freshness(D), realDay = d => d.date === today ? "今天" : d.date === nextDay(today) ? "明天" : "";
+  const BI = (await load("bullpen/index.json").catch(() => null))?.games || {};
+  const bpOf = pk => BI[pk]?.status || "none";
+  const bpTag = pk => ({ incomplete: `<span class="tag late">牛棚部分場次未取得</span>`, failed: `<span class="tag na">牛棚未取得</span>`, none: `<span class="tag na">牛棚未取得</span>` })[bpOf(pk)] || "";
   const qs = new URLSearchParams(location.search);
   const state = { day: qs.get("d") === "tomorrow" ? "tomorrow" : "today", status: "all" };
   const F = [["all", "全部"], ["pre", "賽前"], ["live", "進行中"], ["final", "已結束"], ["off", "延期／取消"]];
   const dayEl = $("#days"), stEl = $("#status");
   const draw = () => {
-    dayEl.innerHTML = D.days.map(d => `<button aria-pressed="${d.key === state.day}" data-d="${d.key}">${d.label} ${dayLabel(d.date)}</button>`).join("");
+    dayEl.innerHTML = D.days.map(d => `<button aria-pressed="${d.key === state.day}" data-d="${d.key}">${realDay(d)} ${dayLabel(d.date)}</button>`).join("");
     stEl.innerHTML = F.map(([k, v]) => `<button aria-pressed="${k === state.status}" data-st="${k}">${v}</button>`).join("");
     const day = D.days.find(d => d.key === state.day), all = day.games, n = all.length;
     const games = all.filter(g => state.status === "all" || (state.status === "off" ? ["ppd", "cxl", "susp"].includes(g.status.code) : g.status.code === state.status));
@@ -32,6 +52,7 @@ async function renderHome() {
       <span>雙方預計先發 <b class="num">${cnt(g => g.away.sp && g.home.sp)}/${n}</b></span>
       <span>官方打線 <b class="num">${sides.filter(t => t.lineup.state !== "none").length}/${2 * n}</b> 隊</span>
       <span>上一場打線 <b class="num">${sides.filter(t => t.prev?.has).length}/${2 * n}</b> 隊</span>
+      <span>牛棚 <b class="num">${cnt(g => bpOf(g.pk) === "ok")}/${n}</b>${cnt(g => bpOf(g.pk) !== "ok") ? `（部分 ${cnt(g => bpOf(g.pk) === "incomplete")}・未取得 ${cnt(g => !["ok", "incomplete"].includes(bpOf(g.pk)))}）` : ""}</span>
       <span>盤口 <b class="num">0/${n}</b></span><span>天氣 <b class="num">0/${n}</b></span>
       <small>更新 ${D.generatedAtTW}</small></div>`;
     $("#games").innerHTML = ready + (games.length ? games.map(card).join("") : `<div class="empty">${n ? "此篩選條件下沒有比賽。" : "這一天沒有 MLB 比賽。"}</div>`);
@@ -44,7 +65,7 @@ async function renderHome() {
     return `<article class="card">
       <div class="meta"><span><b>${g.twTime || "時間未定"}</b> ${noteTags(g)}</span><span>${statusTag(g)}</span></div>
       ${team(g.away)}${team(g.home)}
-      <div class="hints">${g.status.code === "final" ? "" : luTag(g.away) + luTag(g.home)}</div>
+      <div class="hints">${g.status.code === "final" ? "" : luTag(g.away) + luTag(g.home)}${bpTag(g.pk)}</div>
       <div class="cta"><span class="small">${esc(g.venue)}</span><a class="btn" href="game.html?pk=${g.pk}">查看比賽資料 →</a></div>
     </article>`;
   };
@@ -59,6 +80,9 @@ async function renderGame() {
   if (!/^\d+$/.test(pk || "")) { $("#hero").innerHTML = `<div class="empty">網址缺少 gamePk。<a href="./">回本日比賽</a></div>`; return; }
   let G; try { G = await load(`games/${pk}.json`); } catch (e) { $("#hero").innerHTML = `<div class="empty">找不到 gamePk ${esc(pk)} 的資料（${esc(e.message)}）。<a href="./">回本日比賽</a></div>`; return; }
   const D = { generatedAtTW: stamp(G.updatedAt) };
+  const M = await load("manifest.json").catch(() => null);
+  if (M) await freshness(M, M.days.some(d => d.date === G.twDate) ? [] : [["warn", `<b>這場不在目前的今天／明天賽程內</b>，本頁資料停在 ${D.generatedAtTW}，不再更新。`]]);
+  const B = await load(`bullpen/${pk}.json`).catch(() => null);
   const A = G.away, H = G.home;
   document.title = `運彩 101｜${A.name} @ ${H.name}（${dayLabel(G.twDate)}）`;
   $("#crumb").innerHTML = `<a href="./">← 本日比賽</a>　MLB　${dayLabel(G.twDate)}　gamePk ${G.pk}`;
@@ -113,6 +137,49 @@ async function renderGame() {
     return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)}</div>
       <p class="small">MLB 官方尚未公布本場打線。以下為<b>上一場官方打線</b>，僅供參考，不是本場預估。</p>${prevBlock(t)}</div>`; };
   const lineups = `<section class="blk" id="lu"><h2>打線 <small>AVG／OPS 為 2026 本季</small></h2><div class="two">${lu(A)}${lu(H)}</div></section>`;
-  const missing = `<section class="blk" id="na"><h2>本站尚未取得</h2><div class="panel"><p class="small">預估打線、盤口、天氣、主審、傷兵、牛棚近期負荷：試營運第一階段尚未接入，不以示範值填補。</p></div></section>`;
-  $("#game").innerHTML = overview + pitchers + lineups + missing;
+  const missing = `<section class="blk" id="na"><h2>本站尚未取得</h2><div class="panel"><p class="small">預估打線、盤口、天氣、主審、傷兵：試營運第一階段尚未接入，不以示範值填補。</p></div></section>`;
+  $("#game").innerHTML = overview + pitchers + bullpen(B, G) + lineups + missing;
+}
+
+/* ================= 牛棚（scripts/bullpen.mjs 產出；規則見該檔） ================= */
+const BPST = { off: "無賽程", ppd: "延賽", notstarted: "未開打", error: "整天未取得", other: "其他" };
+const GST = { Postponed: "延賽", Scheduled: "未開打", "Pre-Game": "未開打", Warmup: "未開打", "In Progress": "進行中", Suspended: "暫停", Cancelled: "取消", Delayed: "延遲" };
+const UNC = ["partial", "incomplete", "error", "other"];
+function bpTable(t, name, side, T) {
+  const days = t.days, last = days.length - 1, md = d => `${+d.slice(5, 7)}/${+d.slice(8)}`;
+  const lab = i => i === last ? "本日・本場前" : i === last - 1 ? "昨天" : i === last - 2 ? "前天" : "";
+  const head = days.map((d, i) => `<th class="${i >= last - 1 ? "hl" : ""}">${md(d.d)}<small>${lab(i)}</small></th>`).join("");
+  const gms = days.map(d => `<td>${d.games.length ? d.games.map(g => `<a href="https://www.mlb.com/gameday/${g.pk}" rel="noopener">${d.games.length > 1 || (d.d === T.officialDate && T.dh !== "N") ? "G" + g.gameNumber + " " : ""}對${esc(g.opp)}</a>${["Final", "Game Over", "Completed Early"].includes(g.status) ? "" : `<span class="gs">${esc(GST[g.status] || g.status)}</span>`}${g.data === "missing" ? `<span class="miss">資料未取得</span>` : ""}`).join("<br>") : "—"}</td>`).join("");
+  const sum = days.map(d => {
+    if (d.rpPitches === null) return `<td class="st">${BPST[d.st] || esc(d.st)}</td>`;
+    const who = `${d.rpApps} 人次・${d.rpPitchers} 人`, nc = d.rpAppsNoCount ? `<br>${d.rpAppsNoCount} 人次球數缺` : "";
+    if (d.st === "incomplete") return `<td class="part"><b>≥${d.rpPitches}</b><small>部分小計<br>${d.gamesMissing}/${d.gamesExpected} 場未取得<br>${who}${nc}</small></td>`;
+    return `<td><b>${d.rpAppsNoCount ? "≥" : ""}${d.rpPitches}</b><small>${d.st === "partial" ? "進行中・目前為止<br>" : ""}${who}${nc}</small></td>`;
+  }).join("");
+  const rows = t.pitchers.map(p => {
+    const cells = days.map(d => { const e = p.days[d.d];
+      if (!e) return UNC.includes(d.st) ? `<td class="unk" title="該日資料不完整，無法確認是否登板">?</td>` : `<td></td>`;
+      const tag = [e.gameNumbers.length > 1 || d.games.length > 1 ? e.gameNumbers.map(n => "G" + n).join("+") : "", e.noCount ? (e.noCount === e.apps ? "球數缺" : `${e.noCount} 場球數缺`) : ""].filter(Boolean).join("・");
+      return `<td class="n">${e.noCount === e.apps ? "登板" : e.pitches + (e.noCount ? "+" : "")}${tag ? `<small>${tag}</small>` : ""}</td>`; }).join("");
+    const sk = p.streak ? `<span class="${p.streak >= 2 ? "s2" : "s1"}">${p.streak}${p.streakAtEdge || p.streakUncertain ? "+" : ""}</span>` : p.streakUncertain ? `<span class="sq">?</span>` : `<span class="s0">—</span>`;
+    return `<tr class="${p.streak ? "recent" : ""}"><th scope="row">${esc(p.name || "（無姓名）")}</th>${cells}<td class="sk">${sk}</td></tr>`;
+  }).join("") || `<tr><td colspan="${days.length + 2}" class="empty">這幾天沒有中繼投手登板紀錄</td></tr>`;
+  return `<div class="bpt"><h3>${esc(name)}<span>${side}</span></h3><table class="bp">
+    <thead><tr><th class="nm">中繼投手</th>${head}<th class="sk">連續</th></tr></thead>
+    <tbody><tr class="gms"><th scope="row">比賽</th>${gms}<td></td></tr><tr class="sum"><th scope="row">牛棚合計</th>${sum}<td></td></tr>${rows}</tbody></table></div>`;
+}
+function bullpen(B, G) {
+  const h = `<h2>牛棚近期使用 <small>本場開打前・中繼投手用球數${B?.fetchedAt ? `・資料取得 ${stamp(B.fetchedAt)}` : ""}</small></h2>`;
+  if (!B) return `<section class="blk" id="bp">${h}<div class="panel"><p class="small">${NA()} 本場牛棚資料尚未產生。</p></div></section>`;
+  if (B.status === "failed") return `<section class="blk" id="bp">${h}<div class="notice bad"><b>這場的牛棚資料這次沒有取得</b>（${esc(B.error)}）。下次自動更新會再試；不以 0 或舊資料代替。</div></section>`;
+  const warn = B.status === "incomplete" ? `<div class="notice warn"><b>有比賽的 box score 沒有取得。</b>標「部分小計」的日子只含已取得的場次，不是當天完整合計；「?」＝那天資料不完整、無法確認有沒有登板；只在未取得場次登板的投手不會出現在表上。</div>` : "";
+  return `<section class="blk" id="bp">${h}${warn}<div class="panel">
+    ${bpTable(B.summary.away, G.away.name, "客隊", B.target)}${bpTable(B.summary.home, G.home.name, "主隊", B.target)}
+    <ul class="bpnote">
+      <li>日期＝美國賽程日。前三欄是本場之前的三個完整日；「本日」只算同一天比本場早開打的比賽（例如雙重賽 G1）。</li>
+      <li>每場第一位登板者視為先發，不列入牛棚。格子＝用球數；空白＝那天資料完整且沒登板；<b>?</b>＝那天資料不完整，無法確認。</li>
+      <li>人次＝登板次數（雙重賽兩場都投算 2）；人數＝不同投手數。<b>≥</b>＝有資料缺，實際只會更多。</li>
+      <li>連續＝往回連續有登板的天數；<b>+</b>＝碰到表格最左邊或斷點那天資料不完整，可能更長。</li>
+      <li>來源：MLB Stats API box score（點比賽可到 MLB Gameday 核對）。規則 ${esc(B.rules)}。</li>
+    </ul></div></section>`;
 }
