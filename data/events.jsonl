@@ -40,3 +40,79 @@
 {"at":"2026-09-22T11:36:04.941Z","pk":823166,"type":"sp","side":"away","from":null,"to":"Taj Bradley"}
 {"at":"2026-09-22T11:36:04.941Z","pk":823166,"type":"sp","side":"home","from":null,"to":"Anthony Molina"}
 {"at":"2026-09-22T11:36:04.941Z","pk":823897,"type":"sp","side":"away","from":null,"to":"Michael King"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823543,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823543,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823543,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823328,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823328,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823328,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823412,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823412,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823412,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824222,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824222,"type":"sp","side":"away","from":"Jackson Kent","to":"Riley Cornelio"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824222,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824222,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824709,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824709,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824709,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823494,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823494,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823494,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824867,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824867,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824867,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824061,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824061,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824061,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824624,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824624,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824624,"type":"sp","side":"home","from":null,"to":"Shota Imanaga"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824624,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":822840,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":822840,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":822840,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824302,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824302,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824302,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823089,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823089,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823089,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824953,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824953,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824953,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823166,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823166,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823166,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823897,"type":"status","from":"Scheduled","to":"Final"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823897,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823897,"type":"sp","side":"home","from":null,"to":"Brock Stewart"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823897,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824223,"type":"sp","side":"away","from":null,"to":"Richard Lovelady"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824223,"type":"sp","side":"home","from":null,"to":"Framber Valdez"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824785,"type":"sp","side":"home","from":"Chris Bassitt","to":null}
+{"at":"2026-09-23T11:18:47.815Z","pk":823168,"type":"sp","side":"away","from":null,"to":"Connor Prielipp"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823168,"type":"sp","side":"home","from":null,"to":"Cesar Perdomo"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823327,"type":"sp","side":"away","from":null,"to":"Matthew Liberatore"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823327,"type":"sp","side":"home","from":null,"to":"Lake Bachar"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823410,"type":"sp","side":"away","from":null,"to":"Logan Henderson"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823410,"type":"sp","side":"home","from":null,"to":"Aaron Nola"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823492,"type":"sp","side":"away","from":null,"to":"Ian Seymour"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823492,"type":"sp","side":"home","from":null,"to":"Gerrit Cole"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824710,"type":"sp","side":"away","from":null,"to":"Foster Griffin"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824710,"type":"sp","side":"home","from":null,"to":"Sonny Gray"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824868,"type":"sp","side":"away","from":null,"to":"Andrew Abbott"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824868,"type":"sp","side":"home","from":null,"to":"Chris Sale"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824060,"type":"sp","side":"away","from":null,"to":"Bryan Hudson"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824060,"type":"sp","side":"home","from":null,"to":"Seth Lugo"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824625,"type":"sp","side":"away","from":null,"to":"Ryan Gusto"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824625,"type":"sp","side":"home","from":null,"to":"Kevin Gausman"}
+{"at":"2026-09-23T11:18:47.815Z","pk":822841,"type":"sp","side":"away","from":null,"to":"Nolan McLean"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824301,"type":"sp","side":"away","from":null,"to":"Merrill Kelly"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824301,"type":"sp","side":"home","from":null,"to":"Mason Adams"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824951,"type":"sp","side":"away","from":null,"to":"Walbert Ureña"}
+{"at":"2026-09-23T11:18:47.815Z","pk":824951,"type":"sp","side":"home","from":null,"to":"Jeffrey Springs"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823086,"type":"sp","side":"away","from":null,"to":"Ethan Pecko"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823086,"type":"sp","side":"home","from":null,"to":"George Kirby"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823894,"type":"sp","side":"away","from":null,"to":"Robbie Ray"}
+{"at":"2026-09-23T11:18:47.815Z","pk":823894,"type":"sp","side":"home","from":null,"to":"Yoshinobu Yamamoto"}

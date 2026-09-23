@@ -1,0 +1,136 @@
+{
+ "rules": "bullpen v0.2",
+ "generatedAt": "2026-09-23T11:18:48.702Z",
+ "counts": {
+  "ok": 31,
+  "incomplete": 0,
+  "failed": 0,
+  "total": 31
+ },
+ "games": {
+  "822840": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "822841": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823086": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823089": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823166": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823168": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823327": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823328": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823410": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823412": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823492": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823494": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823543": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823894": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823897": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824060": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824061": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824222": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824223": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824301": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824302": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824624": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824625": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824709": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824710": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824784": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824785": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824867": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824868": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824951": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824953": {
+   "status": "ok",
+   "gamesMissing": 0
+  }
+ }
+}
