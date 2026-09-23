@@ -41,7 +41,7 @@ async function freshness(M, extra = []) {
   // 黃色＝資料比預期舊（GitHub 排程可能延遲，不等於故障）；紅色＝確實有一次執行失敗
   const at = stamp(new Date(checked).toISOString()), late = ageH > (dense() ? DENSE_H : STALE_H);
   if (M.days[0].date !== today) msgs.push(["warn", M.days[1]?.date === today && ageH <= STALE_H
-    ? `<b>已過午夜，今天的賽程會在下次自動更新（約 00:07）後換上。</b>日期標籤已改用實際日期。`
+    ? `<b>已過午夜，今天的賽程要等下一次自動更新成功後才會換上。</b>日期標籤已改用實際日期。`
     : `<b>資料還沒更新到今天。</b>資料裡的「今天」是 ${dayLabel(M.days[0].date)}，現在台灣日期是 ${dayLabel(today)}；日期標籤已改用實際日期。`]);
   if (last ? last.bad : S?.lastAttemptOk === false) { const url = last ? last.url : S.runUrl;
     msgs.push(["bad", `<b>最近一次自動更新執行失敗</b>（${stamp(last ? last.at : S.lastAttemptAt)}），目前顯示的是上一次成功取得的資料。${url ? `<a href="${esc(url)}" rel="noopener">執行紀錄</a>` : ""}`]); }
