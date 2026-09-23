@@ -28,7 +28,7 @@ async function lastRuns() {
   try {
     const r = await fetch(RUNS); if (!r.ok) return null;
     const runs = (await r.json()).workflow_runs.filter(x => x.status === "completed")
-      .map(x => ({ ok: x.conclusion === "success", bad: ["failure", "timed_out"].includes(x.conclusion), at: x.updated_at, url: x.html_url }));
+      .map(x => ({ ok: x.conclusion === "success", bad: ["failure", "timed_out"].includes(x.conclusion), at: x.conclusion === "success" ? x.run_started_at : x.updated_at, url: x.html_url }));
     try { sessionStorage.setItem("runs", JSON.stringify({ t: Date.now(), runs })); } catch {}
     return runs;
   } catch { return null; }
@@ -47,8 +47,8 @@ async function freshness(M, extra = []) {
     msgs.push(["bad", `<b>最近一次自動更新執行失敗</b>（${stamp(last ? last.at : S.lastAttemptAt)}），目前顯示的是上一次成功取得的資料。${url ? `<a href="${esc(url)}" rel="noopener">執行紀錄</a>` : ""}`]); }
   msgs.push(...extra);
   msgs.unshift([late ? "warn" : "", (late ? "<b>資料較舊</b>：" : "") + (R
-    ? `最後取得資料 <b>${at}</b>（${ago(ageH)}）・內容最後變動 ${M.generatedAtTW}`
-    : `資料取得 <b>${M.generatedAtTW}</b>（${ago(ageH)}）；目前連不到 GitHub，無法確認之後是否還有取得`)
+    ? `最近一次流程檢查成功 <b>${at}</b>（${ago(ageH)}）・頁面內容最後變動 ${M.generatedAtTW}・個別項目以各自的取得時間與狀態為準`
+    : `頁面內容取得於 <b>${M.generatedAtTW}</b>（${ago(ageH)}）；目前連不到 GitHub，無法確認之後是否還有檢查`)
     + (late ? `。${dense() ? "賽前時段原定每 30 分鐘" : "原定每 3 小時"}取得一次，GitHub 排程有時會延遲數小時，這不代表已確認故障。` : `・${dense() ? "賽前時段每 30 分鐘" : "每 3 小時"}自動取得，內容有變才更新`)]);
   document.querySelectorAll("[data-fresh]").forEach(n => n.remove());
   $(".top").insertAdjacentHTML("afterend", msgs.map(([c, t]) => `<div class="notice ${c}" data-fresh role="${c ? "alert" : "status"}">${t}</div>`).join(""));
@@ -208,7 +208,8 @@ function bullpen(B, G) {
   const h = `<h2>牛棚近期使用 <small>本場開打前・中繼投手用球數${B?.fetchedAt ? `・資料取得 ${stamp(B.fetchedAt)}` : ""}</small></h2>`;
   if (!B) return `<section class="blk" id="bp">${h}<div class="panel"><p class="small">${NA()} 本場牛棚資料尚未產生。</p></div></section>`;
   if (B.status === "failed") return `<section class="blk" id="bp">${h}<div class="notice bad"><b>這場的牛棚資料這次沒有取得</b>（${esc(B.error)}）。下次自動更新會再試；不以 0 或舊資料代替。</div></section>`;
-  const warn = B.status === "incomplete" ? `<div class="notice warn"><b>有比賽的 box score 沒有取得。</b>標「部分小計」的日子只含已取得的場次，不是當天完整合計；「?」＝那天資料不完整、無法確認有沒有登板；只在未取得場次登板的投手不會出現在表上。</div>` : "";
+  const retry = B.retryFailedSince ? `<div class="notice warn"><b>這場牛棚自 ${stamp(B.retryFailedSince)} 起重抓失敗</b>（${esc(B.retryError || "")}）。以下仍是 ${stamp(B.fetchedAt)} 取得的資料，之後的登板不在表內。</div>` : "";
+  const warn = retry + (B.status === "incomplete" ? `<div class="notice warn"><b>有比賽的 box score 沒有取得。</b>標「部分小計」的日子只含已取得的場次，不是當天完整合計；「?」＝那天資料不完整、無法確認有沒有登板；只在未取得場次登板的投手不會出現在表上。</div>` : "");
   return `<section class="blk" id="bp">${h}${warn}<div class="panel">
     ${bpTable(B.summary.away, G.away.name, "客隊", B.target)}${bpTable(B.summary.home, G.home.name, "主隊", B.target)}
     <ul class="bpnote">

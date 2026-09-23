@@ -163,11 +163,21 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const nowISO = new Date().toISOString();
   const { files, index } = await buildBullpen({ games, fetchJson: fetchWithRetry, nowISO });
   fs.mkdirSync(`${D}/bullpen`, { recursive: true });
-  for (const [pk, v] of Object.entries(files)) fs.writeFileSync(`${D}/bullpen/${pk}.json`, JSON.stringify(v));
+  // 這次抓失敗、但已發布過有效資料 → 保留上一版（標出自何時起重抓失敗），不用失敗結果蓋掉有效資料
+  for (const [pk, v] of Object.entries(files)) {
+    if (v.status === "failed") {
+      let prev = null; try { prev = JSON.parse(fs.readFileSync(`live/data/bullpen/${pk}.json`, "utf8")); } catch {}
+      if (prev && prev.status !== "failed" && prev.summary) {
+        files[pk] = { ...prev, retryFailedSince: prev.retryFailedSince || nowISO, retryError: v.error };
+        index[pk] = { status: prev.status, gamesMissing: prev.gamesMissing, retryFailedSince: files[pk].retryFailedSince };
+      }
+    } else if (v.retryFailedSince) delete v.retryFailedSince;
+    fs.writeFileSync(`${D}/bullpen/${pk}.json`, JSON.stringify(files[pk]));
+  }
   const n = (s) => Object.values(index).filter((x) => x.status === s).length;
   const idx = { rules: RULES_VERSION, generatedAt: nowISO, counts: { ok: n("ok"), incomplete: n("incomplete"), failed: n("failed"), total: games.length }, games: index };
   fs.writeFileSync(`${D}/bullpen/index.json`, JSON.stringify(idx, null, 1));
   fs.appendFileSync(`${OUT}/report.md`, `\n## 牛棚（${RULES_VERSION}）\n\n完整 ${idx.counts.ok}／部分 ${idx.counts.incomplete}／失敗 ${idx.counts.failed}／共 ${idx.counts.total} 場\n` +
-    Object.entries(index).filter(([, v]) => v.status !== "ok").map(([pk, v]) => `- ${pk}：${v.status}${v.error ? "（" + v.error + "）" : `（未取得 ${v.gamesMissing} 場）`}`).join("\n") + "\n");
+    Object.entries(index).filter(([, v]) => v.status !== "ok" || v.retryFailedSince).map(([pk, v]) => `- ${pk}：${v.status}${v.error ? "（" + v.error + "）" : v.retryFailedSince ? `（自 ${v.retryFailedSince} 起重抓失敗，保留上一版有效資料）` : `（未取得 ${v.gamesMissing} 場）`}`).join("\n") + "\n");
   console.log(`牛棚：完整 ${idx.counts.ok}／部分 ${idx.counts.incomplete}／失敗 ${idx.counts.failed}／共 ${idx.counts.total}`);
 }
