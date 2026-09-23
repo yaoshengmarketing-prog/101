@@ -1,26 +1,36 @@
 name: live-data
 # 從 MLB 官方 StatsAPI 更新 /live/ 試營運資料（台灣時間今天＋明天）＋每場牛棚近期使用
-# 排程：每 3 小時檢查一次（台灣 00:07、03:07、06:07、09:07、12:07、15:07、18:07、21:07；00:07 讓換日後很快換上新的一天）；也可手動觸發。
+# 排程（UTC）：台灣 21:00–11:59 每 30 分鐘（官方打線、先發異動、雙重賽 G1 牛棚補進 G2 都在這段時間）；
+#   台灣 14:07、17:07、20:07 各一次。00:07 在密集時段內，換日後很快換上新的一天。也可手動觸發。
 # 資料沒有變動就不 commit（scripts/data-changed.mjs，忽略時間戳）。
-# 失敗時：live/ 還原成上一版、status.json 記下失敗（網頁會顯示警示）、job 標紅（GitHub 通知）。
+# 沒啟動：下一次啟動時 scripts/watch.mjs 發現間隔過長 → 開 issue「排程缺口」（@ 站長，寄信）。
+# 啟動後失敗：live/ 還原成上一版、status.json 記下失敗（網頁紅色警示）、job 標紅、開 issue「自動更新失敗」。
+# 恢復：下一次成功的 run 在 issue 留言並關閉。
 on:
   schedule:
-    - cron: '7 1-22/3 * * *'
+    - cron: '7,37 0-3,13-23 * * *'
+    - cron: '7 6,9,12 * * *'
   workflow_dispatch:
 permissions:
   contents: write
+  issues: write
+  actions: read
 concurrency:
   group: live-data
   cancel-in-progress: false
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 24
+      - name: 排程缺口檢查
+        run: node scripts/watch.mjs gap
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: 牛棚離線測試
         id: test
         run: node scripts/test-bullpen.mjs
@@ -61,7 +71,11 @@ jobs:
           git clean -fdq live 2>/dev/null || true
           node scripts/live-status.mjs fail "test=${{ steps.test.outcome }} build=${{ steps.build.outcome }} bullpen=${{ steps.bullpen.outcome }} qa=${{ steps.qa.outcome }}"
           cat research/daily-production/errors/$D.md >> "$GITHUB_STEP_SUMMARY"
+          node scripts/watch.mjs fail "test=${{ steps.test.outcome }} build=${{ steps.build.outcome }} bullpen=${{ steps.bullpen.outcome }} qa=${{ steps.qa.outcome }}"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: commit
+        id: commit
         if: always()
         run: |
           git config user.name "live-data-bot"
@@ -71,3 +85,13 @@ jobs:
           git diff --cached --quiet && echo "no change" && exit 0
           git commit -m "live data $(TZ=Asia/Taipei date '+%m/%d %H:%M') run ${{ github.run_id }}"
           git pull --rebase && git push
+      - name: 恢復通知（關閉還開著的缺口／失敗 issue）
+        if: success()
+        run: node scripts/watch.mjs ok
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: commit／push 失敗通知
+        if: failure() && steps.commit.outcome == 'failure'
+        run: node scripts/watch.mjs fail "commit/push 失敗（資料已產生但沒推上 GitHub）"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

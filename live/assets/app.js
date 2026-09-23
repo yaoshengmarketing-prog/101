@@ -16,7 +16,9 @@ const fail = (el, e) => { el.innerHTML = `<div class="empty">資料載入失敗�
 
 /* ================= 更新狀態：過期、失敗一定要看得出來 ================= */
 // 資料沒變動時不 commit，manifest 的時間只代表「最後變動」；「最後檢查」要問 GitHub Actions 公開 API，問不到就只看資料時間
-const STALE_H = 5; // 排程每 3 小時一次；超過 5 小時沒有成功檢查就警示
+// 排程：台灣 21:00–11:59（賽前、比賽時段）每 30 分鐘；其他時段每 3 小時。警示門檻跟著時段走
+const STALE_H = 5, DENSE_H = 1.5;
+const dense = () => { const h = new Date().getUTCHours(); return h >= 13 || h <= 3; };
 const RUNS = "https://api.github.com/repos/yaoshengmarketing-prog/101/actions/workflows/live-data.yml/runs?per_page=10";
 const twToday = () => new Date(Date.now() + 8 * 36e5).toISOString().slice(0, 10);
 const nextDay = d => new Date(Date.parse(d + "T00:00:00Z") + 864e5).toISOString().slice(0, 10);
@@ -39,23 +41,35 @@ async function freshness(M, extra = []) {
   if (M.days[0].date !== today) msgs.push(M.days[1]?.date === today && ageH <= STALE_H
     ? ["warn", `<b>已過午夜，今天的賽程會在下次自動更新（約 00:07）後換上。</b>日期標籤已改用實際日期。`]
     : ["bad", `<b>這不是今天的賽程。</b>目前的資料產生於 ${M.generatedAtTW}（台灣），當時的「今天」是 ${dayLabel(M.days[0].date)}；現在台灣日期是 ${dayLabel(today)}。自動更新可能中斷，日期標籤已改用實際日期。`]);
-  else if (ageH > STALE_H) msgs.push(["warn", R
-    ? `<b>自動更新已 ${ageH.toFixed(1)} 小時沒有成功完成</b>（最後成功 ${stamp(new Date(checked).toISOString())}）。正常每 3 小時檢查一次；比賽狀態、先發、打線、牛棚可能已變動。`
-    : `<b>資料最後變動於 ${M.generatedAtTW}（${ago(ageH)}）</b>，目前無法連到 GitHub 確認自動更新是否正常。`]);
+  else if (ageH > (dense() ? DENSE_H : STALE_H)) msgs.push(["warn", !R
+    ? `<b>資料最後變動於 ${M.generatedAtTW}（${ago(ageH)}）</b>，目前無法連到 GitHub 確認自動更新是否正常。`
+    : dense() ? `<b>賽前時段應每 30 分鐘檢查一次，已 ${ago(ageH).replace("前", "")}沒有成功檢查</b>（最後成功 ${stamp(new Date(checked).toISOString())}）。官方打線、先發異動、牛棚可能還沒反映。`
+    : `<b>自動更新已 ${ageH.toFixed(1)} 小時沒有成功完成</b>（最後成功 ${stamp(new Date(checked).toISOString())}）。正常每 3 小時檢查一次；比賽狀態、先發、打線、牛棚可能已變動。`]);
   if (last ? last.bad : S?.lastAttemptOk === false) { const url = last ? last.url : S.runUrl;
     msgs.push(["bad", `<b>最近一次自動更新失敗</b>（${stamp(last ? last.at : S.lastAttemptAt)}），目前顯示的是上一次成功的資料（${M.generatedAtTW}）。${url ? `<a href="${esc(url)}" rel="noopener">執行紀錄</a>` : ""}`]); }
   msgs.push(...extra);
   if (!msgs.length) msgs.push(["", R
-    ? `資料最後變動 <b>${M.generatedAtTW}</b>・最後檢查 <b>${stamp(new Date(checked).toISOString())}</b>（${ago(ageH)}）・每 3 小時自動檢查，有變動才更新`
-    : `資料最後變動 <b>${M.generatedAtTW}</b>（${ago(ageH)}）・每 3 小時自動檢查，有變動才更新`]);
-  $(".top").insertAdjacentHTML("afterend", msgs.map(([c, t]) => `<div class="notice ${c}" role="${c ? "alert" : "status"}">${t}</div>`).join(""));
+    ? `資料最後變動 <b>${M.generatedAtTW}</b>・最後檢查 <b>${stamp(new Date(checked).toISOString())}</b>（${ago(ageH)}）・${dense() ? "賽前時段每 30 分鐘" : "每 3 小時"}自動檢查，有變動才更新`
+    : `資料最後變動 <b>${M.generatedAtTW}</b>（${ago(ageH)}）・自動檢查，有變動才更新`]);
+  document.querySelectorAll("[data-fresh]").forEach(n => n.remove());
+  $(".top").insertAdjacentHTML("afterend", msgs.map(([c, t]) => `<div class="notice ${c}" data-fresh role="${c ? "alert" : "status"}">${t}</div>`).join(""));
   return today;
+}
+// 頁面一直開著：每分鐘重算提示、換日時重畫；每 5 分鐘看有沒有新資料，有就重新載入
+function keepFresh(M, extra, onDay) {
+  let day = twToday(), n = 0;
+  setInterval(async () => {
+    await freshness(M, extra);
+    if (twToday() !== day) { day = twToday(); if (onDay) onDay(); }
+    if (++n % 5 === 0) { const m = await load("manifest.json").catch(() => null); if (m && m.generatedAt !== M.generatedAt) location.reload(); }
+  }, 60000);
 }
 
 /* ================= 首頁 ================= */
 async function renderHome() {
   let D; try { D = await load("manifest.json"); for (const d of D.days) d.games = (await load(`dates/${d.date}.json`)).games; } catch (e) { return fail($("#games"), e); }
-  const today = await freshness(D), realDay = d => d.date === today ? "今天" : d.date === nextDay(today) ? "明天" : "";
+  await freshness(D);
+  const realDay = d => d.date === twToday() ? "今天" : d.date === nextDay(twToday()) ? "明天" : "";
   const BI = (await load("bullpen/index.json").catch(() => null))?.games || {};
   const bpOf = pk => BI[pk]?.status || "none";
   const bpTag = pk => ({ incomplete: `<span class="tag late">牛棚部分場次未取得</span>`, failed: `<span class="tag na">牛棚未取得</span>`, none: `<span class="tag na">牛棚未取得</span>` })[bpOf(pk)] || "";
@@ -93,7 +107,7 @@ async function renderHome() {
   };
   document.addEventListener("click", e => { const b = e.target.closest("button[data-d],button[data-st]"); if (!b) return;
     if (b.dataset.d) state.day = b.dataset.d; if (b.dataset.st) state.status = b.dataset.st; draw(); });
-  draw();
+  draw(); keepFresh(D, [], draw);
 }
 
 /* ================= 單場頁 ================= */
@@ -103,7 +117,8 @@ async function renderGame() {
   let G; try { G = await load(`games/${pk}.json`); } catch (e) { $("#hero").innerHTML = `<div class="empty">找不到 gamePk ${esc(pk)} 的資料（${esc(e.message)}）。<a href="./">回本日比賽</a></div>`; return; }
   const D = { generatedAtTW: stamp(G.updatedAt) };
   const M = await load("manifest.json").catch(() => null);
-  if (M) await freshness(M, M.days.some(d => d.date === G.twDate) ? [] : [["warn", `<b>這場不在目前的今天／明天賽程內</b>，本頁資料停在 ${D.generatedAtTW}，不再更新。`]]);
+  if (M) { const extra = M.days.some(d => d.date === G.twDate) ? [] : [["warn", `<b>這場不在目前的今天／明天賽程內</b>，本頁資料停在 ${D.generatedAtTW}，不再更新。`]];
+    await freshness(M, extra); keepFresh(M, extra); }
   const B = await load(`bullpen/${pk}.json`).catch(() => null);
   const A = G.away, H = G.home;
   document.title = `運彩 101｜${A.name} @ ${H.name}（${dayLabel(G.twDate)}）`;
