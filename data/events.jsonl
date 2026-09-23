@@ -177,3 +177,27 @@
 {"at":"2026-09-23T21:26:29.027Z","pk":824301,"type":"lineup_official","side":"home"}
 {"at":"2026-09-23T21:26:29.027Z","pk":824298,"type":"sp","side":"home","from":null,"to":"Tanner Gordon"}
 {"at":"2026-09-23T21:26:29.027Z","pk":823411,"type":"sp","side":"home","from":null,"to":"Andrew Painter"}
+{"at":"2026-09-23T23:55:13.084Z","pk":823168,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824784,"type":"status","from":"Scheduled","to":"In Progress"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824784,"type":"sp","side":"away","from":null,"to":"CJ Van Eyk"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824784,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824784,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T23:55:13.084Z","pk":823327,"type":"status","from":"Pre-Game","to":"In Progress"}
+{"at":"2026-09-23T23:55:13.084Z","pk":823410,"type":"status","from":"Pre-Game","to":"In Progress"}
+{"at":"2026-09-23T23:55:13.084Z","pk":823492,"type":"status","from":"Pre-Game","to":"In Progress"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824710,"type":"status","from":"Pre-Game","to":"In Progress"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824868,"type":"status","from":"Pre-Game","to":"In Progress"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824060,"type":"status","from":"Pre-Game","to":"In Progress"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824625,"type":"status","from":"Pre-Game","to":"In Progress"}
+{"at":"2026-09-23T23:55:13.084Z","pk":822841,"type":"status","from":"Pre-Game","to":"Warmup"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824951,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824951,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824951,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T23:55:13.084Z","pk":823086,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-23T23:55:13.084Z","pk":823086,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T23:55:13.084Z","pk":823894,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-23T23:55:13.084Z","pk":823894,"type":"lineup_official","side":"away"}
+{"at":"2026-09-23T23:55:13.084Z","pk":823894,"type":"lineup_official","side":"home"}
+{"at":"2026-09-23T23:55:13.084Z","pk":824623,"type":"sp","side":"home","from":null,"to":"Matthew Boyd"}
+{"at":"2026-09-23T23:55:13.084Z","pk":823493,"type":"sp","side":"away","from":"Freddy Peralta","to":"Ian Seymour"}
+{"at":"2026-09-23T23:55:13.084Z","pk":823087,"type":"sp","side":"away","from":null,"to":"Grayson Rodriguez"}
