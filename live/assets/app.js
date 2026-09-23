@@ -15,17 +15,39 @@ async function load(f) { const r = await fetch(`./data/${f}?t=${Date.now()}`); i
 const fail = (el, e) => { el.innerHTML = `<div class="empty">資料載入失敗（${esc(e.message)}），請稍後重新整理。</div>`; };
 
 /* ================= 更新狀態：過期、失敗一定要看得出來 ================= */
-const STALE_H = 5; // 排程每 3 小時一次；超過 5 小時沒有新資料就警示
+// 資料沒變動時不 commit，manifest 的時間只代表「最後變動」；「最後檢查」要問 GitHub Actions 公開 API，問不到就只看資料時間
+const STALE_H = 5; // 排程每 3 小時一次；超過 5 小時沒有成功檢查就警示
+const RUNS = "https://api.github.com/repos/yaoshengmarketing-prog/101/actions/workflows/live-data.yml/runs?per_page=10";
 const twToday = () => new Date(Date.now() + 8 * 36e5).toISOString().slice(0, 10);
 const nextDay = d => new Date(Date.parse(d + "T00:00:00Z") + 864e5).toISOString().slice(0, 10);
+const ago = h => h < 1 ? `${Math.max(1, Math.round(h * 60))} 分鐘前` : `${h.toFixed(1)} 小時前`;
+async function lastRuns() {
+  try { const c = JSON.parse(sessionStorage.getItem("runs") || "null"); if (c && Date.now() - c.t < 3e5) return c.runs; } catch {}
+  try {
+    const r = await fetch(RUNS); if (!r.ok) return null;
+    const runs = (await r.json()).workflow_runs.filter(x => x.status === "completed")
+      .map(x => ({ ok: x.conclusion === "success", bad: ["failure", "timed_out"].includes(x.conclusion), at: x.updated_at, url: x.html_url }));
+    try { sessionStorage.setItem("runs", JSON.stringify({ t: Date.now(), runs })); } catch {}
+    return runs;
+  } catch { return null; }
+}
 async function freshness(M, extra = []) {
-  const S = await load("status.json").catch(() => null);
-  const today = twToday(), ageH = (Date.now() - Date.parse(M.generatedAt)) / 36e5, msgs = [];
-  if (M.days[0].date !== today) msgs.push(["bad", `<b>這不是今天的賽程。</b>目前的資料產生於 ${M.generatedAtTW}（台灣），當時的「今天」是 ${dayLabel(M.days[0].date)}；現在台灣日期是 ${dayLabel(today)}。自動更新可能中斷，日期標籤已改用實際日期。`]);
-  else if (ageH > STALE_H) msgs.push(["warn", `<b>資料已 ${ageH.toFixed(1)} 小時沒有更新</b>（最後更新 ${M.generatedAtTW}）。正常每 3 小時更新一次；比賽狀態、先發、打線、牛棚可能已變動。`]);
-  if (S && S.lastAttemptOk === false) msgs.push(["bad", `<b>最近一次自動更新失敗</b>（${stamp(S.lastAttemptAt)}），目前顯示的是上一次成功的資料（${M.generatedAtTW}）。${S.runUrl ? `<a href="${esc(S.runUrl)}" rel="noopener">執行紀錄</a>` : ""}`]);
+  const [S, R] = await Promise.all([load("status.json").catch(() => null), lastRuns()]);
+  const okRun = R?.find(x => x.ok), last = R?.[0];
+  const checked = Math.max(Date.parse(M.generatedAt), okRun ? Date.parse(okRun.at) : 0);
+  const today = twToday(), ageH = (Date.now() - checked) / 36e5, msgs = [];
+  if (M.days[0].date !== today) msgs.push(M.days[1]?.date === today && ageH <= STALE_H
+    ? ["warn", `<b>已過午夜，今天的賽程會在下次自動更新（約 00:07）後換上。</b>日期標籤已改用實際日期。`]
+    : ["bad", `<b>這不是今天的賽程。</b>目前的資料產生於 ${M.generatedAtTW}（台灣），當時的「今天」是 ${dayLabel(M.days[0].date)}；現在台灣日期是 ${dayLabel(today)}。自動更新可能中斷，日期標籤已改用實際日期。`]);
+  else if (ageH > STALE_H) msgs.push(["warn", R
+    ? `<b>自動更新已 ${ageH.toFixed(1)} 小時沒有成功完成</b>（最後成功 ${stamp(new Date(checked).toISOString())}）。正常每 3 小時檢查一次；比賽狀態、先發、打線、牛棚可能已變動。`
+    : `<b>資料最後變動於 ${M.generatedAtTW}（${ago(ageH)}）</b>，目前無法連到 GitHub 確認自動更新是否正常。`]);
+  if (last ? last.bad : S?.lastAttemptOk === false) { const url = last ? last.url : S.runUrl;
+    msgs.push(["bad", `<b>最近一次自動更新失敗</b>（${stamp(last ? last.at : S.lastAttemptAt)}），目前顯示的是上一次成功的資料（${M.generatedAtTW}）。${url ? `<a href="${esc(url)}" rel="noopener">執行紀錄</a>` : ""}`]); }
   msgs.push(...extra);
-  if (!msgs.length) msgs.push(["", `資料更新 <b>${M.generatedAtTW}</b>（${ageH < 1 ? `${Math.max(1, Math.round(ageH * 60))} 分鐘前` : `${ageH.toFixed(1)} 小時前`}）・每 3 小時自動更新`]);
+  if (!msgs.length) msgs.push(["", R
+    ? `資料最後變動 <b>${M.generatedAtTW}</b>・最後檢查 <b>${stamp(new Date(checked).toISOString())}</b>（${ago(ageH)}）・每 3 小時自動檢查，有變動才更新`
+    : `資料最後變動 <b>${M.generatedAtTW}</b>（${ago(ageH)}）・每 3 小時自動檢查，有變動才更新`]);
   $(".top").insertAdjacentHTML("afterend", msgs.map(([c, t]) => `<div class="notice ${c}" role="${c ? "alert" : "status"}">${t}</div>`).join(""));
   return today;
 }
@@ -54,7 +76,7 @@ async function renderHome() {
       <span>上一場打線 <b class="num">${sides.filter(t => t.prev?.has).length}/${2 * n}</b> 隊</span>
       <span>牛棚 <b class="num">${cnt(g => bpOf(g.pk) === "ok")}/${n}</b>${cnt(g => bpOf(g.pk) !== "ok") ? `（部分 ${cnt(g => bpOf(g.pk) === "incomplete")}・未取得 ${cnt(g => !["ok", "incomplete"].includes(bpOf(g.pk)))}）` : ""}</span>
       <span>盤口 <b class="num">0/${n}</b></span><span>天氣 <b class="num">0/${n}</b></span>
-      <small>更新 ${D.generatedAtTW}</small></div>`;
+      <small>資料最後變動 ${D.generatedAtTW}</small></div>`;
     $("#games").innerHTML = ready + (games.length ? games.map(card).join("") : `<div class="empty">${n ? "此篩選條件下沒有比賽。" : "這一天沒有 MLB 比賽。"}</div>`);
   };
   const card = g => {
