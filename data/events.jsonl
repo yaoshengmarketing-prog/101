@@ -238,3 +238,19 @@
 {"at":"2026-09-24T15:46:02.895Z","pk":822842,"type":"lineup_official","side":"home"}
 {"at":"2026-09-24T15:46:02.895Z","pk":824298,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-24T15:46:02.895Z","pk":824298,"type":"lineup_official","side":"home"}
+{"at":"2026-09-24T16:01:23.008Z","pk":824623,"type":"lineup_official","side":"away"}
+{"at":"2026-09-24T16:01:23.008Z","pk":823409,"type":"sp","side":"away","from":null,"to":"Freddy Peralta"}
+{"at":"2026-09-24T16:01:23.008Z","pk":823409,"type":"sp","side":"home","from":null,"to":"Cristopher Sánchez"}
+{"at":"2026-09-24T16:01:23.008Z","pk":824220,"type":"sp","side":"away","from":null,"to":"Bubba Chandler"}
+{"at":"2026-09-24T16:01:23.008Z","pk":824220,"type":"sp","side":"home","from":null,"to":"Jackson Jobe"}
+{"at":"2026-09-24T16:01:23.008Z","pk":822681,"type":"sp","side":"home","from":null,"to":"Andrew Alvarez"}
+{"at":"2026-09-24T16:01:23.008Z","pk":822760,"type":"sp","side":"away","from":null,"to":"Nick Lodolo"}
+{"at":"2026-09-24T16:01:23.008Z","pk":823816,"type":"sp","side":"home","from":null,"to":"Eury Pérez"}
+{"at":"2026-09-24T16:01:23.008Z","pk":823735,"type":"sp","side":"away","from":null,"to":"Michael McGreevy"}
+{"at":"2026-09-24T16:01:23.008Z","pk":823735,"type":"sp","side":"home","from":null,"to":"Robert Gasser"}
+{"at":"2026-09-24T16:01:23.008Z","pk":824058,"type":"sp","side":"home","from":null,"to":"Noah Cameron"}
+{"at":"2026-09-24T16:01:23.008Z","pk":824544,"type":"sp","side":"home","from":null,"to":"Sean Burke"}
+{"at":"2026-09-24T16:01:23.008Z","pk":823652,"type":"sp","side":"home","from":null,"to":"Joe Ryan"}
+{"at":"2026-09-24T16:01:23.008Z","pk":823085,"type":"sp","side":"away","from":null,"to":"Reid Detmers"}
+{"at":"2026-09-24T16:01:23.008Z","pk":823085,"type":"sp","side":"home","from":null,"to":"Bryce Miller"}
+{"at":"2026-09-24T16:01:23.008Z","pk":823167,"type":"sp","side":"home","from":null,"to":"Yunior Marte"}

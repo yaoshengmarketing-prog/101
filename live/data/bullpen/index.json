@@ -1,6 +1,6 @@
 {
  "rules": "bullpen v0.2",
- "generatedAt": "2026-09-24T15:46:03.596Z",
+ "generatedAt": "2026-09-24T16:01:24.644Z",
  "counts": {
   "ok": 28,
   "incomplete": 0,
@@ -8,7 +8,11 @@
   "total": 28
  },
  "games": {
-  "822841": {
+  "822681": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "822760": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -16,7 +20,7 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "823086": {
+  "823085": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -24,7 +28,11 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "823168": {
+  "823167": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823248": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -32,11 +40,7 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "823327": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
-  "823410": {
+  "823409": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -44,7 +48,7 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "823492": {
+  "823491": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -52,7 +56,15 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "823894": {
+  "823652": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823735": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "823816": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -60,15 +72,15 @@
    "status": "ok",
    "gamesMissing": 0
   },
+  "824058": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
   "824059": {
    "status": "ok",
    "gamesMissing": 0
   },
-  "824060": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
-  "824223": {
+  "824220": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -76,7 +88,7 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "824301": {
+  "824544": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -84,7 +96,11 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "824625": {
+  "824703": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "824706": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -92,31 +108,15 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "824710": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
-  "824784": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
-  "824785": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
   "824866": {
    "status": "ok",
    "gamesMissing": 0
   },
-  "824868": {
+  "824947": {
    "status": "ok",
    "gamesMissing": 0
   },
   "824950": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
-  "824951": {
    "status": "ok",
    "gamesMissing": 0
   }
