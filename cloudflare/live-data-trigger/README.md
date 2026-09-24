@@ -5,12 +5,12 @@
 
 | 項目 | 內容 |
 |---|---|
-| Worker | `live-data-trigger`（Cloudflare 帳號 yaosheng-marketing，免費方案） |
+| Worker | `live-data-trigger`（Cloudflare 帳號 Yaosheng.marketing@gmail.com's Account，帳號 ID `73304c8bf136dd0c432ae88c227c7a40`；該帳號是 Workers 付費方案） |
 | 排程 | `*/15 0-3,13-23 * * *`（UTC）＝台灣 21:00–11:45 每 15 分鐘，每天 60 次 |
 | 紀錄 | D1 資料庫 `live-data-trigger-log`，表 `triggers`（`schema.sql`），保留 30 天 |
 | 公開紀錄 | https://live-data-trigger.yaosheng-marketing.workers.dev/log（最近 200 筆，不含密鑰） |
 | 密鑰 | `GH_TOKEN`：站長自建，只存在 Cloudflare Secret |
-| 程式 | `worker.js`；設定紀錄在 `wrangler.toml`（實際部署透過 Cloudflare 儀表板／API） |
+| 程式 | `worker.js`；設定紀錄在 `wrangler.toml`（實際部署透過 Cloudflare 儀表板 UI，見「設定與交接紀錄」） |
 
 ## 怎麼對應 Cloudflare 觸發和 GitHub run
 
@@ -72,14 +72,35 @@
 
 ## 費用
 
-全部使用免費額度：
+2026-09-24 在 Cloudflare 儀表板 → Workers 方案 查證：這個帳號**目前是 Workers 付費方案**（US$5／月＋超額用量）。免費方案那一欄顯示「降級」，付費那一欄顯示「目前方案」。同一天的用量面板顯示「可計費使用量（本期）$0.00，尚未產生可計費使用量」。本服務不需要另外付費。
 
-| 項目 | 免費額度 | 本服務用量 |
+| 項目 | 付費方案包含 | 本服務用量 |
 |---|---|---|
-| Workers 請求 | 每天 100,000 次（全帳戶共用，含其他 Pages Functions） | 每天 60 次排程觸發，加上查看 `/log` |
-| 每次觸發的外部請求 | 上限 50 | 2（送出 1、補查 1） |
-| Cron Trigger | 每個帳號 5 個 | 用 1 個 |
-| D1 | 每天讀取 500 萬列、寫入 10 萬列，儲存 5 GB（全帳戶共用） | 每天寫入約 120 列；讀取每次觸發最多約 2,000 列（30 天紀錄全表），每天約 12 萬列 |
+| Workers 請求 | 每月 1,000 萬次，超過每百萬次 US$0.30（全帳戶共用，也包含其他 Pages Functions；帳戶本期 9/1–9/24 累計 2.08M） | 每天 60 次排程觸發，加上查看 `/log` |
+| 每次觸發的外部請求 | 上限 10,000 | 2（送出 1、補查 1） |
+| Cron Trigger | 每個帳號 250 個 | 用 1 個 |
+| D1 | 每月讀取 250 億列、寫入 5,000 萬列（超過另計），儲存 5 GB | 每天寫入約 120 列、讀取約 12 萬列 |
 | GitHub Actions | 公開 repo 的標準 runner 不收費 | — |
 
-注意：2026-09-24 查到這個 Cloudflare 帳戶的 Workers／Pages 請求，本期（9/1 起）累計 2.08M。以 24 天計，平均每天約 8.7 萬，已經接近每天 10 萬的免費上限（上限由全帳戶共用，大多是其他網站的用量）。每天的明細沒有查到。超過上限的那一天，外部觸發有可能失敗。失敗會記錄在 `/log`，101 也會開 issue。網站仍會靠 GitHub 原生排程繼續更新。
+更正：本檔前一版（commit 3fac71f）寫「接近每天 10 萬次免費上限」。那是誤以為帳號是免費方案，實際上是付費方案，以本段為準。
+付費方案在哪裡：Cloudflare 儀表板左側 **運算 → Workers 方案**（https://dash.cloudflare.com/73304c8bf136dd0c432ae88c227c7a40/workers/plans ）；帳單在 **管理帳戶 → 計費**。
+
+## 設定與交接紀錄
+
+以下設定不在 repo 裡，是在 Cloudflare 或 GitHub 網頁上操作的。接手的人照這裡就能找到、核對、重做。
+
+| 日期（台灣） | 誰 | 在哪裡做 | 做了什麼 |
+|---|---|---|---|
+| 2026-09-24 12:09 | Claude | Cloudflare D1（MCP） | 建立資料庫 `live-data-trigger-log`（id `5d985a28-52f4-4f9a-8831-a46f228365df`，APAC），執行 `schema.sql` 建立 `triggers` 表 |
+| 2026-09-24 12:4x | Claude | Cloudflare 儀表板 → Workers 和 Pages → 建立 → 從 Hello World 開始 | 建立 Worker `live-data-trigger`，在「編輯代碼」貼上 `worker.js` 後部署。線上程式碼已用 MCP 讀回，與 repo 一致 |
+| 2026-09-24 12:5x | Claude | Worker → 設定 → 繫結 | 新增 D1 繫結：名稱 `DB` → `live-data-trigger-log` |
+| 2026-09-24 12:5x | Claude | Worker → 設定 → 觸發事件 → Cron | 新增 `*/15 0-3,13-23 * * *`，部署 |
+| 2026-09-24 12:5x | Claude | 驗證 | `/log` 回 200、內容為空表 |
+| 2026-09-24 13:2x | 站長 | GitHub → Settings → Developer settings → Fine-grained tokens | 建立 token：只限 `yaoshengmarketing-prog/101`，Actions: Read and write，Metadata: Read-only（必選），**到期日 2027-09-24** |
+| 2026-09-24 13:2x | 站長（Claude 開好視窗、填好名稱） | Worker → 設定 → Runtime variables and secrets → 新增變數 | 環境選「生產」，名稱 `GH_TOKEN`，勾選「秘密」，值由站長貼上 → Add variable and deploy。已確認清單顯示「秘密 GH_TOKEN 值已加密」，Cron 與 D1 繫結都還在 |
+
+注意事項：
+- Cloudflare 儀表板的寫入 API 從頁面內呼叫一律回 403，所以部署走 UI。以後要更新程式，照同樣方式：Worker →「編輯代碼」→ 全選後貼上 repo 的 `worker.js` → 部署。部署後用 MCP `workers_get_worker_code` 或儀表板確認內容。
+- token 的值只存在 Cloudflare Secret，repo 和對話紀錄裡都沒有。token **2027-09-24 到期**，到期前照「有效期限與更換」換新。
+- 要暫停外部觸發：Worker → 設定 → 觸發事件，刪除 Cron（或刪除 `GH_TOKEN`）。網站仍會靠 GitHub 原生排程更新。
+- 第一次實際觸發排在 2026-09-24 21:00（台灣）。驗證結果寫在 workspace `00_PROJECT_STATUS.md` §9 與 101 的 `data/cf-trigger-log.json`。
