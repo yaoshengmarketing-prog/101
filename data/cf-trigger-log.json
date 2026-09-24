@@ -1,1 +1,1 @@
-{"now":"2026-09-24T10:02:38.682Z","triggers":[]}
+{"now":"2026-09-24T13:02:04.544Z","triggers":[{"id":"cf 2026-09-24T13:00Z","scheduled_at":"2026-09-24T13:00:47.000Z","sent_at":"2026-09-24T13:01:29.863Z","http":200,"ms":1511,"error":null,"run_id":36002861119,"run_status":null,"conclusion":null,"run_created_at":null,"run_started_at":null,"run_updated_at":null,"checked_at":null,"result":null}]}
