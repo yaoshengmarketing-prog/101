@@ -115,15 +115,24 @@
 - 核對順序：Cloudflare 送出 → GitHub run → 資料結果 → 網站更新。
 - 用到的工具都在雲端，**不需要站長電腦開著**：
   - Cloudflare D1 MCP：讀 `triggers` 表。Worker 下一次觸發時，會把前一次的 run 狀態和結果回填進來。
-  - raw.githubusercontent：讀 `live/data/manifest.json`，判斷資料有沒有提交。
+  - raw.githubusercontent：讀 `live/data/manifest.json`，只拿來核對網站是否已發布，不用來判斷資料有沒有變動。
   - WebFetch（網址加 `?t=` 避開快取）：讀 Pages 網站的 manifest。
 - 站長電腦和 Chrome 只有兩件事會用到，電腦沒開時兩件都延後補做，不影響判讀：
   - 查 GitHub API 各步驟的細節；
   - 把檢查結果上傳回 GitHub。雲端沙箱連不到 api.github.com，也不能寫入 GitHub。
 - 判讀方式：
-  - **成功並提交**：run success，而且 manifest 的 generatedAt 落在這個 run 的執行時間內。
-  - **成功、資料沒變、不需提交**：run success，但 generatedAt 比較舊。這也算正常成功。
+  - 資料有沒有變動，看**該次 run 自己的判定步驟**（workflow `aa21b3f` 起新增）。Worker 補查 run 時會讀這兩個步驟，記進 D1 的 `result` 欄。
+  - **成功並提交**：`result=changed`，也就是「判定：資料有變動（提交）」這個步驟是 success。
+  - **成功、資料沒變、不需提交**：`result=unchanged`，也就是「判定：資料沒有變動（成功檢查，不提交）」這個步驟是 success。這也算正常成功。
+  - **待確認**：`result` 是 null 或 unknown（還沒回填，或讀不到步驟紀錄）。不會因為 manifest 時間沒更新，就推定資料沒變。
   - **未執行**：沒有對應的 run。
   - **被取代**：cancelled，由較新的觸發取代。不算失敗，也不算執行。
   - **進行中**：還沒回填、排隊中、執行中或 Pages 發布中，不提前宣告成功。
 - 事前連線測試（2026-09-24 14:4x–17:5x）沒做成：原本要在 Cloudflare 臨時加一個 cron，但 Worker 設定頁多次載入後一直空白，所以沒加。**token 和設定都沒有動**，等 21:00 實際觸發的回應再判斷。
+
+| 日期（台灣） | 誰 | 在哪裡做 | 做了什麼 |
+|---|---|---|---|
+| 2026-09-24 18:0x | Claude | 101 workflow（`aa21b3f`） | publish 步驟輸出 `changed`，新增兩個判定步驟，每次 run 都留下自己的判定 |
+| 2026-09-24 18:0x | Claude | Cloudflare D1（MCP） | `ALTER TABLE triggers ADD COLUMN result TEXT` |
+| 2026-09-24 18:0x | Claude | GitHub Actions 手動測試 run `35984883627`（名稱 `live-data test verdict-steps`，手動觸發，不算外部觸發） | 判定步驟實測：「判定：資料有變動（提交）」success，另一個 skipped，整體 success |
+| 2026-09-24 18:1x | Claude | Cloudflare 儀表板 → Worker →「編輯代碼」貼上 `worker.js`（`a716d60`）→ 部署 | 補查 run 時讀判定步驟，寫入 `result`。部署版本 `c7324b4e`；用 MCP 讀回線上程式碼，與 repo 一致；設定頁確認 `GH_TOKEN` 秘密、`DB` 繫結、Cron（下次 13:00Z）都還在 |
