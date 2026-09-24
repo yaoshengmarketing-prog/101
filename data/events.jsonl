@@ -267,3 +267,6 @@
 {"at":"2026-09-24T18:15:57.669Z","pk":824059,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-09-24T18:15:57.669Z","pk":822842,"type":"status","from":"Pre-Game","to":"Warmup"}
 {"at":"2026-09-24T18:15:57.669Z","pk":823248,"type":"sp","side":"away","from":null,"to":"Brandon Pfaadt"}
+{"at":"2026-09-24T18:31:10.334Z","pk":824623,"type":"status","from":"Warmup","to":"In Progress"}
+{"at":"2026-09-24T18:31:10.334Z","pk":824707,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-24T18:31:10.334Z","pk":824707,"type":"lineup_official","side":"home"}
