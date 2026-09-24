@@ -105,7 +105,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game"
+   "status": "Warmup"
   },
   "823085": {
    "firstSeen": "2026-09-24T16:01:23.008Z",
@@ -298,7 +298,13 @@
   },
   "823248": {
    "firstSeen": "2026-09-24T16:01:23.008Z",
-   "sp": {},
+   "sp": {
+    "away": {
+     "id": 694297,
+     "name": "Brandon Pfaadt",
+     "at": "2026-09-24T18:15:57.669Z"
+    }
+   },
    "lu": {},
    "late": {},
    "status": "Scheduled"
@@ -739,7 +745,7 @@
     }
    },
    "late": {},
-   "status": "Warmup"
+   "status": "In Progress"
   },
   "824060": {
    "firstSeen": "2026-09-23T11:18:47.815Z",
