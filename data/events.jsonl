@@ -284,3 +284,5 @@
 {"at":"2026-09-24T20:01:28.145Z","pk":824866,"type":"lineup_official","side":"home"}
 {"at":"2026-09-24T20:01:28.145Z","pk":824058,"type":"sp","side":"away","from":null,"to":"Gavin Williams"}
 {"at":"2026-09-24T20:45:58.220Z","pk":823493,"type":"lineup_official","side":"away"}
+{"at":"2026-09-24T21:01:09.263Z","pk":824059,"type":"status","from":"In Progress","to":"Game Over"}
+{"at":"2026-09-24T21:01:09.263Z","pk":824623,"type":"status","from":"In Progress","to":"Final"}
