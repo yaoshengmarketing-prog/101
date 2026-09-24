@@ -6,15 +6,27 @@ name: live-data
 # 很久沒更新：每次開始時 scripts/watch.mjs 查距上次成功多久，超過 6 小時 → 開 issue（@ 站長，寄信）。GitHub 排程晚一兩小時屬常見，不通知。
 # 啟動後失敗：live/ 還原成上一版、status.json 記下失敗（網頁紅色警示）、job 標紅、開 issue「自動更新失敗」。
 # 恢復：下一次成功的 run 在 issue 留言並關閉。
+# 外部觸發：Cloudflare Worker（cloudflare/live-data-trigger）台灣 21:00–11:45 每 15 分鐘用 workflow_dispatch 觸發，
+#   run 名稱帶觸發編號（live-data cf 2026-09-24T13:15Z）；紀錄在 CF_LOG，每次有資料變動時一起存成 data/cf-trigger-log.json。
+# 兩種觸發並存：concurrency 同時只跑一個、最多一個排隊；新的排隊會取代舊的排隊（舊的顯示 cancelled），
+#   每次都以自己開始的時間抓資料，所以不會用舊資料蓋掉新資料，也不補跑過期的檢查。
+run-name: live-data ${{ inputs.trigger || github.event_name }}
 on:
   schedule:
     - cron: '7,37 0-3,13-23 * * *'
     - cron: '7 6,9,12 * * *'
   workflow_dispatch:
+    inputs:
+      trigger:
+        description: 外部觸發編號（Cloudflare 自動填；手動執行留空）
+        required: false
+        type: string
 permissions:
   contents: write
   issues: write
   actions: read
+env:
+  CF_LOG: https://live-data-trigger.yaosheng-marketing.workers.dev/log
 concurrency:
   group: live-data
   cancel-in-progress: false
@@ -31,9 +43,9 @@ jobs:
         run: node scripts/watch.mjs gap
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - name: 牛棚離線測試
+      - name: 離線測試（牛棚、單場抓取失敗沿用舊值）
         id: test
-        run: node scripts/test-bullpen.mjs
+        run: node scripts/test-bullpen.mjs && node scripts/test-build-live.mjs
       - name: build（抓取＋標準化，寫到 .build）
         id: build
         run: node scripts/build-live.mjs .build
@@ -50,6 +62,7 @@ jobs:
           cp .build/state.json data/state.json
           cat .build/events.jsonl >> data/events.jsonl
           cat .build/report.md .build/qa.md >> "$GITHUB_STEP_SUMMARY"
+          curl -fsS --max-time 20 "$CF_LOG" -o .build/cf.json && mv .build/cf.json data/cf-trigger-log.json || echo "::warning::讀不到 Cloudflare 觸發紀錄"
           rc=0; node scripts/data-changed.mjs .build || rc=$?
           if [ $rc = 0 ]; then
             node scripts/live-status.mjs ok
