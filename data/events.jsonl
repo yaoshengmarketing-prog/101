@@ -288,3 +288,6 @@
 {"at":"2026-09-24T21:01:09.263Z","pk":824623,"type":"status","from":"In Progress","to":"Final"}
 {"at":"2026-09-24T21:15:58.081Z","pk":824059,"type":"status","from":"Game Over","to":"Final"}
 {"at":"2026-09-24T21:15:58.081Z","pk":822842,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-24T21:27:07.333Z","pk":823087,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-24T21:27:07.333Z","pk":823087,"type":"lineup_official","side":"home"}
+{"at":"2026-09-24T21:27:07.333Z","pk":823652,"type":"sp","side":"away","from":null,"to":"Jacob deGrom"}
