@@ -227,3 +227,4 @@
 {"at":"2026-09-24T10:02:33.539Z","pk":824950,"type":"sp","side":"home","from":null,"to":"Mason Barnett"}
 {"at":"2026-09-24T13:01:59.641Z","pk":823326,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-24T13:01:59.641Z","pk":823326,"type":"lineup_official","side":"away"}
+{"at":"2026-09-24T14:01:26.883Z","pk":823326,"type":"lineup_official","side":"home"}
