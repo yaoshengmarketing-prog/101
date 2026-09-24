@@ -309,3 +309,6 @@
 {"at":"2026-09-24T23:01:21.823Z","pk":824706,"type":"sp","side":"away","from":null,"to":"David Peterson"}
 {"at":"2026-09-24T23:15:59.989Z","pk":823493,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-09-24T23:15:59.989Z","pk":824866,"type":"status","from":"Warmup","to":"In Progress"}
+{"at":"2026-09-24T23:30:59.762Z","pk":824950,"type":"lineup_official","side":"away"}
+{"at":"2026-09-24T23:30:59.762Z","pk":823489,"type":"sp","side":"away","from":null,"to":"Trevor Rogers"}
+{"at":"2026-09-24T23:30:59.762Z","pk":823491,"type":"sp","side":"away","from":null,"to":"Brandon Young"}
