@@ -23,7 +23,7 @@ const fail = (el, e) => { el.innerHTML = `<div class="empty">資料載入失敗�
 
 /* ================= 更新狀態：過期、失敗一定要看得出來 ================= */
 // 資料沒變動時不 commit，manifest 的時間只代表「最後變動」；「最後檢查」要問 GitHub Actions 公開 API，問不到就只看資料時間
-// 排程：台灣 21:00–11:59（賽前、比賽時段）每 30 分鐘；其他時段每 3 小時。警示門檻跟著時段走
+// 排程：台灣 21:00–11:59（賽前、比賽時段）由 Cloudflare 每 15 分鐘觸發、GitHub 排程備援；其他時段每 3 小時。警示門檻跟著時段走
 const STALE_H = 5, DENSE_H = 1.5;
 const dense = () => { const h = new Date().getUTCHours(); return h >= 13 || h <= 3; };
 const RUNS = "https://api.github.com/repos/yaoshengmarketing-prog/101/actions/workflows/live-data.yml/runs?per_page=10";
@@ -56,7 +56,7 @@ async function freshness(M, extra = []) {
   msgs.unshift([late ? "warn" : "", (late ? "<b>資料較舊</b>：" : "") + (R
     ? `最近一次流程檢查成功 <b>${at}</b>（${ago(ageH)}）・頁面內容最後變動 ${M.generatedAtTW}・個別項目以各自的取得時間與狀態為準`
     : `頁面內容取得於 <b>${M.generatedAtTW}</b>（${ago(ageH)}）；目前連不到 GitHub，無法確認之後是否還有檢查`)
-    + (late ? `。${dense() ? "賽前時段原定每 30 分鐘" : "原定每 3 小時"}取得一次，GitHub 排程有時會延遲數小時，這不代表已確認故障。` : `・${dense() ? "賽前時段每 30 分鐘" : "每 3 小時"}自動取得，內容有變才更新`)]);
+    + (late ? `。${dense() ? "賽前時段排定每 15 分鐘觸發一次（Cloudflare，GitHub 排程為備援）" : "原定每 3 小時取得一次"}，實際執行會有延遲，GitHub 排程有時會延遲數小時，這不代表已確認故障。` : `・${dense() ? "賽前時段排定每 15 分鐘自動取得（Cloudflare 觸發，GitHub 排程備援；實際會有延遲）" : "每 3 小時自動取得"}，內容有變才更新`)]);
   document.querySelectorAll("[data-fresh]").forEach(n => n.remove());
   $(".top").insertAdjacentHTML("afterend", msgs.map(([c, t]) => `<div class="notice ${c}" data-fresh role="${c ? "alert" : "status"}">${t}</div>`).join(""));
   return today;
