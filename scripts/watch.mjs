@@ -40,7 +40,7 @@ async function cfCheck(now) {
   } catch (e) { problem = `讀不到 Cloudflare 觸發紀錄（${e.message}）`; }
   const i = await openIssue("cf");
   console.log(`Cloudflare 外部觸發：${problem || "正常"}`);
-  if (problem && !i) await report("cf", `${problem}\n\nGitHub 原生排程照常，網站仍會更新，只是賽前間隔回到約 30 分鐘或更久。\n紀錄：${E.CF_LOG}\nHTTP 401＝GitHub token 過期或被撤銷：照 cloudflare/live-data-trigger/README.md 換新 token。\n本次檢查：${RUN}`);
+  if (problem && !i) await report("cf", `${problem}\n\nGitHub 原生排程仍在，但實測可能數小時才跑一次（2026-09-24 台灣 20:30–22:20 一次都沒有），賽前更新會明顯變慢。\n紀錄：${E.CF_LOG}\nHTTP 401＝GitHub token 過期或被撤銷：照 cloudflare/live-data-trigger/README.md 換新 token。\n本次檢查：${RUN}`);
   if (!problem && i) {
     await gh(`/issues/${i.number}/comments`, { method: "POST", body: JSON.stringify({ body: `已恢復：Cloudflare 外部觸發正常。${RUN}` }) });
     await gh(`/issues/${i.number}`, { method: "PATCH", body: JSON.stringify({ state: "closed" }) });
