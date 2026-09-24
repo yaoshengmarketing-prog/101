@@ -6,7 +6,7 @@ import { twDate, twTime } from "./build-live.mjs";
 const OUT = process.argv[2] || ".build", D = `${OUT}/live-data`;
 const res = [], ok = (name, pass, detail = "") => res.push({ name, pass: !!pass, detail });
 const read = f => JSON.parse(fs.readFileSync(f, "utf8"));
-const LU = ["none", "partial", "estimate", "official", "late"], TEAM_LU = ["none", "official", "late"], ST = ["pre", "live", "final", "ppd", "cxl", "susp"];
+const LU = ["none", "partial", "estimate", "official", "late"], TEAM_LU = ["none", "official", "late", "withdrawn"], ST = ["pre", "live", "final", "ppd", "cxl", "susp"];
 
 const M = read(`${D}/manifest.json`);
 ok("manifest 有今天與明天", M.days?.length === 2 && M.days[0].key === "today" && M.days[1].key === "tomorrow");
@@ -29,7 +29,7 @@ for (const d of M.days) {
   ok(`${d.label}：每場都有單場資料檔`, files === n, `${files}/${n}`);
   ok(`${d.label}：台灣日期／時間與 startUTC 換算一致`, tzOk === n, `${tzOk}/${n}`);
   ok(`${d.label}：必要欄位齊全（gamePk、球場、狀態、隊名、台灣時間）`, fields === n, `${fields}/${n}`);
-  ok(`${d.label}：打線狀態只用 none/partial/estimate/official/late`, luOk === n, `${luOk}/${n}`);
+  ok(`${d.label}：打線狀態只用規定值（全場 none/partial/estimate/official/late；各隊另有 withdrawn＝來源撤回）`, luOk === n, `${luOk}/${n}`);
   ok(`${d.label}：打線名單皆為 1–9 棒`, slotsOk === n, `${slotsOk}/${n}`);
 }
 const all = fs.readdirSync(`${D}/games`).map(f => fs.readFileSync(`${D}/games/${f}`, "utf8")).join("\n") + fs.readFileSync(`${D}/manifest.json`, "utf8");

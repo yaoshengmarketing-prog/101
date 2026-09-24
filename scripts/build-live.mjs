@@ -23,11 +23,13 @@ function statusOf(g) {
   return { code, text: base ? STATE_ZH[base] + (det.length > base.length ? `（${det}）` : "") : det, raw: det, reason: s.reason || null };
 }
 
-export async function build({ fetchJson, now = new Date(), state = { games: {} } }) {
+// prevGame(pk)：上一版已公開的 games/<pk>.json（沒有就 null）。某項抓取失敗時沿用它並標示原取得時間，不用空值蓋掉。
+export async function build({ fetchJson, now = new Date(), state = { games: {} }, prevGame = () => null }) {
   const today = twDate(now.toISOString()), tomorrow = addDays(today, 1), nowISO = now.toISOString(), season = today.slice(0, 4);
   const events = [], errors = [];
   const ev = (pk, type, detail) => events.push({ at: nowISO, pk, type, ...detail });
-  const soft = async (what, p) => { try { return await p; } catch (e) { errors.push({ what, error: String(e.message || e) }); return null; } };
+  const errBy = {}; // 抓取失敗的項目 → 錯誤訊息
+  const soft = async (what, p) => { try { return await p; } catch (e) { const error = String(e.message || e); errors.push({ what, error }); errBy[what] = error; return null; } };
 
   // 1) 賽程（必要；失敗就整次失敗，保留上一版）：台灣今天/明天 ≈ 美國前一天到當天；往前多抓 12 天找各隊上一場
   const sched = await fetchJson(`${API}/schedule?sportId=1&startDate=${addDays(today, -12)}&endDate=${tomorrow}&hydrate=probablePitcher,linescore,venue(timezone),team`);
@@ -52,14 +54,16 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
     const sp = Object.fromEntries((t.records?.splitRecords || []).map(x => [x.type, `${x.wins}-${x.losses}`]));
     rec[t.team.id] = { rec: `${t.wins}-${t.losses}`, pct: t.winningPercentage, home: sp.home || null, road: sp.away || null, l10: sp.lastTen || null, streak: t.streak?.streakCode || null, rs: t.runsScored, ra: t.runsAllowed, gp: t.gamesPlayed };
   }
+  const REC = ["rec", "pct", "home", "road", "l10", "streak", "rs", "ra", "gp"];
   const ops = Object.fromEntries((hit?.stats?.[0]?.splits || []).map(s => [s.team.id, s.stat.ops]));
   const era = Object.fromEntries((pit?.stats?.[0]?.splits || []).map(s => [s.team.id, s.stat.era]));
 
   // 3) 先發投手：慣用手＋本季大聯盟成績（被交易者取不分隊合計）
   const spIds = [...new Set(games.flatMap(g => ["away", "home"].map(s => g.teams[s].probablePitcher?.id).filter(Boolean)))];
-  const ppl = {};
+  const ppl = {}; let peopleOk = true;
   if (spIds.length) {
     const r = await soft("pitchers", fetchJson(`${API}/people?personIds=${spIds.join(",")}&hydrate=stats(group=[pitching],type=[season],season=${season})`));
+    peopleOk = !!r;
     for (const p of r?.people || []) {
       const sp = p.stats?.[0]?.splits || [], s = (sp.find(x => !x.team) || sp[0])?.stat;
       ppl[p.id] = { hand: p.pitchHand?.code || null, s: s ? { wl: `${s.wins}-${s.losses}`, era: s.era, ip: s.inningsPitched, gs: s.gamesStarted, whip: s.whip, so: s.strikeOuts, bb: s.baseOnBalls } : null };
@@ -85,7 +89,7 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   // 5) 逐場組資料＋首次看到時間；單場出錯只影響該場的選配欄位
   const out = {};
   for (const g of games) {
-    const pk = g.gamePk, S = (state.games[pk] ||= { firstSeen: nowISO, sp: {}, lu: {}, late: {} });
+    const pk = g.gamePk, S = (state.games[pk] ||= { firstSeen: nowISO, sp: {}, lu: {}, late: {} }), P0 = prevGame(pk);
     const status = statusOf(g), tz = g.venue?.timeZone?.id || null, tbd = !!g.status?.startTimeTBD;
     const base = { pk, twDate: twDate(g.gameDate), usDate: g.officialDate, startUTC: g.gameDate, tbd, twTime: tbd ? null : twTime(g.gameDate), localTime: tbd || !tz ? null : localTime(g.gameDate, tz), tz,
       venue: g.venue?.name || null, status, dh: g.doubleHeader && g.doubleHeader !== "N" ? `G${g.gameNumber}` : null,
@@ -96,29 +100,60 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
       if (S.status && S.status !== status.raw) ev(pk, "status", { from: S.status, to: status.raw });
       S.status = status.raw;
       const side = s => {
-        const t = g.teams[s], id = t.team.id, P = t.probablePitcher;
+        const t = g.teams[s], id = t.team.id, P = t.probablePitcher, o = P0?.[s];
+        // 抓取失敗 → failed[項目]＝{ since 從何時起連續失敗, error, fetchedAt 目前顯示的舊值是何時取得（null＝沒有舊值可用） }
+        // 來源回應成功但內容變了／沒了，是來源真的修改或撤回，不算失敗，照來源的新內容
+        const failed = {}, fail = (key, what, hasOld) => { const f = o?.failed?.[key];
+          failed[key] = { since: f?.since || nowISO, error: errBy[what] || "未取得", fetchedAt: hasOld ? (f ? f.fetchedAt : P0.updatedAt) : null }; };
         if ((S.sp[s]?.id || null) !== (P?.id || null)) { if (S.sp[s] || P) ev(pk, "sp", { side: s, from: S.sp[s]?.name || null, to: P?.fullName || null }); S.sp[s] = P ? { id: P.id, name: P.fullName, at: nowISO } : null; }
-        const slots = slotsOf(box[pk], s); let lu = "none";
-        if (slots) {
-          const ids = slots.map(x => x.id).join(",");
-          if (!S.lu[s]) { S.lu[s] = { at: nowISO, ids }; ev(pk, "lineup_official", { side: s }); }
-          else if (S.lu[s].ids !== ids && status.code === "pre" && S.late[s]?.ids !== ids) { S.late[s] = { at: nowISO, ids }; ev(pk, "lineup_late", { side: s }); }
-          lu = S.late[s] ? "late" : "official";
+        // 先發投手成績（people API）
+        let pp = P ? ppl[P.id] : null;
+        if (P && !peopleOk) { const same = o?.sp?.id === P.id; pp = same ? { hand: o.sp.hand, s: o.sp.s } : null; fail("sp", "pitchers", same); }
+        // 本場打線（boxscore）
+        let lineup;
+        if (box[pk] === null) {
+          fail("lineup", `boxscore ${pk}`, !!o?.lineup?.slots);
+          lineup = o?.lineup ? { ...o.lineup } : { state: "none", firstSeen: S.lu[s]?.at || null, lateAt: null, slots: null }; // 沿用上一版（含「未公布」「來源撤回」）
+        } else {
+          const slots = slotsOf(box[pk], s); let lu = "none", withdrawnAt = null;
+          if (slots) {
+            const ids = slots.map(x => x.id).join(",");
+            if (!S.lu[s]) { S.lu[s] = { at: nowISO, ids }; ev(pk, "lineup_official", { side: s }); }
+            else if (S.lu[s].ids !== ids && status.code === "pre" && S.late[s]?.ids !== ids) { S.late[s] = { at: nowISO, ids }; ev(pk, "lineup_late", { side: s }); }
+            lu = S.late[s] ? "late" : "official";
+          } else if (o?.lineup?.slots || o?.lineup?.withdrawnAt) { // 上一版有打線，這次來源回應成功但沒有了＝來源撤回
+            lu = "withdrawn"; withdrawnAt = o.lineup.withdrawnAt || nowISO;
+            if (!o.lineup.withdrawnAt) ev(pk, "lineup_withdrawn", { side: s });
+          }
+          lineup = { state: lu, firstSeen: S.lu[s]?.at || null, lateAt: S.late[s]?.at || null, slots, ...(withdrawnAt ? { withdrawnAt } : {}) };
         }
+        // 戰績／團隊打擊／團隊投球
+        const team = { ...(rec[id] || {}), ops: ops[id] || null, era: era[id] || null };
+        if (!st) { const has = REC.some(k => o?.[k] != null); if (has) for (const k of REC) team[k] = o[k]; fail("rec", "standings", has); }
+        if (!hit) { team.ops = o?.ops ?? null; fail("ops", "team hitting", team.ops != null); }
+        if (!pit) { team.era = o?.era ?? null; fail("era", "team pitching", team.era != null); }
+        // 上一場打線（參考）
         const pg = prevMap[`${pk}:${s}`], ps = pg && (pg.teams.away.team.id === id ? "away" : "home"), os = ps === "home" ? "away" : "home";
-        return { ...minimal(s), ...(rec[id] || {}), ops: ops[id] || null, era: era[id] || null,
-          sp: P ? { id: P.id, name: P.fullName, hand: ppl[P.id]?.hand || null, s: ppl[P.id]?.s || null, firstSeen: S.sp[s]?.at || null } : null,
-          lineup: { state: lu, firstSeen: S.lu[s]?.at || null, lateAt: S.late[s]?.at || null, slots },
-          prev: pg ? { pk: pg.gamePk, date: pg.officialDate, ha: ps === "home" ? "主" : "客", opp: TEAM_ZH[pg.teams[os].team.id] || pg.teams[os].team.name, score: `${pg.teams[ps].score}-${pg.teams[os].score}`, slots: slotsOf(box[pg.gamePk], ps) } : null };
+        let prevSlots = pg ? slotsOf(box[pg.gamePk], ps) : null;
+        if (pg && box[pg.gamePk] === null) { const same = o?.prev?.pk === pg.gamePk && o.prev.slots; prevSlots = same ? o.prev.slots : null; fail("prev", `boxscore ${pg.gamePk}`, !!same); }
+        return { ...minimal(s), ...team,
+          sp: P ? { id: P.id, name: P.fullName, hand: pp?.hand || null, s: pp?.s || null, firstSeen: S.sp[s]?.at || null } : null,
+          lineup,
+          prev: pg ? { pk: pg.gamePk, date: pg.officialDate, ha: ps === "home" ? "主" : "客", opp: TEAM_ZH[pg.teams[os].team.id] || pg.teams[os].team.name, score: `${pg.teams[ps].score}-${pg.teams[os].score}`, slots: prevSlots } : null,
+          ...(Object.keys(failed).length ? { failed } : {}) };
       };
       out[pk] = { ...base, away: side("away"), home: side("home") };
     } catch (e) {
       const msg = String(e.message || e); errors.push({ what: `game ${pk}`, error: msg });
-      out[pk] = { ...base, errors: [msg], away: minimal("away"), home: minimal("home") };
+      // 整場組資料出錯：有上一版就沿用並標示，沒有才用最小資料
+      const f = P0?.failed?.game;
+      out[pk] = P0 ? { ...P0, ...base, errors: [msg], failed: { game: { since: f?.since || nowISO, error: msg, fetchedAt: f ? f.fetchedAt : P0.updatedAt } } }
+        : { ...base, errors: [msg], away: minimal("away"), home: minimal("home") };
     }
     const a = out[pk].away.lineup.state, h = out[pk].home.lineup.state;
     // 全場打線狀態：late＞official（兩隊皆官方）＞partial（只有一隊官方）＞none；estimate 保留給日後的初步預估，本版不產生
-    out[pk].lineup = a === "late" || h === "late" ? "late" : a !== "none" && h !== "none" ? "official" : a !== "none" || h !== "none" ? "partial" : "none";
+    const has = x => x === "official" || x === "late"; // withdrawn（來源撤回）算沒有打線
+    out[pk].lineup = a === "late" || h === "late" ? "late" : has(a) && has(h) ? "official" : has(a) || has(h) ? "partial" : "none";
   }
   const days = [[today, "today", "今天"], [tomorrow, "tomorrow", "明天"]].map(([date, key, label]) => ({ key, label, date, pks: games.filter(g => twDate(g.gameDate) === date).map(g => g.gamePk) }));
   for (const pk of Object.keys(state.games)) if (Date.parse(state.games[pk].firstSeen) < now - 7 * 864e5) delete state.games[pk]; // state 只留 7 天
@@ -142,6 +177,8 @@ export function report({ manifest, days, games, events, errors }) {
       `| 賽前／進行中／已結束／延期取消暫停 | ${c(g => g.status.code === "pre")}／${c(g => g.status.code === "live")}／${c(g => g.status.code === "final")}／${c(g => ["ppd", "cxl", "susp"].includes(g.status.code))} |`,
       `| 雙重賽場次／開賽時間未定 | ${c(g => g.dh)}／${c(g => g.tbd)} |`, "");
   }
+  const kept = Object.values(games).flatMap(g => [g.away, g.home].flatMap(t => Object.entries(t.failed || {}).map(([k, f]) => `- ${g.pk} ${t.ab} ${k}：自 ${twStamp(f.since)} 起抓取失敗${f.fetchedAt ? `，沿用 ${twStamp(f.fetchedAt)} 取得的舊值` : "，沒有舊值可用"}（${f.error}）`)));
+  L.push(`## 抓取失敗、沿用舊值的項目（${kept.length}）`, "", ...(kept.length ? kept : ["無"]), "");
   L.push(`## 錯誤（${errors.length}）`, "", ...(errors.length ? errors.map(e => `- ${e.what}：${e.error}`) : ["無"]), "",
     `本次事件：${events.length} 筆（先發變動、官方打線首次出現、臨場異動、狀態變化）`, "",
     "未取得（本版不顯示）：初步預估打線、盤口、天氣、主審、傷兵、投手 3A／分項成績。");
@@ -157,7 +194,7 @@ if (typeof process !== "undefined" && process.argv[1] && import.meta.url.endsWit
   const fetchJson = async url => { for (let i = 0; ; i++) { const t0 = Date.now(); try { const r = await fetch(url); log.push(`${r.status} ${Date.now() - t0}ms ${url}`); if (!r.ok) throw new Error(`HTTP ${r.status} ${url}`); return await r.json(); } catch (e) { if (i >= 2) throw e; await new Promise(r => setTimeout(r, 2000 * (i + 1))); } } };
   fs.mkdirSync(`${D}/dates`, { recursive: true }); fs.mkdirSync(`${D}/games`, { recursive: true });
   try {
-    const R = await build({ fetchJson, state: read("data/state.json", { games: {} }) });
+    const R = await build({ fetchJson, state: read("data/state.json", { games: {} }), prevGame: pk => read(`live/data/games/${pk}.json`, null) });
     fs.writeFileSync(`${D}/manifest.json`, JSON.stringify(R.manifest, null, 1));
     for (const d of R.days) fs.writeFileSync(`${D}/dates/${d.date}.json`, JSON.stringify({ date: d.date, generatedAt: R.manifest.generatedAt, games: d.pks.map(pk => cardOf(R.games[pk])) }));
     for (const g of Object.values(R.games)) fs.writeFileSync(`${D}/games/${g.pk}.json`, JSON.stringify(g));
