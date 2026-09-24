@@ -56,6 +56,7 @@ jobs:
         id: qa
         run: node scripts/qa-live.mjs .build
       - name: publish（QA 通過才覆蓋 live/data；資料沒變動就不 commit）
+        id: publish
         run: |
           mkdir -p live/data data research/daily-production/auto
           cp -r .build/live-data/. live/data/
@@ -68,12 +69,22 @@ jobs:
             node scripts/live-status.mjs ok
             D=$(TZ=Asia/Taipei date +%F); T=$(TZ=Asia/Taipei date +%H%M)
             cat .build/report.md .build/qa.md > research/daily-production/auto/$D-$T.md
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           elif [ $rc = 10 ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "資料沒有變動：不 commit（本次紀錄只留在 Actions run）" | tee -a "$GITHUB_STEP_SUMMARY"
             git checkout -- live data && git clean -fdq live data
           else
             exit $rc
           fi
+      # 本次判定留在 run 的步驟紀錄裡（Actions 讀權限即可查）：哪一個步驟是 success、另一個是 skipped
+      # Cloudflare Worker 補查 run 時會讀這兩個步驟，記成 result＝changed／unchanged
+      - name: 判定：資料有變動（提交）
+        if: steps.publish.outputs.changed == 'true'
+        run: echo "本次資料有變動，接著 commit"
+      - name: 判定：資料沒有變動（成功檢查，不提交）
+        if: steps.publish.outputs.changed == 'false'
+        run: echo "本次資料沒有變動：抓取與 QA 都成功，不需要 commit"
       - name: 失敗時只寫報告，保留上一版公開資料
         if: failure()
         run: |
