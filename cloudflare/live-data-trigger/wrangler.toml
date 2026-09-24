@@ -1,0 +1,18 @@
+# 設定紀錄（實際在 Cloudflare 儀表板建立；此檔讓設定可重現、可比對）
+name = "live-data-trigger"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+
+# 台灣 21:00–11:45（UTC 13:00–03:45）每 15 分鐘
+[triggers]
+crons = ["*/15 0-3,13-23 * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "live-data-trigger-log"
+database_id = "5d985a28-52f4-4f9a-8831-a46f228365df"
+
+[observability]
+enabled = true
+
+# 密鑰 GH_TOKEN：只在 Cloudflare 儀表板設為 Secret，不寫在這裡
