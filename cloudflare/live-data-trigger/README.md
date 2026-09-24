@@ -116,7 +116,7 @@
 - 用到的工具都在雲端，**不需要站長電腦開著**：
   - Cloudflare D1 MCP：讀 `triggers` 表。Worker 下一次觸發時，會把前一次的 run 狀態和結果回填進來。
   - raw.githubusercontent：讀 `live/data/manifest.json`，只拿來核對網站是否已發布，不用來判斷資料有沒有變動。
-  - WebFetch（網址加 `?t=` 避開快取）：讀 Pages 網站的 manifest。
+  - WebFetch（網址加 `?t=` 避開快取）：讀 Pages 網站的 manifest。**首晚實測 WebFetch 會回傳好幾小時前的舊版（21:22 讀到 13:06 的版本）**，所以網站是否更新改以 Chrome 直接讀網站（`cache: no-store`，看 `generatedAt` 與 `last-modified`）或「pages build and deployment」run 的完成時間為準；兩者都拿不到時標「待確認」。
 - 站長電腦和 Chrome 只有兩件事會用到，電腦沒開時兩件都延後補做，不影響判讀：
   - 查 GitHub API 各步驟的細節；
   - 把檢查結果上傳回 GitHub。雲端沙箱連不到 api.github.com，也不能寫入 GitHub。
@@ -136,3 +136,24 @@
 | 2026-09-24 18:0x | Claude | Cloudflare D1（MCP） | `ALTER TABLE triggers ADD COLUMN result TEXT` |
 | 2026-09-24 18:0x | Claude | GitHub Actions 手動測試 run `35984883627`（名稱 `live-data test verdict-steps`，手動觸發，不算外部觸發） | 判定步驟實測：「判定：資料有變動（提交）」success，另一個 skipped，整體 success |
 | 2026-09-24 18:1x | Claude | Cloudflare 儀表板 → Worker →「編輯代碼」貼上 `worker.js`（`a716d60`）→ 部署 | 補查 run 時讀判定步驟，寫入 `result`。部署版本 `c7324b4e`；用 MCP 讀回線上程式碼，與 repo 一致；設定頁確認 `GH_TOKEN` 秘密、`DB` 繫結、Cron（下次 13:00Z）都還在 |
+| 2026-09-24 21:2x | Claude | GitHub API（Chrome） | 首批 21:00、21:15 核對：兩筆都送出（HTTP 200），對應 run `36002861119`（changed）、`36004471492`（unchanged）；網站 21:02:45 已是新版 |
+| 2026-09-24 22:2x | Claude | 101 `live/assets/app.js`（網頁上傳） | 賽前時段說明改為「排定每 15 分鐘（Cloudflare 觸發，GitHub 排程備援；實際會有延遲）」 |
+| 2026-09-24 22:2x | Claude | 101 `scripts/watch.mjs`（網頁上傳） | Cloudflare 異常通知內文更正：GitHub 原生排程可能數小時才跑一次，不是「回到約 30 分鐘」 |
+
+### 首晚實測（2026-09-24 台灣 21:00–22:15，共 6 個時段）
+
+延遲都從排定的整刻（例如 21:00:00）算起。Cloudflare 回報的排定時間每次都是整刻過 47 秒。
+
+| 時段（台灣） | 送出 | GitHub run | run 開始 | run 結束 | 資料結果 | 網站可見 |
+|---|---|---|---|---|---|---|
+| 21:00 | HTTP 200，21:01:29 | `36002861119` success | +1:31 | +2:09 | changed（提交 `3c877c2`） | Pages 部署完成 +2:58（網站檔案時間 21:02:45） |
+| 21:15 | HTTP 200，21:15:55 | `36004471492` success | +0:56 | +1:14 | unchanged（不需提交） | — |
+| 21:30 | HTTP 200，21:31:06 | `36006204884` success | +1:07 | +1:26 | unchanged | — |
+| 21:45 | HTTP 200，21:45:52 | `36007917661` success | +0:54 | +1:22 | unchanged | — |
+| 22:00 | HTTP 200，22:01:12 | `36009740435` success | +1:13 | +1:37 | changed（提交 `9fb64d4`） | Pages 部署完成 +2:58 |
+| 22:15 | HTTP 200，22:15:50 | `36011515754` success | +0:51 | +1:12 | changed（提交 `f75076a`）：D1 22:30 才回填，先用 GitHub API 查判定步驟 | Pages 部署完成 +1:57（網站檔案時間 22:16:48） |
+
+- 統計：送出成功 6/6；有對應 run 6/6；run success 6/6；changed 3/6、unchanged 3/6；cancelled 0/6；未執行 0/6；待確認 0/6（22:15 的 D1 還沒回填，但已用 API 確認）。
+- 延遲：排定→run 開始，中位數 1:02、最大 1:31（6 筆）；排定→run 結束，中位數 1:24、最大 2:09（6 筆）；changed 的排定→網站可見（Pages 部署完成），中位數 2:58、最大 2:58（3 筆）。
+- 同一時段內（台灣 20:30–22:20），GitHub 原生排程 0 次；今天（台灣 9/24）原生排程共 5 次：01:57、05:26、07:55、12:36、19:34。賽前更新實際上全靠 Cloudflare 觸發。
+- 沒有發生重複執行或互相取代（cancelled 0）。
