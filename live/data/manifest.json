@@ -1,6 +1,6 @@
 {
- "generatedAt": "2026-09-24T22:16:01.143Z",
- "generatedAtTW": "09/25 06:16",
+ "generatedAt": "2026-09-24T22:31:08.351Z",
+ "generatedAtTW": "09/25 06:31",
  "source": "MLB Stats API（statsapi.mlb.com）",
  "days": [
   {
@@ -13,7 +13,7 @@
    "key": "tomorrow",
    "label": "明天",
    "date": "2026-09-26",
-   "count": 16
+   "count": 17
   }
  ],
  "errors": []
