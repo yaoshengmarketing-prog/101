@@ -104,3 +104,26 @@
 - token 的值只存在 Cloudflare Secret，repo 和對話紀錄裡都沒有。token **2027-09-24 到期**，到期前照「有效期限與更換」換新。
 - 要暫停外部觸發：Worker → 設定 → 觸發事件，刪除 Cron（或刪除 `GH_TOKEN`）。網站仍會靠 GitHub 原生排程更新。
 - 第一次實際觸發排在 2026-09-24 21:00（台灣）。驗證結果寫在 workspace `00_PROJECT_STATUS.md` §9 與 101 的 `data/cf-trigger-log.json`。
+
+### 驗證用的排程檢查（2026-09-24 建立）
+
+| 任務 ID | 觸發時間（台灣） | 執行環境 | 檢查內容 |
+|---|---|---|---|
+| `trig_019w8pkwJqAimvDwCVXg9bKf` | 2026-09-24 21:20，只跑一次 | Claude 排程任務，Anthropic 雲端；叫醒原對話（session_01BFMsEEsDZQXV92nTu3Sff8）接著執行 | 21:00、21:15 兩次觸發 |
+| `trig_01SrAY2SW9tJEabtQYc1KKN7` | 2026-09-24 22:20，只跑一次 | 同上 | 21:00–22:15 共 6 次觸發：統計與延遲；確認有效後才改頁面上的時段文字 |
+
+- 核對順序：Cloudflare 送出 → GitHub run → 資料結果 → 網站更新。
+- 用到的工具都在雲端，**不需要站長電腦開著**：
+  - Cloudflare D1 MCP：讀 `triggers` 表。Worker 下一次觸發時，會把前一次的 run 狀態和結果回填進來。
+  - raw.githubusercontent：讀 `live/data/manifest.json`，判斷資料有沒有提交。
+  - WebFetch（網址加 `?t=` 避開快取）：讀 Pages 網站的 manifest。
+- 站長電腦和 Chrome 只有兩件事會用到，電腦沒開時兩件都延後補做，不影響判讀：
+  - 查 GitHub API 各步驟的細節；
+  - 把檢查結果上傳回 GitHub。雲端沙箱連不到 api.github.com，也不能寫入 GitHub。
+- 判讀方式：
+  - **成功並提交**：run success，而且 manifest 的 generatedAt 落在這個 run 的執行時間內。
+  - **成功、資料沒變、不需提交**：run success，但 generatedAt 比較舊。這也算正常成功。
+  - **未執行**：沒有對應的 run。
+  - **被取代**：cancelled，由較新的觸發取代。不算失敗，也不算執行。
+  - **進行中**：還沒回填、排隊中、執行中或 Pages 發布中，不提前宣告成功。
+- 事前連線測試（2026-09-24 14:4x–17:5x）沒做成：原本要在 Cloudflare 臨時加一個 cron，但 Worker 設定頁多次載入後一直空白，所以沒加。**token 和設定都沒有動**，等 21:00 實際觸發的回應再判斷。
