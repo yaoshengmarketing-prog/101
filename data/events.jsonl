@@ -201,3 +201,23 @@
 {"at":"2026-09-23T23:55:13.084Z","pk":824623,"type":"sp","side":"home","from":null,"to":"Matthew Boyd"}
 {"at":"2026-09-23T23:55:13.084Z","pk":823493,"type":"sp","side":"away","from":"Freddy Peralta","to":"Ian Seymour"}
 {"at":"2026-09-23T23:55:13.084Z","pk":823087,"type":"sp","side":"away","from":null,"to":"Grayson Rodriguez"}
+{"at":"2026-09-24T04:36:57.492Z","pk":824784,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-24T04:36:57.492Z","pk":823327,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-24T04:36:57.492Z","pk":823410,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-24T04:36:57.492Z","pk":823492,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-24T04:36:57.492Z","pk":824710,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-24T04:36:57.492Z","pk":824868,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-24T04:36:57.492Z","pk":824060,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-24T04:36:57.492Z","pk":824625,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-24T04:36:57.492Z","pk":822841,"type":"status","from":"Warmup","to":"Final"}
+{"at":"2026-09-24T04:36:57.492Z","pk":824301,"type":"status","from":"Pre-Game","to":"Final"}
+{"at":"2026-09-24T04:36:57.492Z","pk":824951,"type":"status","from":"Pre-Game","to":"In Progress"}
+{"at":"2026-09-24T04:36:57.492Z","pk":823086,"type":"status","from":"Pre-Game","to":"In Progress"}
+{"at":"2026-09-24T04:36:57.492Z","pk":823086,"type":"lineup_official","side":"away"}
+{"at":"2026-09-24T04:36:57.492Z","pk":823894,"type":"status","from":"Pre-Game","to":"In Progress"}
+{"at":"2026-09-24T04:36:57.492Z","pk":824059,"type":"sp","side":"away","from":null,"to":"David Sandlin"}
+{"at":"2026-09-24T04:36:57.492Z","pk":822842,"type":"sp","side":"home","from":null,"to":"Kumar Rocker"}
+{"at":"2026-09-24T04:36:57.492Z","pk":823411,"type":"sp","side":"away","from":null,"to":"Bryse Wilson"}
+{"at":"2026-09-24T04:36:57.492Z","pk":824707,"type":"sp","side":"away","from":null,"to":"Daniel Espino"}
+{"at":"2026-09-24T04:36:57.492Z","pk":823087,"type":"sp","side":"home","from":null,"to":"Bryan Woo"}
+{"at":"2026-09-24T04:36:57.492Z","pk":824950,"type":"sp","side":"away","from":null,"to":"Peter Lambert"}
