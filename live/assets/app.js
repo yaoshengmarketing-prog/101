@@ -8,7 +8,14 @@ const WK = "日一二三四五六";
 const dayLabel = d => `${+d.slice(5, 7)}/${+d.slice(8)}（${WK[new Date(d + "T00:00:00Z").getUTCDay()]}）`;
 const statusTag = g => { const c = g.status.code; const cls = c === "final" ? "ok" : c === "live" ? "exp" : ["ppd", "cxl", "susp"].includes(c) ? "late" : "na";
   return `<span class="tag ${cls}">${esc(g.status.text)}${c === "live" && g.inning ? ` ${g.inningHalf === "Top" ? "上" : g.inningHalf === "Bottom" ? "下" : ""}${esc(g.inning)}` : ""}</span>`; };
-const luTag = t => t.lineup.state === "late" ? `<span class="tag late">${t.ab} 臨場異動</span>` : t.lineup.state === "official" ? `<span class="tag ok">${t.ab} 官方打線已確認</span>` : `<span class="tag na">${t.ab} 官方打線未公布</span>`;
+const luTag = t => { const st = t.lineup.state, f = t.failed?.lineup;
+  if (st === "none" && f) return `<span class="tag late">${t.ab} 打線未取得（重抓失敗）</span>`;
+  return (st === "late" ? `<span class="tag late">${t.ab} 臨場異動</span>` : st === "official" ? `<span class="tag ok">${t.ab} 官方打線已確認</span>` : st === "withdrawn" ? `<span class="tag late">${t.ab} 官方打線已撤回</span>` : `<span class="tag na">${t.ab} 官方打線未公布</span>`)
+    + (f ? `<span class="tag late">${t.ab} 打線重抓失敗</span>` : ""); };
+// 單項抓取失敗（scripts/build-live.mjs 的 failed）：沿用舊值時標原取得時間；沒有舊值就說清楚是空白、不是來源沒有
+const FK = { lineup: "本場打線", sp: "先發投手成績", rec: "戰績", ops: "團隊 OPS", era: "全隊 ERA", prev: "上一場打線" };
+const failNote = (t, keys) => keys.filter(k => t.failed?.[k]).map(k => { const f = t.failed[k];
+  return `<div class="notice warn"><b>${esc(t.ab)} ${FK[k]}：自 ${stamp(f.since)} 起重抓失敗</b>（${esc(String(f.error).replace(/\s*https?:\S+/g, ""))}）。${f.fetchedAt ? `這裡仍是 ${stamp(f.fetchedAt)} 取得的版本，之後若來源有變動不在其中。` : "沒有先前取得的資料可用，這一項暫時空白，不代表來源沒有資料。"}</div>`; }).join("");
 const spLine = sp => sp ? `<b>${esc(sp.name)}</b> ${hand(sp.hand)}${sp.s ? ` <span class="num">${sp.s.wl}・${sp.s.era}</span>` : ` <span class="tag na">本季無大聯盟成績</span>`}` : `<span class="tag na">先發未公布</span>`;
 const noteTags = g => [g.dh && `雙重賽 ${g.dh}`, g.tbd && "開賽時間未定", g.rescheduledFrom && `補賽（原 ${g.rescheduledFrom.slice(5, 10)}）`, g.rescheduleDate && `改期至 ${g.rescheduleDate.slice(5, 10)}`].filter(Boolean).map(t => `<span class="tag">${esc(t)}</span>`).join("");
 async function load(f) { const r = await fetch(`./data/${f}?t=${Date.now()}`); if (!r.ok) throw new Error(`${f} HTTP ${r.status}`); return r.json(); }
@@ -85,7 +92,7 @@ async function renderHome() {
     const cnt = f => all.filter(f).length, sides = all.flatMap(g => [g.away, g.home]);
     const ready = `<div class="ready"><b>資料完成度</b>
       <span>雙方預計先發 <b class="num">${cnt(g => g.away.sp && g.home.sp)}/${n}</b></span>
-      <span>官方打線 <b class="num">${sides.filter(t => t.lineup.state !== "none").length}/${2 * n}</b> 隊</span>
+      <span>官方打線 <b class="num">${sides.filter(t => ["official", "late"].includes(t.lineup.state)).length}/${2 * n}</b> 隊</span>
       <span>上一場打線 <b class="num">${sides.filter(t => t.prev?.has).length}/${2 * n}</b> 隊</span>
       <span>牛棚 <b class="num">${cnt(g => bpOf(g.pk) === "ok")}/${n}</b>${cnt(g => bpOf(g.pk) !== "ok") ? `（部分 ${cnt(g => bpOf(g.pk) === "incomplete")}・未取得 ${cnt(g => !["ok", "incomplete"].includes(bpOf(g.pk)))}）` : ""}</span>
       <span>盤口 <b class="num">0/${n}</b></span><span>天氣 <b class="num">0/${n}</b></span>
@@ -100,7 +107,7 @@ async function renderHome() {
     return `<article class="card">
       <div class="meta"><span><b>${g.twTime || "時間未定"}</b> ${noteTags(g)}</span><span>${statusTag(g)}</span></div>
       ${team(g.away)}${team(g.home)}
-      <div class="hints">${g.status.code === "final" ? "" : luTag(g.away) + luTag(g.home)}${bpTag(g.pk)}</div>
+      <div class="hints">${g.status.code === "final" ? "" : luTag(g.away) + luTag(g.home)}${bpTag(g.pk)}${[g.away, g.home].some(t => Object.keys(t.failed || {}).some(k => k !== "lineup")) || g.failed ? `<span class="tag late">部分資料重抓失敗，沿用舊值</span>` : ""}</div>
       <div class="cta"><span class="small">${esc(g.venue)}</span><a class="btn" href="game.html?pk=${g.pk}">查看比賽資料 →</a></div>
     </article>`;
   };
@@ -135,7 +142,7 @@ async function renderGame() {
       <span>狀態 ${statusTag(G)} ${noteTags(G)}</span>
       <span>距開賽 <b class="num" id="countdown">—</b></span>
       <span>資料更新 <b class="num">${D.generatedAtTW}</b></span>
-    </div>`;
+    </div>${G.failed?.game ? `<div class="notice warn"><b>這場自 ${stamp(G.failed.game.since)} 起整理失敗</b>，以下是 ${stamp(G.failed.game.fetchedAt)} 的版本（比分與狀態除外）。</div>` : ""}`;
   const tick = () => { const el = $("#countdown"); if (!el) return; if (G.tbd) { el.textContent = "時間未定"; return; } const ms = Date.parse(G.startUTC) - Date.now();
     el.textContent = ms <= 0 ? "已過表定開賽" : `${Math.floor(ms / 36e5)} 小時 ${String(Math.floor(ms % 36e5 / 6e4)).padStart(2, "0")} 分`; };
   tick(); setInterval(tick, 30000);
@@ -154,24 +161,26 @@ async function renderGame() {
       ${row("平均失分", avg(A.ra, A.gp), avg(H.ra, H.gp), `${A.ra ?? "—"} 分÷${A.gp ?? "—"} 場｜${H.ra ?? "—"} 分÷${H.gp ?? "—"} 場`)}
       ${row("團隊 OPS", A.ops, H.ops, "OPS＝上壘率＋長打率")}
       ${row("全隊投手 ERA", A.era, H.era, "含先發與牛棚")}
-    </div></section>`;
+    </div>${failNote(A, ["rec", "ops", "era"])}${failNote(H, ["rec", "ops", "era"])}</section>`;
 
   const pit = t => { const p = t.sp; if (!p) return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${NA("先發未公布")}</div></div>`;
     const s = p.s, cell = (k, x) => `<div><span class="v num">${x ?? "—"}</span><span class="t">${k}</span></div>`;
-    return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(p.name)}</b> ${hand(p.hand)} <span class="tag exp">預計</span></div>
+    return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(p.name)}</b> ${hand(p.hand)} <span class="tag exp">預計</span></div>${failNote(t, ["sp"])}
       <div class="lmeta"><span>本站首次看到：<b>${stamp(p.firstSeen) || "—"}</b></span></div>
       ${s ? `<div class="stats">${cell("勝-敗", s.wl)}${cell("ERA", s.era)}${cell("WHIP", s.whip)}${cell("局數", s.ip)}${cell("先發", s.gs)}${cell("三振", s.so)}${cell("保送", s.bb)}</div><p class="small">2026 大聯盟例行賽（被交易者為全季合計）</p>` : `<p class="small">${NA("本季無大聯盟成績")}（3A 等小聯盟成績本站尚未取得）</p>`}
     </div>`; };
   const pitchers = `<section class="blk" id="sp"><h2>先發投手 <small>MLB 官方預計先發</small></h2><div class="two">${pit(A)}${pit(H)}</div></section>`;
 
   const table = slots => `<table class="tbl lu"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>AVG</th><th>OPS</th></tr></thead><tbody>${slots.map(x => `<tr><td class="n">${x.n}</td><td class="l">${esc(x.name)}</td><td>${esc(x.pos || "—")}</td><td class="num">${x.avg ?? "—"}</td><td class="num">${x.ops ?? "—"}</td></tr>`).join("")}</tbody></table>`;
-  const prevBlock = t => t.prev?.slots ? `<p class="small">上一場：${t.prev.date.slice(5)} ${t.prev.ha}場對 ${esc(t.prev.opp)}（${t.prev.score}），<a href="https://www.mlb.com/gameday/${t.prev.pk}" rel="noopener">官方比賽紀錄</a></p>${table(t.prev.slots)}` : `<p class="small">${NA()} 找不到近 12 天內已完賽的上一場。</p>`;
+  const prevBlock = t => failNote(t, ["prev"]) + (t.prev?.slots ? `<p class="small">上一場：${t.prev.date.slice(5)} ${t.prev.ha}場對 ${esc(t.prev.opp)}（${t.prev.score}），<a href="https://www.mlb.com/gameday/${t.prev.pk}" rel="noopener">官方比賽紀錄</a></p>${table(t.prev.slots)}` : `<p class="small">${NA()} ${t.prev ? "上一場打線沒有取得。" : "找不到近 12 天內已完賽的上一場。"}</p>`);
   const lu = t => { const L = t.lineup;
-    if (L.slots) return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)}</div>
+    if (L.slots) return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)}</div>${failNote(t, ["lineup"])}
       <div class="lmeta"><span>本站首次看到官方打線：<b>${stamp(L.firstSeen) || "—"}</b></span>${L.lateAt ? `<span>偵測到臨場異動：<b>${stamp(L.lateAt)}</b></span>` : ""}</div>
       ${table(L.slots)}<details><summary class="small">上一場官方打線（參考）</summary>${prevBlock(t)}</details></div>`;
-    return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)}</div>
-      <p class="small">MLB 官方尚未公布本場打線。以下為<b>上一場官方打線</b>，僅供參考，不是本場預估。</p>${prevBlock(t)}</div>`; };
+    const why = L.state === "withdrawn" ? `MLB 官方先前公布的本場打線，本站 <b>${stamp(L.withdrawnAt)}</b> 檢查時已從官方資料撤下（官方回應正常、內容已沒有打線，不是本站抓取失敗）。`
+      : t.failed?.lineup ? "這次沒有取得本場打線，無法確認官方是否已公布。" : "MLB 官方尚未公布本場打線。";
+    return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)}</div>${failNote(t, ["lineup"])}
+      <p class="small">${why}以下為<b>上一場官方打線</b>，僅供參考，不是本場預估。</p>${prevBlock(t)}</div>`; };
   const lineups = `<section class="blk" id="lu"><h2>打線 <small>AVG／OPS 為 2026 本季</small></h2><div class="two">${lu(A)}${lu(H)}</div></section>`;
   const missing = `<section class="blk" id="na"><h2>本站尚未取得</h2><div class="panel"><p class="small">預估打線、盤口、天氣、主審、傷兵：試營運第一階段尚未接入，不以示範值填補。</p></div></section>`;
   $("#game").innerHTML = overview + pitchers + bullpen(B, G) + lineups + missing;
