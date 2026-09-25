@@ -365,3 +365,5 @@
 {"at":"2026-09-25T17:01:17.907Z","pk":824703,"type":"status","from":"Pre-Game","to":"Warmup"}
 {"at":"2026-09-25T17:15:58.505Z","pk":824703,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-09-25T17:15:58.505Z","pk":823491,"type":"lineup_official","side":"away"}
+{"at":"2026-09-25T18:46:01.957Z","pk":824220,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-25T18:46:01.957Z","pk":823816,"type":"sp","side":"away","from":null,"to":"Ray Kerr"}
