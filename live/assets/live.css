@@ -41,3 +41,17 @@ table.bp .sq{color:#8F3A1E;font-weight:700}
 table.bp td.empty{color:var(--muted);font-size:12px}
 .bpnote{font-size:12px;color:var(--muted);margin:8px 0 0;padding-left:18px}
 .bpnote li{margin-top:2px}
+
+/* 今天值得一起看（情境卡） */
+.ctxg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.ctx{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:12px 14px;min-width:0}
+.ctx h3{font-size:15px;margin:0 0 8px}
+.ctx .nums{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:6px}
+.ctx .nums div{display:flex;flex-direction:column;min-width:0}
+.ctx .nums b{font-size:20px;line-height:1.2;color:var(--ink)}
+.ctx .nums span{font-size:11.5px;color:var(--muted)}
+.ctx ul{margin:0 0 6px;padding-left:18px;font-size:13.5px;line-height:1.6}
+.ctxmore{margin-top:8px}
+.ctxmore table{width:100%;margin-top:6px}
+.ctxmore .tbl td{white-space:normal;vertical-align:top}
+.ctxmore ul{margin:6px 0 0;padding-left:18px}

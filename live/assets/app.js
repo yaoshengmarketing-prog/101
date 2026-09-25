@@ -126,6 +126,7 @@ async function renderGame() {
   if (M) { const extra = M.days.some(d => d.date === G.twDate) ? [] : [["warn", `<b>這場不在目前的今天／明天賽程內</b>，本頁資料停在 ${D.generatedAtTW}，不再更新。`]];
     await freshness(M, extra); keepFresh(M, extra); }
   const B = await load(`bullpen/${pk}.json`).catch(() => null);
+  const C = await load(`ctx/${pk}.json`).catch(() => null);
   const A = G.away, H = G.home;
   document.title = `運彩 101｜${A.name} @ ${H.name}（${dayLabel(G.twDate)}）`;
   $("#crumb").innerHTML = `<a href="./">← 本日比賽</a>　MLB　${dayLabel(G.twDate)}　gamePk ${G.pk}`;
@@ -183,7 +184,27 @@ async function renderGame() {
       <p class="small">${why}以下為<b>上一場官方打線</b>，僅供參考，不是本場預估。</p>${prevBlock(t)}</div>`; };
   const lineups = `<section class="blk" id="lu"><h2>打線 <small>AVG／OPS 為 2026 本季</small></h2><div class="two">${lu(A)}${lu(H)}</div></section>`;
   const missing = `<section class="blk" id="na"><h2>本站尚未取得</h2><div class="panel"><p class="small">預估打線、盤口、天氣、主審、傷兵：試營運第一階段尚未接入，不以示範值填補。</p></div></section>`;
-  $("#game").innerHTML = overview + pitchers + bullpen(B, G) + lineups + missing;
+  $("#game").innerHTML = overview + pitchers + ctxSection(C, G) + bullpen(B, G) + lineups + missing;
+}
+
+/* ================= 今天值得一起看（scripts/ctx.mjs 產出；門檻見該檔） ================= */
+function ctxSection(C, G) {
+  const h = n => `<h2>今天值得一起看 <small>${n}</small></h2>`;
+  if (!C) return `<section class="blk" id="ctx">${h("")}<div class="panel"><p class="small">${NA()} 本場情境比較尚未產生。</p></div></section>`;
+  const by = s => C.checks.filter(c => c.state === s), hits = by("hit"), miss = by("miss"), na = by("na"), shown = hits.slice(0, C.maxCards);
+  const when = C.phase === "pre" ? (G.status.code === "pre" ? `賽前每次更新重算・計算於 ${stamp(C.updatedAt)}` : `開賽前最後一次計算（${stamp(C.updatedAt)}），之後不再改`)
+    : `這場第一次計算時狀態已是「${esc(G.status.text || "開賽")}」（${stamp(C.updatedAt)}），不是賽前紀錄`;
+  const card = c => `<div class="ctx"><h3>${esc(c.title)}</h3>
+    ${c.nums?.length ? `<div class="nums">${c.nums.map(x => `<div><b class="num">${esc(x.v)}</b><span>${esc(x.k)}</span></div>`).join("")}</div>` : ""}
+    <ul>${(c.says || []).map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+    <details><summary class="small">查看依據與門檻</summary><p class="small">門檻：${esc(c.threshold)}<br>本場算出：${esc(c.value)}</p></details></div>`;
+  const body = shown.length ? `<div class="ctxg">${shown.map(card).join("")}</div>`
+    : `<div class="panel"><p><b>在已有資料與已啟用的比較項目中，沒有額外提示。</b></p><p class="small">${miss.length ? `比較過：${miss.map(c => esc(c.title)).join("、")}，都沒有達到門檻。` : ""}${na.length ? `${na.map(c => esc(c.title)).join("、")}這次資料不足，沒有比較——不代表那裡沒有值得看的條件。` : ""}</p></div>`;
+  const more = hits.length > shown.length ? `<p class="small">另有 ${hits.length - shown.length} 項成立，超過上限 ${C.maxCards} 張沒有顯示：${hits.slice(shown.length).map(c => esc(c.title)).join("、")}。</p>` : "";
+  const missT = miss.length ? `<details class="panel ctxmore"><summary class="small">已檢查、未達成卡門檻（${miss.length} 項）</summary><table class="tbl"><tbody>${miss.map(c => `<tr><td class="l">${esc(c.title)}</td><td class="l num">${esc(c.value)}</td><td class="l small">${esc(c.threshold)}</td></tr>`).join("")}</tbody></table></details>` : "";
+  const naT = na.length ? `<details class="panel ctxmore"><summary class="small">資料不足、這次沒有比較（${na.length} 項）</summary><ul class="small">${na.map(c => `<li>${esc(c.title)}：${esc(c.why)}</li>`).join("")}</ul></details>` : "";
+  return `<section class="blk" id="ctx">${h(`${shown.length} / ${C.maxCards}・${when}`)}${body}${more}${missT}${naT}
+    <p class="small">規則 ${esc(C.rules)}：門檻是暫定值、未經回測，卡片只是「這幾個數字值得一起看」的標記，不是預測或推薦。</p></section>`;
 }
 
 /* ================= 牛棚（scripts/bullpen.mjs 產出；規則見該檔） ================= */
