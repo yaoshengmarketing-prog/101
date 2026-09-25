@@ -474,7 +474,7 @@
     }
    },
    "late": {},
-   "status": "In Progress"
+   "status": "Game Over"
   },
   "823412": {
    "firstSeen": "2026-09-22T11:36:04.941Z",
@@ -1421,7 +1421,13 @@
   },
   "824947": {
    "firstSeen": "2026-09-24T16:01:23.008Z",
-   "sp": {},
+   "sp": {
+    "home": {
+     "id": 682052,
+     "name": "Jacob Lopez",
+     "at": "2026-09-25T01:01:13.116Z"
+    }
+   },
    "lu": {},
    "late": {},
    "status": "Scheduled"
