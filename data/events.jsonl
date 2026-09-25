@@ -414,3 +414,6 @@
 {"at":"2026-09-25T22:15:59.922Z","pk":822681,"type":"sp","side":"away","from":null,"to":"Jefry Yan"}
 {"at":"2026-09-25T22:15:59.922Z","pk":823085,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-25T22:15:59.922Z","pk":823085,"type":"lineup_official","side":"home"}
+{"at":"2026-09-25T22:31:04.717Z","pk":823409,"type":"status","from":"Pre-Game","to":"Warmup"}
+{"at":"2026-09-25T22:31:04.717Z","pk":823248,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-25T22:31:04.717Z","pk":823248,"type":"lineup_official","side":"home"}
