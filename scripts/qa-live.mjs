@@ -50,6 +50,13 @@ for (const pk of pks) {
 ok("牛棚：標為完整的日子都沒有缺場（complete ⇔ played 且缺 0 場）", inv === invN, `${inv}/${invN} 隊日`);
 ok("牛棚：不是全部失敗", !(B.counts.total > 0 && B.counts.failed === B.counts.total), `完整 ${B.counts.ok}／部分 ${B.counts.incomplete}／失敗 ${B.counts.failed}／共 ${B.counts.total} 場`);
 
+// 情境卡（scripts/ctx.mjs 的產出）：每場都要有；結果只用 hit/miss/na；hits 要和逐條結果一致
+const CS = ["hit", "miss", "na"];
+ok("情境卡：每場都有情境檔", pks.every(pk => fs.existsSync(`${D}/ctx/${pk}.json`)), `${pks.filter(pk => fs.existsSync(`${D}/ctx/${pk}.json`)).length}/${pks.length}`);
+const cOk = pks.filter(pk => { if (!fs.existsSync(`${D}/ctx/${pk}.json`)) return false; const c = read(`${D}/ctx/${pk}.json`);
+  return c.checks.length > 0 && c.checks.every(x => CS.includes(x.state) && (x.state === "na" ? x.why : x.value)) && c.hits.join() === c.checks.filter(x => x.state === "hit").map(x => x.id).join(); }).length;
+ok("情境卡：每條都有結果與算出值（資料不足則有原因），成立清單一致", cOk === pks.length, `${cOk}/${pks.length}`);
+
 const fail = res.filter(r => !r.pass);
 const md = `# QA ${M.generatedAtTW}\n\n| 檢查 | 結果 | 細節 |\n|---|---|---|\n${res.map(r => `| ${r.name} | ${r.pass ? "PASS" : "FAIL"} | ${r.detail} |`).join("\n")}\n\n合計：${res.length - fail.length}/${res.length} 通過\n`;
 fs.writeFileSync(`${OUT}/qa.md`, md);
