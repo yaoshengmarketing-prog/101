@@ -391,3 +391,7 @@
 {"at":"2026-09-25T20:01:10.240Z","pk":824544,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-25T20:01:10.240Z","pk":824544,"type":"lineup_official","side":"home"}
 {"at":"2026-09-25T20:01:10.240Z","pk":822759,"type":"sp","side":"home","from":null,"to":"Trey Yesavage"}
+{"at":"2026-09-25T20:15:58.633Z","pk":823491,"type":"status","from":"Warmup","to":"In Progress"}
+{"at":"2026-09-25T20:15:58.633Z","pk":822681,"type":"lineup_official","side":"away"}
+{"at":"2026-09-25T20:15:58.633Z","pk":823652,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-25T20:15:58.633Z","pk":823652,"type":"lineup_official","side":"home"}
