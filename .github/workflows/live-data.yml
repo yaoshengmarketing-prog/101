@@ -47,15 +47,18 @@ jobs:
         run: node scripts/watch.mjs gap
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - name: 離線測試（牛棚、單場抓取失敗沿用舊值）
+      - name: 離線測試（牛棚、單場抓取失敗沿用舊值、情境卡）
         id: test
-        run: node scripts/test-bullpen.mjs && node scripts/test-build-live.mjs
+        run: node scripts/test-bullpen.mjs && node scripts/test-build-live.mjs && node scripts/test-ctx.mjs
       - name: build（抓取＋標準化，寫到 .build）
         id: build
         run: node scripts/build-live.mjs .build
       - name: 牛棚（每場本場之前的逐投手、逐日使用）
         id: bullpen
         run: node scripts/bullpen.mjs .build
+      - name: 情境卡（賽前計算，開賽後凍結）
+        id: ctx
+        run: node scripts/ctx.mjs .build
       - name: QA
         id: qa
         run: node scripts/qa-live.mjs .build
@@ -97,9 +100,9 @@ jobs:
           { echo "# 失敗 run ${{ github.run_id }}"; cat .build/report.md .build/qa.md 2>/dev/null; } > research/daily-production/errors/$D.md
           git checkout -- live 2>/dev/null || true
           git clean -fdq live 2>/dev/null || true
-          node scripts/live-status.mjs fail "test=${{ steps.test.outcome }} build=${{ steps.build.outcome }} bullpen=${{ steps.bullpen.outcome }} qa=${{ steps.qa.outcome }}"
+          node scripts/live-status.mjs fail "test=${{ steps.test.outcome }} build=${{ steps.build.outcome }} bullpen=${{ steps.bullpen.outcome }} ctx=${{ steps.ctx.outcome }} qa=${{ steps.qa.outcome }}"
           cat research/daily-production/errors/$D.md >> "$GITHUB_STEP_SUMMARY"
-          node scripts/watch.mjs fail "test=${{ steps.test.outcome }} build=${{ steps.build.outcome }} bullpen=${{ steps.bullpen.outcome }} qa=${{ steps.qa.outcome }}"
+          node scripts/watch.mjs fail "test=${{ steps.test.outcome }} build=${{ steps.build.outcome }} bullpen=${{ steps.bullpen.outcome }} ctx=${{ steps.ctx.outcome }} qa=${{ steps.qa.outcome }}"
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: commit
