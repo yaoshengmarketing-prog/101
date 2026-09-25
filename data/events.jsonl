@@ -339,3 +339,5 @@
 {"at":"2026-09-25T14:16:08.842Z","pk":824703,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-25T14:16:08.842Z","pk":824703,"type":"lineup_official","side":"home"}
 {"at":"2026-09-25T14:46:04.406Z","pk":824703,"type":"lineup_official","side":"away"}
+{"at":"2026-09-25T15:16:07.157Z","pk":823491,"type":"sp","side":"away","from":"Brandon Young","to":"Trevor Rogers"}
+{"at":"2026-09-25T15:16:07.157Z","pk":823489,"type":"sp","side":"away","from":"Trevor Rogers","to":"Brandon Young"}
