@@ -371,3 +371,9 @@
 {"at":"2026-09-25T19:01:16.159Z","pk":823409,"type":"lineup_official","side":"home"}
 {"at":"2026-09-25T19:01:16.159Z","pk":824220,"type":"lineup_official","side":"home"}
 {"at":"2026-09-25T19:15:59.461Z","pk":822760,"type":"sp","side":"home","from":null,"to":"José Soriano"}
+{"at":"2026-09-25T19:31:03.297Z","pk":822760,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-25T19:31:03.297Z","pk":822760,"type":"lineup_official","side":"home"}
+{"at":"2026-09-25T19:31:03.297Z","pk":823816,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-25T19:31:03.297Z","pk":823816,"type":"lineup_official","side":"away"}
+{"at":"2026-09-25T19:31:03.297Z","pk":824058,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-25T19:31:03.297Z","pk":824058,"type":"lineup_official","side":"home"}
