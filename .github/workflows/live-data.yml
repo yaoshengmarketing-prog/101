@@ -35,7 +35,11 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
+      # 取「開始跑的那一刻」的 main 最新版，不是觸發當下的版本：排隊等前一個 run 時，前一個可能已經推了新資料
+      # （2026-09-25 01:01 run 36031388985 就是拿到舊版，和前一個 run 的資料衝突，commit 失敗）
       - uses: actions/checkout@v5
+        with:
+          ref: main
       - uses: actions/setup-node@v5
         with:
           node-version: 24
