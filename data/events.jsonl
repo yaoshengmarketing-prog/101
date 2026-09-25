@@ -358,3 +358,7 @@
 {"at":"2026-09-25T16:01:28.696Z","pk":823245,"type":"sp","side":"away","from":null,"to":"Corbin Burnes"}
 {"at":"2026-09-25T16:01:28.696Z","pk":823083,"type":"sp","side":"away","from":null,"to":"Ryan Johnson"}
 {"at":"2026-09-25T16:01:28.696Z","pk":823083,"type":"sp","side":"home","from":null,"to":"Kade Anderson"}
+{"at":"2026-09-25T16:46:02.074Z","pk":823491,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-25T16:46:02.074Z","pk":823491,"type":"sp","side":"home","from":null,"to":"Brendan Beck"}
+{"at":"2026-09-25T16:46:02.074Z","pk":823491,"type":"lineup_official","side":"home"}
+{"at":"2026-09-25T16:46:02.074Z","pk":823489,"type":"sp","side":"home","from":"Brendan Beck","to":null}
