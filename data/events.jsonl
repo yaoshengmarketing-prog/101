@@ -384,3 +384,10 @@
 {"at":"2026-09-25T19:45:59.235Z","pk":822681,"type":"lineup_official","side":"home"}
 {"at":"2026-09-25T19:45:59.235Z","pk":823735,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-25T19:45:59.235Z","pk":823735,"type":"lineup_official","side":"away"}
+{"at":"2026-09-25T20:01:10.240Z","pk":824703,"type":"status","from":"Game Over","to":"Final"}
+{"at":"2026-09-25T20:01:10.240Z","pk":823409,"type":"lineup_official","side":"away"}
+{"at":"2026-09-25T20:01:10.240Z","pk":822760,"type":"lineup_official","side":"away"}
+{"at":"2026-09-25T20:01:10.240Z","pk":823816,"type":"lineup_official","side":"home"}
+{"at":"2026-09-25T20:01:10.240Z","pk":824544,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-25T20:01:10.240Z","pk":824544,"type":"lineup_official","side":"home"}
+{"at":"2026-09-25T20:01:10.240Z","pk":822759,"type":"sp","side":"home","from":null,"to":"Trey Yesavage"}
