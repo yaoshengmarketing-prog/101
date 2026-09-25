@@ -336,3 +336,5 @@
 {"at":"2026-09-25T11:41:00.992Z","pk":823895,"type":"status","from":"In Progress","to":"Final"}
 {"at":"2026-09-25T11:41:00.992Z","pk":824703,"type":"sp","side":"home","from":null,"to":"Alec Gamboa"}
 {"at":"2026-09-25T11:41:00.992Z","pk":824947,"type":"sp","side":"away","from":null,"to":"Hunter Brown"}
+{"at":"2026-09-25T14:16:08.842Z","pk":824703,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-25T14:16:08.842Z","pk":824703,"type":"lineup_official","side":"home"}
