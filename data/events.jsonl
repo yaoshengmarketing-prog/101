@@ -417,3 +417,8 @@
 {"at":"2026-09-25T22:31:04.717Z","pk":823409,"type":"status","from":"Pre-Game","to":"Warmup"}
 {"at":"2026-09-25T22:31:04.717Z","pk":823248,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-25T22:31:04.717Z","pk":823248,"type":"lineup_official","side":"home"}
+{"at":"2026-09-25T22:45:57.814Z","pk":823409,"type":"status","from":"Warmup","to":"In Progress"}
+{"at":"2026-09-25T22:45:57.814Z","pk":824220,"type":"status","from":"Pre-Game","to":"Warmup"}
+{"at":"2026-09-25T22:45:57.814Z","pk":822681,"type":"status","from":"Warmup","to":"In Progress"}
+{"at":"2026-09-25T22:45:57.814Z","pk":823816,"type":"status","from":"Pre-Game","to":"Warmup"}
+{"at":"2026-09-25T22:45:57.814Z","pk":823248,"type":"sp","side":"home","from":null,"to":"Casey Mize"}
