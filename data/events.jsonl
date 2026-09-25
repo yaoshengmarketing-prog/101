@@ -324,3 +324,5 @@
 {"at":"2026-09-25T01:46:01.718Z","pk":823087,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-09-25T01:46:01.718Z","pk":824950,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-09-25T01:46:01.718Z","pk":823895,"type":"status","from":"Pre-Game","to":"Warmup"}
+{"at":"2026-09-25T02:01:13.374Z","pk":823493,"type":"status","from":"In Progress","to":"Game Over"}
+{"at":"2026-09-25T02:01:13.374Z","pk":824866,"type":"status","from":"In Progress","to":"Game Over"}
