@@ -489,3 +489,24 @@
 {"at":"2026-09-26T15:31:15.328Z","pk":822759,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-26T15:31:15.328Z","pk":822759,"type":"lineup_official","side":"home"}
 {"at":"2026-09-26T15:46:02.814Z","pk":822678,"type":"lineup_official","side":"home"}
+{"at":"2026-09-26T16:01:30.814Z","pk":822759,"type":"lineup_official","side":"away"}
+{"at":"2026-09-26T16:01:30.814Z","pk":822679,"type":"sp","side":"away","from":null,"to":"Sean Manaea"}
+{"at":"2026-09-26T16:01:30.814Z","pk":822679,"type":"sp","side":"home","from":null,"to":"DJ Herz"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823408,"type":"sp","side":"away","from":null,"to":"Nick Martinez"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823408,"type":"sp","side":"home","from":null,"to":"Zack Wheeler"}
+{"at":"2026-09-26T16:01:30.814Z","pk":822761,"type":"sp","side":"away","from":null,"to":"Brandon Williamson"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823084,"type":"sp","side":"away","from":null,"to":"Yusei Kikuchi"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823084,"type":"sp","side":"home","from":null,"to":"Logan Gilbert"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823246,"type":"sp","side":"away","from":null,"to":"Michael Soroka"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823650,"type":"sp","side":"home","from":null,"to":"Dean Kremer"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823731,"type":"sp","side":"away","from":null,"to":"Andre Pallante"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823731,"type":"sp","side":"home","from":null,"to":"Jacob Misiorowski"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823814,"type":"sp","side":"away","from":null,"to":"JR Ritchie"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823814,"type":"sp","side":"home","from":null,"to":"Janson Junk"}
+{"at":"2026-09-26T16:01:30.814Z","pk":824055,"type":"sp","side":"home","from":null,"to":"Daniel Lynch IV"}
+{"at":"2026-09-26T16:01:30.814Z","pk":824217,"type":"sp","side":"away","from":null,"to":"Jared Jones"}
+{"at":"2026-09-26T16:01:30.814Z","pk":824217,"type":"sp","side":"home","from":null,"to":"River Ryan"}
+{"at":"2026-09-26T16:01:30.814Z","pk":824542,"type":"sp","side":"away","from":null,"to":"Kyle Freeland"}
+{"at":"2026-09-26T16:01:30.814Z","pk":824542,"type":"sp","side":"home","from":null,"to":"Anthony Kay"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823490,"type":"sp","side":"away","from":null,"to":"Shane Baz"}
+{"at":"2026-09-26T16:01:30.814Z","pk":823490,"type":"sp","side":"home","from":null,"to":"Elmer Rodríguez"}
