@@ -43,7 +43,7 @@
     }
    },
    "late": {},
-   "status": "In Progress"
+   "status": "Final"
   },
   "822759": {
    "firstSeen": "2026-09-25T16:01:28.696Z",
@@ -88,7 +88,7 @@
     }
    },
    "late": {},
-   "status": "In Progress"
+   "status": "Final"
   },
   "822840": {
    "firstSeen": "2026-09-22T11:36:04.941Z",
@@ -1197,7 +1197,7 @@
     }
    },
    "late": {},
-   "status": "In Progress"
+   "status": "Game Over"
   },
   "824221": {
    "firstSeen": "2026-09-22T11:36:04.941Z",
