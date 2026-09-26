@@ -187,25 +187,45 @@ async function renderGame() {
   $("#game").innerHTML = overview + pitchers + ctxSection(C, G) + bullpen(B, G) + lineups + missing;
 }
 
-/* ================= 今天值得一起看（scripts/ctx.mjs 產出；門檻見該檔） ================= */
+/* ================= 今天值得一起看（scripts/ctx.mjs 產出；門檻見該檔）＋賽後結果（scripts/post.mjs） ================= */
+const STALE_WHAT = { game: "整場資料", bullpen: "牛棚", sp: "先發成績", rec: "戰績", ops: "團隊 OPS", era: "團隊 ERA" };
+const staleNote = (c, G) => (c.stale || []).map(x => `${STALE_WHAT[x.what] || x.what}${x.side ? `（${esc(G[x.side]?.name || x.side)}）` : ""}：自 ${stamp(x.since)} 起重抓失敗，這裡用的是 ${stamp(x.fetchedAt)} 取得的舊值`).join("；");
 function ctxSection(C, G) {
   const h = n => `<h2>今天值得一起看 <small>${n}</small></h2>`;
   if (!C) return `<section class="blk" id="ctx">${h("")}<div class="panel"><p class="small">${NA()} 本場情境比較尚未產生。</p></div></section>`;
   const by = s => C.checks.filter(c => c.state === s), hits = by("hit"), miss = by("miss"), na = by("na"), shown = hits.slice(0, C.maxCards);
-  const when = C.phase === "pre" ? (G.status.code === "pre" ? `賽前每次更新重算・計算於 ${stamp(C.updatedAt)}` : `開賽前最後一次計算（${stamp(C.updatedAt)}），之後不再改`)
-    : `這場第一次計算時狀態已是「${esc(G.status.text || "開賽")}」（${stamp(C.updatedAt)}），不是賽前紀錄`;
-  const card = c => `<div class="ctx"><h3>${esc(c.title)}</h3>
+  const when = late(C) ? `這場第一次計算時已經開賽（${stamp(C.updatedAt)}），不是賽前紀錄`
+    : G.status.code === "pre" ? `賽前每次更新重算・計算於 ${stamp(C.updatedAt)}` : `開賽前最後一次計算（${stamp(C.updatedAt)}），之後不再改`;
+  const card = c => `<div class="ctx"><h3>${esc(c.title)}</h3>${c.stale ? `<p class="stale">${esc(staleNote(c, G))}</p>` : ""}
     ${c.nums?.length ? `<div class="nums">${c.nums.map(x => `<div><b class="num">${esc(x.v)}</b><span>${esc(x.k)}</span></div>`).join("")}</div>` : ""}
     <ul>${(c.says || []).map(t => `<li>${esc(t)}</li>`).join("")}</ul>
     <details><summary class="small">查看依據與門檻</summary><p class="small">門檻：${esc(c.threshold)}<br>本場算出：${esc(c.value)}</p></details></div>`;
   const body = shown.length ? `<div class="ctxg">${shown.map(card).join("")}</div>`
     : `<div class="panel"><p><b>在已有資料與已啟用的比較項目中，沒有額外提示。</b></p><p class="small">${miss.length ? `比較過：${miss.map(c => esc(c.title)).join("、")}，都沒有達到門檻。` : ""}${na.length ? `${na.map(c => esc(c.title)).join("、")}這次資料不足，沒有比較——不代表那裡沒有值得看的條件。` : ""}</p></div>`;
   const more = hits.length > shown.length ? `<p class="small">另有 ${hits.length - shown.length} 項成立，超過上限 ${C.maxCards} 張沒有顯示：${hits.slice(shown.length).map(c => esc(c.title)).join("、")}。</p>` : "";
-  const missT = miss.length ? `<details class="panel ctxmore"><summary class="small">已檢查、未達成卡門檻（${miss.length} 項）</summary><table class="tbl"><tbody>${miss.map(c => `<tr><td class="l">${esc(c.title)}</td><td class="l num">${esc(c.value)}</td><td class="l small">${esc(c.threshold)}</td></tr>`).join("")}</tbody></table></details>` : "";
+  const missT = miss.length ? `<details class="panel ctxmore"><summary class="small">已檢查、未達成卡門檻（${miss.length} 項）</summary><table class="tbl"><tbody>${miss.map(c => `<tr><td class="l">${esc(c.title)}</td><td class="l num">${esc(c.value)}${c.stale ? `<br><span class="stale">${esc(staleNote(c, G))}</span>` : ""}</td><td class="l small">${esc(c.threshold)}</td></tr>`).join("")}</tbody></table></details>` : "";
   const naT = na.length ? `<details class="panel ctxmore"><summary class="small">資料不足、這次沒有比較（${na.length} 項）</summary><ul class="small">${na.map(c => `<li>${esc(c.title)}：${esc(c.why)}</li>`).join("")}</ul></details>` : "";
   return `<section class="blk" id="ctx">${h(`${shown.length} / ${C.maxCards}・${when}`)}${body}${more}${missT}${naT}
-    <p class="small">規則 ${esc(C.rules)}：門檻是暫定值、未經回測，卡片只是「這幾個數字值得一起看」的標記，不是預測或推薦。</p></section>`;
+    <p class="small">規則 ${esc(C.rules)}：門檻是暫定值、未經回測，卡片只是「這幾個數字值得一起看」的標記，不是預測或推薦。</p></section>${postSection(C, G)}`;
 }
+function postSection(C, G) {
+  const P = C.post; if (!P) return "";
+  const h = `<h2>賽後結果 <small>另外存，不改上面的賽前內容${P.fetchedAt ? `・取得 ${stamp(P.fetchedAt)}` : ""}</small></h2>`;
+  if (!P.final) return `<section class="blk" id="post">${h}<div class="panel"><p class="small">${P.gaveUp ? "開賽後 30 天仍未完賽，不再追蹤。" : `目前狀態：${esc(P.status)}。完賽後會自動補上比分、逐局與牛棚實際使用。`}</p></div></section>`;
+  const A = G.away, H = G.home, inn = P.innings || [], F = P.final, pp = P.pitching;
+  const cell = x => x == null ? "x" : x;
+  const line = `<div class="lsw"><table class="tbl ls"><thead><tr><th class="l"></th>${inn.map(i => `<th>${i.n}</th>`).join("")}<th>R</th><th>H</th><th>E</th></tr></thead><tbody>
+    ${[["away", A], ["home", H]].map(([s, t]) => `<tr><td class="l">${esc(t.ab)}</td>${inn.map(i => `<td class="num${i.n >= P.late.fromInning ? " lt" : ""}">${cell(i[s])}</td>`).join("")}<td class="num"><b>${F[s].runs ?? "—"}</b></td><td class="num">${F[s].hits ?? "—"}</td><td class="num">${F[s].errors ?? "—"}</td></tr>`).join("")}</tbody></table></div>`;
+  const rp = (t, s) => { const x = pp?.[s]; if (!x) return `<td>—</td><td>—</td><td>—</td>`;
+    return `<td class="num">${x.sp ? `${esc(x.sp.name)} ${x.sp.outs != null ? `${Math.floor(x.sp.outs / 3)}.${x.sp.outs % 3}` : "—"} 局・${x.sp.pitches ?? "—"} 球` : "—"}</td><td class="num">${x.rp.apps} 人次・${x.rp.pitches == null ? `≥${x.rp.pitchers.reduce((a, p) => a + (p.pitches || 0), 0)}` : x.rp.pitches} 球</td><td class="num">${x.rp.runs ?? "—"}</td>`; };
+  const bp = `<table class="tbl"><thead><tr><th class="l"></th><th>先發</th><th>牛棚</th><th>牛棚失分</th></tr></thead><tbody>${[["away", A], ["home", H]].map(([s, t]) => `<tr><td class="l">${esc(t.ab)}</td>${rp(t, s)}</tr>`).join("")}</tbody></table>`;
+  return `<section class="blk" id="post">${h}<div class="panel">
+    <p><b class="num">${esc(A.name)} ${F.away.runs ?? "—"} : ${F.home.runs ?? "—"} ${esc(H.name)}</b>　${P.status === "Completed Early" ? "提前結束" : "已完賽"}</p>
+    <p class="small">第 ${P.late.fromInning} 局起（含延長）得分 <b class="num">${P.late.away ?? "—"} : ${P.late.home ?? "—"}</b>（表格淡色欄）</p>
+    ${line}${bp}
+    <p class="small">x＝該半局沒有打（主隊領先不打九下等）。每隊第一位上場的投手視為先發，其餘算牛棚。${late(C) ? "這場的情境不是賽前留下的，不列入賽前研究樣本。" : ""}來源：MLB Stats API（linescore、box score）。</p></div></section>`;
+}
+const late = C => (C.sample || (C.phase === "pre" ? "pregame" : "late")) === "late";
 
 /* ================= 牛棚（scripts/bullpen.mjs 產出；規則見該檔） ================= */
 const BPST = { off: "無賽程", ppd: "延賽", notstarted: "未開打", error: "整天未取得", other: "其他" };
