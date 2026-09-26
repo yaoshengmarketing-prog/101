@@ -703,8 +703,8 @@
    "status": "Pre-Game",
    "wx": {
     "firstSeen": "2026-09-26T19:31:06.220Z",
-    "key": "{\"condition\":\"Overcast\",\"temp\":\"59\",\"wind\":\"16 mph, In From LF\"}",
-    "changedAt": "2026-09-26T19:31:06.220Z"
+    "key": "{\"condition\":\"Cloudy\",\"temp\":\"62\",\"wind\":\"14 mph, In From CF\"}",
+    "changedAt": "2026-09-26T22:01:01.721Z"
    }
   },
   "823408": {
@@ -1081,8 +1081,8 @@
    "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-26T19:01:21.433Z",
-    "key": "{\"condition\":\"Drizzle\",\"temp\":\"60\",\"wind\":\"11 mph, In From RF\"}",
-    "changedAt": "2026-09-26T19:01:21.433Z"
+    "key": "{\"condition\":\"Drizzle\",\"temp\":\"62\",\"wind\":\"10 mph, In From CF\"}",
+    "changedAt": "2026-09-26T22:01:01.721Z"
    }
   },
   "823731": {
