@@ -1021,7 +1021,7 @@
    },
    "lu": {},
    "late": {},
-   "status": "Scheduled"
+   "status": "Pre-Game"
   },
   "823731": {
    "firstSeen": "2026-09-26T16:01:30.814Z",
@@ -1417,7 +1417,7 @@
     }
    },
    "late": {},
-   "status": "Warmup"
+   "status": "In Progress"
   },
   "824220": {
    "firstSeen": "2026-09-24T16:01:23.008Z",
