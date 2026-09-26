@@ -470,3 +470,5 @@
 {"at":"2026-09-26T02:31:11.451Z","pk":824544,"type":"status","from":"Game Over","to":"Final"}
 {"at":"2026-09-26T02:31:11.451Z","pk":824219,"type":"sp","side":"away","from":null,"to":"Kirby Yates"}
 {"at":"2026-09-26T02:31:11.451Z","pk":823813,"type":"sp","side":"away","from":null,"to":"Brent Suter"}
+{"at":"2026-09-26T02:46:07.842Z","pk":823489,"type":"status","from":"Game Over","to":"Final"}
+{"at":"2026-09-26T02:46:07.842Z","pk":823735,"type":"status","from":"In Progress","to":"Final"}
