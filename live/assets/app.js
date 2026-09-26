@@ -142,7 +142,7 @@ async function renderGame() {
       <span>球場 <b>${esc(G.venue)}</b></span>
       <span>狀態 ${statusTag(G)} ${noteTags(G)}</span>
       <span>距表定開賽 <b class="num" id="countdown">—</b></span>
-      <span>天氣 ${wxLine(G.weather)}</span>
+      <span>天氣 ${wxLine(G.weather, G.forecast)}</span>
       <span>資料更新 <b class="num">${D.generatedAtTW}</b></span>
     </div>${G.failed?.game ? `<div class="notice warn"><b>這場自 ${stamp(G.failed.game.since)} 起整理失敗</b>，以下是 ${stamp(G.failed.game.fetchedAt)} 的版本（比分與狀態除外）。</div>` : ""}`;
   const tick = () => { const el = $("#countdown"); if (!el) return; if (G.tbd) { el.textContent = "時間未定"; return; } const ms = Date.parse(G.startUTC) - Date.now();
@@ -191,7 +191,13 @@ async function renderGame() {
 /* ================= 天氣（MLB 官方賽前天氣；scripts/build-live.mjs weatherOf） ================= */
 const WX_COND = { Sunny: "晴", Clear: "晴朗", "Partly Cloudy": "局部多雲", "Mostly Cloudy": "多雲", Cloudy: "多雲", Overcast: "陰", Drizzle: "毛毛雨", Rain: "雨", "Light Rain": "小雨", Showers: "陣雨", Snow: "雪", "Roof Closed": "屋頂關閉", Dome: "室內球場", Fog: "霧", Haze: "霾", Windy: "強風" };
 const WX_DIR = { "Out To CF": "往中外野吹（向外）", "Out To LF": "往左外野吹（向外）", "Out To RF": "往右外野吹（向外）", "In From CF": "從中外野吹向本壘", "In From LF": "從左外野吹向本壘", "In From RF": "從右外野吹向本壘", "L To R": "左往右（橫風）", "R To L": "右往左（橫風）", Varies: "風向不定", Calm: "無風", None: "無風" };
-function wxLine(w) {
+function wxLine(w, f) {
+  if (!w && f) {
+    const wind = f.windKmh == null ? "風 —" : f.windKmh === 0 ? "無風" : `風 ${f.windKmh} km/h ${esc(WX_DIR[f.windRel] || "")}`;
+    const roof = f.roofType === "Retractable" ? "；可開闔屋頂，關頂時場內沒有風" : f.roofType === "Dome" ? "；室內球場，場內沒有風" : "";
+    const stale = f.retryFailedSince ? `；自 ${stamp(f.retryFailedSince)} 起重抓失敗，這是 ${stamp(f.fetchedAt)} 取得的預報` : "";
+    return `<b>預報：${f.tempC ?? "—"}°C・${wind}${f.precipProb != null ? `・降雨機率 ${f.precipProb}%` : ""}</b><small>（模型預報，表定開賽那一小時，不是官方；MLB 官方天氣開賽前幾小時才公布${roof}${stale}。來源 Open-Meteo.com，CC BY 4.0）</small>`;
+  }
   if (!w) return `${NA("尚未公布")}<small>（MLB 通常開賽前幾小時才提供）</small>`;
   const t = w.tempF != null ? `${Math.round((w.tempF - 32) * 5 / 9)}°C` : esc(w.temp || "—");
   const wind = w.windMph != null ? (w.windMph === 0 ? "無風" : `風 ${Math.round(w.windMph * 1.609)} km/h ${esc(WX_DIR[w.windDir] || w.windDir || "")}`) : esc(w.wind || "");
