@@ -715,7 +715,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Delayed Start",
    "wx": {
     "firstSeen": "2026-09-26T19:31:06.220Z",
     "key": "{\"condition\":\"Cloudy\",\"temp\":\"62\",\"wind\":\"14 mph, In From CF\"}",
