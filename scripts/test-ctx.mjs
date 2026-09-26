@@ -72,6 +72,7 @@ check("牛棚有缺場、確認 0 位＝ na（v0.2 會判未達）", st(run(game
 check("有人連投天數不確定、確認 1 位＝ na", st(run(game(), bp([...full(10), day("off")], [...full(10), day("off")], [{ name: "A", streak: 1, streakUncertain: true }])), "bp_streak").state === "na");
 check("本日 G1 還在打（partial）、確認 0 位＝ na", st(run(game(), bp([...full(10), unc("partial", 5)], [...full(10), day("off")])), "bp_streak").state === "na");
 check("有缺場但已確認 2 位＝ hit（人數只會少算）", (() => { const c = st(run(game(), bp([day("played", 10), unc("incomplete", 5), day("played", 0), day("off")], [...full(10), day("off")], [P("A", 2), P("B", 2)])), "bp_streak"); return c.state === "hit" && c.v.awayUncertain === true && c.value.includes("2+"); })());
+check("明天的比賽、前一天還沒開打（notstarted）、確認 0 位＝ na", st(run(game(), bp([day("played", 10), day("played", 10), unc("notstarted"), day("off")], [...full(10), day("off")])), "bp_streak").state === "na");
 check("資料齊全、0 位＝ miss", st(run(game(), bp([...full(10), day("off")], [...full(10), day("off")])), "bp_streak").state === "miss");
 
 // 沿用舊值：照算，但標出來，不當成剛確認的新資料

@@ -68,7 +68,8 @@ export const CHECKS = [
       // 已確認的連投人數只會少算不會多算：成立可以直接認定；「未達」必須資料齊全才能說
       const side = s => { const t = b.summary[s];
         const who = t.pitchers.filter(p => p.streak >= TH.bp_streak.days);
-        const unsure = t.days.some(d => UNCERTAIN.has(d.st)) || t.pitchers.some(p => p.streakUncertain);
+        // 視窗內還沒打的日子（notstarted）也算不確定：明天的比賽，今天這場打完前不能說「沒人連投」
+        const unsure = t.days.some(d => UNCERTAIN.has(d.st) || d.st === "notstarted") || t.pitchers.some(p => p.streakUncertain);
         return { who, unsure }; };
       const A = side("away"), H = side("home"), n = Math.max(A.who.length, H.who.length);
       const v = { away: A.who.length, home: H.who.length, awayUncertain: A.unsure, homeUncertain: H.unsure };
