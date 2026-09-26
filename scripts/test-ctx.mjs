@@ -1,6 +1,7 @@
 // 情境卡規則的離線測試（不連網）：node scripts/test-ctx.mjs
 import { compute, decide, MAXCARDS, RULES } from "./ctx.mjs";
 import { summarizePost, pickEntry, pending } from "./post.mjs";
+import { relLabel, pickForecast, wanted } from "./forecast.mjs";
 
 let total = 0; const fails = []; const check = (n, c) => { total++; console.log((c ? "PASS " : "FAIL ") + n); if (!c) fails.push(n); };
 const team = (o = {}) => ({ id: 1, name: "甲", rec: "80-70", l10: "5-5", streak: "W1", home: "40-35", road: "40-35", rs: 700, ra: 700, gp: 150, ops: ".720",
@@ -122,6 +123,20 @@ check("取消：結束追蹤、沒有比分", (() => { const p = summarizePost({
 check("同一 gamePk 兩筆（原日期延賽＋補賽日完賽）：取完賽那筆", pickEntry([{ gameDate: "2026-09-20T00:00:00Z", status: { detailedState: "Postponed" } }, { gameDate: "2026-09-21T00:00:00Z", status: { detailedState: "Final" } }]).gameDate.startsWith("2026-09-21"));
 check("待補：開賽 1 小時後、還沒補完才查；補完不再查", pending({ game: { startUTC: "2026-09-25T21:00:00Z" } }, Date.parse(NOW)) && !pending({ game: { startUTC: "2026-09-25T22:30:00Z" } }, Date.parse(NOW)) && !pending({ game: { startUTC: "2026-09-20T00:00:00Z" }, post: { done: true } }, Date.parse(NOW)));
 check("跨日：五天前暫停、還沒補完的也會查", pending({ game: { startUTC: "2026-09-20T23:00:00Z" }, post: { status: "Suspended: Rain", done: false } }, Date.parse(NOW)));
+
+// ── 天氣預報（forecast.mjs） ──
+// 相對球場風向：用 09-27 03:00 實測、MLB 官方同時段說法相同的 4 座球場當基準
+check("風向換算：國民球場 az28、風從 350 → In From LF（MLB 官方同）", relLabel(28, 350) === "In From LF");
+check("風向換算：Comerica az150、風從 0 → Out To RF（MLB 官方同）", relLabel(150, 0) === "Out To RF");
+check("風向換算：Rogers az345、風從 160 → Out To CF（MLB 官方同）", relLabel(345, 160) === "Out To CF");
+check("風向換算：Rate Field az127、風從 50 → L To R（MLB 官方同）", relLabel(127, 50) === "L To R");
+check("風向換算：方位角或風向缺值＝ null", relLabel(null, 50) === null && relLabel(127, null) === null);
+const hourly = { time: ["2026-09-27T17:00", "2026-09-27T18:00"], temperature_2m: [70, 71.6], wind_speed_10m: [5, 9.4], wind_direction_10m: [10, 356], precipitation_probability: [20, 34] };
+const fc = pickForecast(hourly, "2026-09-27T18:05:00Z", { azimuth: 28, roofType: "Open" }, NOW);
+check("預報：取表定開賽那一小時、四捨五入（°C、km/h、10 度、10%）", fc.targetHourUTC === "2026-09-27T18:00" && fc.tempC === 22 && fc.windKmh === 15 && fc.windFromDeg === 0 && fc.precipProb === 30 && fc.windRel === "In From LF");
+check("預報：沒有那一小時＝ null", pickForecast(hourly, "2026-09-28T01:10:00Z", { azimuth: 28 }, NOW) === null);
+check("預報：缺值記 null、0 風速記 None（不補 0、不亂給方向）", (() => { const h2 = { ...hourly, temperature_2m: [null, null], wind_speed_10m: [0, 0] }; const f = pickForecast(h2, "2026-09-27T17:30:00Z", { azimuth: 28 }, NOW); return f.tempC === null && f.windKmh === 0 && f.windRel === "None"; })());
+check("預報對象：賽前、時間已定、48 小時內", wanted({ status: { code: "pre" }, tbd: false, startUTC: "2026-09-26T23:00:00Z" }, Date.parse(NOW)) && !wanted({ status: { code: "pre" }, tbd: false, startUTC: "2026-09-28T01:00:00Z" }, Date.parse(NOW)) && !wanted({ status: { code: "live" }, tbd: false, startUTC: "2026-09-25T23:00:00Z" }, Date.parse(NOW)) && !wanted({ status: { code: "pre" }, tbd: true, startUTC: "2026-09-26T00:00:00Z" }, Date.parse(NOW)));
 
 console.log(`\n${fails.length ? "FAIL" : "PASS"}：${total - fails.length}/${total}`);
 process.exit(fails.length ? 1 : 0);
