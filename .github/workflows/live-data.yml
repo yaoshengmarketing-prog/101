@@ -56,6 +56,10 @@ jobs:
       - name: 牛棚（每場本場之前的逐投手、逐日使用）
         id: bullpen
         run: node scripts/bullpen.mjs .build
+      - name: 天氣預報（MLB 官方天氣公布前先用模型預報；失敗不擋當次資料）
+        id: forecast
+        continue-on-error: true
+        run: node scripts/forecast.mjs .build
       - name: 情境卡（賽前計算，開賽後凍結）
         id: ctx
         run: node scripts/ctx.mjs .build
