@@ -62,3 +62,4 @@ table.bp td.empty{color:var(--muted);font-size:12px}
 .lsw{overflow-x:auto;margin-bottom:8px}
 .tbl.ls td,.tbl.ls th{padding:4px 5px}
 .tbl.ls td.lt{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.tbl.ls .q{color:#B4441C;font-weight:700}

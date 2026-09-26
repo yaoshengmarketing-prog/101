@@ -213,17 +213,19 @@ function postSection(C, G) {
   const h = `<h2>賽後結果 <small>另外存，不改上面的賽前內容${P.fetchedAt ? `・取得 ${stamp(P.fetchedAt)}` : ""}</small></h2>`;
   if (!P.final) return `<section class="blk" id="post">${h}<div class="panel"><p class="small">${P.gaveUp ? "開賽後 30 天仍未完賽，不再追蹤。" : `目前狀態：${esc(P.status)}。完賽後會自動補上比分、逐局與牛棚實際使用。`}</p></div></section>`;
   const A = G.away, H = G.home, inn = P.innings || [], F = P.final, pp = P.pitching;
-  const cell = x => x == null ? "x" : x;
+  const np = new Set((P.notPlayed || []).map(m => m.n + m.side)), ms = new Set((P.missing || []).map(m => m.n + m.side));
+  const cell = (i, s) => i[s] != null ? i[s] : np.has(i.n + s) ? "x" : ms.has(i.n + s) ? `<span class="q">?</span>` : "x";
   const line = `<div class="lsw"><table class="tbl ls"><thead><tr><th class="l"></th>${inn.map(i => `<th>${i.n}</th>`).join("")}<th>R</th><th>H</th><th>E</th></tr></thead><tbody>
-    ${[["away", A], ["home", H]].map(([s, t]) => `<tr><td class="l">${esc(t.ab)}</td>${inn.map(i => `<td class="num${i.n >= P.late.fromInning ? " lt" : ""}">${cell(i[s])}</td>`).join("")}<td class="num"><b>${F[s].runs ?? "—"}</b></td><td class="num">${F[s].hits ?? "—"}</td><td class="num">${F[s].errors ?? "—"}</td></tr>`).join("")}</tbody></table></div>`;
+    ${[["away", A], ["home", H]].map(([s, t]) => `<tr><td class="l">${esc(t.ab)}</td>${inn.map(i => `<td class="num${i.n >= P.late.fromInning ? " lt" : ""}">${cell(i, s)}</td>`).join("")}<td class="num"><b>${F[s].runs ?? "—"}</b></td><td class="num">${F[s].hits ?? "—"}</td><td class="num">${F[s].errors ?? "—"}</td></tr>`).join("")}</tbody></table></div>`;
   const rp = (t, s) => { const x = pp?.[s]; if (!x) return `<td>—</td><td>—</td><td>—</td>`;
     return `<td class="num">${x.sp ? `${esc(x.sp.name)} ${x.sp.outs != null ? `${Math.floor(x.sp.outs / 3)}.${x.sp.outs % 3}` : "—"} 局・${x.sp.pitches ?? "—"} 球` : "—"}</td><td class="num">${x.rp.apps} 人次・${x.rp.pitches == null ? `≥${x.rp.pitchers.reduce((a, p) => a + (p.pitches || 0), 0)}` : x.rp.pitches} 球</td><td class="num">${x.rp.runs ?? "—"}</td>`; };
   const bp = `<table class="tbl"><thead><tr><th class="l"></th><th>先發</th><th>牛棚</th><th>牛棚失分</th></tr></thead><tbody>${[["away", A], ["home", H]].map(([s, t]) => `<tr><td class="l">${esc(t.ab)}</td>${rp(t, s)}</tr>`).join("")}</tbody></table>`;
-  return `<section class="blk" id="post">${h}<div class="panel">
+  const part = P.gameOver && P.complete === false ? `<div class="notice warn"><b>比賽已結束，但部分賽後資料還沒取得</b>（${esc((P.incomplete || []).join("、"))}）。已取得的先顯示，下次更新會再補；缺的地方不當成 0。</div>` : "";
+  return `<section class="blk" id="post">${h}${part}<div class="panel">
     <p><b class="num">${esc(A.name)} ${F.away.runs ?? "—"} : ${F.home.runs ?? "—"} ${esc(H.name)}</b>　${P.status === "Completed Early" ? "提前結束" : "已完賽"}</p>
     <p class="small">第 ${P.late.fromInning} 局起（含延長）得分 <b class="num">${P.late.away ?? "—"} : ${P.late.home ?? "—"}</b>（表格淡色欄）</p>
     ${line}${bp}
-    <p class="small">x＝該半局沒有打（主隊領先不打九下等）。每隊第一位上場的投手視為先發，其餘算牛棚。${late(C) ? "這場的情境不是賽前留下的，不列入賽前研究樣本。" : ""}來源：MLB Stats API（linescore、box score）。</p></div></section>`;
+    <p class="small">x＝確定沒打（主隊領先、最後一局下半不用打）；?＝這個半局的得分還沒取得；「—」＝那一段有半局未取得，不加總。每隊第一位上場的投手視為先發，其餘算牛棚。${late(C) ? "這場的情境不是賽前留下的，不列入賽前研究樣本。" : ""}來源：MLB Stats API（linescore、box score）。</p></div></section>`;
 }
 const late = C => (C.sample || (C.phase === "pre" ? "pregame" : "late")) === "late";
 
