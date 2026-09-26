@@ -138,10 +138,11 @@ async function renderGame() {
       <div><div class="ab">${esc(H.ab)}</div><div class="nm">${esc(H.name)}</div><div class="rc num">${H.rec || ""}・主隊</div></div>
     </div>
     <div class="facts">
-      <span>開賽 <b class="num">${G.twTime || "時間未定"}</b> 台灣時間${G.localTime ? `（球場當地 <b class="num">${esc(G.localTime)}</b>）` : ""}</span>
+      <span>表定開賽 <b class="num">${G.twTime || "時間未定"}</b> 台灣時間${G.localTime ? `（球場當地 <b class="num">${esc(G.localTime)}</b>）` : ""}</span>
       <span>球場 <b>${esc(G.venue)}</b></span>
       <span>狀態 ${statusTag(G)} ${noteTags(G)}</span>
-      <span>距開賽 <b class="num" id="countdown">—</b></span>
+      <span>距表定開賽 <b class="num" id="countdown">—</b></span>
+      <span>天氣 ${wxLine(G.weather)}</span>
       <span>資料更新 <b class="num">${D.generatedAtTW}</b></span>
     </div>${G.failed?.game ? `<div class="notice warn"><b>這場自 ${stamp(G.failed.game.since)} 起整理失敗</b>，以下是 ${stamp(G.failed.game.fetchedAt)} 的版本（比分與狀態除外）。</div>` : ""}`;
   const tick = () => { const el = $("#countdown"); if (!el) return; if (G.tbd) { el.textContent = "時間未定"; return; } const ms = Date.parse(G.startUTC) - Date.now();
@@ -185,6 +186,16 @@ async function renderGame() {
   const lineups = `<section class="blk" id="lu"><h2>打線 <small>AVG／OPS 為 2026 本季</small></h2><div class="two">${lu(A)}${lu(H)}</div></section>`;
   const missing = `<section class="blk" id="na"><h2>本站尚未取得</h2><div class="panel"><p class="small">預估打線、盤口、天氣、主審、傷兵：試營運第一階段尚未接入，不以示範值填補。</p></div></section>`;
   $("#game").innerHTML = overview + pitchers + ctxSection(C, G) + bullpen(B, G) + lineups + missing;
+}
+
+/* ================= 天氣（MLB 官方賽前天氣；scripts/build-live.mjs weatherOf） ================= */
+const WX_COND = { Sunny: "晴", Clear: "晴朗", "Partly Cloudy": "局部多雲", "Mostly Cloudy": "多雲", Cloudy: "多雲", Overcast: "陰", Drizzle: "毛毛雨", Rain: "雨", "Light Rain": "小雨", Showers: "陣雨", Snow: "雪", "Roof Closed": "屋頂關閉", Dome: "室內球場", Fog: "霧", Haze: "霾", Windy: "強風" };
+const WX_DIR = { "Out To CF": "往中外野吹（向外）", "Out To LF": "往左外野吹（向外）", "Out To RF": "往右外野吹（向外）", "In From CF": "從中外野吹向本壘", "In From LF": "從左外野吹向本壘", "In From RF": "從右外野吹向本壘", "L To R": "左往右（橫風）", "R To L": "右往左（橫風）", Varies: "風向不定", Calm: "無風", None: "無風" };
+function wxLine(w) {
+  if (!w) return `${NA("尚未公布")}<small>（MLB 通常開賽前幾小時才提供）</small>`;
+  const t = w.tempF != null ? `${Math.round((w.tempF - 32) * 5 / 9)}°C` : esc(w.temp || "—");
+  const wind = w.windMph != null ? (w.windMph === 0 ? "無風" : `風 ${Math.round(w.windMph * 1.609)} km/h ${esc(WX_DIR[w.windDir] || w.windDir || "")}`) : esc(w.wind || "");
+  return `<b>${esc(WX_COND[w.condition] || w.condition || "—")}・${t}・${wind}</b><small>（MLB 官方，本站首次看到 ${stamp(w.firstSeen)}${w.changedAt && w.changedAt !== w.firstSeen ? `，最後變動 ${stamp(w.changedAt)}` : ""}）</small>`;
 }
 
 /* ================= 今天值得一起看（scripts/ctx.mjs 產出；門檻見該檔）＋賽後結果（scripts/post.mjs） ================= */
