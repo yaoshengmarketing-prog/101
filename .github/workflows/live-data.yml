@@ -59,6 +59,10 @@ jobs:
       - name: 情境卡（賽前計算，開賽後凍結）
         id: ctx
         run: node scripts/ctx.mjs .build
+      - name: 賽後結果（補最終比分、逐局、牛棚實際使用；失敗不擋當次資料）
+        id: post
+        continue-on-error: true
+        run: node scripts/post.mjs .build
       - name: QA
         id: qa
         run: node scripts/qa-live.mjs .build
