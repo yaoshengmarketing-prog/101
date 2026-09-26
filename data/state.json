@@ -25,7 +25,7 @@
     }
    },
    "late": {},
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-26T19:01:21.433Z",
     "key": "{\"condition\":\"Overcast\",\"temp\":\"67\",\"wind\":\"16 mph, In From LF\"}",
@@ -406,7 +406,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-26T19:01:21.433Z",
     "key": "{\"condition\":\"Sunny\",\"temp\":\"69\",\"wind\":\"7 mph, Out To CF\"}",
@@ -1055,7 +1055,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Delayed Start",
    "wx": {
     "firstSeen": "2026-09-26T19:01:21.433Z",
     "key": "{\"condition\":\"Drizzle\",\"temp\":\"60\",\"wind\":\"11 mph, In From RF\"}",
@@ -1150,7 +1150,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-26T19:01:21.433Z",
     "key": "{\"condition\":\"Roof Closed\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
@@ -1314,6 +1314,10 @@
     "home": {
      "at": "2026-09-26T18:46:03.367Z",
      "ids": "695600,677951,695506,521692,686469,686681,670231,668942,686555"
+    },
+    "away": {
+     "at": "2026-09-26T19:46:05.431Z",
+     "ids": "680757,608070,800050,666176,683953,663993,682657,672275,677587"
     }
    },
    "late": {},
