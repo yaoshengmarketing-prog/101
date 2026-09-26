@@ -1192,7 +1192,7 @@
     }
    },
    "late": {},
-   "status": "Manager challenge",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-26T19:01:21.433Z",
     "key": "{\"condition\":\"Roof Closed\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
