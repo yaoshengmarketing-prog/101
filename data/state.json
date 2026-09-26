@@ -25,7 +25,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Game Over",
    "wx": {
     "firstSeen": "2026-09-26T19:01:21.433Z",
     "key": "{\"condition\":\"Overcast\",\"temp\":\"67\",\"wind\":\"16 mph, In From LF\"}",
@@ -409,8 +409,8 @@
    "status": "Pre-Game",
    "wx": {
     "firstSeen": "2026-09-26T19:01:21.433Z",
-    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"61\",\"wind\":\"9 mph, Out To CF\"}",
-    "changedAt": "2026-09-26T19:01:21.433Z"
+    "key": "{\"condition\":\"Sunny\",\"temp\":\"69\",\"wind\":\"7 mph, Out To CF\"}",
+    "changedAt": "2026-09-26T19:31:06.220Z"
    }
   },
   "823166": {
@@ -670,9 +670,19 @@
      "at": "2026-09-25T16:01:28.696Z"
     }
    },
-   "lu": {},
+   "lu": {
+    "home": {
+     "at": "2026-09-26T19:31:06.220Z",
+     "ids": "607208,656941,547180,664761,681082,650559,669016,592663,702222"
+    }
+   },
    "late": {},
-   "status": "Scheduled"
+   "status": "Pre-Game",
+   "wx": {
+    "firstSeen": "2026-09-26T19:31:06.220Z",
+    "key": "{\"condition\":\"Overcast\",\"temp\":\"59\",\"wind\":\"16 mph, In From LF\"}",
+    "changedAt": "2026-09-26T19:31:06.220Z"
+   }
   },
   "823408": {
    "firstSeen": "2026-09-26T16:01:30.814Z",
