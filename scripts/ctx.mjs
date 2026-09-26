@@ -158,6 +158,7 @@ export function compute(g, b, all, nowISO) {
   // updatedAt／fetchedAt 是 data-changed.mjs 忽略的時間戳：只有結果變了才算資料變動
   return { rules: RULES, maxCards: MAXCARDS, updatedAt: nowISO, phase: g.status.code, sample: g.status.code === "pre" ? "pregame" : "late",
     game: ident(g),
+    weather: g.weather ?? null, // 計算當下的 MLB 官方天氣（null＝當時尚未公布）；凍結後就是最後一次賽前看到的
     inputs: { game: { updatedAt: g.updatedAt }, bullpen: b ? { fetchedAt: b.fetchedAt, status: b.status } : null },
     hits: checks.filter(c => c.state === "hit").map(c => c.id), checks };
 }

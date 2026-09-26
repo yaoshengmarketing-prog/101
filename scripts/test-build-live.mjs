@@ -5,7 +5,7 @@ import { build } from "./build-live.mjs";
 let total = 0; const fails = []; const check = (n, c) => { total++; console.log((c ? "PASS " : "FAIL ") + n); if (!c) fails.push(n); };
 const T1 = { id: 147, name: "New York Yankees", abbreviation: "NYY" }, T2 = { id: 111, name: "Boston Red Sox", abbreviation: "BOS" };
 const PK = 900, PREV = 800;
-const game = (pk, date, state, sp = {}) => ({ gamePk: pk, gameDate: date, officialDate: date.slice(0, 10), status: { abstractGameState: state, detailedState: state === "Final" ? "Final" : "Scheduled" },
+const game = (pk, date, state, sp = {}, weather) => ({ gamePk: pk, weather, gameDate: date, officialDate: date.slice(0, 10), status: { abstractGameState: state, detailedState: state === "Final" ? "Final" : "Scheduled" },
   venue: { name: "Yankee Stadium", timeZone: { id: "America/New_York" } }, doubleHeader: "N", gameNumber: 1,
   teams: { away: { team: T2, score: 3, probablePitcher: sp.away }, home: { team: T1, score: 5, probablePitcher: sp.home } } });
 const nine = base => Object.fromEntries(Array.from({ length: 9 }, (_, i) => ["ID" + (base + i), { person: { id: base + i, fullName: `P${base + i}` }, battingOrder: String((i + 1) * 100), allPositions: [{ abbreviation: "CF" }], seasonStats: { batting: { avg: ".250", ops: ".700" } } }]));
@@ -13,10 +13,10 @@ const box = on => ({ teams: { away: { players: on ? nine(100) : {} }, home: { pl
 const SP1 = { id: 1, fullName: "Ace One" }, SP2 = { id: 2, fullName: "Ace Two" }, SP3 = { id: 3, fullName: "New Guy" };
 
 // opt：fail＝要失敗的項目（box、prevbox、people、standings、hitting、pitching），lineup＝本場 boxscore 有沒有打線，sp＝先發
-function api({ fail = [], lineup = true, sp = { away: SP2, home: SP1 } } = {}) {
+function api({ fail = [], lineup = true, sp = { away: SP2, home: SP1 }, wx } = {}) {
   return async url => {
     const no = k => { if (fail.includes(k)) throw new Error(`HTTP 503 ${k}`); };
-    if (url.includes("/schedule")) return { dates: [{ games: [game(PREV, "2026-09-23T23:05:00Z", "Final"), game(PK, "2026-09-24T23:05:00Z", "Preview", sp)] }] };
+    if (url.includes("/schedule")) return { dates: [{ games: [game(PREV, "2026-09-23T23:05:00Z", "Final"), game(PK, "2026-09-24T23:05:00Z", "Preview", sp, wx)] }] };
     if (url.includes("/standings")) { no("standings"); return { records: [{ teamRecords: [T1, T2].map((t, i) => ({ team: t, wins: 90 - i, losses: 70 + i, winningPercentage: ".560", records: { splitRecords: [] }, streak: { streakCode: "W2" }, runsScored: 700, runsAllowed: 600, gamesPlayed: 160 })) }] }; }
     if (url.includes("group=hitting")) { no("hitting"); return { stats: [{ splits: [T1, T2].map(t => ({ team: t, stat: { ops: ".750" } })) }] }; }
     if (url.includes("group=pitching")) { no("pitching"); return { stats: [{ splits: [T1, T2].map(t => ({ team: t, stat: { era: "3.80" } })) }] }; }
@@ -70,6 +70,18 @@ check("F 來源換先發：顯示新先發與其成績、沒有 failed.sp", f.ho
 // G：換先發且 people 失敗 → 不能沿用別人的成績
 const G = await run("2026-09-24T12:30:00Z", { sp: { away: SP2, home: SP1 }, fail: ["people"] }, f); const g = G.games[PK];
 check("G 換先發＋成績抓失敗：成績為 null、標示沒有舊值", g.home.sp.name === "Ace One" && g.home.sp.s === null && g.home.failed?.sp?.fetchedAt === null);
+
+// H：天氣（MLB 官方）。沒有就是 null＝尚未公布；有就留原文、換成數值、記首次看到與最後變動
+state = { games: {} };
+const H0 = await run("2026-09-24T12:00:00Z", {}, null);
+check("H 天氣尚未公布＝ null（不補預報、不補 0）", H0.games[PK].weather === null);
+const H1 = await run("2026-09-24T19:00:00Z", { wx: { condition: "Partly Cloudy", temp: "61", wind: "9 mph, Out To CF" } }, H0.games[PK]);
+const w1 = H1.games[PK].weather;
+check("H 天氣：原文保留、溫度與風速轉數字、風向另存", w1.condition === "Partly Cloudy" && w1.tempF === 61 && w1.windMph === 9 && w1.windDir === "Out To CF" && w1.firstSeen === "2026-09-24T19:00:00.000Z");
+const H2 = await run("2026-09-24T21:00:00Z", { wx: { condition: "Drizzle", temp: "60", wind: "11 mph, In From RF" } }, H1.games[PK]);
+check("H 天氣變了：firstSeen 不動、changedAt 更新", H2.games[PK].weather.firstSeen === w1.firstSeen && H2.games[PK].weather.changedAt === "2026-09-24T21:00:00.000Z");
+const H3 = await run("2026-09-24T22:00:00Z", { wx: { condition: "Roof Closed", temp: "72", wind: "0 mph, None" } }, H2.games[PK]);
+check("H 屋頂關閉、0 mph：風速記 0，不是 null", H3.games[PK].weather.windMph === 0 && H3.games[PK].weather.windDir === "None");
 
 console.log(`\n${fails.length ? "FAIL" : "PASS"}：${total - fails.length}/${total}`);
 process.exit(fails.length ? 1 : 0);

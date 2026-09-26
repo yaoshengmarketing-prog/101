@@ -59,6 +59,7 @@ export function summarizePost(entry, box, nowISO) {
   const complete = incomplete.length === 0;
   return { rules: POST_RULES, status: st, gameOver: true, complete, done: complete, incomplete, fetchedAt: nowISO, officialDate: entry.officialDate || null,
     final, innings: inn, scheduledInnings: sched, notPlayed, missing,
+    weather: entry.weather && Object.keys(entry.weather).length ? { condition: entry.weather.condition ?? null, temp: entry.weather.temp ?? null, wind: entry.weather.wind ?? null } : null, // 賽後 MLB 記錄的比賽天氣，和賽前看到的分開存
     late: { fromInning: LATE_FROM, away: lateOf("away"), home: lateOf("home") },
     pitching: pitchingOut };
 }
@@ -97,7 +98,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   for (let i = 0; i < todo.length; i += 40) {
     const chunk = todo.slice(i, i + 40);
     let sched;
-    try { sched = await fetchWithRetry(`${API}/api/v1/schedule?sportId=1&hydrate=linescore&gamePks=${chunk.map(([, r]) => r.game.pk).join(",")}`); }
+    try { sched = await fetchWithRetry(`${API}/api/v1/schedule?sportId=1&hydrate=linescore,weather&gamePks=${chunk.map(([, r]) => r.game.pk).join(",")}`); }
     catch (e) { c.failed += chunk.length; errs.push(`schedule：${e.message}`); continue; }
     const byPk = new Map();
     for (const d of sched.dates || []) for (const e of d.games || []) (byPk.get(e.gamePk) || byPk.set(e.gamePk, []).get(e.gamePk)).push(e);

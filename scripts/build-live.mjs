@@ -32,7 +32,7 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   const soft = async (what, p) => { try { return await p; } catch (e) { const error = String(e.message || e); errors.push({ what, error }); errBy[what] = error; return null; } };
 
   // 1) 賽程（必要；失敗就整次失敗，保留上一版）：台灣今天/明天 ≈ 美國前一天到當天；往前多抓 12 天找各隊上一場
-  const sched = await fetchJson(`${API}/schedule?sportId=1&startDate=${addDays(today, -12)}&endDate=${tomorrow}&hydrate=probablePitcher,linescore,venue(timezone),team`);
+  const sched = await fetchJson(`${API}/schedule?sportId=1&startDate=${addDays(today, -12)}&endDate=${tomorrow}&hydrate=probablePitcher,linescore,venue(timezone),team,weather`);
   const all = sched.dates.flatMap(d => d.games);
   const byPk = new Map();
   for (const g of all) {
@@ -86,6 +86,18 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
       return { n: i + 1, id: p.person?.id, name: p.person?.fullName || String(p.person?.id), pos: p.allPositions?.[0]?.abbreviation || p.position?.abbreviation || null, avg: b.avg ?? null, ops: b.ops ?? null }; });
   };
 
+  // 天氣：MLB 官方賽前天氣（schedule 的 weather，通常開賽前幾小時才有）。沒有就是 null＝尚未公布，不補預報
+  //   firstSeen＝本站第一次看到；changedAt＝內容最後一次變動。原文與數值都留著
+  const weatherOf = (w, S, nowISO) => {
+    if (!w || !(w.condition || w.temp || w.wind)) return null;
+    const raw = { condition: w.condition || null, temp: w.temp || null, wind: w.wind || null }, key = JSON.stringify(raw);
+    if (!S.wx) S.wx = { firstSeen: nowISO };
+    if (S.wx.key !== key) { S.wx.key = key; S.wx.changedAt = nowISO; }
+    const m = /^(\d+)\s*mph,?\s*(.*)$/.exec(raw.wind || "");
+    return { ...raw, tempF: raw.temp != null && /^-?\d+$/.test(raw.temp) ? +raw.temp : null, windMph: m ? +m[1] : null, windDir: m ? m[2] || null : null,
+      firstSeen: S.wx.firstSeen, changedAt: S.wx.changedAt };
+  };
+
   // 5) 逐場組資料＋首次看到時間；單場出錯只影響該場的選配欄位
   const out = {};
   for (const g of games) {
@@ -94,7 +106,7 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
     const base = { pk, twDate: twDate(g.gameDate), usDate: g.officialDate, startUTC: g.gameDate, tbd, twTime: tbd ? null : twTime(g.gameDate), localTime: tbd || !tz ? null : localTime(g.gameDate, tz), tz,
       venue: g.venue?.name || null, status, dh: g.doubleHeader && g.doubleHeader !== "N" ? `G${g.gameNumber}` : null,
       rescheduledFrom: g.rescheduledFrom || null, rescheduleDate: g.rescheduleDate || null, inning: g.linescore?.currentInningOrdinal || null, inningHalf: g.linescore?.inningHalf || null,
-      firstSeen: S.firstSeen, updatedAt: nowISO, errors: [] };
+      firstSeen: S.firstSeen, updatedAt: nowISO, errors: [], weather: weatherOf(g.weather, S, nowISO) };
     const minimal = s => { const t = g.teams[s].team; return { id: t.id, ab: t.abbreviation || null, name: TEAM_ZH[t.id] || t.name, en: t.name, score: g.teams[s].score ?? null, sp: null, lineup: { state: "none", firstSeen: null, lateAt: null, slots: null }, prev: null }; };
     try {
       if (S.status && S.status !== status.raw) ev(pk, "status", { from: S.status, to: status.raw });
