@@ -556,3 +556,5 @@
 {"at":"2026-09-26T21:46:00.729Z","pk":823653,"type":"status","from":"Delayed Start","to":"Warmup"}
 {"at":"2026-09-26T21:46:00.729Z","pk":824949,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-26T21:46:00.729Z","pk":824949,"type":"lineup_official","side":"home"}
+{"at":"2026-09-26T22:15:54.974Z","pk":823653,"type":"status","from":"Warmup","to":"In Progress"}
+{"at":"2026-09-26T22:15:54.974Z","pk":823813,"type":"status","from":"In Progress","to":"Manager challenge"}
