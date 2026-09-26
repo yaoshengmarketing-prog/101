@@ -162,13 +162,13 @@ export function compute(g, b, all, nowISO) {
     hits: checks.filter(c => c.state === "hit").map(c => c.id), checks };
 }
 
-// 賽前才算；開賽後（或延賽、取消）沿用最後一次賽前的結果，第一次凍結時記下凍結時間與距開賽幾分鐘
+// 賽前才算；開賽後（或延賽、取消）沿用最後一次賽前的結果，第一次凍結時記下凍結時間與距「表定」開賽幾分鐘（game.startUTC 是 MLB 表定時間，不是實際第一球）
 export function decide(g, prev, fresh, nowISO) {
   if (g.status.code === "pre") return fresh;
   const base = prev || fresh; // 第一次看到就已開賽：只能用開賽後的資料算，sample＝late
   const out = { ...base, game: base.game || ident(g), sample: base.sample || (base.phase === "pre" ? "pregame" : "late") };
   if (out.phase === "pre" && !out.frozen) out.frozen = { at: nowISO, lastPregameAt: out.updatedAt,
-    minutesBeforeStart: Math.round((Date.parse(out.game.startUTC) - Date.parse(out.updatedAt)) / 6e4) };
+    minutesBeforeScheduledStart: Math.round((Date.parse(out.game.startUTC) - Date.parse(out.updatedAt)) / 6e4) };
   return out;
 }
 
