@@ -686,3 +686,4 @@
 {"at":"2026-09-27T20:16:00.652Z","pk":823490,"type":"lineup_withdrawn","side":"away"}
 {"at":"2026-09-27T21:01:09.256Z","pk":822679,"type":"status","from":"In Progress","to":"Final"}
 {"at":"2026-09-27T21:01:09.256Z","pk":824217,"type":"status","from":"In Progress","to":"Player challenge"}
+{"at":"2026-09-27T21:16:02.684Z","pk":824217,"type":"status","from":"Player challenge","to":"In Progress"}
