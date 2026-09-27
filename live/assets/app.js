@@ -205,7 +205,7 @@ function projBlock(P, G) {
     : unc.length ? `<b>不確定席位：第 ${unc.join("、")} 棒</b>（${esc(P.source)} 與 ${esc(P.cross)} 不一致，共 ${unc.length}/${P.slots.length} 棒：人選不同 ${P.slots.filter(s => s.check === "diff" && !s.altAt).length} 棒、同一人但棒次不同 ${P.slots.filter(s => s.check === "diff" && s.altAt).length} 棒）；其餘 ${P.slots.length - unc.length} 棒兩來源相同，但仍是預估。`
     : `${P.slots.length}/${P.slots.length} 棒兩來源相同，但仍是預估、不是官方。`;
   return `<div class="lmeta"><span>來源：<b>${esc(P.source)}</b>（來源標示：${esc(P.sourceStatus || "—")}）${P.cross ? `，逐棒比對 <b>${esc(P.cross)}</b>` : ""}</span>
-      <span>本站首次取得：<b>${stamp(P.firstSeen)}</b>（${dur(P.firstSeenMinutesBeforeScheduledStart)}）</span>
+      <span>本站首次取得：<b>${stamp(P.firstSeen)}</b>（${dur(G.tbd || !G.startUTC ? null : Math.round((Date.parse(G.startUTC) - Date.parse(P.firstSeen)) / 6e4))}）</span>
       <span>名單最後變動：<b>${stamp(P.changedAt)}</b>・最後檢查 ${stamp(P.fetchedAt) || "—"}</span></div>
     ${P.retryFailedSince ? `<div class="notice warn">自 ${stamp(P.retryFailedSince)} 起重抓 ${esc(P.source)} 失敗，這是 ${stamp(P.fetchedAt)} 取得的版本。</div>` : ""}
     ${P.missingSince ? `<div class="notice warn">${esc(P.source)} 自 ${stamp(P.missingSince)} 起已沒有這隊的預估，以下是先前的版本。</div>` : ""}
