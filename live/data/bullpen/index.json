@@ -1,30 +1,18 @@
 {
  "rules": "bullpen v0.2",
- "generatedAt": "2026-09-27T15:46:06.427Z",
+ "generatedAt": "2026-09-27T16:01:03.004Z",
  "counts": {
-  "ok": 28,
+  "ok": 19,
   "incomplete": 0,
   "failed": 0,
-  "total": 28
+  "total": 19
  },
  "games": {
-  "822678": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
   "822679": {
    "status": "ok",
    "gamesMissing": 0
   },
-  "822759": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
   "822761": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
-  "823083": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -36,19 +24,7 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "823165": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
-  "823245": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
   "823246": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
-  "823407": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -64,19 +40,7 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "823653": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
   "823731": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
-  "823733": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
-  "823813": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -88,23 +52,11 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "824057": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
   "824217": {
    "status": "ok",
    "gamesMissing": 0
   },
-  "824219": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
   "824542": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
-  "824543": {
    "status": "ok",
    "gamesMissing": 0
   },
@@ -116,7 +68,19 @@
    "status": "ok",
    "gamesMissing": 0
   },
-  "824949": {
+  "849843": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "849845": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "849849": {
+   "status": "ok",
+   "gamesMissing": 0
+  },
+  "849851": {
    "status": "ok",
    "gamesMissing": 0
   }
