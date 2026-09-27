@@ -597,3 +597,9 @@
 {"at":"2026-09-27T03:16:00.327Z","pk":823164,"type":"sp","side":"home","from":null,"to":"Carson Seymour"}
 {"at":"2026-09-27T03:16:00.327Z","pk":824055,"type":"sp","side":"away","from":null,"to":"Parker Messick"}
 {"at":"2026-09-27T03:30:56.655Z","pk":823407,"type":"status","from":"Game Over","to":"Final"}
+{"at":"2026-09-27T07:03:40.866Z","pk":823245,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-27T07:03:40.866Z","pk":823083,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-27T07:03:40.866Z","pk":824949,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-27T07:03:40.866Z","pk":824948,"type":"sp","side":"away","from":null,"to":"Peter Lambert"}
+{"at":"2026-09-27T07:03:40.866Z","pk":824948,"type":"sp","side":"home","from":null,"to":"Seth Johnson"}
+{"at":"2026-09-27T07:03:40.866Z","pk":823246,"type":"sp","side":"home","from":null,"to":"Randy Vásquez"}
