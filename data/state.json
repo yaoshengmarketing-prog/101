@@ -320,7 +320,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Game Over",
    "wx": {
     "firstSeen": "2026-09-27T16:46:02.811Z",
     "key": "{\"condition\":\"Sunny\",\"temp\":\"59\",\"wind\":\"11 mph, In From LF\"}",
@@ -674,7 +674,7 @@
      "ids": "663457,606466,672695,571448,682998,656976,694374,543510,691783"
     }
    },
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-27T16:01:02.122Z",
     "key": "{\"condition\":\"Cloudy\",\"temp\":\"78\",\"wind\":\"7 mph, L To R\"}",
@@ -2498,7 +2498,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-27T16:31:08.857Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"66\",\"wind\":\"6 mph, Out To CF\"}",
