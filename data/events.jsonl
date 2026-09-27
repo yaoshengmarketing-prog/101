@@ -582,3 +582,8 @@
 {"at":"2026-09-27T01:20:50.172Z","pk":823653,"type":"status","from":"Game Over","to":"Final"}
 {"at":"2026-09-27T01:31:05.765Z","pk":823083,"type":"status","from":"Pre-Game","to":"Warmup"}
 {"at":"2026-09-27T01:31:05.765Z","pk":824949,"type":"status","from":"Pre-Game","to":"Warmup"}
+{"at":"2026-09-27T01:46:01.033Z","pk":823733,"type":"status","from":"In Progress","to":"Game Over"}
+{"at":"2026-09-27T01:46:01.033Z","pk":824057,"type":"status","from":"In Progress","to":"Player challenge"}
+{"at":"2026-09-27T01:46:01.033Z","pk":823083,"type":"status","from":"Warmup","to":"In Progress"}
+{"at":"2026-09-27T01:46:01.033Z","pk":824949,"type":"status","from":"Warmup","to":"In Progress"}
+{"at":"2026-09-27T01:46:01.033Z","pk":823650,"type":"sp","side":"away","from":null,"to":"MacKenzie Gore"}
