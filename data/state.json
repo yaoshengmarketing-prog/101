@@ -178,8 +178,8 @@
    "status": "Pre-Game",
    "wx": {
     "firstSeen": "2026-09-27T15:30:54.450Z",
-    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"73\",\"wind\":\"13 mph, In From CF\"}",
-    "changedAt": "2026-09-27T15:30:54.450Z"
+    "key": "{\"condition\":\"Sunny\",\"temp\":\"75\",\"wind\":\"21 mph, In From CF\"}",
+    "changedAt": "2026-09-27T18:31:02.829Z"
    }
   },
   "822840": {
@@ -668,12 +668,17 @@
      "ids": "663457,606466,672515,672695,682998,571448,656976,543510,694374"
     }
    },
-   "late": {},
+   "late": {
+    "away": {
+     "at": "2026-09-27T18:31:02.829Z",
+     "ids": "663457,606466,672695,571448,682998,656976,694374,543510,691783"
+    }
+   },
    "status": "Pre-Game",
    "wx": {
     "firstSeen": "2026-09-27T16:01:02.122Z",
-    "key": "{\"condition\":\"Cloudy\",\"temp\":\"75\",\"wind\":\"7 mph, L To R\"}",
-    "changedAt": "2026-09-27T17:30:57.245Z"
+    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"77\",\"wind\":\"7 mph, L To R\"}",
+    "changedAt": "2026-09-27T18:31:02.829Z"
    }
   },
   "823248": {
@@ -841,11 +846,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T16:16:09.522Z",
-    "key": "{\"condition\":\"Overcast\",\"temp\":\"65\",\"wind\":\"19 mph, In From CF\"}",
-    "changedAt": "2026-09-27T17:30:57.245Z"
+    "key": "{\"condition\":\"Overcast\",\"temp\":\"65\",\"wind\":\"19 mph, In From RF\"}",
+    "changedAt": "2026-09-27T18:31:02.829Z"
    }
   },
   "823409": {
