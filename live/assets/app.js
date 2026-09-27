@@ -202,7 +202,7 @@ function projBlock(P, G) {
   const unc = P.uncertain || [], chk = s => s.check === "same" ? `<span class="small">一致</span>`
     : s.check === "diff" ? `<span class="tag late">不確定</span><br><span class="small">另一來源：${s.alt ? esc(s.alt) : "空白"}${s.altAt ? `（左邊這位在第 ${s.altAt} 棒）` : "（左邊這位不在名單）"}</span>` : `<span class="small">—</span>`;
   const sum = !P.cross ? `這隊沒有第二個來源可比對，無法判斷哪些席位不確定。`
-    : unc.length ? `<b>不確定席位：第 ${unc.join("、")} 棒</b>（${esc(P.source)} 與 ${esc(P.cross)} 不一致，共 ${unc.length}/${P.slots.length} 棒）；其餘 ${P.slots.length - unc.length} 棒兩來源相同，但仍是預估。`
+    : unc.length ? `<b>不確定席位：第 ${unc.join("、")} 棒</b>（${esc(P.source)} 與 ${esc(P.cross)} 不一致，共 ${unc.length}/${P.slots.length} 棒：人選不同 ${P.slots.filter(s => s.check === "diff" && !s.altAt).length} 棒、同一人但棒次不同 ${P.slots.filter(s => s.check === "diff" && s.altAt).length} 棒）；其餘 ${P.slots.length - unc.length} 棒兩來源相同，但仍是預估。`
     : `${P.slots.length}/${P.slots.length} 棒兩來源相同，但仍是預估、不是官方。`;
   return `<div class="lmeta"><span>來源：<b>${esc(P.source)}</b>（來源標示：${esc(P.sourceStatus || "—")}）${P.cross ? `，逐棒比對 <b>${esc(P.cross)}</b>` : ""}</span>
       <span>本站首次取得：<b>${stamp(P.firstSeen)}</b>（${dur(P.firstSeenMinutesBeforeScheduledStart)}）</span>
