@@ -1161,7 +1161,7 @@
      "ids": "802139,671056,676475,691023,699024,669357,663494,695336,701675"
     }
    },
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-26T20:16:01.969Z",
     "key": "{\"condition\":\"Roof Closed\",\"temp\":\"70\",\"wind\":\"0 mph, None\"}",
@@ -1391,7 +1391,7 @@
     }
    },
    "late": {},
-   "status": "Player challenge",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-26T19:01:21.433Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"74\",\"wind\":\"5 mph, R To L\"}",
@@ -1788,7 +1788,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Game Over",
    "wx": {
     "firstSeen": "2026-09-26T19:01:21.433Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"64\",\"wind\":\"8 mph, L To R\"}",

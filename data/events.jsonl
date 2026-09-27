@@ -587,3 +587,6 @@
 {"at":"2026-09-27T01:46:01.033Z","pk":823083,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-09-27T01:46:01.033Z","pk":824949,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-09-27T01:46:01.033Z","pk":823650,"type":"sp","side":"away","from":null,"to":"MacKenzie Gore"}
+{"at":"2026-09-27T02:01:10.621Z","pk":823733,"type":"status","from":"Game Over","to":"Final"}
+{"at":"2026-09-27T02:01:10.621Z","pk":824057,"type":"status","from":"Player challenge","to":"Final"}
+{"at":"2026-09-27T02:01:10.621Z","pk":824543,"type":"status","from":"In Progress","to":"Game Over"}
