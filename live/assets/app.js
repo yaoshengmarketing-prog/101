@@ -89,13 +89,15 @@ async function renderHome() {
     const day = D.days.find(d => d.key === state.day), all = day.games, n = all.length;
     const games = all.filter(g => state.status === "all" || (state.status === "off" ? ["ppd", "cxl", "susp"].includes(g.status.code) : g.status.code === state.status));
     $("#dayTitle").innerHTML = `${dayLabel(day.date)} MLB 比賽 <small>${n} 場・台灣時間</small>`;
-    const cnt = f => all.filter(f).length, sides = all.flatMap(g => [g.away, g.home]);
+    const cnt = f => all.filter(f).length, sides = all.flatMap(g => ["away", "home"].map(k => ({ ...g[k], projN: g.proj?.[k]?.n || 0, projU: g.proj?.[k]?.uncertain || 0 })));
     const ready = `<div class="ready"><b>資料完成度</b>
       <span>雙方預計先發 <b class="num">${cnt(g => g.away.sp && g.home.sp)}/${n}</b></span>
       <span>官方打線 <b class="num">${sides.filter(t => ["official", "late"].includes(t.lineup.state)).length}/${2 * n}</b> 隊</span>
       <span>上一場打線 <b class="num">${sides.filter(t => t.prev?.has).length}/${2 * n}</b> 隊</span>
       <span>牛棚 <b class="num">${cnt(g => bpOf(g.pk) === "ok")}/${n}</b>${cnt(g => bpOf(g.pk) !== "ok") ? `（部分 ${cnt(g => bpOf(g.pk) === "incomplete")}・未取得 ${cnt(g => !["ok", "incomplete"].includes(bpOf(g.pk)))}）` : ""}</span>
-      <span>盤口 <b class="num">0/${n}</b></span><span>天氣 <b class="num">0/${n}</b></span>
+      <span>預估打線（非官方） <b class="num">${sides.filter(t => !["official", "late"].includes(t.lineup.state) && t.projN).length}/${sides.filter(t => !["official", "late"].includes(t.lineup.state)).length}</b> 隊<small>（官方未公布的隊伍中；有不確定席位 ${sides.filter(t => !["official", "late"].includes(t.lineup.state) && t.projU).length} 隊）</small></span>
+      <span>天氣 官方 <b class="num">${cnt(g => g.weather)}/${n}</b>・預報 <b class="num">${cnt(g => !g.weather && g.forecast)}/${n}</b>${cnt(g => !g.weather && !g.forecast) ? `・都沒有 ${cnt(g => !g.weather && !g.forecast)}` : ""}</span>
+      <span>盤口 <b class="num">0/${n}</b></span>
       <small>資料最後變動 ${D.generatedAtTW}</small></div>`;
     $("#games").innerHTML = ready + (games.length ? games.map(card).join("") : `<div class="empty">${n ? "此篩選條件下沒有比賽。" : "這一天沒有 MLB 比賽。"}</div>`);
   };
@@ -107,10 +109,13 @@ async function renderHome() {
     return `<article class="card">
       <div class="meta"><span><b>${g.twTime || "時間未定"}</b> ${noteTags(g)}</span><span>${statusTag(g)}</span></div>
       ${team(g.away)}${team(g.home)}
-      <div class="hints">${g.status.code === "final" ? "" : luTag(g.away) + luTag(g.home)}${bpTag(g.pk)}${[g.away, g.home].some(t => Object.keys(t.failed || {}).some(k => k !== "lineup")) || g.failed ? `<span class="tag late">部分資料重抓失敗，沿用舊值</span>` : ""}</div>
+      <div class="hints">${g.status.code === "final" ? "" : luTag(g.away) + luTag(g.home) + projTag(g, "away") + projTag(g, "home")}${bpTag(g.pk)}${wxTag(g)}${[g.away, g.home].some(t => Object.keys(t.failed || {}).some(k => k !== "lineup")) || g.failed ? `<span class="tag late">部分資料重抓失敗，沿用舊值</span>` : ""}</div>
       <div class="cta"><span class="small">${esc(g.venue)}</span><a class="btn" href="game.html?pk=${g.pk}">查看比賽資料 →</a></div>
     </article>`;
   };
+  const projTag = (g, k) => { const p = g.proj?.[k]; if (!p || ["official", "late"].includes(g[k].lineup.state) || g.status.code !== "pre") return "";
+    return `<span class="tag exp">${g[k].ab} 預估打線 ${p.n} 棒${p.cross ? p.uncertain ? `・${p.uncertain} 席不確定` : "・兩來源一致" : "・無第二來源"}</span>`; };
+  const wxTag = g => g.weather ? `<span class="tag">天氣：MLB 官方</span>` : g.forecast ? `<span class="tag">天氣：模型預報</span>` : "";
   document.addEventListener("click", e => { const b = e.target.closest("button[data-d],button[data-st]"); if (!b) return;
     if (b.dataset.d) state.day = b.dataset.d; if (b.dataset.st) state.status = b.dataset.st; draw(); });
   draw(); keepFresh(D, [], draw);
@@ -175,17 +180,70 @@ async function renderGame() {
 
   const table = slots => `<table class="tbl lu"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>AVG</th><th>OPS</th></tr></thead><tbody>${slots.map(x => `<tr><td class="n">${x.n}</td><td class="l">${esc(x.name)}</td><td>${esc(x.pos || "—")}</td><td class="num">${x.avg ?? "—"}</td><td class="num">${x.ops ?? "—"}</td></tr>`).join("")}</tbody></table>`;
   const prevBlock = t => failNote(t, ["prev"]) + (t.prev?.slots ? `<p class="small">上一場：${t.prev.date.slice(5)} ${t.prev.ha}場對 ${esc(t.prev.opp)}（${t.prev.score}），<a href="https://www.mlb.com/gameday/${t.prev.pk}" rel="noopener">官方比賽紀錄</a></p>${table(t.prev.slots)}` : `<p class="small">${NA()} ${t.prev ? "上一場打線沒有取得。" : "找不到近 12 天內已完賽的上一場。"}</p>`);
-  const lu = t => { const L = t.lineup;
+  const lu = (t, k) => { const L = t.lineup, P = G.proj?.[k];
     if (L.slots) return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)}</div>${failNote(t, ["lineup"])}
       <div class="lmeta"><span>本站首次看到官方打線：<b>${stamp(L.firstSeen) || "—"}</b></span>${L.lateAt ? `<span>偵測到臨場異動：<b>${stamp(L.lateAt)}</b></span>` : ""}</div>
-      ${table(L.slots)}<details><summary class="small">上一場官方打線（參考）</summary>${prevBlock(t)}</details></div>`;
+      ${table(L.slots)}${P ? `<details><summary class="small">官方公布前本站記下的最後一版預估（非官方）</summary>${projBlock(P, G)}</details>` : ""}<details><summary class="small">上一場官方打線（參考）</summary>${prevBlock(t)}</details></div>`;
+    if (P) return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)} <span class="tag exp">預估（非官方）</span></div>${failNote(t, ["lineup"])}
+      ${projBlock(P, G)}<details><summary class="small">上一場官方打線（參考，不是本場預估）</summary>${prevBlock(t)}</details></div>`;
     const why = L.state === "withdrawn" ? `MLB 官方先前公布的本場打線，本站 <b>${stamp(L.withdrawnAt)}</b> 檢查時已從官方資料撤下（官方回應正常、內容已沒有打線，不是本站抓取失敗）。`
       : t.failed?.lineup ? "這次沒有取得本場打線，無法確認官方是否已公布。" : "MLB 官方尚未公布本場打線。";
     return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)}</div>${failNote(t, ["lineup"])}
       <p class="small">${why}以下為<b>上一場官方打線</b>，僅供參考，不是本場預估。</p>${prevBlock(t)}</div>`; };
-  const lineups = `<section class="blk" id="lu"><h2>打線 <small>AVG／OPS 為 2026 本季</small></h2><div class="two">${lu(A)}${lu(H)}</div></section>`;
-  const missing = `<section class="blk" id="na"><h2>本站尚未取得</h2><div class="panel"><p class="small">預估打線、盤口、天氣、主審、傷兵：試營運第一階段尚未接入，不以示範值填補。</p></div></section>`;
-  $("#game").innerHTML = overview + pitchers + ctxSection(C, G) + bullpen(B, G) + lineups + missing;
+  const lineups = `<section class="blk" id="lu"><h2>打線 <small>官方打線 AVG／OPS 為 2026 本季；預估打線是第三方預測，不是官方</small></h2><div class="two">${lu(A, "away")}${lu(H, "home")}</div></section>`;
+  const missing = `<section class="blk" id="na"><h2>本站尚未取得</h2><div class="panel"><p class="small">盤口、主審、傷兵：尚未接入，不以示範值填補。</p><p class="small">已接入但有條件：天氣（MLB 官方開賽前幾小時才有，更早用模型預報，表定開賽前 48 小時內）、預估打線（第三方預測，非官方；來源當天有提供才有）。</p></div></section>`;
+  $("#game").innerHTML = overview + wxSection(G) + pitchers + ctxSection(C, G) + bullpen(B, G) + lineups + missing;
+}
+
+/* ================= 預估打線（非官方；scripts/lineup-proj.mjs） ================= */
+const dur = m => m == null ? "開賽時間未定" : m <= 0 ? "已過表定開賽" : `距表定開賽 ${Math.floor(m / 60)} 小時 ${String(m % 60).padStart(2, "0")} 分`;
+const BATS = { R: "右", L: "左", S: "左右開弓" };
+function projBlock(P, G) {
+  const unc = P.uncertain || [], chk = s => s.check === "same" ? `<span class="small">一致</span>`
+    : s.check === "diff" ? `<span class="tag late">不確定</span><br><span class="small">另一來源：${s.alt ? esc(s.alt) : "空白"}${s.altAt ? `（左邊這位在第 ${s.altAt} 棒）` : "（左邊這位不在名單）"}</span>` : `<span class="small">—</span>`;
+  const sum = !P.cross ? `這隊沒有第二個來源可比對，無法判斷哪些席位不確定。`
+    : unc.length ? `<b>不確定席位：第 ${unc.join("、")} 棒</b>（${esc(P.source)} 與 ${esc(P.cross)} 不一致，共 ${unc.length}/${P.slots.length} 棒）；其餘 ${P.slots.length - unc.length} 棒兩來源相同，但仍是預估。`
+    : `${P.slots.length}/${P.slots.length} 棒兩來源相同，但仍是預估、不是官方。`;
+  return `<div class="lmeta"><span>來源：<b>${esc(P.source)}</b>（來源標示：${esc(P.sourceStatus || "—")}）${P.cross ? `，逐棒比對 <b>${esc(P.cross)}</b>` : ""}</span>
+      <span>本站首次取得：<b>${stamp(P.firstSeen)}</b>（${dur(P.firstSeenMinutesBeforeScheduledStart)}）</span>
+      <span>名單最後變動：<b>${stamp(P.changedAt)}</b>・最後檢查 ${stamp(P.fetchedAt) || "—"}</span></div>
+    ${P.retryFailedSince ? `<div class="notice warn">自 ${stamp(P.retryFailedSince)} 起重抓 ${esc(P.source)} 失敗，這是 ${stamp(P.fetchedAt)} 取得的版本。</div>` : ""}
+    ${P.missingSince ? `<div class="notice warn">${esc(P.source)} 自 ${stamp(P.missingSince)} 起已沒有這隊的預估，以下是先前的版本。</div>` : ""}
+    ${P.frozenAt ? `<p class="small">官方打線已公布或比賽已開始（本站 ${stamp(P.frozenAt)} 起停止更新預估）。</p>` : ""}
+    <p class="small">${sum}</p>
+    <table class="tbl lu pj"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>打</th><th class="l">和 ${esc(P.cross || "第二來源")} 比對</th></tr></thead><tbody>${P.slots.map(s => `<tr${s.check === "diff" ? ` class="unc"` : ""}><td class="n">${s.n}</td><td class="l">${esc(s.name)}</td><td>${esc(s.pos || "—")}</td><td>${BATS[s.bats] || "—"}</td><td class="l">${chk(s)}</td></tr>`).join("")}</tbody></table>
+    ${P.slots.length < 9 ? `<p class="small">來源目前只列 ${P.slots.length} 棒。</p>` : ""}`;
+}
+
+/* ================= 球場天氣與風向圖：只呈現資料，不做有利／不利判斷 ================= */
+const REL_DEG = { "Out To CF": 0, "Out To RF": 45, "L To R": 90, "In From LF": 135, "In From CF": 180, "In From RF": -135, "R To L": -90, "Out To LF": -45 };
+const ROOF = { Open: "開放式球場", Retractable: "可開闔屋頂（開或關以官方為準，關頂時場內沒有風）", Dome: "室內球場（場內沒有風）" };
+// 俯視圖：本壘在下、中外野在上；箭頭指向風吹去的方向，角度相對「本壘→中外野」順時針
+function windFig(deg, faded) {
+  const arrow = deg == null ? "" : `<g transform="rotate(${deg},100,98)" opacity="${faded ? .35 : 1}"><line x1="100" y1="136" x2="100" y2="66" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><polygon points="100,52 91,70 109,70" fill="var(--accent)"/></g>`;
+  return `<svg class="wxfig" viewBox="0 0 200 172" role="img" aria-label="球場俯視風向圖"><path d="M100 152 L15.1 67.1 A120 120 0 0 1 184.9 67.1 Z" fill="var(--sunk)" stroke="var(--line)"/>
+    <path d="M100 152 L132 120 L100 88 L68 120 Z" fill="none" stroke="var(--muted)" stroke-opacity=".6"/>${arrow}
+    <text x="100" y="168" text-anchor="middle">本壘</text><text x="30" y="56" text-anchor="middle">左外野</text><text x="100" y="24" text-anchor="middle">中外野</text><text x="170" y="56" text-anchor="middle">右外野</text></svg>`;
+}
+function wxSection(G) {
+  const w = G.weather, f = G.forecast; if (!w && !f) return "";
+  const roofT = f?.roofType, closed = w && ["Roof Closed", "Dome"].includes(w.condition);
+  const hr = f && stamp(f.targetHourUTC + ":00Z").slice(6), hr2 = f && stamp(new Date(Date.parse(f.targetHourUTC + ":00Z") + 36e5).toISOString()).slice(6);
+  let deg = null, src, rows;
+  if (w) { deg = closed ? null : REL_DEG[w.windDir] ?? null;
+    src = `<b>MLB 官方</b>（開賽前公布的場地天氣；本站首次看到 ${stamp(w.firstSeen)}${w.changedAt && w.changedAt !== w.firstSeen ? `，最後變動 ${stamp(w.changedAt)}` : ""}）。官方風向只分 8 個方位，圖上箭頭是該方位的代表角度。`;
+    rows = [["天況", esc(WX_COND[w.condition] || w.condition || "—")], ["氣溫", w.tempF != null ? `${Math.round((w.tempF - 32) * 5 / 9)}°C（${w.tempF}°F）` : esc(w.temp || "—")],
+      ["風", w.windMph != null ? (w.windMph === 0 ? "無風" : `${Math.round(w.windMph * 1.609)} km/h（${w.windMph} mph）・${esc(WX_DIR[w.windDir] || w.windDir || "")}`) : esc(w.wind || "—")]];
+  } else { deg = f.windKmh === 0 || f.windFromDeg == null || f.azimuth == null ? null : ((f.windFromDeg + 180 - f.azimuth) % 360 + 540) % 360 - 180;
+    src = `<b>模型預報，不是官方</b>（Open-Meteo.com，CC BY 4.0）；時段＝表定開賽那一小時，台灣 ${hr}–${hr2}；本站取得 ${stamp(f.fetchedAt)}${f.retryFailedSince ? `，自 ${stamp(f.retryFailedSince)} 起重抓失敗` : ""}。MLB 官方天氣開賽前幾小時才公布，屆時改顯示官方。`;
+    rows = [["氣溫", f.tempC != null ? `${f.tempC}°C` : "—"], ["風", f.windKmh == null ? "—" : f.windKmh === 0 ? "無風" : `${f.windKmh} km/h・${esc(WX_DIR[f.windRel] || "")}（風從 ${f.windFromDeg}° 吹來）`],
+      ["降雨機率", f.precipProb != null ? `${f.precipProb}%` : "—"]]; }
+  rows.push(["屋頂", closed ? "官方標示屋頂關閉／室內，場內沒有風" : ROOF[roofT] || "未取得"]);
+  if (w && f) rows.push(["賽前預報（參考）", `${f.tempC ?? "—"}°C・${f.windKmh === 0 ? "無風" : `${f.windKmh ?? "—"} km/h ${esc(WX_DIR[f.windRel] || "")}`}（台灣 ${hr}–${hr2} 那一小時）`]);
+  const why = deg == null ? (closed ? "屋頂關閉，不畫風向。" : "無風或風向不定，不畫箭頭。") : "";
+  return `<section class="blk" id="wx"><h2>球場天氣與風向 <small>只呈現資料，不判斷對哪隊有利或長打增減</small></h2><div class="panel wxp">
+    ${windFig(deg, roofT === "Dome" || roofT === "Retractable")}<div><p class="small">資料：${src}</p><dl class="wxdl">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+    <p class="small">${why}箭頭指向風吹去的方向，${roofT === "Retractable" || roofT === "Dome" ? "淡色表示場內可能無風；" : ""}球場方位取自 MLB 官方球場資料${f?.azimuth != null ? `（本壘→中外野 ${f.azimuth}°）` : ""}。</p></div></div></section>`;
 }
 
 /* ================= 天氣（MLB 官方賽前天氣；scripts/build-live.mjs weatherOf） ================= */

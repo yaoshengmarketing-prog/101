@@ -63,3 +63,13 @@ table.bp td.empty{color:var(--muted);font-size:12px}
 .tbl.ls td,.tbl.ls th{padding:4px 5px}
 .tbl.ls td.lt{background:color-mix(in srgb,var(--accent) 10%,transparent)}
 .tbl.ls .q{color:#B4441C;font-weight:700}
+/* ---- 球場天氣與風向圖、預估打線 ---- */
+.wxp{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:14px;align-items:start}
+.wxfig{width:100%;height:auto;color:var(--ink)}
+.wxfig text{font-size:11px;fill:var(--muted)}
+.wxdl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:8px 0}
+.wxdl dt{color:var(--muted);font-size:13px}
+.wxdl dd{margin:0}
+.tbl.lu tr.unc td{background:color-mix(in srgb,var(--tag) 55%,transparent)}
+@media (max-width:560px){.wxp{grid-template-columns:1fr}.wxfig{max-width:240px;margin:0 auto}}
+.tbl.lu.pj td.l:nth-child(2){white-space:nowrap}
