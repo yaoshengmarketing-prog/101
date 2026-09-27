@@ -593,3 +593,6 @@
 {"at":"2026-09-27T02:15:59.347Z","pk":824543,"type":"status","from":"Game Over","to":"Final"}
 {"at":"2026-09-27T02:46:10.964Z","pk":824949,"type":"status","from":"In Progress","to":"Player challenge"}
 {"at":"2026-09-27T03:01:08.357Z","pk":824949,"type":"status","from":"Player challenge","to":"In Progress"}
+{"at":"2026-09-27T03:16:00.327Z","pk":823407,"type":"status","from":"In Progress","to":"Game Over"}
+{"at":"2026-09-27T03:16:00.327Z","pk":823164,"type":"sp","side":"home","from":null,"to":"Carson Seymour"}
+{"at":"2026-09-27T03:16:00.327Z","pk":824055,"type":"sp","side":"away","from":null,"to":"Parker Messick"}
