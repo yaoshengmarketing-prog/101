@@ -175,11 +175,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T15:30:54.450Z",
-    "key": "{\"condition\":\"Sunny\",\"temp\":\"75\",\"wind\":\"21 mph, In From CF\"}",
-    "changedAt": "2026-09-27T18:31:02.829Z"
+    "key": "{\"condition\":\"Sunny\",\"temp\":\"76\",\"wind\":\"15 mph, In From CF\"}",
+    "changedAt": "2026-09-27T19:16:00.383Z"
    }
   },
   "822840": {
@@ -320,11 +320,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T16:46:02.811Z",
-    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"57\",\"wind\":\"10 mph, In From LF\"}",
-    "changedAt": "2026-09-27T18:16:07.039Z"
+    "key": "{\"condition\":\"Sunny\",\"temp\":\"59\",\"wind\":\"11 mph, In From LF\"}",
+    "changedAt": "2026-09-27T19:16:00.383Z"
    }
   },
   "823085": {
@@ -460,7 +460,7 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T16:01:02.122Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"61\",\"wind\":\"8 mph, Out To CF\"}",
@@ -674,11 +674,11 @@
      "ids": "663457,606466,672695,571448,682998,656976,694374,543510,691783"
     }
    },
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T16:01:02.122Z",
-    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"77\",\"wind\":\"7 mph, L To R\"}",
-    "changedAt": "2026-09-27T18:31:02.829Z"
+    "key": "{\"condition\":\"Cloudy\",\"temp\":\"78\",\"wind\":\"7 mph, L To R\"}",
+    "changedAt": "2026-09-27T19:16:00.383Z"
    }
   },
   "823248": {
@@ -1181,7 +1181,7 @@
      "ids": "607043,694671,608369,669394,677649,696030,643376,670032,694497"
     }
    },
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T16:31:08.857Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"65\",\"wind\":\"3 mph, In From LF\"}",
@@ -1272,11 +1272,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T16:01:02.122Z",
-    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"67\",\"wind\":\"5 mph, L To R\"}",
-    "changedAt": "2026-09-27T16:01:02.122Z"
+    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"70\",\"wind\":\"5 mph, L To R\"}",
+    "changedAt": "2026-09-27T19:16:00.383Z"
    }
   },
   "823733": {
@@ -1400,7 +1400,7 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T16:31:08.857Z",
     "key": "{\"condition\":\"Roof Closed\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
@@ -1540,11 +1540,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T15:46:05.608Z",
-    "key": "{\"condition\":\"Cloudy\",\"temp\":\"73\",\"wind\":\"6 mph, L To R\"}",
-    "changedAt": "2026-09-27T18:01:17.708Z"
+    "key": "{\"condition\":\"Cloudy\",\"temp\":\"72\",\"wind\":\"4 mph, R To L\"}",
+    "changedAt": "2026-09-27T19:16:00.383Z"
    }
   },
   "824057": {
@@ -1712,11 +1712,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T15:30:54.450Z",
-    "key": "{\"condition\":\"Sunny\",\"temp\":\"74\",\"wind\":\"11 mph, Out To RF\"}",
-    "changedAt": "2026-09-27T15:30:54.450Z"
+    "key": "{\"condition\":\"Sunny\",\"temp\":\"76\",\"wind\":\"8 mph, Out To RF\"}",
+    "changedAt": "2026-09-27T19:16:00.383Z"
    }
   },
   "824219": {
@@ -1965,11 +1965,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T15:30:54.450Z",
-    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"66\",\"wind\":\"7 mph, L To R\"}",
-    "changedAt": "2026-09-27T15:30:54.450Z"
+    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"70\",\"wind\":\"6 mph, L To R\"}",
+    "changedAt": "2026-09-27T19:16:00.383Z"
    }
   },
   "824543": {
@@ -2164,7 +2164,7 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T16:16:09.522Z",
     "key": "{\"condition\":\"Dome\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
@@ -2498,7 +2498,7 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-27T16:31:08.857Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"66\",\"wind\":\"6 mph, Out To CF\"}",
