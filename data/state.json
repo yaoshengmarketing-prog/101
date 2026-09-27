@@ -175,7 +175,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-27T15:30:54.450Z",
     "key": "{\"condition\":\"Sunny\",\"temp\":\"75\",\"wind\":\"21 mph, In From CF\"}",
@@ -463,8 +463,8 @@
    "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-27T16:01:02.122Z",
-    "key": "{\"condition\":\"Cloudy\",\"temp\":\"62\",\"wind\":\"8 mph, Out To CF\"}",
-    "changedAt": "2026-09-27T18:01:17.708Z"
+    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"61\",\"wind\":\"8 mph, Out To CF\"}",
+    "changedAt": "2026-09-27T19:01:08.782Z"
    }
   },
   "823165": {
@@ -1184,8 +1184,8 @@
    "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-27T16:31:08.857Z",
-    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"62\",\"wind\":\"2 mph, In From LF\"}",
-    "changedAt": "2026-09-27T17:41:13.173Z"
+    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"65\",\"wind\":\"3 mph, In From LF\"}",
+    "changedAt": "2026-09-27T19:01:08.782Z"
    }
   },
   "823652": {
@@ -1272,7 +1272,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-27T16:01:02.122Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"67\",\"wind\":\"5 mph, L To R\"}",
@@ -1540,7 +1540,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-27T15:46:05.608Z",
     "key": "{\"condition\":\"Cloudy\",\"temp\":\"73\",\"wind\":\"6 mph, L To R\"}",
@@ -1712,7 +1712,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-27T15:30:54.450Z",
     "key": "{\"condition\":\"Sunny\",\"temp\":\"74\",\"wind\":\"11 mph, Out To RF\"}",
@@ -1965,7 +1965,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-27T15:30:54.450Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"66\",\"wind\":\"7 mph, L To R\"}",
@@ -2501,8 +2501,8 @@
    "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-27T16:31:08.857Z",
-    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"70\",\"wind\":\"6 mph, Out To CF\"}",
-    "changedAt": "2026-09-27T16:31:08.857Z"
+    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"66\",\"wind\":\"6 mph, Out To CF\"}",
+    "changedAt": "2026-09-27T19:01:08.782Z"
    }
   },
   "824949": {
