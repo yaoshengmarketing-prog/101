@@ -643,3 +643,7 @@
 {"at":"2026-09-27T16:31:08.857Z","pk":823650,"type":"lineup_official","side":"away"}
 {"at":"2026-09-27T16:31:08.857Z","pk":823814,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-27T16:31:08.857Z","pk":823814,"type":"lineup_official","side":"away"}
+{"at":"2026-09-27T16:46:02.811Z","pk":823490,"type":"status","from":"Pre-Game","to":"Delayed Start"}
+{"at":"2026-09-27T16:46:02.811Z","pk":823084,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-27T16:46:02.811Z","pk":823084,"type":"lineup_official","side":"home"}
+{"at":"2026-09-27T16:46:02.811Z","pk":824055,"type":"lineup_official","side":"away"}
