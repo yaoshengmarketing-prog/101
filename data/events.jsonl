@@ -604,3 +604,5 @@
 {"at":"2026-09-27T07:03:40.866Z","pk":824948,"type":"sp","side":"home","from":null,"to":"Seth Johnson"}
 {"at":"2026-09-27T07:03:40.866Z","pk":823246,"type":"sp","side":"home","from":null,"to":"Randy Vásquez"}
 {"at":"2026-09-27T11:54:05.315Z","pk":824705,"type":"sp","side":"away","from":null,"to":"Shota Imanaga"}
+{"at":"2026-09-27T14:15:56.868Z","pk":822679,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-27T14:15:56.868Z","pk":822679,"type":"lineup_official","side":"home"}
