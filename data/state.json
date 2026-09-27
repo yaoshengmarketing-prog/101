@@ -175,7 +175,7 @@
     }
    },
    "late": {},
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-27T15:30:54.450Z",
     "key": "{\"condition\":\"Sunny\",\"temp\":\"76\",\"wind\":\"15 mph, In From CF\"}",
@@ -460,7 +460,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-27T16:01:02.122Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"61\",\"wind\":\"8 mph, Out To CF\"}",
@@ -674,7 +674,7 @@
      "ids": "663457,606466,672695,571448,682998,656976,694374,543510,691783"
     }
    },
-   "status": "In Progress",
+   "status": "Game Over",
    "wx": {
     "firstSeen": "2026-09-27T16:01:02.122Z",
     "key": "{\"condition\":\"Cloudy\",\"temp\":\"78\",\"wind\":\"7 mph, L To R\"}",
@@ -1181,7 +1181,7 @@
      "ids": "607043,694671,608369,669394,677649,696030,643376,670032,694497"
     }
    },
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-27T16:31:08.857Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"65\",\"wind\":\"3 mph, In From LF\"}",
@@ -1272,7 +1272,7 @@
     }
    },
    "late": {},
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-27T16:01:02.122Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"70\",\"wind\":\"5 mph, L To R\"}",
@@ -1712,7 +1712,7 @@
     }
    },
    "late": {},
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-27T15:30:54.450Z",
     "key": "{\"condition\":\"Sunny\",\"temp\":\"76\",\"wind\":\"8 mph, Out To RF\"}",
@@ -2164,7 +2164,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-27T16:16:09.522Z",
     "key": "{\"condition\":\"Dome\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
