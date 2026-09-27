@@ -625,3 +625,11 @@
 {"at":"2026-09-27T16:01:02.122Z","pk":823731,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-27T16:01:02.122Z","pk":823731,"type":"lineup_official","side":"away"}
 {"at":"2026-09-27T16:01:02.122Z","pk":824542,"type":"lineup_official","side":"away"}
+{"at":"2026-09-27T16:16:09.522Z","pk":823408,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-27T16:16:09.522Z","pk":823408,"type":"lineup_official","side":"away"}
+{"at":"2026-09-27T16:16:09.522Z","pk":823408,"type":"lineup_official","side":"home"}
+{"at":"2026-09-27T16:16:09.522Z","pk":824705,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-27T16:16:09.522Z","pk":824705,"type":"lineup_official","side":"away"}
+{"at":"2026-09-27T16:16:09.522Z","pk":824705,"type":"sp","side":"home","from":null,"to":"Tanner Houck"}
+{"at":"2026-09-27T16:16:09.522Z","pk":824705,"type":"lineup_official","side":"home"}
+{"at":"2026-09-27T16:16:09.522Z","pk":823731,"type":"lineup_official","side":"home"}
