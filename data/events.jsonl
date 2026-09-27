@@ -684,3 +684,5 @@
 {"at":"2026-09-27T19:16:00.383Z","pk":824542,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-09-27T20:16:00.652Z","pk":823490,"type":"status","from":"Delayed Start","to":"Cancelled"}
 {"at":"2026-09-27T20:16:00.652Z","pk":823490,"type":"lineup_withdrawn","side":"away"}
+{"at":"2026-09-27T21:01:09.256Z","pk":822679,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-09-27T21:01:09.256Z","pk":824217,"type":"status","from":"In Progress","to":"Player challenge"}
