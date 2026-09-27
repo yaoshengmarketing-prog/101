@@ -652,3 +652,5 @@
 {"at":"2026-09-27T17:16:37.685Z","pk":823084,"type":"lineup_official","side":"away"}
 {"at":"2026-09-27T17:30:57.245Z","pk":824217,"type":"lineup_official","side":"away"}
 {"at":"2026-09-27T17:41:13.173Z","pk":822679,"type":"status","from":"Delayed Start","to":"Warmup"}
+{"at":"2026-09-27T18:01:17.708Z","pk":824948,"type":"lineup_official","side":"away"}
+{"at":"2026-09-27T18:01:17.708Z","pk":823650,"type":"lineup_late","side":"away"}
