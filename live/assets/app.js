@@ -275,7 +275,7 @@ function vsBlock(P, G) {
       <li>首份完整預估（${V.first ? `${stamp(V.first.at)} 存下，${dur(minsTo(G, V.first.at))}` : "沒有可用的首份（舊紀錄名單改過或來源一開始就標示已確認）"}）：${line(V.first)}</li>
       <li>官方公布前最後一版預估（${V.last ? same ? "和首份是同一版，之後沒有其他預估版本" : `${stamp(V.last.at)} 存下的版本` : "—"}）：${line(V.last)}</li>
     </ul>
-    ${V.confirmed ? `<p class="small"><b>第三方已確認名單</b>（不算預估表現）：${esc(P.source)} 標示 Confirmed Lineup 的版本，本站 ${stamp(V.confirmed.at)} 看到，比本站首次取得 MLB 官方名單早 ${V.confirmed.leadMinutes} 分鐘；與官方${line(V.confirmed)}。</p>` : ""}
+    ${V.confirmed ? `<p class="small"><b>第三方已確認名單</b>（不算預估表現）：${esc(P.source)} 標示 Confirmed Lineup 的版本，本站 ${stamp(V.confirmed.at)} 看到，比本站首次取得 MLB 官方名單早 ${V.confirmed.leadMinutes} 分鐘；${line(V.confirmed)}。</p>` : ""}
     ${L2 ? `<p class="small">官方確認後的臨場異動（${stamp(L2.at)}）：${lateDiff.join("、") || "只換守位"}。上面的對照仍以第一次看到的官方名單為準。</p>` : ""}
     <details><summary class="small">逐棒對照</summary><table class="tbl lu"><thead><tr><th>棒</th><th class="l">官方（基準）</th><th class="l">首份預估這棒</th><th class="l">最後一版預估這棒</th>${Cv ? `<th class="l">第三方確認名單這棒</th>` : ""}</tr></thead><tbody>${O.slots.map(x => `<tr><td class="n">${x.n}</td><td class="l">${esc(x.name)}</td>${mark(Fv?.slots, x)}${mark(Lv?.slots, x)}${Cv ? mark(Cv.slots, x) : ""}</tr>`).join("")}</tbody></table></details></div>`;
 }
