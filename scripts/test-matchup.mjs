@@ -1,0 +1,75 @@
+// 對位卡離線測試：node scripts/test-matchup.mjs
+// 數字取自 2026-09-29 MLB Stats API 實查（Tolle 分項、Schlittler 最近三次先發、洋基預估打線打擊側）
+import assert from "node:assert/strict";
+import { outs, pickSplits, recentStarts, composition, effective, notesOf, lineupOf, buildMatchup } from "./matchup.mjs";
+
+let n = 0; const t = (name, f) => { const r = f(); n++; console.log("ok", name); return r; };
+const split = (code, pa, ops, team) => ({ split: { code }, stat: { battersFaced: pa, ops }, ...(team ? { team: { id: team } } : {}) });
+const log = (date, gs, ip, np, er, gameType = "R", opp = 139) => ({ date, gameType, game: { gamePk: +date.replace(/-/g, "") }, opponent: { id: opp }, isHome: true, stat: { gamesStarted: gs, inningsPitched: ip, numberOfPitches: np, earnedRuns: er } });
+const NYY = ["L", "L", "L", "L", "R", "L", "R", "L", "L"].map((bats, i) => ({ n: i + 1, name: `P${i + 1}`, bats }));
+const TOLLE = { vl: { ops: ".705", pa: 173 }, vr: { ops: ".624", pa: 430 } };
+const lu = (slots, short = "預估打線") => ({ team: "洋基", short, comp: composition(slots) });
+const R3 = recentStarts([log("2026-09-13", 1, "6.0", 94, 0), log("2026-09-19", 1, "6.0", 98, 1), log("2026-09-24", 1, "3.0", 70, 1)]);
+
+t("局數換出局數（5.2＝17）", () => { assert.equal(outs("5.2"), 17); assert.equal(outs("6.0"), 18); assert.equal(outs(null), null); assert.equal(outs("x"), null); });
+t("分項：取合計列；只有分隊列不合計", () => {
+  assert.deepEqual(pickSplits([split("vl", 173, ".705", 111), split("vr", 430, ".624", 111)]), TOLLE); // 實際 API：單隊也帶 team
+  assert.deepEqual(pickSplits([split("vl", 50, ".600", 1), split("vl", 60, ".700", 2), split("vl", 110, ".655"), split("vr", 200, ".610")]).vl, { ops: ".655", pa: 110 });
+  assert.equal(pickSplits([split("vl", 50, ".600", 1), split("vl", 60, ".700", 2), split("vr", 200, ".610")]).vl, null);
+  assert.equal(pickSplits([]).vr, null); });
+t("組成：左右開弓、未知分開，不併入左右", () => { const c = composition([...NYY.slice(0, 7), { n: 8, bats: "S" }, { n: 9, bats: null }]);
+  assert.deepEqual([c.n, c.L.length, c.R.length, c.S, c.U], [9, 5, 2, [8], [9]]); });
+t("觀察：左打多 → 先看對左打；樣本較少另外說", () => { const { obs } = notesOf({ pitcher: { name: "Tolle", hand: "L" }, splits: TOLLE, recent: R3, lineup: lu(NYY) });
+  assert.equal(obs.length, 2);
+  assert.match(obs[0], /洋基預估打線 9 人中左打 7、右打 2，所以 Tolle 的「對左打」分項最值得先看：本季被打 OPS \.705（173 打席），高於他對右打的 \.624（430 打席）/);
+  assert.match(obs[1], /對左打的樣本（173 打席）比對右打（430 打席）少/);
+  assert.doesNotMatch(obs.join(""), /有利|勝|贏|輸/); });
+t("觀察：多數那邊樣本較多就不加樣本句；右打多看對右打", () => { const R = NYY.map(x => ({ ...x, bats: x.bats === "L" ? "R" : "L" }));
+  const { obs } = notesOf({ pitcher: { name: "X" }, splits: TOLLE, recent: R3, lineup: lu(R, "官方打線") });
+  assert.equal(obs.length, 1); assert.match(obs[0], /洋基官方打線 9 人中左打 2、右打 7，所以 X 的「對右打」分項最值得先看：本季被打 OPS \.624（430 打席），低於他對左打的 \.705/); });
+t("觀察：左右同數兩邊都看；未滿 9 人不判斷；左右開弓照列", () => {
+  const eq = [...NYY.slice(0, 4), ...NYY.slice(0, 4).map(x => ({ ...x, bats: "R" })), { n: 9, bats: "S" }];
+  assert.match(notesOf({ pitcher: { name: "X" }, splits: TOLLE, recent: R3, lineup: lu(eq) }).obs[0], /9 人中左打 4、右打 4、左右開弓 1；先發慣用手未知，左右開弓不計入，兩邊人數接近，兩個分項都要看/);
+  const o = notesOf({ pitcher: { name: "X" }, splits: TOLLE, recent: R3, lineup: lu(NYY.slice(0, 7)) }).obs;
+  assert.equal(o.length, 1); assert.match(o[0], /目前只有 7 人（未滿 9 人）：左打 5、右打 2，先不判斷/); });
+t("觀察：沒分項、沒打線", () => {
+  assert.match(notesOf({ pitcher: { name: "X" }, splits: { vl: null, vr: TOLLE.vr }, recent: R3, lineup: lu(NYY) }).obs[0], /沒有完整的大聯盟例行賽/);
+  assert.match(notesOf({ pitcher: { name: "X" }, splits: TOLLE, recent: R3, lineup: null }).obs[0], /還沒公布、也沒有預估名單/); });
+t("最近先發：比前兩次都少至少 2 局才註記（5.2 vs 6.0 不註記），且不推測原因", () => { const { recentNote } = notesOf({ pitcher: { name: "S" }, splits: TOLLE, recent: R3, lineup: lu(NYY) });
+  assert.equal(recentNote, "最近一次先發（9/24）投 3.0 局、70 球，比前兩次（6.0 局、6.0 局）短；本站沒有原因資料，不推測傷病或限球數。");
+  const ok = recentStarts([log("2026-09-06", 1, "6.0", 91, 1), log("2026-09-13", 1, "6.0", 96, 0), log("2026-09-22", 1, "5.2", 91, 2)]);
+  assert.equal(notesOf({ pitcher: { name: "T" }, splits: TOLLE, recent: ok, lineup: lu(NYY) }).recentNote, null); });
+t("最近先發：只取先發、依日期、含季後賽；之後的中繼另記；不到三次照實說", () => {
+  const r = recentStarts([log("2026-10-01", 0, "1.0", 15, 0, "F"), log("2026-09-20", 1, "5.0", 80, 2), log("2026-09-10", 1, "6.0", 90, 1), log("2026-09-25", 0, "2.0", 30, 0), log("2026-09-02", 1, "7.0", 99, 0), log("2026-09-27", 1, "4.0", 70, 3, "F")]);
+  assert.deepEqual(r.starts.map(x => x.date), ["2026-09-10", "2026-09-20", "2026-09-27"]);
+  assert.equal(r.starts[2].gameType, "F"); assert.equal(r.reliefAfter.date, "2026-10-01"); assert.equal(r.starts[0].opp, "光芒");
+  assert.match(notesOf({ pitcher: { name: "Z" }, splits: TOLLE, recent: r, lineup: lu(NYY) }).recentNote, /最近一次登板是 10\/1 中繼 1\.0 局、15 球/);
+  assert.equal(notesOf({ pitcher: { name: "Z" }, splits: TOLLE, recent: recentStarts([log("2026-09-02", 1, "7.0", 99, 0)]), lineup: lu(NYY) }).recentNote, "本季（例行賽＋季後賽）只有 1 次先發紀錄。"); });
+t("左右開弓：面對右投算左打席、面對左投算右打席；慣用手未知不計；5 對 4 兩邊都看（紅襪預估 L3 R4 S2 對 Schlittler 右投）", () => {
+  const BOS = ["L", "S", "L", "R", "R", "R", "L", "R", "S"].map((bats, i) => ({ n: i + 1, bats })), c = composition(BOS);
+  assert.deepEqual(effective(c, "R"), { L: 5, R: 4 }); assert.deepEqual(effective(c, "L"), { L: 3, R: 6 }); assert.deepEqual(effective(c, null), { L: 3, R: 4 });
+  const S = { vl: { ops: ".560", pa: 458 }, vr: { ops: ".520", pa: 303 } };
+  const o = notesOf({ pitcher: { name: "Schlittler", hand: "R" }, splits: S, recent: R3, lineup: { team: "紅襪", short: "預估打線", comp: c } }).obs;
+  assert.equal(o[0], "紅襪預估打線 9 人中左打 3、右打 4、左右開弓 2；左右開弓面對右投通常站左打席，合計站左打席約 5 位、右打席約 4 位，兩邊人數接近，兩個分項都要看：Schlittler 對左打被打 OPS .560（458 打席）、對右打 .520（303 打席）。");
+  assert.equal(o.length, 1);
+  assert.match(notesOf({ pitcher: { name: "X", hand: null }, splits: S, recent: R3, lineup: { team: "紅襪", short: "預估打線", comp: c } }).obs[0], /先發慣用手未知，左右開弓不計入，兩邊人數接近/); });
+t("明顯多數＝9 人中至少 6 人同一邊（6 對 3 指出先看哪邊）", () => {
+  const six = ["L", "L", "L", "L", "L", "L", "R", "R", "R"].map((bats, i) => ({ n: i + 1, bats }));
+  assert.match(notesOf({ pitcher: { name: "X", hand: "R" }, splits: TOLLE, recent: R3, lineup: lu(six) }).obs[0], /所以 X 的「對左打」分項最值得先看/); });
+const G = { pk: 1, usDate: "2026-09-29", away: { name: "紅襪", ab: "BOS", sp: { id: 10, name: "Tolle", hand: "L" }, lineup: { state: "none", slots: null } },
+  home: { name: "洋基", ab: "NYY", sp: { id: 20, name: "Schlittler", hand: "R" }, lineup: { state: "official", firstSeen: "2026-09-29T20:00:00Z", slots: [{ n: 1, id: 101, name: "A" }, { n: 2, id: 102, name: "B" }] } },
+  proj: { away: { sourceStatusKey: "expected", firstSeen: "2026-09-28T11:21:00Z", slots: NYY }, home: { sourceStatusKey: "expected", slots: NYY } } };
+t("打線：官方優先（打擊側用 people API），沒有官方才用預估並標來源", () => {
+  const h = lineupOf(G, "home", { 101: "S", 102: "R" }); assert.equal(h.source, "official"); assert.deepEqual(h.slots.map(x => x.bats), ["S", "R"]);
+  const a = lineupOf(G, "away", {}); assert.equal(a.source, "proj"); assert.equal(a.label, "RotoWire 預估打線（非官方）");
+  assert.equal(lineupOf({ ...G, proj: { away: { ...G.proj.away, sourceStatusKey: "confirmed" } } }, "away", {}).label, "RotoWire 已確認名單（非 MLB 官方）");
+  assert.equal(lineupOf({ ...G, proj: null }, "away", {}), null); });
+await (async () => { const urls = [];
+  const fj = async u => { urls.push(u); if (u.includes("personIds")) return { people: [{ id: 101, batSide: { code: "L" } }, { id: 102, batSide: { code: "R" } }] };
+    if (u.includes("statSplits")) return { stats: [{ splits: [split("vl", 173, ".705"), split("vr", 430, ".624")] }] };
+    return { stats: [{ splits: [log("2026-09-13", 1, "6.0", 94, 0)] }] }; };
+  const m = await buildMatchup(G, "2026-09-29T00:00:00Z", fj);
+  assert.deepEqual(m.pairs.map(p => [p.pitcher.name, p.lineup.ab, p.lineup.source]), [["Tolle", "NYY", "official"], ["Schlittler", "BOS", "proj"]]);
+  assert.ok(urls.some(u => u.includes("sitCodes=vl,vr&gameType=R")) && urls.some(u => u.includes("gameLog") && u.includes("gameType=R,F,D,L,W")));
+  assert.equal(m.pairs[0].splitScope, "2026 例行賽"); n++; console.log("ok 組裝：客隊先發對主隊官方打線、主隊先發對客隊預估；分項只取例行賽、最近先發含季後賽"); })();
+console.log(`${n}/${n} 通過`);
