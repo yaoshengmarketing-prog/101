@@ -9,7 +9,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849845,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T18:16:04.721Z",
+   "fetchedAt": "2026-09-28T19:01:11.076Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -87,7 +87,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849845,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T18:16:04.721Z",
+   "fetchedAt": "2026-09-28T19:01:11.076Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -165,7 +165,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849849,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T18:16:04.721Z",
+   "fetchedAt": "2026-09-28T19:01:11.076Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -243,7 +243,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849851,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T18:16:04.721Z",
+   "fetchedAt": "2026-09-28T19:01:11.076Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -321,7 +321,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849851,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T18:16:04.721Z",
+   "fetchedAt": "2026-09-28T19:01:11.076Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -399,7 +399,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849843,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T18:16:04.721Z",
+   "fetchedAt": "2026-09-28T19:01:11.076Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -477,7 +477,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849843,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T18:16:04.721Z",
+   "fetchedAt": "2026-09-28T19:01:11.076Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -554,14 +554,76 @@
    "team": "CWS",
    "side": "away",
    "game": "CWS@HOU",
-   "first": null,
-   "versions": [],
+   "first": "2026-09-28T19:01:11.076Z",
+   "versions": [
+    {
+     "at": "2026-09-28T19:01:11.076Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Miguel Vargas",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Tommy Pham",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Randal Grichuk",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Munetaka Murakami",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Chase Meidroth",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Kyle Teel",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Brenton Doyle",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Colson Montgomery",
+       "pos": "SS",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Braden Montgomery",
+       "pos": "RF",
+       "bats": "S"
+      }
+     ]
+    }
+   ],
    "pk": 849849,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
    "time": "5:00 PM ET",
-   "n": 0,
+   "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-28T18:16:04.721Z"
+   "fetchedAt": "2026-09-28T19:01:11.076Z"
   }
  }
 }
