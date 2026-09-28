@@ -2,8 +2,10 @@
 // 用法：node scripts/sync-cards.mjs [輸出資料夾，預設 .build]
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
+import { crossCmp } from "./lineup-proj.mjs";
 
-export const projCard = p => p ? { n: p.slots.length, uncertain: p.uncertain.length, cross: p.cross, sourceStatusKey: p.sourceStatusKey, firstSeen: p.firstSeen } : null;
+// cc＝兩站人選／棒次相同數（單一來源為 null）；vs＝官方公布前最後一版與官方的人選／棒次相同數
+export const projCard = p => p ? { n: p.slots.length, cross: p.cross, cc: p.crossCmp ?? (p.cross ? crossCmp(p.slots) : null), vs: p.vsOfficial?.last ?? null, sourceStatusKey: p.sourceStatusKey, firstSeen: p.firstSeen } : null;
 export const cardExtra = g => ({ forecast: g.forecast ?? null, proj: g.proj ? { away: projCard(g.proj.away), home: projCard(g.proj.home) } : null });
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
