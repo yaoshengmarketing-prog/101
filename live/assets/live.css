@@ -75,3 +75,20 @@ table.bp td.empty{color:var(--muted);font-size:12px}
 .tbl.lu.pj td.l:nth-child(2){white-space:nowrap}
 .vsbox{margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;background:var(--surface)}
 .vsbox ul{margin:6px 0 4px;padding-left:18px}
+
+/* 先發 × 對方打線（對位卡試作） */
+.mu .muobs{margin:8px 0;padding:8px 10px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 6px 6px 0;font-size:14px;line-height:1.6}
+.mu .muobs p{margin:0}.mu .muobs p+p{margin-top:4px}
+.mu .mug{margin:8px 0}.mu .mug>p{margin:0 0 4px}
+.mu .mur{display:grid;grid-template-columns:96px 1fr 44px 58px;align-items:center;gap:8px;padding:5px 6px;border-radius:6px;font-size:13px}
+.mu .mur .k{font-weight:600;line-height:1.25}.mu .mur .k small{display:block;font-weight:400;font-size:11px;color:var(--muted)}
+.mu .mur .bar{height:10px;background:var(--line);border-radius:5px;overflow:hidden}.mu .mur .bar i{display:block;height:100%;background:var(--muted)}
+.mu .mur.hl{outline:2px solid var(--accent);outline-offset:-2px}.mu .mur.hl .bar i{background:var(--accent)}
+.mu .mur b.num{font-family:var(--num);font-size:15px;text-align:right}.mu .mur>small{font-size:11px;color:var(--muted);text-align:right}
+.mu .lus{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0 2px}
+.mu .chip{display:inline-flex;flex-direction:column;align-items:center;min-width:30px;padding:2px 0;border-radius:6px;font-size:12px;line-height:1.2;border:1px solid var(--line);color:var(--muted)}
+.mu .chip b{font-family:var(--num);font-size:11px;font-weight:400}
+.mu .chip.L{background:var(--accent-soft);color:var(--accent);border-color:var(--accent);font-weight:600}
+.mu .chip.R{background:var(--surface);color:var(--ink);border-color:var(--ink);font-weight:600}
+.mu .chip.S{border-style:dashed;color:var(--ink)}
+.mu table.mut{margin-top:8px;font-size:13px}.mu table.mut th small,.mu table.mut td small{display:block;font-size:10.5px;color:var(--muted);font-weight:400}
