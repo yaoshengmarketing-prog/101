@@ -1,0 +1,69 @@
+{
+ "rules": "proj v0.2",
+ "note": "first＝本站第一次看到來源有這隊 9 人名單（受本站抓取時間限制，是上界）；inScopeAt＝第一次對到本站收錄的比賽；pk 空白＝來源有、本站收錄範圍（台灣今天／明天）沒有這場",
+ "teams": {
+  "RotoWire|2026-09-29|PHI@ATL|away": {
+   "source": "RotoWire",
+   "date": "2026-09-29",
+   "team": "PHI",
+   "first": "2026-09-28T10:43:04.028Z",
+   "pk": null,
+   "inScopeAt": null,
+   "fetchedAt": "2026-09-28T10:43:04.028Z"
+  },
+  "RotoWire|2026-09-29|PHI@ATL|home": {
+   "source": "RotoWire",
+   "date": "2026-09-29",
+   "team": "ATL",
+   "first": "2026-09-28T10:43:04.028Z",
+   "pk": null,
+   "inScopeAt": null,
+   "fetchedAt": "2026-09-28T10:43:04.028Z"
+  },
+  "RotoWire|2026-09-29|CWS@HOU|home": {
+   "source": "RotoWire",
+   "date": "2026-09-29",
+   "team": "HOU",
+   "first": "2026-09-28T10:43:04.028Z",
+   "pk": null,
+   "inScopeAt": null,
+   "fetchedAt": "2026-09-28T10:43:04.028Z"
+  },
+  "RotoWire|2026-09-29|BOS@NYY|away": {
+   "source": "RotoWire",
+   "date": "2026-09-29",
+   "team": "BOS",
+   "first": "2026-09-28T10:43:04.028Z",
+   "pk": null,
+   "inScopeAt": null,
+   "fetchedAt": "2026-09-28T10:43:04.028Z"
+  },
+  "RotoWire|2026-09-29|BOS@NYY|home": {
+   "source": "RotoWire",
+   "date": "2026-09-29",
+   "team": "NYY",
+   "first": "2026-09-28T10:43:04.028Z",
+   "pk": null,
+   "inScopeAt": null,
+   "fetchedAt": "2026-09-28T10:43:04.028Z"
+  },
+  "RotoWire|2026-09-29|CHC@SD|away": {
+   "source": "RotoWire",
+   "date": "2026-09-29",
+   "team": "CHC",
+   "first": "2026-09-28T10:43:04.028Z",
+   "pk": null,
+   "inScopeAt": null,
+   "fetchedAt": "2026-09-28T10:43:04.028Z"
+  },
+  "RotoWire|2026-09-29|CHC@SD|home": {
+   "source": "RotoWire",
+   "date": "2026-09-29",
+   "team": "SD",
+   "first": "2026-09-28T10:43:04.028Z",
+   "pk": null,
+   "inScopeAt": null,
+   "fetchedAt": "2026-09-28T10:43:04.028Z"
+  }
+ }
+}
