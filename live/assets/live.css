@@ -73,3 +73,5 @@ table.bp td.empty{color:var(--muted);font-size:12px}
 .tbl.lu tr.unc td{background:color-mix(in srgb,var(--tag) 55%,transparent)}
 @media (max-width:560px){.wxp{grid-template-columns:1fr}.wxfig{max-width:240px;margin:0 auto}}
 .tbl.lu.pj td.l:nth-child(2){white-space:nowrap}
+.vsbox{margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;background:var(--surface)}
+.vsbox ul{margin:6px 0 4px;padding-left:18px}

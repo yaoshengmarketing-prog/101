@@ -89,13 +89,14 @@ async function renderHome() {
     const day = D.days.find(d => d.key === state.day), all = day.games, n = all.length;
     const games = all.filter(g => state.status === "all" || (state.status === "off" ? ["ppd", "cxl", "susp"].includes(g.status.code) : g.status.code === state.status));
     $("#dayTitle").innerHTML = `${dayLabel(day.date)} MLB 比賽 <small>${n} 場・台灣時間</small>`;
-    const cnt = f => all.filter(f).length, sides = all.flatMap(g => ["away", "home"].map(k => ({ ...g[k], projN: g.proj?.[k]?.n || 0, projU: g.proj?.[k]?.uncertain || 0 })));
+    const cnt = f => all.filter(f).length, sides = all.flatMap(g => ["away", "home"].map(k => ({ ...g[k], pj: g.proj?.[k] || null })));
+    const open = sides.filter(t => !["official", "late"].includes(t.lineup.state)), withP = open.filter(t => t.pj?.n);
     const ready = `<div class="ready"><b>資料完成度</b>
       <span>雙方預計先發 <b class="num">${cnt(g => g.away.sp && g.home.sp)}/${n}</b></span>
       <span>官方打線 <b class="num">${sides.filter(t => ["official", "late"].includes(t.lineup.state)).length}/${2 * n}</b> 隊</span>
       <span>上一場打線 <b class="num">${sides.filter(t => t.prev?.has).length}/${2 * n}</b> 隊</span>
       <span>牛棚 <b class="num">${cnt(g => bpOf(g.pk) === "ok")}/${n}</b>${cnt(g => bpOf(g.pk) !== "ok") ? `（部分 ${cnt(g => bpOf(g.pk) === "incomplete")}・未取得 ${cnt(g => !["ok", "incomplete"].includes(bpOf(g.pk)))}）` : ""}</span>
-      <span>預估打線（非官方） <b class="num">${sides.filter(t => !["official", "late"].includes(t.lineup.state) && t.projN).length}/${sides.filter(t => !["official", "late"].includes(t.lineup.state)).length}</b> 隊<small>（官方未公布的隊伍中；有不確定席位 ${sides.filter(t => !["official", "late"].includes(t.lineup.state) && t.projU).length} 隊）</small></span>
+      <span>預估打線（非官方） <b class="num">${withP.length}/${open.length}</b> 隊<small>（官方未公布的隊伍中；兩站人選全同 ${withP.filter(t => t.pj.cc && t.pj.cc.people === t.pj.cc.n).length}・人選有差 ${withP.filter(t => t.pj.cc && t.pj.cc.people < t.pj.cc.n).length}・單一來源 ${withP.filter(t => !t.pj.cc).length}）</small></span>
       <span>天氣 官方 <b class="num">${cnt(g => g.weather)}/${n}</b>・預報 <b class="num">${cnt(g => !g.weather && g.forecast)}/${n}</b>${cnt(g => !g.weather && !g.forecast) ? `・都沒有 ${cnt(g => !g.weather && !g.forecast)}` : ""}</span>
       <span>盤口 <b class="num">0/${n}</b></span>
       <small>資料最後變動 ${D.generatedAtTW}</small></div>`;
@@ -109,12 +110,14 @@ async function renderHome() {
     return `<article class="card">
       <div class="meta"><span><b>${g.twTime || "時間未定"}</b> ${noteTags(g)}</span><span>${statusTag(g)}</span></div>
       ${team(g.away)}${team(g.home)}
-      <div class="hints">${g.status.code === "final" ? "" : luTag(g.away) + luTag(g.home) + projTag(g, "away") + projTag(g, "home")}${bpTag(g.pk)}${wxTag(g)}${[g.away, g.home].some(t => Object.keys(t.failed || {}).some(k => k !== "lineup")) || g.failed ? `<span class="tag late">部分資料重抓失敗，沿用舊值</span>` : ""}</div>
+      <div class="hints">${g.status.code === "final" ? "" : luTag(g.away) + luTag(g.home)}${projTag(g, "away") + projTag(g, "home")}${bpTag(g.pk)}${wxTag(g)}${[g.away, g.home].some(t => Object.keys(t.failed || {}).some(k => k !== "lineup")) || g.failed ? `<span class="tag late">部分資料重抓失敗，沿用舊值</span>` : ""}</div>
       <div class="cta"><span class="small">${esc(g.venue)}</span><a class="btn" href="game.html?pk=${g.pk}">查看比賽資料 →</a></div>
     </article>`;
   };
-  const projTag = (g, k) => { const p = g.proj?.[k]; if (!p || ["official", "late"].includes(g[k].lineup.state) || g.status.code !== "pre") return "";
-    return `<span class="tag exp">${g[k].ab} 預估打線 ${p.n} 棒${p.cross ? p.uncertain ? `・${p.uncertain} 席不確定` : "・兩來源一致" : "・無第二來源"}</span>`; };
+  const projTag = (g, k) => { const p = g.proj?.[k]; if (!p) return "";
+    if (p.vs) return `<span class="tag">${g[k].ab} 預估 vs 官方：人選 ${p.vs.people}/${p.vs.n}・棒次 ${p.vs.order}/${p.vs.n}</span>`;
+    if (["official", "late"].includes(g[k].lineup.state) || g.status.code !== "pre") return "";
+    return `<span class="tag exp">${g[k].ab} 預估 ${p.n} 人${p.cc ? `・兩站人選 ${p.cc.people}/${p.cc.n}、棒次 ${p.cc.order}/${p.cc.n} 相同` : "・僅單一來源"}</span>`; };
   const wxTag = g => g.weather ? `<span class="tag">天氣：MLB 官方</span>` : g.forecast ? `<span class="tag">天氣：模型預報</span>` : "";
   document.addEventListener("click", e => { const b = e.target.closest("button[data-d],button[data-st]"); if (!b) return;
     if (b.dataset.d) state.day = b.dataset.d; if (b.dataset.st) state.status = b.dataset.st; draw(); });
@@ -183,12 +186,13 @@ async function renderGame() {
   const lu = (t, k) => { const L = t.lineup, P = G.proj?.[k];
     if (L.slots) return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)}</div>${failNote(t, ["lineup"])}
       <div class="lmeta"><span>本站首次看到官方打線：<b>${stamp(L.firstSeen) || "—"}</b></span>${L.lateAt ? `<span>偵測到臨場異動：<b>${stamp(L.lateAt)}</b></span>` : ""}</div>
-      ${table(L.slots)}${P ? `<details><summary class="small">官方公布前本站記下的最後一版預估（非官方）</summary>${projBlock(P, G)}</details>` : ""}<details><summary class="small">上一場官方打線（參考）</summary>${prevBlock(t)}</details></div>`;
+      ${table(L.slots)}${P ? `${vsBlock(P, G)}<details><summary class="small">官方公布前本站記下的最後一版預估（非官方）</summary>${projBlock(P, G)}</details>` : ""}<details><summary class="small">上一場官方打線（參考）</summary>${prevBlock(t)}</details></div>`;
     if (P) return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)} <span class="tag exp">預估（非官方）</span></div>${failNote(t, ["lineup"])}
       ${projBlock(P, G)}<details><summary class="small">上一場官方打線（參考，不是本場預估）</summary>${prevBlock(t)}</details></div>`;
     const why = L.state === "withdrawn" ? `MLB 官方先前公布的本場打線，本站 <b>${stamp(L.withdrawnAt)}</b> 檢查時已從官方資料撤下（官方回應正常、內容已沒有打線，不是本站抓取失敗）。`
       : t.failed?.lineup ? "這次沒有取得本場打線，無法確認官方是否已公布。" : "MLB 官方尚未公布本場打線。";
     return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)}</div>${failNote(t, ["lineup"])}
+      ${G.proj && G.status.code === "pre" ? `<p class="small">預估打線：RotoWire 目前沒有這隊的預估（本站最後檢查 ${stamp(G.proj.fetchedAt) || "—"}）。這是來源還沒提供，不是本站漏抓。</p>` : ""}
       <p class="small">${why}以下為<b>上一場官方打線</b>，僅供參考，不是本場預估。</p>${prevBlock(t)}</div>`; };
   const lineups = `<section class="blk" id="lu"><h2>打線 <small>官方打線 AVG／OPS 為 2026 本季；預估打線是第三方預測，不是官方</small></h2><div class="two">${lu(A, "away")}${lu(H, "home")}</div></section>`;
   const missing = `<section class="blk" id="na"><h2>本站尚未取得</h2><div class="panel"><p class="small">盤口、主審、傷兵：尚未接入，不以示範值填補。</p><p class="small">已接入但有條件：天氣（MLB 官方開賽前幾小時才有，更早用模型預報，表定開賽前 48 小時內）、預估打線（第三方預測，非官方；來源當天有提供才有）。</p></div></section>`;
@@ -198,21 +202,49 @@ async function renderGame() {
 /* ================= 預估打線（非官方；scripts/lineup-proj.mjs） ================= */
 const dur = m => m == null ? "開賽時間未定" : m <= 0 ? "已過表定開賽" : `距表定開賽 ${Math.floor(m / 60)} 小時 ${String(m % 60).padStart(2, "0")} 分`;
 const BATS = { R: "右", L: "左", S: "左右開弓" };
+// 名字比對鍵（和 scripts/lineup-proj.mjs pkey 相同）：名字首字母＋姓
+const pkey = x => { const w = (x || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[.,']/g, "").split(/\s+/).filter(y => y && !/^(jr|sr|ii|iii|iv)$/.test(y)); return w.length ? w[0][0] + w.at(-1).replace(/[^a-z]/g, "") : ""; };
+const minsTo = (G, iso) => G.tbd || !G.startUTC ? null : Math.round((Date.parse(G.startUTC) - Date.parse(iso)) / 6e4);
+const ccOf = P => P.crossCmp || (P.cross ? { people: P.slots.filter(s => s.check === "same" || s.altAt).length, order: P.slots.filter(s => s.check === "same").length, n: P.slots.length } : null);
 function projBlock(P, G) {
-  const unc = P.uncertain || [], chk = s => s.check === "same" ? `<span class="small">一致</span>`
-    : s.check === "diff" ? `<span class="tag late">不確定</span><br><span class="small">另一來源：${s.alt ? esc(s.alt) : "空白"}${s.altAt ? `（左邊這位在第 ${s.altAt} 棒）` : "（左邊這位不在名單）"}</span>` : `<span class="small">—</span>`;
-  const sum = !P.cross ? `這隊沒有第二個來源可比對，無法判斷哪些席位不確定。`
-    : unc.length ? `<b>不確定席位：第 ${unc.join("、")} 棒</b>（${esc(P.source)} 與 ${esc(P.cross)} 不一致，共 ${unc.length}/${P.slots.length} 棒：人選不同 ${P.slots.filter(s => s.check === "diff" && !s.altAt).length} 棒、同一人但棒次不同 ${P.slots.filter(s => s.check === "diff" && s.altAt).length} 棒）；其餘 ${P.slots.length - unc.length} 棒兩來源相同，但仍是預估。`
-    : `${P.slots.length}/${P.slots.length} 棒兩來源相同，但仍是預估、不是官方。`;
+  const chk = s => s.check === "same" ? `<span class="small">一致</span>`
+    : s.check === "diff" && s.altAt ? `<span class="tag">棒次不同</span><br><span class="small">另一站把他排第 ${s.altAt} 棒</span>`
+    : s.check === "diff" ? `<span class="tag late">人選不同</span><br><span class="small">另一站這棒是 ${s.alt ? esc(s.alt) : "空白"}，名單裡沒有他</span>` : `<span class="small">—</span>`;
+  const cc = ccOf(P), ord = P.slots.filter(s => s.check === "diff" && s.altAt).map(s => s.n), who = P.slots.filter(s => s.check === "diff" && !s.altAt).map(s => s.n);
+  const sum = !cc ? `只有 ${esc(P.source)} 一個來源，無法比對；照常提供，不等第二個來源。`
+    : `<b>兩站比對：人選 ${cc.people}/${cc.n} 相同、棒次 ${cc.order}/${cc.n} 相同</b>${ord.length ? `；第 ${ord.join("、")} 棒是同一批人換了棒次` : ""}${who.length ? `；第 ${who.join("、")} 棒兩站排了不同的人` : ""}。兩站一致不等於官方確認，分歧也不代表哪一站錯。`;
+  const F = P.first, same1 = F && F.at === P.changedAt;
   return `<div class="lmeta"><span>來源：<b>${esc(P.source)}</b>（來源標示：${esc(P.sourceStatus || "—")}）${P.cross ? `，逐棒比對 <b>${esc(P.cross)}</b>` : ""}</span>
-      <span>本站首次取得：<b>${stamp(P.firstSeen)}</b>（${dur(G.tbd || !G.startUTC ? null : Math.round((Date.parse(G.startUTC) - Date.parse(P.firstSeen)) / 6e4))}）</span>
-      <span>名單最後變動：<b>${stamp(P.changedAt)}</b>・最後檢查 ${stamp(P.fetchedAt) || "—"}</span></div>
+      <span>本站首次取得：<b>${stamp(P.firstSeen)}</b>（${dur(minsTo(G, P.firstSeen))}）</span>
+      <span>${same1 ? "名單從首次取得後沒有變動" : `名單最後變動：<b>${stamp(P.changedAt)}</b>`}・最後檢查 ${stamp(P.fetchedAt) || "—"}</span></div>
     ${P.retryFailedSince ? `<div class="notice warn">自 ${stamp(P.retryFailedSince)} 起重抓 ${esc(P.source)} 失敗，這是 ${stamp(P.fetchedAt)} 取得的版本。</div>` : ""}
     ${P.missingSince ? `<div class="notice warn">${esc(P.source)} 自 ${stamp(P.missingSince)} 起已沒有這隊的預估，以下是先前的版本。</div>` : ""}
-    ${P.frozenAt ? `<p class="small">官方打線已公布或比賽已開始（本站 ${stamp(P.frozenAt)} 起停止更新預估）。</p>` : ""}
+    ${P.frozenAt ? `<p class="small">官方打線已公布或比賽已開始（本站 ${stamp(P.frozenAt)} 起停止更新預估）。以下是官方公布前最後一版。</p>` : ""}
     <p class="small">${sum}</p>
-    <table class="tbl lu pj"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>打</th><th class="l">和 ${esc(P.cross || "第二來源")} 比對</th></tr></thead><tbody>${P.slots.map(s => `<tr${s.check === "diff" ? ` class="unc"` : ""}><td class="n">${s.n}</td><td class="l">${esc(s.name)}</td><td>${esc(s.pos || "—")}</td><td>${BATS[s.bats] || "—"}</td><td class="l">${chk(s)}</td></tr>`).join("")}</tbody></table>
-    ${P.slots.length < 9 ? `<p class="small">來源目前只列 ${P.slots.length} 棒。</p>` : ""}`;
+    <table class="tbl lu pj"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>打</th><th class="l">和 ${esc(P.cross || "第二來源")} 比對</th></tr></thead><tbody>${P.slots.map(s => `<tr${s.check === "diff" && !s.altAt ? ` class="unc"` : ""}><td class="n">${s.n}</td><td class="l">${esc(s.name)}</td><td>${esc(s.pos || "—")}</td><td>${BATS[s.bats] || "—"}</td><td class="l">${chk(s)}</td></tr>`).join("")}</tbody></table>
+    ${P.slots.length < 9 ? `<p class="small">來源目前只列 ${P.slots.length} 棒。</p>` : ""}
+    ${F && !same1 ? `<details><summary class="small">首份完整預估（${stamp(F.at)}，${dur(minsTo(G, F.at))}）</summary><p class="small">${F.slots.map(s => `${s.n}. ${esc(s.name)}`).join("　")}</p></details>` : ""}`;
+}
+
+// 預估 vs 官方：官方名單以本站第一次看到的版本為基準；之後的臨場異動另列，不改基準
+function vsBlock(P, G) {
+  const O = P.official; if (!O) return "";
+  const V = P.vsOfficial || {}, F = P.first, line = (c) => c ? `人選 <b>${c.people}/${c.n}</b>、棒次 <b>${c.order}/${c.n}</b> 與官方相同` : "—";
+  // 每格寫預估在這一棒排的人，再標他在官方名單的位置
+  const mark = (list, x) => { if (!list) return `<td class="l">—</td>`; const y = list.find(z => z.n === x.n); if (!y) return `<td class="l">—</td>`;
+    if (pkey(y.name) === pkey(x.name)) return `<td class="l">${esc(y.name)} <span class="small">✓</span></td>`;
+    const at = O.slots.find(z => pkey(z.name) === pkey(y.name));
+    return `<td class="l">${esc(y.name)}<br>${at ? `<span class="small">棒次不同：官方排第 ${at.n} 棒</span>` : `<span class="tag late">人選不同</span> <span class="small">未列官方先發</span>`}</td>`; };
+  const L2 = P.officialLate, ko = new Set(O.slots.map(x => pkey(x.name))), kl = new Set((L2?.slots || []).map(x => pkey(x.name)));
+  const lateDiff = L2 ? [...O.slots.filter(x => !kl.has(pkey(x.name))).map(x => `${esc(x.name)} 退出`), ...L2.slots.filter(x => !ko.has(pkey(x.name))).map(x => `${esc(x.name)} 加入（第 ${x.n} 棒）`),
+    ...(() => { const m = L2.slots.filter(x => ko.has(pkey(x.name)) && pkey(O.slots.find(y => y.n === x.n)?.name) !== pkey(x.name)).length; return m ? [`${m} 棒棒次調整`] : []; })()] : [];
+  return `<div class="vsbox"><b>預估 vs 官方</b>（官方基準＝本站 ${stamp(O.at)} 第一次看到的官方名單${O.capturedAfterLate ? "；本站第一次記到時已是臨場異動後的版本" : ""}）
+    <ul class="small">
+      <li>首份完整預估（${F ? `${stamp(F.at)}，${dur(minsTo(G, F.at))}` : "v0.1 舊紀錄名單改過，無法確定首份，不列"}）：${F ? line(V.first) : "—"}</li>
+      <li>官方公布前最後一版（${F && F.at === P.changedAt ? "和首份是同一份名單，之後沒有變動" : `這份名單自 ${stamp(P.changedAt)} 起`}，最後檢查 ${stamp(P.fetchedAt) || "—"}）：${line(V.last)}</li>
+      ${L2 ? `<li>官方確認後的臨場異動（${stamp(L2.at)}）：${lateDiff.join("、") || "只換守位"}。上面的對照仍以第一次看到的官方名單為準。</li>` : ""}
+    </ul>
+    <details><summary class="small">逐棒對照</summary><table class="tbl lu"><thead><tr><th>棒</th><th class="l">官方（基準）</th><th class="l">首份預估這棒</th><th class="l">最後一版預估這棒</th></tr></thead><tbody>${O.slots.map(x => `<tr><td class="n">${x.n}</td><td class="l">${esc(x.name)}</td>${mark(F?.slots, x)}${mark(P.slots, x)}</tr>`).join("")}</tbody></table></details></div>`;
 }
 
 /* ================= 球場天氣與風向圖：只呈現資料，不做有利／不利判斷 ================= */
