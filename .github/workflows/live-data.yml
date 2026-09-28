@@ -49,7 +49,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
       - name: 離線測試（牛棚、單場抓取失敗沿用舊值、情境卡）
         id: test
-        run: node scripts/test-bullpen.mjs && node scripts/test-build-live.mjs && node scripts/test-ctx.mjs && node scripts/test-proj.mjs
+        run: node scripts/test-bullpen.mjs && node scripts/test-build-live.mjs && node scripts/test-ctx.mjs && node scripts/test-proj.mjs && node scripts/test-matchup.mjs
       - name: build（抓取＋標準化，寫到 .build）
         id: build
         run: node scripts/build-live.mjs .build
@@ -67,6 +67,9 @@ jobs:
       - name: 首頁卡片同步天氣預報與預估打線摘要
         continue-on-error: true
         run: node scripts/sync-cards.mjs .build
+      - name: 先發 × 對方打線（對位卡試作，只算 scripts/matchup.mjs MATCHUP_PKS；失敗不擋當次資料）
+        continue-on-error: true
+        run: node scripts/matchup.mjs .build
       - name: 情境卡（賽前計算，開賽後凍結）
         id: ctx
         run: node scripts/ctx.mjs .build
