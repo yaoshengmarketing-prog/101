@@ -1,7 +1,7 @@
 // 預估打線離線測試：node scripts/test-proj.mjs
 // HTML 樣本照 2026-09-27 13:05Z 在 Chrome 實際看到的 RotoWire／RotoGrinders 結構縮寫（名字是當時兩站 HOU@ATH 的真實內容）
 import assert from "node:assert/strict";
-import { parseRotoWire, parseRotoGrinders, crossCheck, nextTeam, frozen, matchGames, pkey, cmpLists, crossCmp, withOfficial, updateSources } from "./lineup-proj.mjs";
+import { parseRotoWire, parseRotoGrinders, crossCheck, nextTeam, frozen, matchGames, pkey, cmpLists, crossCmp, withOfficial, updateSources, mkVersion } from "./lineup-proj.mjs";
 
 let n = 0; const t = (name, f) => { f(); n++; console.log("ok", name); };
 const rwLi = ([pos, name, b]) => `<li class="lineup__player"><div class="lineup__pos">${pos}</div><a title="${name}" href="/baseball/player/x-1">${name.split(" ").at(-1)}</a><span class="lineup__bats">${b}</span></li>`;
@@ -80,19 +80,21 @@ t("首份完整預估：記第一次 9 人名單與當時時間，之後名單�
   const moved = { ...rw[0].sides.away, slots: rw[0].sides.away.slots.map(s => s.n === 9 ? { ...s, name: "Taylor Trammell" } : s) };
   const p2 = nextTeam(p1, moved, null, G, "2026-09-27T15:00:00.000Z");
   assert.equal(p2.first.at, p1.first.at); assert.equal(p2.first.slots[8].name, "Nelson Velázquez"); assert.equal(p2.slots[8].name, "Taylor Trammell");
-  const legacy = { ...p2, first: undefined, changedAt: "2026-09-27T15:00:00.000Z" }; // v0.1 紀錄、名單改過：首份無法補回
+  assert.equal(p2.versions.length, 2); assert.equal(p2.versions[0].slots[8].name, "Nelson Velázquez"); // 每一版名單都和當時時間綁在一起
+  const legacy = { ...p2, first: undefined, versions: undefined, changedAt: "2026-09-27T15:00:00.000Z" }; // v0.1 紀錄、名單改過：首份無法補回
   assert.equal(nextTeam(legacy, moved, null, G, "2026-09-27T16:00:00.000Z").first, null);
-  const legacySame = { ...p1, first: undefined }; // v0.1 紀錄、名單沒改過：首份＝firstSeen 那份
+  const legacySame = { ...p1, first: undefined, versions: undefined }; // v0.1 紀錄、名單沒改過：首份＝firstSeen 那份
   assert.equal(nextTeam(legacySame, rw[0].sides.away, null, G, "2026-09-27T16:00:00.000Z").first.at, "2026-09-27T13:05:00.000Z");
   assert.equal(nextTeam(null, { slots: rw[0].sides.away.slots.slice(0, 5) }, null, G, "2026-09-27T13:05:00.000Z").first, null); // 不滿 9 人不算完整
 });
 t("官方對照：第一次官方名單是基準；臨場異動另記、不覆蓋；對照首份與最後一版", () => {
   const first = { at: "2026-09-27T13:05:00.000Z", slots: S(["A One", "B Two", "C Three", "D Four", "E Five", "F Six", "G Seven", "H Eight", "I Nine"]) };
-  const p = { first, slots: S(["A One", "B Two", "C Three", "D Four", "E Five", "G Seven", "F Six", "H Eight", "J Ten"]) };
+  const p = { first, changedAt: "2026-09-27T15:00:00.000Z", sourceStatusKey: "expected", slots: S(["A One", "B Two", "C Three", "D Four", "E Five", "G Seven", "F Six", "H Eight", "J Ten"]) };
   const off = S(["A One", "B Two", "C Three", "D Four", "E Five", "G Seven", "F Six", "H Eight", "I Nine"]);
   const q = withOfficial(p, { state: "official", firstSeen: "2026-09-27T16:00:00.000Z", slots: off }, "2026-09-27T16:00:10.000Z");
   assert.equal(q.official.at, "2026-09-27T16:00:00.000Z");
-  assert.deepEqual(q.vsOfficial.first, { people: 9, order: 7, n: 9 }); assert.deepEqual(q.vsOfficial.last, { people: 8, order: 8, n: 9 });
+  assert.equal(q.vsOfficial.first.people, 9); assert.equal(q.vsOfficial.first.order, 7); assert.equal(q.vsOfficial.last.people, 8); assert.equal(q.vsOfficial.last.order, 8);
+  assert.equal(q.vsOfficial.last.at, "2026-09-27T15:00:00.000Z"); assert.equal(q.vsOfficial.confirmed, null);
   const lateL = { state: "late", firstSeen: "2026-09-27T16:00:00.000Z", lateAt: "2026-09-27T18:00:00.000Z", slots: off.map(s => s.n === 9 ? { ...s, name: "K Eleven" } : s) };
   const r = withOfficial(q, lateL, "2026-09-27T18:00:05.000Z");
   assert.equal(r.official.slots[8].name, "I Nine"); assert.equal(r.officialLate.at, "2026-09-27T18:00:00.000Z"); assert.equal(r.officialLate.slots[8].name, "K Eleven");
@@ -102,11 +104,33 @@ t("官方對照：第一次官方名單是基準；臨場異動另記、不覆�
   assert.equal(withOfficial(p, { state: "withdrawn", slots: null }, "x").official, undefined);
   assert.equal(cmpLists(null, off), null);
 });
-t("來源觀察紀錄：首次時間不改；對到本站比賽另記時間；過期刪除；不滿 9 人不記", () => {
-  const o = [{ key: "RotoWire|2026-09-29|PHI@ATL|away", source: "RotoWire", date: "2026-09-29", team: "PHI", slots: S(Array(9).fill("x y")), pk: null },
+t("預估表現與第三方確認名單分開：Confirmed 版本不算預估（海盜型）", () => {
+  const off = S(["A One", "B Two", "C Three", "D Four", "E Five", "F Six", "G Seven", "H Eight", "I Nine"]);
+  const v1 = mkVersion("2026-09-27T13:31:00Z", "expected", "Expected Lineup", S(["B Two", "A One", "C Three", "X X", "E Five", "F Six", "G Seven", "H Eight", "I Nine"]));
+  const v2 = mkVersion("2026-09-27T17:16:00Z", "confirmed", "Confirmed Lineup", off);
+  const p = { versions: [v1, v2], first: { at: v1.at, statusKey: "expected", slots: v1.slots }, slots: off };
+  const q = withOfficial(p, { state: "official", firstSeen: "2026-09-27T17:30:00Z", slots: off }, "x");
+  assert.equal(q.vsOfficial.first.at, v1.at); assert.equal(q.vsOfficial.last.at, v1.at); // 最後一版「預估」是 13:31 那份，不是 17:16 的確認名單
+  assert.equal(q.vsOfficial.last.people, 8); assert.equal(q.vsOfficial.last.order, 6);
+  assert.equal(q.vsOfficial.confirmed.at, v2.at); assert.equal(q.vsOfficial.confirmed.order, 9); assert.equal(q.vsOfficial.confirmed.leadMinutes, 14);
+});
+t("來源名單提前保存：比賽進本站範圍前存的版本併進預估，首份時間＝當時那份名單被存下的時間", () => {
+  const src = { first: "2026-09-28T10:43:00Z", noListBefore: "2026-09-28T10:43:00Z", versions: [mkVersion("2026-09-28T13:00:00Z", "expected", "Expected Lineup", rw[0].sides.away.slots)] };
+  const p = nextTeam(null, rw[0].sides.away, null, G, "2026-09-28T16:00:00Z", "2026-09-28T16:00:00Z", src);
+  assert.equal(p.firstSeen, "2026-09-28T13:00:00Z"); assert.equal(p.first.at, "2026-09-28T13:00:00Z"); assert.equal(p.versions.length, 1); // 16:00 同一份名單不另成一版
+  assert.equal(p.sourceSeenNoListAt, "2026-09-28T10:43:00Z"); // 10:43 只有時間、沒有名單：另外標，不拿 13:00 的名單配 10:43
+});
+t("來源觀察紀錄：每版名單與時間、來源標示綁在一起；首次時間不改；對到本站比賽另記時間；過期刪除；來源沒提供也留一筆（n＝0）", () => {
+  const o = [{ key: "RotoWire|2026-09-29|PHI@ATL|away", source: "RotoWire", date: "2026-09-29", team: "PHI", slots: S(Array(9).fill("x y")), statusKey: "expected", pk: null },
     { key: "RotoWire|2026-09-29|CWS@HOU|away", source: "RotoWire", date: "2026-09-29", team: "CWS", slots: [], pk: null }];
-  const l1 = updateSources({ old: { date: "2026-09-01" } }, o, "2026-09-28T13:00:00Z", "2026-09-18");
-  assert.deepEqual(Object.keys(l1), ["RotoWire|2026-09-29|PHI@ATL|away"]); assert.equal(l1["RotoWire|2026-09-29|PHI@ATL|away"].pk, null);
+  const l1 = updateSources({ old: { date: "2026-09-01" }, "RotoWire|2026-09-29|PHI@ATL|home": { date: "2026-09-29", first: "2026-09-28T10:43:00Z" } }, o, "2026-09-28T13:00:00Z", "2026-09-18");
+  assert.deepEqual(Object.keys(l1).sort(), ["RotoWire|2026-09-29|CWS@HOU|away", "RotoWire|2026-09-29|PHI@ATL|away", "RotoWire|2026-09-29|PHI@ATL|home"]);
+  assert.equal(l1["RotoWire|2026-09-29|PHI@ATL|away"].pk, null); assert.equal(l1["RotoWire|2026-09-29|PHI@ATL|away"].versions[0].at, "2026-09-28T13:00:00Z");
+  assert.equal(l1["RotoWire|2026-09-29|CWS@HOU|away"].n, 0); assert.equal(l1["RotoWire|2026-09-29|CWS@HOU|away"].first, null);
+  const l1b = updateSources(l1, [{ ...o[0], key: "RotoWire|2026-09-29|PHI@ATL|home" }], "2026-09-28T13:15:00Z", "2026-09-18")["RotoWire|2026-09-29|PHI@ATL|home"];
+  assert.equal(l1b.noListBefore, "2026-09-28T10:43:00Z"); assert.equal(l1b.first, "2026-09-28T10:43:00Z"); assert.equal(l1b.versions[0].at, "2026-09-28T13:15:00Z");
+  const l1c = updateSources(l1, [{ ...o[0], statusKey: "confirmed" }], "2026-09-28T13:30:00Z", "2026-09-18")["RotoWire|2026-09-29|PHI@ATL|away"];
+  assert.deepEqual(l1c.versions.map(v => v.statusKey), ["expected", "confirmed"]); // 只改來源標示也是新的一版
   const l2 = updateSources(l1, [{ ...o[0], pk: 849845 }], "2026-09-28T16:00:00Z", "2026-09-18");
   const e = l2["RotoWire|2026-09-29|PHI@ATL|away"];
   assert.equal(e.first, "2026-09-28T13:00:00Z"); assert.equal(e.pk, 849845); assert.equal(e.inScopeAt, "2026-09-28T16:00:00Z");

@@ -8,11 +8,14 @@
 // v0.2：兩站比對分成「人選幾位相同」「棒次幾棒相同」；保留首份完整預估（first）；官方打線出現時記下官方名單（official），
 //   之後的臨場異動另記 officialLate、不覆蓋對照基準；vsOfficial＝首份／最後一版各自與官方的人選、棒次相同數
 //   另記來源觀察紀錄 live-data/proj/sources.json：來源第一次被本站看到有 9 人名單的時間、何時對到本站收錄的比賽（分開「來源沒提供」與「本站沒收」）
+// v0.3：來源每一版名單都連同「本站看到的時間＋來源標示（Expected／Confirmed）」保存（versions），不分是否已進本站今天／明天範圍；
+//   比賽進入範圍時，直接用來源紀錄裡已存的版本當首份，不必等到午夜才開始算；
+//   對照官方分兩類：預估表現（只算 Expected 版本：首份、最後一版）與第三方確認名單（Confirmed 版本：本站看到時間、比本站首次取得 MLB 官方早多久）
 // 這是公開網頁的個人非商業使用；兩站條款都限制自動擷取（見 Source Audit 紀錄），每 15 分鐘各抓 1～3 頁
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 
-export const PROJ_RULES = "proj v0.2";
+export const PROJ_RULES = "proj v0.3";
 const RW = "https://www.rotowire.com/baseball/daily-lineups.php", RG = "https://rotogrinders.com/lineups/mlb";
 const AB = { ARI: "AZ", WAS: "WSH", CHW: "CWS", KCR: "KC", SDP: "SD", SFG: "SF", TBR: "TB", OAK: "ATH", AZ: "AZ" };
 const ab = x => AB[x] || x;
@@ -72,6 +75,15 @@ const sig = slots => (slots || []).map(s => `${s.n}:${norm(s.name)}:${s.pos || "
 const sigN = slots => (slots || []).map(s => `${s.n}:${pkey(s.name)}`).join("|");
 const pick = slots => slots.map(({ n, name, pos }) => ({ n, name, pos: pos ?? null }));
 const full = slots => (slots || []).length >= 9;
+// 一版名單＝本站看到的時間＋來源標示＋名單；名單、守位或來源標示變了才算新的一版
+const keep = slots => slots.map(({ n, name, pos, bats }) => ({ n, name, pos: pos ?? null, bats: bats ?? null }));
+const vsig = v => `${sig(v.slots)}#${v.statusKey || ""}`;
+export const mkVersion = (at, statusKey, status, slots) => ({ at, statusKey: statusKey ?? null, status: status ?? null, slots: keep(slots) });
+export function mergeVersions(...lists) {
+  const all = lists.flat().filter(v => v && full(v.slots)).sort((a, b) => a.at.localeCompare(b.at)), out = [];
+  for (const v of all) if (!out.length || vsig(out.at(-1)) !== vsig(v)) out.push(v);
+  return out;
+}
 
 // 兩份名單比：人選＝b 的球員有幾位出現在 a（不管棒次）；棒次＝同一棒次同一人有幾棒；n＝b 的人數
 export function cmpLists(a, b) {
@@ -86,18 +98,27 @@ const minsBefore = (g, iso) => g.tbd || !g.startUTC ? null : Math.round((Date.pa
 
 // v0.1 的舊紀錄沒有 first：名單從未變過（changedAt＝firstSeen）才能確定首份就是現在這份；變過就留空，不拿後來的名單冒充
 export const legacyFirst = p => p.first !== undefined ? p.first : full(p.slots) && p.changedAt === p.firstSeen ? { at: p.firstSeen, slots: pick(p.slots) } : null;
+// v0.2 以前沒有 versions：只能拼出「首份（來源標示不明）」＋「最後一版」；已從 git 回補的紀錄不會走到這裡
+export function legacyVersions(p) {
+  if (p.versions) return p.versions;
+  const f = legacyFirst(p), last = full(p.slots) && p.changedAt ? mkVersion(p.changedAt, p.sourceStatusKey, p.sourceStatus, p.slots) : null;
+  return mergeVersions(f ? [{ ...mkVersion(f.at, null, null, f.slots), legacy: true }] : [], last ? [{ ...last, legacy: true }] : []);
+}
 
 // 一隊一場的預估紀錄：首次取得時間只在第一次寫；名單或守位變了才更新 changedAt
-export function nextTeam(prev, rw, rg, g, nowISO, srcAt) {
+// src＝來源紀錄（sources.json）裡這隊的條目：比賽進本站範圍前已存的版本會併進來，首份時間就是當時那份名單被存下的時間
+export function nextTeam(prev, rw, rg, g, nowISO, srcAt, src) {
   if (!rw?.slots?.length) return prev ? { ...prev, missingSince: prev.missingSince || nowISO } : null;
-  const slots = crossCheck(rw.slots, rg), changed = !prev || sig(prev.slots) !== sig(slots);
-  // 首份完整預估：第一次拿到 9 人名單的時間＋當時那份名單，之後不改（舊紀錄只有在名單從未變過時才能補回）
-  const first = prev ? legacyFirst(prev) ?? (full(prev.slots) ? null : full(slots) ? { at: nowISO, slots: pick(slots) } : null)
-    : full(slots) ? { at: nowISO, slots: pick(slots) } : null;
+  const slots = crossCheck(rw.slots, rg);
+  const versions = mergeVersions(prev ? legacyVersions(prev) : [], src?.versions || [], full(slots) ? [mkVersion(nowISO, rw.statusKey, rw.status, slots)] : []);
+  // 首份完整預估：保存的第一版（時間與名單綁在一起）；舊紀錄名單改過又沒有回補時維持 null，不拿後來的名單冒充
+  const first = prev && !prev.versions ? legacyFirst(prev) : versions[0] ? { at: versions[0].at, statusKey: versions[0].statusKey, slots: pick(versions[0].slots) } : null;
+  const firstSeen = [prev?.firstSeen, versions[0]?.at].filter(Boolean).sort()[0] || nowISO;
+  const noList = src?.first && !src.versions?.some(v => v.at === src.first) && src.first < firstSeen ? src.first : prev?.sourceSeenNoListAt;
   return { source: "RotoWire", sourceStatus: rw.status, sourceStatusKey: rw.statusKey, cross: rg?.slots?.length ? "RotoGrinders" : null,
-    firstSeen: prev?.firstSeen || nowISO, firstSeenMinutesBeforeScheduledStart: prev ? prev.firstSeenMinutesBeforeScheduledStart : minsBefore(g, nowISO),
-    changedAt: changed ? nowISO : prev.changedAt, fetchedAt: srcAt, uncertain: slots.filter(s => s.check === "diff").map(s => s.n),
-    crossCmp: crossCmp(slots), first, slots };
+    firstSeen, firstSeenMinutesBeforeScheduledStart: minsBefore(g, firstSeen), ...(noList ? { sourceSeenNoListAt: noList } : {}),
+    changedAt: versions.at(-1)?.at || prev?.changedAt || nowISO, fetchedAt: srcAt, uncertain: slots.filter(s => s.check === "diff").map(s => s.n),
+    crossCmp: crossCmp(slots), first, versions, slots };
 }
 
 const official = t => ["official", "late"].includes(t?.lineup?.state);
@@ -110,15 +131,27 @@ export function withOfficial(p, L, nowISO) {
   let off = p.official, late = p.officialLate;
   if (!off) off = { at: L.firstSeen || nowISO, slots: cur, ...(L.state === "late" ? { capturedAfterLate: true } : {}) };
   else if (sigN(cur) !== sigN(off.slots) && sigN(cur) !== sigN(late?.slots)) late = { at: L.lateAt || nowISO, slots: cur };
-  return { ...p, official: off, ...(late ? { officialLate: late } : {}), vsOfficial: { first: cmpLists(p.first?.slots, off.slots), last: cmpLists(p.slots, off.slots) } };
+  // 官方首次看到之前的版本：Expected（或來源標示不明）算預估；Confirmed 算第三方已確認名單，另列、不算預估表現
+  const before = legacyVersions(p).filter(v => v.at <= off.at), exp = before.filter(v => v.statusKey !== "confirmed"), conf = before.find(v => v.statusKey === "confirmed");
+  const withAt = (v, extra) => v ? { ...cmpLists(v.slots, off.slots), at: v.at, statusKey: v.statusKey, ...extra } : null;
+  const firstExp = p.versions ? exp[0] : p.first && p.first.statusKey !== "confirmed" ? { ...p.first, statusKey: p.first.statusKey ?? null } : null;
+  return { ...p, official: off, ...(late ? { officialLate: late } : {}), vsOfficial: {
+    first: withAt(firstExp), last: withAt(exp.at(-1)),
+    confirmed: withAt(conf, conf ? { leadMinutes: Math.round((Date.parse(off.at) - Date.parse(conf.at)) / 6e4) } : null) } };
 }
 
-// 來源觀察紀錄：每個來源頁、每隊一筆；first＝本站第一次看到這隊 9 人名單，inScopeAt＝第一次對到本站收錄的比賽
+// 來源觀察紀錄：每個來源頁、每隊一筆，不管比賽是否已進本站範圍都記
+//   first＝本站第一次看到這隊 9 人名單；versions＝每一版名單＋當時時間＋來源標示；n＝目前來源列了幾人（0＝來源還沒提供）
+//   v0.2 的舊條目只有 first、沒有名單：標 noListBefore，從下一次起才有名單，不拿之後的名單配舊時間
 export function updateSources(log, obs, nowISO, keepFrom) {
   const out = { ...(log || {}) };
-  for (const o of obs) { if (!full(o.slots)) continue;
-    const e = out[o.key] || { source: o.source, date: o.date, team: o.team, first: nowISO, pk: null, inScopeAt: null };
-    out[o.key] = { ...e, fetchedAt: nowISO, ...(o.pk && !e.pk ? { pk: o.pk, inScopeAt: nowISO } : {}) }; }
+  for (const o of obs) { const n = o.slots?.length || 0;
+    const e0 = out[o.key], e = e0 ? { ...e0, versions: e0.versions || [], ...(e0.versions ? {} : { noListBefore: e0.first }) }
+      : { source: o.source, date: o.date, team: o.team, side: o.side, game: o.game, first: null, versions: [], pk: null, inScopeAt: null };
+    const v = full(o.slots) ? mkVersion(nowISO, o.statusKey, o.status, o.slots) : null;
+    out[o.key] = { ...e, game: o.game ?? e.game, side: o.side ?? e.side, time: o.time ?? e.time ?? null, n, statusKey: o.statusKey ?? null, fetchedAt: nowISO,
+      first: e.first || (v ? nowISO : null), versions: v ? mergeVersions(e.versions, [v]) : e.versions,
+      ...(o.pk && !e.pk ? { pk: o.pk, inScopeAt: nowISO } : {}) }; }
   for (const k of Object.keys(out)) if (out[k].date < keepFrom) delete out[k];
   return out;
 }
@@ -166,14 +199,16 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   catch (e) { errs.push(`RotoGrinders：${e.message}`); }
   const mRW = matchGames(games, rw, x => x.date), mRG = matchGames(games, rg, x => x.date);
   // 來源觀察紀錄（含本站沒收錄的比賽）
-  const pkOf = (m, x) => [...m].find(([, y]) => y === x)?.[0] || null, obs = [], dup = new Map();
+  const pkOf = (m, x) => [...m].find(([, y]) => y === x)?.[0] || null, obs = [], dup = new Map(), keyOf = new Map();
   for (const [src, list, m] of [["RotoWire", rw, mRW], ["RotoGrinders", rg, mRG]]) for (const x of list) {
-    const k0 = `${src}|${x.date}|${x.away}@${x.home}`, i = (dup.get(k0) || 0) + 1; dup.set(k0, i);
-    for (const side of ["away", "home"]) obs.push({ key: `${k0}${i > 1 ? `#${i}` : ""}|${side}`, source: src, date: x.date, team: x[side], slots: x.sides[side]?.slots, pk: pkOf(m, x) }); }
+    const k0 = `${src}|${x.date}|${x.away}@${x.home}`, i = (dup.get(k0) || 0) + 1; dup.set(k0, i); keyOf.set(x, `${k0}${i > 1 ? `#${i}` : ""}`);
+    for (const side of ["away", "home"]) { const S = x.sides[side];
+      obs.push({ key: `${keyOf.get(x)}|${side}`, source: src, date: x.date, team: x[side], side, game: `${x.away}@${x.home}`, time: x.time ?? null, slots: S?.slots,
+        statusKey: src === "RotoGrinders" ? (S?.unconfirmed ? "unconfirmed" : "confirmed") : S?.statusKey, status: S?.status ?? null, pk: pkOf(m, x) }); } }
   const SL = `${OUT}/live-data/proj/sources.json`, prevLog = read("live/data/proj/sources.json")?.teams;
   const log = updateSources(prevLog, obs, nowISO, etDate(now, -10));
   fs.mkdirSync(`${OUT}/live-data/proj`, { recursive: true });
-  fs.writeFileSync(SL, JSON.stringify({ rules: PROJ_RULES, note: "first＝本站第一次看到來源有這隊 9 人名單（受本站抓取時間限制，是上界）；inScopeAt＝第一次對到本站收錄的比賽；pk 空白＝來源有、本站收錄範圍（台灣今天／明天）沒有這場", teams: log }, null, 1));
+  fs.writeFileSync(SL, JSON.stringify({ rules: PROJ_RULES, note: "first＝本站第一次看到來源有這隊 9 人名單（受本站抓取時間限制，是上界）；versions＝每一版名單與當時時間、來源標示；noListBefore＝v0.2 只記了時間、沒存名單；inScopeAt＝第一次對到本站今天／明天的比賽；pk 空白＝來源有、本站首頁範圍還沒有這場（名單照樣已存，可在 proj.html 看）", teams: log }, null, 1));
   const outScope = obs.filter(o => full(o.slots) && !o.pk).length;
   const c = { games: 0, teams: 0, cross: 0, uncertainTeams: 0, frozen: 0, none: 0, vs: 0 };
   for (const g of games) {
@@ -184,14 +219,14 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       if (frozen(g, side)) { proj[side] = prev?.[side] ? withOfficial({ ...prev[side], first: legacyFirst(prev[side]), frozenAt: prev[side].frozenAt || nowISO }, g[side].lineup, nowISO) : null; if (proj[side]) { c.frozen++; any = true; if (proj[side].official) c.vs++; } continue; }
       // 這次主來源抓取失敗：沿用上一版並標示，不當成「來源沒有」
       if (errs.some(e => e.startsWith("RotoWire")) && !a) { proj[side] = prev?.[side] ? { ...prev[side], retryFailedSince: prev[side].retryFailedSince || nowISO } : null; if (proj[side]) any = true; continue; }
-      proj[side] = nextTeam(prev?.[side], a?.sides[side], b?.sides[side], g, nowISO, a?.at);
+      proj[side] = nextTeam(prev?.[side], a?.sides[side], b?.sides[side], g, nowISO, a?.at, a ? log[`${keyOf.get(a)}|${side}`] : null);
       if (proj[side]) { any = true; c.teams++; if (proj[side].cross) c.cross++; if (proj[side].uncertain.length) c.uncertainTeams++; } else if (g.status?.code === "pre") c.none++;
     }
     if (any) c.games++;
     g.proj = proj; // 沒有任何一隊預估也保留檢查時間，頁面才能說「來源目前沒有」而不是空白
     fs.writeFileSync(`${D}/${g.pk}.json`, JSON.stringify(g));
   }
-  const line = `${pages.join("；")}｜有預估 ${c.games} 場；更新中 ${c.teams} 隊（有第二來源比對 ${c.cross} 隊，其中有不一致席位 ${c.uncertainTeams} 隊）；官方打線已出或已開賽而凍結 ${c.frozen} 隊（其中已記官方名單可對照 ${c.vs} 隊）；賽前仍無預估 ${c.none} 隊；來源有 9 人名單但本站收錄範圍沒有這場 ${outScope} 隊`
+  const line = `${pages.join("；")}｜有預估 ${c.games} 場；更新中 ${c.teams} 隊（有第二來源比對 ${c.cross} 隊，其中有不一致席位 ${c.uncertainTeams} 隊）；官方打線已出或已開賽而凍結 ${c.frozen} 隊（其中已記官方名單可對照 ${c.vs} 隊）；賽前仍無預估 ${c.none} 隊；來源有 9 人名單、首頁範圍還沒有這場（名單已存進 proj/sources.json）${outScope} 隊`
     + (errs.length ? "\n" + errs.map(e => "- " + e).join("\n") : "");
   fs.appendFileSync(`${OUT}/report.md`, `\n## 預估打線（${PROJ_RULES}，非官方）\n\n${line}\n`);
   console.log("預估打線：" + line);
