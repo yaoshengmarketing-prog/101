@@ -117,11 +117,38 @@ async function renderHome() {
   const projTag = (g, k) => { const p = g.proj?.[k]; if (!p) return "";
     if (p.vs) return `<span class="tag">${g[k].ab} 預估 vs 官方：人選 ${p.vs.people}/${p.vs.n}・棒次 ${p.vs.order}/${p.vs.n}</span>`;
     if (["official", "late"].includes(g[k].lineup.state) || g.status.code !== "pre") return "";
+    if (p.sourceStatusKey === "confirmed") return `<span class="tag ok">${g[k].ab} RotoWire 已確認名單（非 MLB 官方）</span>`;
     return `<span class="tag exp">${g[k].ab} 預估 ${p.n} 人${p.cc ? `・兩站人選 ${p.cc.people}/${p.cc.n}、棒次 ${p.cc.order}/${p.cc.n} 相同` : "・僅單一來源"}</span>`; };
   const wxTag = g => g.weather ? `<span class="tag">天氣：MLB 官方</span>` : g.forecast ? `<span class="tag">天氣：模型預報</span>` : "";
   document.addEventListener("click", e => { const b = e.target.closest("button[data-d],button[data-st]"); if (!b) return;
     if (b.dataset.d) state.day = b.dataset.d; if (b.dataset.st) state.status = b.dataset.st; draw(); });
   draw(); keepFresh(D, [], draw);
+}
+
+/* ================= 提前預估打線（data/proj/sources.json：來源有就先存，不管是否已進首頁今天／明天） ================= */
+const etToTW = (date, t) => { const m = /(\d+):(\d+)\s*(AM|PM)/i.exec(t || ""); if (!m) return null;
+  const h = (+m[1] % 12) + (/pm/i.test(m[3]) ? 12 : 0), tz = new Date(`${date}T16:00:00Z`).toLocaleString("en-US", { timeZone: "America/New_York", timeZoneName: "short" }).includes("EST") ? 5 : 4;
+  return new Date(Date.parse(`${date}T${String(h).padStart(2, "0")}:${m[2]}:00Z`) + tz * 36e5).toISOString(); };
+async function renderProj() {
+  let S; try { S = await load("proj/sources.json"); } catch (e) { return fail($("#games"), e); }
+  const T = S.teams || {}, games = new Map();
+  for (const [k, e] of Object.entries(T)) { if (e.source !== "RotoWire") continue; const gk = k.split("|").slice(0, 3).join("|"); (games.get(gk) || games.set(gk, { date: e.date, game: e.game || k.split("|")[2], time: e.time, sides: {} }).get(gk)).sides[e.side || k.split("|")[3]] = e; }
+  const rgOf = (e, side) => T[`RotoGrinders|${e.date}|${e.game}|${side}`];
+  const list = [...games.values()].sort((a, b) => (etToTW(a.date, a.time) || a.date).localeCompare(etToTW(b.date, b.time) || b.date)).filter(g => { const st = etToTW(g.date, g.time); return !st || Date.parse(st) > Date.now() - 6 * 36e5; });
+  const team = (g, side) => { const e = g.sides[side], ab = g.game.split("@")[side === "away" ? 0 : 1];
+    if (!e || !e.versions?.length) return `<div class="panel"><div class="lhead"><b>${esc(ab)}</b> <span class="tag na">來源還沒提供 9 人名單</span></div><p class="small">RotoWire 目前列 ${e?.n ?? 0} 人（本站最後檢查 ${stamp(e?.fetchedAt) || "—"}）。這是來源沒提供，不是本站漏抓。</p></div>`;
+    const v = e.versions.at(-1), f = e.versions[0], st = etToTW(g.date, g.time), before = at => st ? dur(Math.round((Date.parse(st) - Date.parse(at)) / 6e4)) : "表定時間未知";
+    const rg = rgOf(g, side)?.versions?.at(-1), c = rg ? cmpC(rg.slots, v.slots) : null;
+    return `<div class="panel"><div class="lhead"><b>${esc(ab)}</b> ${v.statusKey === "confirmed" ? `<span class="tag ok">RotoWire 已確認名單（非 MLB 官方）</span>` : `<span class="tag exp">RotoWire 預估（非官方）</span>`}</div>
+      <div class="lmeta"><span>第一份完整名單存下：<b>${stamp(f.at)}</b>（${before(f.at)}）</span>${e.noListBefore ? `<span>更早在 ${stamp(e.noListBefore)} 看到來源已有名單，但那時只記時間、沒存名單</span>` : ""}
+      <span>目前這版：${stamp(v.at)} 起・共 ${e.versions.length} 版・最後檢查 ${stamp(e.fetchedAt)}</span><span>${c ? `RotoGrinders 同隊：人選 ${c.people}/${c.n}、棒次 ${c.order}/${c.n} 相同` : "RotoGrinders 還沒有這場（只有當天頁），目前無法比對"}</span></div>
+      <table class="tbl lu"><tbody>${v.slots.map(x => `<tr><td class="n">${x.n}</td><td class="l">${esc(x.name)}</td><td>${esc(x.pos || "—")}</td><td>${BATS[x.bats] || "—"}</td></tr>`).join("")}</tbody></table></div>`; };
+  $("#dayTitle").innerHTML = `提前預估打線 <small>來源有就先存；共 ${list.length} 場</small>`;
+  $("#games").innerHTML = list.length ? list.map(g => { const any = Object.values(g.sides).find(e => e.pk), st = etToTW(g.date, g.time);
+    return `<section class="blk"><h2>${esc(g.game.replace("@", " @ "))} <small>美東 ${esc(g.date)} ${esc(g.time || "")}${st ? `・台灣 ${stamp(st)}` : ""}</small></h2>
+      <p class="small">${any ? `已進首頁今天／明天：<a href="game.html?pk=${any.pk}">看單場頁</a>（本站 ${stamp(any.inScopeAt)} 對到這場）` : "還沒進首頁今天／明天的範圍；名單已先存，這裡先看。"}</p>
+      <div class="two">${team(g, "away")}${team(g, "home")}</div></section>`; }).join("") : `<div class="empty">目前來源頁上沒有未開賽的比賽。</div>`;
+  $("#foot").innerHTML = `來源：RotoWire daily-lineups（今天＋明天頁，美東日期），RotoGrinders（只有當天）。時間都是本站看到的時間（台灣時間），不是來源發布時刻；不知道 MLB 官方何時公布。兩站一致不等於官方確認，分歧也不代表哪站錯。資料檔：data/proj/sources.json（${esc(S.rules)}）。`;
 }
 
 /* ================= 單場頁 ================= */
@@ -214,7 +241,7 @@ function projBlock(P, G) {
   const sum = !cc ? `只有 ${esc(P.source)} 一個來源，無法比對；照常提供，不等第二個來源。`
     : `<b>兩站比對：人選 ${cc.people}/${cc.n} 相同、棒次 ${cc.order}/${cc.n} 相同</b>${ord.length ? `；第 ${ord.join("、")} 棒是同一批人換了棒次` : ""}${who.length ? `；第 ${who.join("、")} 棒兩站排了不同的人` : ""}。兩站一致不等於官方確認，分歧也不代表哪一站錯。`;
   const F = P.first, same1 = F && F.at === P.changedAt;
-  return `<div class="lmeta"><span>來源：<b>${esc(P.source)}</b>（來源標示：${esc(P.sourceStatus || "—")}）${P.cross ? `，逐棒比對 <b>${esc(P.cross)}</b>` : ""}</span>
+  return `${P.sourceStatusKey === "confirmed" ? `<div class="notice">${esc(P.source)} 標示這份是 <b>Confirmed Lineup</b>（第三方已確認名單），不是預估${P.frozenAt ? "" : "；MLB 官方名單本站還沒取得"}。</div>` : ""}<div class="lmeta"><span>來源：<b>${esc(P.source)}</b>（來源標示：${esc(P.sourceStatus || "—")}）${P.cross ? `，逐棒比對 <b>${esc(P.cross)}</b>` : ""}</span>
       <span>本站首次取得：<b>${stamp(P.firstSeen)}</b>（${dur(minsTo(G, P.firstSeen))}）</span>
       <span>${same1 ? "名單從首次取得後沒有變動" : `名單最後變動：<b>${stamp(P.changedAt)}</b>`}・最後檢查 ${stamp(P.fetchedAt) || "—"}</span></div>
     ${P.retryFailedSince ? `<div class="notice warn">自 ${stamp(P.retryFailedSince)} 起重抓 ${esc(P.source)} 失敗，這是 ${stamp(P.fetchedAt)} 取得的版本。</div>` : ""}
@@ -223,14 +250,17 @@ function projBlock(P, G) {
     <p class="small">${sum}</p>
     <table class="tbl lu pj"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>打</th><th class="l">和 ${esc(P.cross || "第二來源")} 比對</th></tr></thead><tbody>${P.slots.map(s => `<tr${s.check === "diff" && !s.altAt ? ` class="unc"` : ""}><td class="n">${s.n}</td><td class="l">${esc(s.name)}</td><td>${esc(s.pos || "—")}</td><td>${BATS[s.bats] || "—"}</td><td class="l">${chk(s)}</td></tr>`).join("")}</tbody></table>
     ${P.slots.length < 9 ? `<p class="small">來源目前只列 ${P.slots.length} 棒。</p>` : ""}
-    ${F && !same1 ? `<details><summary class="small">首份完整預估（${stamp(F.at)}，${dur(minsTo(G, F.at))}）</summary><p class="small">${F.slots.map(s => `${s.n}. ${esc(s.name)}`).join("　")}</p></details>` : ""}`;
+    ${F && !same1 ? `<details><summary class="small">首份完整預估（${stamp(F.at)}，${dur(minsTo(G, F.at))}）</summary><p class="small">${F.slots.map(s => `${s.n}. ${esc(s.name)}`).join("　")}</p></details>` : ""}
+    ${versionsBlock(P, G)}`;
 }
 
 // 預估 vs 官方：官方名單以本站第一次看到的版本為基準；之後的臨場異動另列，不改基準
+const STK = k => k === "confirmed" ? "Confirmed（來源標示已確認）" : k === "expected" ? "Expected（預估）" : "來源標示未記";
+const verAt = (P, at) => (P.versions || []).find(v => v.at === at);
 function vsBlock(P, G) {
   const O = P.official; if (!O) return "";
-  const V = P.vsOfficial || {}, F = P.first, line = (c) => c ? `人選 <b>${c.people}/${c.n}</b>、棒次 <b>${c.order}/${c.n}</b> 與官方相同` : "—";
-  // 每格寫預估在這一棒排的人，再標他在官方名單的位置
+  const V = P.vsOfficial || {}, line = (c) => c ? `人選 <b>${c.people}/${c.n}</b>、棒次 <b>${c.order}/${c.n}</b> 與官方相同` : "—";
+  // 每格寫該版在這一棒排的人，再標他在官方名單的位置
   const mark = (list, x) => { if (!list) return `<td class="l">—</td>`; const y = list.find(z => z.n === x.n); if (!y) return `<td class="l">—</td>`;
     if (pkey(y.name) === pkey(x.name)) return `<td class="l">${esc(y.name)} <span class="small">✓</span></td>`;
     const at = O.slots.find(z => pkey(z.name) === pkey(y.name));
@@ -238,14 +268,25 @@ function vsBlock(P, G) {
   const L2 = P.officialLate, ko = new Set(O.slots.map(x => pkey(x.name))), kl = new Set((L2?.slots || []).map(x => pkey(x.name)));
   const lateDiff = L2 ? [...O.slots.filter(x => !kl.has(pkey(x.name))).map(x => `${esc(x.name)} 退出`), ...L2.slots.filter(x => !ko.has(pkey(x.name))).map(x => `${esc(x.name)} 加入（第 ${x.n} 棒）`),
     ...(() => { const m = L2.slots.filter(x => ko.has(pkey(x.name)) && pkey(O.slots.find(y => y.n === x.n)?.name) !== pkey(x.name)).length; return m ? [`${m} 棒棒次調整`] : []; })()] : [];
-  return `<div class="vsbox"><b>預估 vs 官方</b>（官方基準＝本站 ${stamp(O.at)} 第一次看到的官方名單${O.capturedAfterLate ? "；本站第一次記到時已是臨場異動後的版本" : ""}）
-    <ul class="small">
-      <li>首份完整預估（${F ? `${stamp(F.at)}，${dur(minsTo(G, F.at))}` : "v0.1 舊紀錄名單改過，無法確定首份，不列"}）：${F ? line(V.first) : "—"}</li>
-      <li>官方公布前最後一版（${F && F.at === P.changedAt ? "和首份是同一份名單，之後沒有變動" : `這份名單自 ${stamp(P.changedAt)} 起`}，最後檢查 ${stamp(P.fetchedAt) || "—"}）：${line(V.last)}</li>
-      ${L2 ? `<li>官方確認後的臨場異動（${stamp(L2.at)}）：${lateDiff.join("、") || "只換守位"}。上面的對照仍以第一次看到的官方名單為準。</li>` : ""}
+  const Fv = V.first && (verAt(P, V.first.at) || (P.first?.at === V.first.at ? P.first : null)), Lv = V.last && (verAt(P, V.last.at) || (V.last.at === P.first?.at ? P.first : { slots: P.slots })), Cv = V.confirmed && verAt(P, V.confirmed.at);
+  const same = V.first && V.last && V.first.at === V.last.at;
+  return `<div class="vsbox"><b>預估 vs 官方</b>（官方基準＝本站 ${stamp(O.at)} 第一次看到的官方名單；不知道官方真正公布時刻，只用本站首次取得時間${O.capturedAfterLate ? "；本站第一次記到時已是臨場異動後的版本" : ""}）
+    <p class="small"><b>預估的對照表現</b>（只算來源標示 Expected 的版本）</p><ul class="small">
+      <li>首份完整預估（${V.first ? `${stamp(V.first.at)} 存下，${dur(minsTo(G, V.first.at))}` : "沒有可用的首份（舊紀錄名單改過或來源一開始就標示已確認）"}）：${line(V.first)}</li>
+      <li>官方公布前最後一版預估（${V.last ? same ? "和首份是同一版，之後沒有其他預估版本" : `${stamp(V.last.at)} 存下的版本` : "—"}）：${line(V.last)}</li>
     </ul>
-    <details><summary class="small">逐棒對照</summary><table class="tbl lu"><thead><tr><th>棒</th><th class="l">官方（基準）</th><th class="l">首份預估這棒</th><th class="l">最後一版預估這棒</th></tr></thead><tbody>${O.slots.map(x => `<tr><td class="n">${x.n}</td><td class="l">${esc(x.name)}</td>${mark(F?.slots, x)}${mark(P.slots, x)}</tr>`).join("")}</tbody></table></details></div>`;
+    ${V.confirmed ? `<p class="small"><b>第三方已確認名單</b>（不算預估表現）：${esc(P.source)} 標示 Confirmed Lineup 的版本，本站 ${stamp(V.confirmed.at)} 看到，比本站首次取得 MLB 官方名單早 ${V.confirmed.leadMinutes} 分鐘；與官方${line(V.confirmed)}。</p>` : ""}
+    ${L2 ? `<p class="small">官方確認後的臨場異動（${stamp(L2.at)}）：${lateDiff.join("、") || "只換守位"}。上面的對照仍以第一次看到的官方名單為準。</p>` : ""}
+    <details><summary class="small">逐棒對照</summary><table class="tbl lu"><thead><tr><th>棒</th><th class="l">官方（基準）</th><th class="l">首份預估這棒</th><th class="l">最後一版預估這棒</th>${Cv ? `<th class="l">第三方確認名單這棒</th>` : ""}</tr></thead><tbody>${O.slots.map(x => `<tr><td class="n">${x.n}</td><td class="l">${esc(x.name)}</td>${mark(Fv?.slots, x)}${mark(Lv?.slots, x)}${Cv ? mark(Cv.slots, x) : ""}</tr>`).join("")}</tbody></table></details></div>`;
 }
+// 本站保存的每一版名單（時間＝本站看到的時間，不是來源發布時刻）
+function versionsBlock(P, G) {
+  const L = P.versions || []; if (!L.length) return "";
+  return `<details><summary class="small">本站保存的名單版本（${L.length} 版）</summary><table class="tbl lu"><thead><tr><th class="l">本站看到</th><th class="l">來源標示</th><th class="l">和前一版比</th></tr></thead><tbody>${L.map((v, i) => { const p = L[i - 1], c = p ? { ...(cmpC(p.slots, v.slots)) } : null;
+    return `<tr><td class="l">${stamp(v.at)}（${dur(minsTo(G, v.at))}）${v.backfill ? `<br><span class="small">由 git ${esc(v.backfill)} 回補</span>` : ""}</td><td class="l">${STK(v.statusKey)}</td><td class="l">${c ? `人選 ${c.people}/${c.n}、棒次 ${c.order}/${c.n} 相同` : "第一版"}</td></tr>`; }).join("")}</tbody></table>
+    ${P.sourceSeenNoListAt ? `<p class="small">另外：本站在 ${stamp(P.sourceSeenNoListAt)} 已看到來源有這隊 9 人名單，但當時的版本（v0.2）只記時間、沒存名單，所以不列為首份。</p>` : ""}</details>`;
+}
+const cmpC = (a, b) => { const ka = new Set(a.map(x => pkey(x.name))), at = new Map(a.map(x => [x.n, pkey(x.name)])); return { people: b.filter(x => ka.has(pkey(x.name))).length, order: b.filter(x => at.get(x.n) === pkey(x.name)).length, n: b.length }; };
 
 /* ================= 球場天氣與風向圖：只呈現資料，不做有利／不利判斷 ================= */
 const REL_DEG = { "Out To CF": 0, "Out To RF": 45, "L To R": 90, "In From LF": 135, "In From CF": 180, "In From RF": -135, "R To L": -90, "Out To LF": -45 };
