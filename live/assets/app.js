@@ -80,7 +80,9 @@ async function renderHome() {
   const bpOf = pk => BI[pk]?.status || "none";
   const bpTag = pk => ({ incomplete: `<span class="tag late">牛棚部分場次未取得</span>`, failed: `<span class="tag na">牛棚未取得</span>`, none: `<span class="tag na">牛棚未取得</span>` })[bpOf(pk)] || "";
   const qs = new URLSearchParams(location.search);
-  const state = { day: qs.get("d") === "tomorrow" ? "tomorrow" : "today", status: "all" };
+  const todayD = D.days.find(d => d.key === "today");
+  let auto = !qs.get("d") && todayD && !todayD.games.some(g => ["pre", "live"].includes(g.status.code)) && D.days.some(d => d.key === "tomorrow");
+  const state = { day: qs.get("d") === "tomorrow" || auto ? "tomorrow" : "today", status: "all" };
   const F = [["all", "全部"], ["pre", "賽前"], ["live", "進行中"], ["final", "已結束"], ["off", "延期／取消"]];
   const dayEl = $("#days"), stEl = $("#status");
   const draw = () => {
@@ -100,7 +102,8 @@ async function renderHome() {
       <span>天氣 官方 <b class="num">${cnt(g => g.weather)}/${n}</b>・預報 <b class="num">${cnt(g => !g.weather && g.forecast)}/${n}</b>${cnt(g => !g.weather && !g.forecast) ? `・都沒有 ${cnt(g => !g.weather && !g.forecast)}` : ""}</span>
       <span>盤口 <b class="num">0/${n}</b></span>
       <small>資料最後變動 ${D.generatedAtTW}</small></div>`;
-    $("#games").innerHTML = ready + (games.length ? games.map(card).join("") : `<div class="empty">${n ? "此篩選條件下沒有比賽。" : "這一天沒有 MLB 比賽。"}</div>`);
+    const autoNote = auto && state.day === "tomorrow" ? `<div class="notice">今天${todayD.games.length ? "的比賽都已結束或取消" : "沒有 MLB 比賽"}，先顯示<b>明天</b>；要看今天請按上方「今天」。</div>` : "";
+    $("#games").innerHTML = autoNote + ready + (games.length ? games.map(card).join("") : `<div class="empty">${n ? "此篩選條件下沒有比賽。" : "這一天沒有 MLB 比賽。"}</div>`);
   };
   const card = g => {
     const sc = ["final", "live"].includes(g.status.code);
@@ -121,7 +124,7 @@ async function renderHome() {
     return `<span class="tag exp">${g[k].ab} 預估 ${p.n} 人${p.cc ? `・兩站人選 ${p.cc.people}/${p.cc.n}、棒次 ${p.cc.order}/${p.cc.n} 相同` : "・僅單一來源"}</span>`; };
   const wxTag = g => g.weather ? `<span class="tag">天氣：MLB 官方</span>` : g.forecast ? `<span class="tag">天氣：模型預報</span>` : "";
   document.addEventListener("click", e => { const b = e.target.closest("button[data-d],button[data-st]"); if (!b) return;
-    if (b.dataset.d) state.day = b.dataset.d; if (b.dataset.st) state.status = b.dataset.st; draw(); });
+    if (b.dataset.d) { state.day = b.dataset.d; auto = false; history.replaceState(null, "", `?d=${state.day}`); } if (b.dataset.st) state.status = b.dataset.st; draw(); });
   draw(); keepFresh(D, [], draw);
 }
 
@@ -164,7 +167,7 @@ async function renderGame() {
   const C = await load(`ctx/${pk}.json`).catch(() => null);
   const A = G.away, H = G.home;
   document.title = `運彩 101｜${A.name} @ ${H.name}（${dayLabel(G.twDate)}）`;
-  $("#crumb").innerHTML = `<a href="./">← 本日比賽</a>　MLB　${dayLabel(G.twDate)}　gamePk ${G.pk}`;
+  $("#crumb").innerHTML = `<a href="./${M?.days.find(d => d.date === G.twDate)?.key === "tomorrow" ? "?d=tomorrow" : ""}">← 本日比賽</a>　MLB　${dayLabel(G.twDate)}　gamePk ${G.pk}`;
   const sc = ["final", "live"].includes(G.status.code);
   $("#hero").innerHTML = `
     <div class="vs">
