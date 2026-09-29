@@ -2178,7 +2178,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Game Over",
    "wx": {
     "firstSeen": "2026-09-29T14:45:59.767Z",
     "key": "{\"condition\":\"Sunny\",\"temp\":\"80\",\"wind\":\"3 mph, Calm\"}",
