@@ -67,7 +67,7 @@ jobs:
       - name: 首頁卡片同步天氣預報與預估打線摘要
         continue-on-error: true
         run: node scripts/sync-cards.mjs .build
-      - name: 先發 × 對方打線（對位卡試作，只算 scripts/matchup.mjs MATCHUP_PKS；失敗不擋當次資料）
+      - name: 先發 × 對方打線（對位卡，今天／明天賽前比賽；失敗不擋當次資料，保留上一版）
         continue-on-error: true
         run: node scripts/matchup.mjs .build
       - name: 情境卡（賽前計算，開賽後凍結）
