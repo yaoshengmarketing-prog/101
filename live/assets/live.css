@@ -92,3 +92,4 @@ table.bp td.empty{color:var(--muted);font-size:12px}
 .mu .chip.R{background:var(--surface);color:var(--ink);border-color:var(--ink);font-weight:600}
 .mu .chip.S{border-style:dashed;color:var(--ink)}
 .mu table.mut{margin-top:8px;font-size:13px}.mu table.mut th small,.mu table.mut td small{display:block;font-size:10.5px;color:var(--muted);font-weight:400}
+.bpnote.bpsum{margin:0 0 10px;color:var(--ink);font-size:12.5px}

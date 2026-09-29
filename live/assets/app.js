@@ -227,7 +227,7 @@ async function renderGame() {
       <p class="small">${why}以下為<b>上一場官方打線</b>，僅供參考，不是本場預估。</p>${prevBlock(t)}</div>`; };
   const lineups = `<section class="blk" id="lu"><h2>打線 <small>官方打線 AVG／OPS 為 2026 本季；預估打線是第三方預測，不是官方</small></h2><div class="two">${lu(A, "away")}${lu(H, "home")}</div></section>`;
   const missing = `<section class="blk" id="na"><h2>本站尚未取得</h2><div class="panel"><p class="small">盤口、主審、傷兵：尚未接入，不以示範值填補。</p><p class="small">已接入但有條件：天氣（MLB 官方開賽前幾小時才有，更早用模型預報，表定開賽前 48 小時內）、預估打線（第三方預測，非官方；來源當天有提供才有）。</p></div></section>`;
-  $("#game").innerHTML = overview + wxSection(G) + pitchers + muSection(MU, G) + ctxSection(C, G) + bullpen(B, G) + lineups + missing;
+  $("#game").innerHTML = overview + wxSection(G) + pitchers + muSection(MU, G) + ctxSection(C, G) + bullpen(B, G, C) + lineups + missing;
 }
 
 /* ================= 先發 × 對方打線（scripts/matchup.mjs；今天／明天賽前比賽） ================= */
@@ -250,11 +250,11 @@ function muSection(MU, G) {
     if (!p.pitcher) return `<div class="panel mu"><div class="lhead"><b>${esc(p.ab)} 先發</b> ${NA("先發未公布")}</div>${stale}<p class="small">先發公布後，下次更新會算這張卡（對 ${esc(bt.ab)} ${esc(bt.name)}打線）。</p></div>`;
     const lu = p.lineup, sw = lu && lu.comp.S.length && ["L", "R"].includes(p.pitcher.hand);
     const hl = p.focus || "";
-    const row = (k, x, nEff) => `<div class="mur${hl === k ? " hl" : ""}"><span class="k">對${k === "L" ? "左" : "右"}打${lu && p.eff ? `<small>${sw ? `依通常站位估算約 ${nEff} 人` : `打線${k === "L" ? "左" : "右"}打 ${nEff} 人`}</small>` : ""}</span>
+    const row = (k, x, nEff) => `<div class="mur${hl === k ? " hl" : ""}"><span class="k">對${k === "L" ? "左" : "右"}打${lu && p.eff ? `<small>${sw ? `估算約 ${nEff} 人` : `打線${k === "L" ? "左" : "右"}打 ${nEff} 人`}</small>` : ""}</span>
       ${x ? `<span class="bar"><i style="width:${Math.min(100, +x.ops * 100)}%"></i></span><b class="num">${x.ops}</b><small>${x.pa} 打席</small>` : `<span class="bar"></span>${NA("沒有有效數字")}<small></small>`}</div>`;
     const c = lu?.comp, chips = lu ? `<div class="lus" aria-label="打線 1–9 棒打擊側">${lu.slots.map(x => { const k = ["L", "R", "S"].includes(x.bats) ? x.bats : "U";
       return `<span class="chip ${k}" title="${esc(x.name)}"><b>${x.n}</b>${BK[k]}</span>`; }).join("")}</div>
-      <p class="small">打線：${esc(lu.label)}（${lu.source.startsWith("proj") ? "本站取得" : "本站首次看到"} ${stamp(lu.at) || "—"}）・1–9 棒：左打 ${c.L.length}、右打 ${c.R.length}、左右開弓 ${c.S.length}、打擊側未知 ${c.U.length}${c.n < 9 ? `（名單只有 ${c.n} 人）` : ""}。${c.S.length ? (sw ? `左右開弓依通常站位估算：面對${p.pitcher.hand === "R" ? "右投站左" : "左投站右"}打席（賽前估算，不是這場已確認的站位）。` : "先發慣用手未知，左右開弓無法估算站位。") : ""}${c.U.length ? "打擊側未知的不計入左右。" : ""}</p>`
+      <p class="small">打線：${esc(lu.label)}（${lu.source.startsWith("proj") ? "本站取得" : "本站首次看到"} ${stamp(lu.at) || "—"}）${c.n < 9 ? `，名單只有 ${c.n} 人` : ""}。${c.S.length ? (sw ? `開＝左右開弓，面對${p.pitcher.hand === "R" ? "右投通常站左" : "左投通常站右"}打席（估算，不是這場已確認的站位）。` : "開＝左右開弓，先發慣用手未知，無法估算站位。") : ""}${c.U.length ? "?＝打擊側未知，不計入左右。" : ""}</p>`
       : `<p class="small">${esc(bt.name)}打線：MLB 官方尚未公布，也沒有預估名單。</p>`;
     const rs = p.recent.starts;
     const recent = `<table class="tbl mut"><thead><tr><th class="l">最近${rs.length ? ` ${rs.length} 次` : ""}先發<small>美國日期；不含中繼登板</small></th><th>局數</th><th>用球</th><th>自責分</th></tr></thead><tbody>
@@ -263,7 +263,7 @@ function muSection(MU, G) {
     return `<div class="panel mu"><div class="lhead"><b>${esc(p.pitcher.ab)} ${esc(p.pitcher.name)}</b> ${hand(p.pitcher.hand)} <span class="small">× ${esc(bt.ab)} ${esc(bt.name)}打線</span>
       ${lu ? (lu.source.startsWith("proj") ? `<span class="tag exp">${lu.source === "proj-confirmed" ? "RotoWire 確認名單（非官方）" : "預估打線（非官方）"}</span>` : `<span class="tag ok">官方打線</span>`) : ""}</div>${stale}
       <div class="muobs">${p.obs.map(x => `<p>${esc(x)}</p>`).join("")}</div>
-      <div class="mug"><p class="small">被打 OPS（${esc(p.splitScope)}，按那個打席站哪一邊算）</p>${row("L", p.splits.vl, p.eff?.L)}${row("R", p.splits.vr, p.eff?.R)}<p class="small">這是本季分項紀錄（含他本季所有登板），請連同打席數閱讀，不宜單憑分項高低推定本場表現。</p></div>
+      <div class="mug"><p class="small">被打 OPS（${esc(p.splitScope)}，按那個打席站哪一邊算）</p>${row("L", p.splits.vl, p.eff?.L)}${row("R", p.splits.vr, p.eff?.R)}<p class="small">分項只算 ${esc(p.splitScope)} 的登板，請連同打席數閱讀，不宜單憑分項高低推定本場表現。</p></div>
       ${chips}${recent}</div>`;
   };
   return `<section class="blk" id="mu"><h2>先發 × 對方打線 <small>${G.status.code === "pre" ? "賽前每次更新重算" : "開賽後保留最後一次賽前計算"}・計算於 ${stamp(MU.fetchedAt)}</small></h2>
@@ -449,13 +449,16 @@ function bpTable(t, name, side, T) {
     <thead><tr><th class="nm">中繼投手</th>${head}<th class="sk">連續</th></tr></thead>
     <tbody><tr class="gms"><th scope="row">比賽</th>${gms}<td></td></tr><tr class="sum"><th scope="row">牛棚合計</th>${sum}<td></td></tr>${rows}</tbody></table></div>`;
 }
-function bullpen(B, G) {
+function bullpen(B, G, C) {
   const h = `<h2>牛棚近期使用 <small>本場開打前・中繼投手用球數${B?.fetchedAt ? `・資料取得 ${stamp(B.fetchedAt)}` : ""}</small></h2>`;
   if (!B) return `<section class="blk" id="bp">${h}<div class="panel"><p class="small">${NA()} 本場牛棚資料尚未產生。</p></div></section>`;
   if (B.status === "failed") return `<section class="blk" id="bp">${h}<div class="notice bad"><b>這場的牛棚資料這次沒有取得</b>（${esc(B.error)}）。下次自動更新會再試；不以 0 或舊資料代替。</div></section>`;
   const retry = B.retryFailedSince ? `<div class="notice warn"><b>這場牛棚自 ${stamp(B.retryFailedSince)} 起重抓失敗</b>（${esc(B.retryError || "")}）。以下仍是 ${stamp(B.fetchedAt)} 取得的資料，之後的登板不在表內。</div>` : "";
   const warn = retry + (B.status === "incomplete" ? `<div class="notice warn"><b>有比賽的 box score 沒有取得。</b>標「部分小計」的日子只含已取得的場次，不是當天完整合計；「?」＝那天資料不完整、無法確認有沒有登板；只在未取得場次登板的投手不會出現在表上。</div>` : "");
-  return `<section class="blk" id="bp">${h}${warn}<div class="panel">
+  // 牛棚背景（scripts/ctx.mjs bpDetail）：前三日誰投最多、哪天、之後到本場前有沒有再登板；只列事實
+  const bs = ["away", "home"].map(k => C?.bp?.[k] && `<li>${esc(C.bp[k].text)}${C.bp[k].partial ? "（前三日有資料不完整，只算已取得的部分）" : ""}</li>`).filter(Boolean);
+  const bgs = bs.length ? `<ul class="bpnote bpsum">${bs.join("")}<li>沒有登板紀錄只表示這段期間沒有出賽，不代表體力狀況。</li></ul>` : "";
+  return `<section class="blk" id="bp">${h}${warn}<div class="panel">${bgs}
     ${bpTable(B.summary.away, G.away.name, "客隊", B.target)}${bpTable(B.summary.home, G.home.name, "主隊", B.target)}
     <ul class="bpnote">
       <li>日期＝美國賽程日。前三欄是本場之前的三個完整日；「本日」只算同一天比本場早開打的比賽（例如雙重賽 G1）。</li>
