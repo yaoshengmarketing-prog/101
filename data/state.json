@@ -2241,11 +2241,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-29T17:01:04.575Z",
-    "key": "{\"condition\":\"Roof Closed\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
-    "changedAt": "2026-09-29T17:01:04.575Z"
+    "key": "{\"condition\":\"Roof Closed\",\"temp\":\"73\",\"wind\":\"0 mph, None\"}",
+    "changedAt": "2026-09-29T21:16:02.583Z"
    }
   },
   "849851": {
