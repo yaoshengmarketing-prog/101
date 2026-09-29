@@ -737,3 +737,4 @@
 {"at":"2026-09-29T21:16:02.583Z","pk":849849,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-09-29T21:31:09.748Z","pk":849843,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-29T21:31:09.748Z","pk":849843,"type":"lineup_official","side":"home"}
+{"at":"2026-09-29T22:31:11.199Z","pk":849843,"type":"lineup_official","side":"away"}
