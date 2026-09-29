@@ -257,13 +257,13 @@ function muSection(MU, G) {
       <p class="small">打線：${esc(lu.label)}（${lu.source.startsWith("proj") ? "本站取得" : "本站首次看到"} ${stamp(lu.at) || "—"}）・1–9 棒：左打 ${c.L.length}、右打 ${c.R.length}、左右開弓 ${c.S.length}、打擊側未知 ${c.U.length}${c.n < 9 ? `（名單只有 ${c.n} 人）` : ""}。${c.S.length ? (sw ? `左右開弓依通常站位估算：面對${p.pitcher.hand === "R" ? "右投站左" : "左投站右"}打席（賽前估算，不是這場已確認的站位）。` : "先發慣用手未知，左右開弓無法估算站位。") : ""}${c.U.length ? "打擊側未知的不計入左右。" : ""}</p>`
       : `<p class="small">${esc(bt.name)}打線：MLB 官方尚未公布，也沒有預估名單。</p>`;
     const rs = p.recent.starts;
-    const recent = `<table class="tbl mut"><thead><tr><th class="l">最近 ${rs.length} 次先發<small>美國日期；不含中繼登板</small></th><th>局數</th><th>用球</th><th>自責分</th></tr></thead><tbody>
-      ${rs.slice().reverse().map(x => `<tr><td class="l">${mdd(x.date)} ${x.ha}場對${esc(x.opp || "—")}${GT[x.gameType] ? `<small>${GT[x.gameType]}</small>` : ""}</td><td class="num">${x.ip ?? "—"}</td><td class="num">${x.np ?? "—"}</td><td class="num">${x.er ?? "—"}</td></tr>`).join("") || `<tr><td colspan="4" class="empty">本季沒有先發紀錄</td></tr>`}</tbody></table>
+    const recent = `<table class="tbl mut"><thead><tr><th class="l">最近${rs.length ? ` ${rs.length} 次` : ""}先發<small>美國日期；不含中繼登板</small></th><th>局數</th><th>用球</th><th>自責分</th></tr></thead><tbody>
+      ${rs.slice().reverse().map(x => `<tr><td class="l">${mdd(x.date)} ${x.ha}場對${esc(x.opp || "—")}${GT[x.gameType] ? `<small>${GT[x.gameType]}</small>` : ""}</td><td class="num">${x.ip ?? "—"}</td><td class="num">${x.np ?? "—"}</td><td class="num">${x.er ?? "—"}</td></tr>`).join("") || `<tr><td colspan="4" class="empty">${p.recent.totalApps ? `本季沒有先發紀錄（登板 ${p.recent.totalApps} 次都是後援）` : p.recent.totalApps === 0 ? "查不到本季大聯盟登板紀錄" : "本季沒有先發紀錄"}</td></tr>`}</tbody></table>
       ${p.recentNote ? `<p class="small">${esc(p.recentNote)}</p>` : ""}`;
     return `<div class="panel mu"><div class="lhead"><b>${esc(p.pitcher.ab)} ${esc(p.pitcher.name)}</b> ${hand(p.pitcher.hand)} <span class="small">× ${esc(bt.ab)} ${esc(bt.name)}打線</span>
       ${lu ? (lu.source.startsWith("proj") ? `<span class="tag exp">${lu.source === "proj-confirmed" ? "RotoWire 確認名單（非官方）" : "預估打線（非官方）"}</span>` : `<span class="tag ok">官方打線</span>`) : ""}</div>${stale}
       <div class="muobs">${p.obs.map(x => `<p>${esc(x)}</p>`).join("")}</div>
-      <div class="mug"><p class="small">被打 OPS（${esc(p.splitScope)}，按那個打席站哪一邊算）</p>${row("L", p.splits.vl, p.eff?.L)}${row("R", p.splits.vr, p.eff?.R)}</div>
+      <div class="mug"><p class="small">被打 OPS（${esc(p.splitScope)}，按那個打席站哪一邊算）</p>${row("L", p.splits.vl, p.eff?.L)}${row("R", p.splits.vr, p.eff?.R)}<p class="small">這是本季分項紀錄（含他本季所有登板），請連同打席數閱讀，不宜單憑分項高低推定本場表現。</p></div>
       ${chips}${recent}</div>`;
   };
   return `<section class="blk" id="mu"><h2>先發 × 對方打線 <small>${G.status.code === "pre" ? "賽前每次更新重算" : "開賽後保留最後一次賽前計算"}・計算於 ${stamp(MU.fetchedAt)}</small></h2>
