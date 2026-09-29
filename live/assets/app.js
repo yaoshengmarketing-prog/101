@@ -230,36 +230,45 @@ async function renderGame() {
   $("#game").innerHTML = overview + wxSection(G) + pitchers + muSection(MU, G) + ctxSection(C, G) + bullpen(B, G) + lineups + missing;
 }
 
-/* ================= 先發 × 對方打線（scripts/matchup.mjs；試作，只有 MATCHUP_PKS 的比賽有檔） ================= */
+/* ================= 先發 × 對方打線（scripts/matchup.mjs；今天／明天賽前比賽） ================= */
+// 打線版本簽章：和 scripts/matchup.mjs lineupSig 同一套規則；卡片記下的 basis 和目前單場資料不同＝卡片還是舊版本
+const lineupSig = (g, side) => { const L = g[side]?.lineup, P = g.proj?.[side];
+  if (["official", "late"].includes(L?.state) && L.slots?.length) return `official:${L.slots.map(x => x.id).join(",")}`;
+  if (P?.slots?.length) return `proj:${P.sourceStatusKey || ""}:${P.slots.map(x => x.name).join(",")}`;
+  return "none"; };
 const GT = { R: "", F: "外卡賽", D: "分區賽", L: "聯盟冠軍賽", W: "世界大賽" };
 function muSection(MU, G) {
-  if (!MU?.pairs) return "";
+  if (!MU?.pairs) return G.status.code === "pre" ? `<section class="blk" id="mu"><h2>先發 × 對方打線</h2><div class="panel"><p class="small">這場的對位卡還沒有產生（可能是剛進今天／明天範圍，或這次計算失敗），下次更新會再算。</p></div></section>` : "";
   const mdd = d => `${+d.slice(5, 7)}/${+d.slice(8, 10)}`, BK = { L: "左", R: "右", S: "開", U: "?" };
   const pair = p => {
-    const t = G[p.pitcherSide];
-    if (!p.pitcher) return `<div class="panel mu"><div class="lhead"><b>${esc(p.ab)} 先發</b> ${NA("先發未公布")}</div></div>`;
-    const stale = t.sp?.id !== p.pitcher.id ? `<div class="notice warn">先發已改為 <b>${esc(t.sp?.name || "未公布")}</b>，這張卡仍是 ${esc(p.pitcher.name)} 的資料（${stamp(MU.fetchedAt)} 計算，下次更新重算）。</div>` : "";
-    const lu = p.lineup, bt = G[p.battingSide], luStale = lu && lu.source.startsWith("proj") && ["official", "late"].includes(bt.lineup.state) ? `<div class="notice warn">MLB 官方打線已公布，這張卡還是預估打線的組成（下次更新改用官方）。</div>` : "";
+    const t = G[p.pitcherSide], bt = G[p.battingSide], B = p.basis;
+    // 舊版本：先發換人、打線換版本（預估改版、預估變官方、官方臨場異動）但這次重算沒成功
+    const spNow = t.sp?.id ?? null, luNow = lineupSig(G, p.battingSide), what = [];
+    if (B && B.sp !== spNow) what.push(`先發${spNow ? `已是 ${esc(t.sp.name)}` : "目前未公布"}`);
+    if (B && B.lineup !== luNow) what.push(`${esc(bt.ab)} 打線已有新版本（${luNow.startsWith("official") ? "MLB 官方打線" : luNow.startsWith("proj") ? "預估打線更新" : "目前沒有打線"}）`);
+    const stale = what.length && G.status.code === "pre" ? `<div class="notice warn"><b>這張卡還是 ${stamp(MU.fetchedAt)} 的舊版本</b>：${what.join("；")}，這次重算沒有成功，下次更新再算。</div>` : "";
+    if (!p.pitcher) return `<div class="panel mu"><div class="lhead"><b>${esc(p.ab)} 先發</b> ${NA("先發未公布")}</div>${stale}<p class="small">先發公布後，下次更新會算這張卡（對 ${esc(bt.ab)} ${esc(bt.name)}打線）。</p></div>`;
+    const lu = p.lineup, sw = lu && lu.comp.S.length && ["L", "R"].includes(p.pitcher.hand);
     const hl = p.focus || "";
-    const row = (k, x, nEff) => `<div class="mur${hl === k ? " hl" : ""}"><span class="k">對${k === "L" ? "左" : "右"}打${lu && p.eff ? `<small>今天站${k === "L" ? "左" : "右"}打席 ${nEff} 人</small>` : ""}</span>
-      ${x ? `<span class="bar"><i style="width:${Math.min(100, +x.ops * 100)}%"></i></span><b class="num">${x.ops}</b><small>${x.pa} 打席</small>` : `<span class="bar"></span>${NA()}<small></small>`}</div>`;
+    const row = (k, x, nEff) => `<div class="mur${hl === k ? " hl" : ""}"><span class="k">對${k === "L" ? "左" : "右"}打${lu && p.eff ? `<small>${sw ? `依通常站位估算約 ${nEff} 人` : `打線${k === "L" ? "左" : "右"}打 ${nEff} 人`}</small>` : ""}</span>
+      ${x ? `<span class="bar"><i style="width:${Math.min(100, +x.ops * 100)}%"></i></span><b class="num">${x.ops}</b><small>${x.pa} 打席</small>` : `<span class="bar"></span>${NA("沒有有效數字")}<small></small>`}</div>`;
     const c = lu?.comp, chips = lu ? `<div class="lus" aria-label="打線 1–9 棒打擊側">${lu.slots.map(x => { const k = ["L", "R", "S"].includes(x.bats) ? x.bats : "U";
       return `<span class="chip ${k}" title="${esc(x.name)}"><b>${x.n}</b>${BK[k]}</span>`; }).join("")}</div>
-      <p class="small">打線：${esc(lu.label)}（${lu.source.startsWith("proj") ? "本站取得" : "本站首次看到"} ${stamp(lu.at) || "—"}）・1–9 棒：左打 ${c.L.length}、右打 ${c.R.length}、左右開弓 ${c.S.length}、打擊側未知 ${c.U.length}${c.n < 9 ? `（名單只有 ${c.n} 人）` : ""}。${c.S.length ? `左右開弓面對${p.pitcher.hand === "R" ? "右投通常站左打席" : p.pitcher.hand === "L" ? "左投通常站右打席" : "的站位要看先發慣用手（未知，不計入）"}。` : ""}</p>`
+      <p class="small">打線：${esc(lu.label)}（${lu.source.startsWith("proj") ? "本站取得" : "本站首次看到"} ${stamp(lu.at) || "—"}）・1–9 棒：左打 ${c.L.length}、右打 ${c.R.length}、左右開弓 ${c.S.length}、打擊側未知 ${c.U.length}${c.n < 9 ? `（名單只有 ${c.n} 人）` : ""}。${c.S.length ? (sw ? `左右開弓依通常站位估算：面對${p.pitcher.hand === "R" ? "右投站左" : "左投站右"}打席（賽前估算，不是這場已確認的站位）。` : "先發慣用手未知，左右開弓無法估算站位。") : ""}${c.U.length ? "打擊側未知的不計入左右。" : ""}</p>`
       : `<p class="small">${esc(bt.name)}打線：MLB 官方尚未公布，也沒有預估名單。</p>`;
     const rs = p.recent.starts;
     const recent = `<table class="tbl mut"><thead><tr><th class="l">最近 ${rs.length} 次先發<small>美國日期；不含中繼登板</small></th><th>局數</th><th>用球</th><th>自責分</th></tr></thead><tbody>
       ${rs.slice().reverse().map(x => `<tr><td class="l">${mdd(x.date)} ${x.ha}場對${esc(x.opp || "—")}${GT[x.gameType] ? `<small>${GT[x.gameType]}</small>` : ""}</td><td class="num">${x.ip ?? "—"}</td><td class="num">${x.np ?? "—"}</td><td class="num">${x.er ?? "—"}</td></tr>`).join("") || `<tr><td colspan="4" class="empty">本季沒有先發紀錄</td></tr>`}</tbody></table>
       ${p.recentNote ? `<p class="small">${esc(p.recentNote)}</p>` : ""}`;
     return `<div class="panel mu"><div class="lhead"><b>${esc(p.pitcher.ab)} ${esc(p.pitcher.name)}</b> ${hand(p.pitcher.hand)} <span class="small">× ${esc(bt.ab)} ${esc(bt.name)}打線</span>
-      ${lu ? (lu.source.startsWith("proj") ? `<span class="tag exp">${lu.source === "proj-confirmed" ? "RotoWire 確認名單（非官方）" : "預估打線（非官方）"}</span>` : `<span class="tag ok">官方打線</span>`) : ""}</div>${stale}${luStale}
+      ${lu ? (lu.source.startsWith("proj") ? `<span class="tag exp">${lu.source === "proj-confirmed" ? "RotoWire 確認名單（非官方）" : "預估打線（非官方）"}</span>` : `<span class="tag ok">官方打線</span>`) : ""}</div>${stale}
       <div class="muobs">${p.obs.map(x => `<p>${esc(x)}</p>`).join("")}</div>
       <div class="mug"><p class="small">被打 OPS（${esc(p.splitScope)}，按那個打席站哪一邊算）</p>${row("L", p.splits.vl, p.eff?.L)}${row("R", p.splits.vr, p.eff?.R)}</div>
       ${chips}${recent}</div>`;
   };
-  return `<section class="blk" id="mu"><h2>先發 × 對方打線 <small>試作（目前只有這一場）・${G.status.code === "pre" ? "賽前每次更新重算" : "開賽後保留最後一次賽前計算"}・計算於 ${stamp(MU.fetchedAt)}</small></h2>
+  return `<section class="blk" id="mu"><h2>先發 × 對方打線 <small>${G.status.code === "pre" ? "賽前每次更新重算" : "開賽後保留最後一次賽前計算"}・計算於 ${stamp(MU.fetchedAt)}</small></h2>
     <div class="two">${MU.pairs.map(pair).join("")}</div>
-    <p class="small">資料：MLB 官方 Stats API（先發分項、最近先發、官方打線打擊側）；預估打線來自 RotoWire（非官方）。觀察句由固定規則產生（${esc(MU.rules)}）：只說明今天打線對應哪個分項、樣本大小與最近先發長短，不判斷哪隊有利，也不推測投得短的原因。OPS＝上壘率＋長打率，長條以 1.000 為滿格。</p></section>`;
+    <p class="small">資料：MLB 官方 Stats API（先發分項、最近先發、官方打線打擊側）；預估打線來自 RotoWire（非官方）。觀察句由固定規則產生（${esc(MU.rules)}）：只說明今天打線對應哪個分項、樣本大小與最近先發長短，不判斷哪隊有利，也不推測投得短的原因。閱讀提示的暫定條件：9 人中至少 6 人站同一邊才指出先看哪個分項；最近一次先發比前兩次都少至少 2 局才註記。沒有有效數字的欄位不比較。OPS＝上壘率＋長打率，長條以 1.000 為滿格。</p></section>`;
 }
 
 /* ================= 預估打線（非官方；scripts/lineup-proj.mjs） ================= */
