@@ -725,3 +725,4 @@
 {"at":"2026-09-29T17:01:04.575Z","pk":849849,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-09-29T17:01:04.575Z","pk":849849,"type":"lineup_official","side":"away"}
 {"at":"2026-09-29T17:01:04.575Z","pk":849849,"type":"lineup_official","side":"home"}
+{"at":"2026-09-29T17:46:02.659Z","pk":849846,"type":"sp","side":"home","from":null,"to":"Hunter Brown"}
