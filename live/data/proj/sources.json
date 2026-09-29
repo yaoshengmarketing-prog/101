@@ -9,7 +9,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849845,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T21:16:06.057Z",
+   "fetchedAt": "2026-09-29T21:31:14.801Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -148,7 +148,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849845,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T21:16:06.057Z",
+   "fetchedAt": "2026-09-29T21:31:14.801Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -287,7 +287,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849849,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T21:16:06.057Z",
+   "fetchedAt": "2026-09-29T21:31:14.801Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -548,7 +548,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849851,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T21:16:06.057Z",
+   "fetchedAt": "2026-09-29T21:31:14.801Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -687,7 +687,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849851,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T21:16:06.057Z",
+   "fetchedAt": "2026-09-29T21:31:14.801Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -826,7 +826,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849843,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T21:16:06.057Z",
+   "fetchedAt": "2026-09-29T21:31:14.801Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -965,7 +965,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849843,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T21:16:06.057Z",
+   "fetchedAt": "2026-09-29T21:31:14.801Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -1233,7 +1233,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoWire|2026-09-30|PHI@ATL|away": {
    "source": "RotoWire",
@@ -1371,7 +1371,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoWire|2026-09-30|PHI@ATL|home": {
    "source": "RotoWire",
@@ -1448,7 +1448,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoWire|2026-09-30|CWS@HOU|away": {
    "source": "RotoWire",
@@ -1525,7 +1525,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoWire|2026-09-30|CWS@HOU|home": {
    "source": "RotoWire",
@@ -1663,7 +1663,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoWire|2026-09-30|BOS@NYY|away": {
    "source": "RotoWire",
@@ -1801,7 +1801,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoWire|2026-09-30|BOS@NYY|home": {
    "source": "RotoWire",
@@ -2000,7 +2000,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoWire|2026-09-30|CHC@SD|away": {
    "source": "RotoWire",
@@ -2077,7 +2077,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoWire|2026-09-30|CHC@SD|home": {
    "source": "RotoWire",
@@ -2215,7 +2215,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoGrinders|2026-09-29|PHI@ATL|away": {
    "source": "RotoGrinders",
@@ -2353,7 +2353,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoGrinders|2026-09-29|PHI@ATL|home": {
    "source": "RotoGrinders",
@@ -2491,7 +2491,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoGrinders|2026-09-29|CWS@HOU|away": {
    "source": "RotoGrinders",
@@ -2629,7 +2629,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoGrinders|2026-09-29|CWS@HOU|home": {
    "source": "RotoGrinders",
@@ -2767,7 +2767,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoGrinders|2026-09-29|BOS@NYY|away": {
    "source": "RotoGrinders",
@@ -2905,7 +2905,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoGrinders|2026-09-29|BOS@NYY|home": {
    "source": "RotoGrinders",
@@ -3043,7 +3043,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoGrinders|2026-09-29|CHC@SD|away": {
    "source": "RotoGrinders",
@@ -3120,7 +3120,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   },
   "RotoGrinders|2026-09-29|CHC@SD|home": {
    "source": "RotoGrinders",
@@ -3197,7 +3197,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-29T21:16:06.057Z"
+   "fetchedAt": "2026-09-29T21:31:14.801Z"
   }
  }
 }
