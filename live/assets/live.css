@@ -76,6 +76,10 @@ table.bp td.empty{color:var(--muted);font-size:12px}
 /* 手機：預估打線表的表頭、打擊側、比對欄可換行，表格寬度才不會超過卡片、把整頁撐寬；球員名到 380px 以下才換行 */
 @media (max-width:560px){.tbl.lu.pj th,.tbl.lu.pj td:not(.l){white-space:normal}.tbl.lu.pj td.l:not(:nth-child(2)){white-space:normal}}
 @media (max-width:380px){.tbl.lu.pj td.l:nth-child(2){white-space:normal}}
+/* 手機 320px：首頁比賽卡欄寬最少 330px（根目錄 style.css .grid）會把整頁撐寬 → 欄寬上限改為容器寬；寬螢幕仍是 330px 起跳，排法不變 */
+.grid{grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr))}
+/* 手機：頁首試營運標籤（style.css .demo 不換行）文字較長時可換行，不再撐寬 */
+@media (max-width:480px){.top .demo{white-space:normal;border-radius:12px}}
 .vsbox{margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;background:var(--surface)}
 .vsbox ul{margin:6px 0 4px;padding-left:18px}
 
