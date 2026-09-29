@@ -38,7 +38,7 @@ check("有登板但球數缺＝ na", st(run(game(), bp([day("played", 150, { rpA
   const c = st(run(game({ away: team({ name: "紅襪" }), home: team({ name: "洋基" }) }), bp(A, H, pa, [])), "bp_load");
   check("牛棚背景：寫出投最多的人、日期、次數、其餘合計、之後沒有比賽", c.state === "hit" && c.says[1] === "紅襪前三日牛棚 137 球，投最多的是 Patrick Sandoval 98 球（9/27 對小熊，1 次登板）、Wyatt Olds 22 球（9/27 對小熊，1 次登板），其餘 1 人合計 17 球；Patrick Sandoval、Wyatt Olds 9/27 之後到本場前球隊沒有比賽。");
   const r0 = run(game({ away: team({ name: "紅襪" }), home: team({ name: "洋基" }) }), bp(A, H, pa, []));
-  check("牛棚背景：不論有沒有成卡都另存 bp（單場頁牛棚表用）", r0.bp.away.text === c.says[1] && r0.bp.home === null && r0.bp.away.partial === false);
+  check("牛棚背景：不論有沒有成卡都另存 bp（單場頁牛棚表用）", r0.bp.away.text === c.says[1] && r0.bp.home === null && r0.bp.away.partial === false && r0.bp.away.gaps.length === 0);
   check("牛棚背景：不寫恢復、疲勞", !/恢復|疲勞|休息足/.test(c.says.slice(0, 2).join("")) && /不代表體力狀況/.test(c.says.at(-1)));
   check("牛棚背景：記錄投最多的兩人（研究用）", c.v.awayTop.map(x => x.pitches).join() === "98,22" && c.v.homeTop.length === 0);
   const A2 = [D("2026-09-25", "played", 60, "甲"), D("2026-09-26", "played", 40, "甲"), D("2026-09-27", "played", 60, "乙"), D("2026-09-28", "played", null, "乙", { st: "notstarted", complete: false })];
@@ -49,6 +49,18 @@ check("有登板但球數缺＝ na", st(run(game(), bp([day("played", 150, { rpA
   const p3 = [{ id: 7, name: "Z", days: { "2026-09-25": { pitches: 70, apps: 1 }, "2026-09-26": { pitches: 12, apps: 1 } } }, { id: 6, name: "W", days: { "2026-09-25": { pitches: 20, apps: 1 } } }];
   const c3 = st(run(game(), bp(A3, [D("2026-09-25", "off"), D("2026-09-26", "off"), D("2026-09-27", "off"), D("2026-09-28", "off")], p3, [])), "bp_load");
   check("牛棚背景：之後有比賽沒登板＝沒有登板紀錄；多日合計", /Z 82 球（9\/25 對甲、9\/26 對甲，2 次登板）/.test(c3.says[1]) && /Z 9\/26 之後到本場前沒有登板紀錄/.test(c3.says[1]) && /W 9\/25 之後到本場前沒有登板紀錄/.test(c3.says[1]));
+}
+{ // 牛棚背景的資料完整度（站長 09-29 人工案例）：9/26 完整 A 30 球；9/27 雙重賽少一場、已取得 B 50 球 → 不可整天排除
+  const D = (d, st, p, extra = {}) => ({ d, ...day(st, p, extra), games: [], gamesMissing: 0, ...extra });
+  const days = [D("2026-09-26", "played", 30), D("2026-09-27", "incomplete", 50, { complete: false, gamesMissing: 1 }), D("2026-09-28", "off"), D("2026-09-29", "off")];
+  const ps = [{ id: 1, name: "A", days: { "2026-09-26": { pitches: 30, apps: 1 } } }, { id: 2, name: "B", days: { "2026-09-27": { pitches: 50, apps: 1 } } }];
+  const r = run(game(), bp(days, [D("2026-09-26", "off"), D("2026-09-27", "off"), D("2026-09-28", "off"), D("2026-09-29", "off")], ps, []));
+  check("牛棚背景：不完整的日子已取得的部分照算，寫明部分小計與缺什麼，排名只說已取得資料中；之後的日子不完整就說無法確認", r.bp.away.text === "甲前三日牛棚已取得部分小計 80 球（9/27 缺 1 場），已取得資料中投最多的是 B 50 球（9/27，1 次登板）、A 30 球（9/26，1 次登板）；B 9/27 之後到本場前球隊沒有比賽；A 9/26 之後到本場前的資料不完整，無法確認有沒有再登板。" && r.bp.away.partial === true);
+  check("牛棚背景：底層不完整時牛棚差距卡仍不比（na）", st(r, "bp_load").state === "na");
+  const days2 = [D("2026-09-26", "played", 30, { rpAppsNoCount: 1 }), D("2026-09-27", "played", 20), D("2026-09-28", "played", 0), D("2026-09-29", "incomplete", null, { complete: false, gamesMissing: 1 })];
+  const ps2 = [{ id: 1, name: "A", days: { "2026-09-26": { pitches: 30, apps: 1 }, "2026-09-29": { pitches: 12, apps: 1 } } }, { id: 3, name: "C", days: { "2026-09-26": { pitches: 0, apps: 1, noCount: 1 } } }, { id: 2, name: "B", days: { "2026-09-27": { pitches: 20, apps: 1 } } }];
+  const t2 = run(game(), bp(days2, days2, ps2, [])).bp.away.text;
+  check("牛棚背景：有登板沒球數也寫明；之後又登板但後面資料不完整要加註可能不只", /已取得部分小計 50 球（9\/26 1 次登板沒有球數）/.test(t2) && /其餘 1 人合計 0 球（其中有登板沒有球數）/.test(t2) && /A 9\/26 之後又登板：9\/29 12 球（之後有資料不完整的日子，可能不只這些）/.test(t2));
 }
 check("牛棚資料沒取得＝ na", st(run(game(), null), "bp_load").state === "na" && st(run(game(), { status: "failed" }), "bp_streak").state === "na");
 const P = (name, streak) => ({ name, streak });

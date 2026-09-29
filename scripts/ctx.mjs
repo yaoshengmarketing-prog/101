@@ -31,8 +31,11 @@ const bpOk = b => b && b.status !== "failed" && b.summary;
 
 // 牛棚背景（09-29 站長：補「由誰承擔、何時發生、之後的登板」）：只列事實，不算疲勞、不加門檻，
 // 沒有登板紀錄只寫「沒有登板紀錄」，不寫成已恢復。t＝bullpen summary 的一隊；full＝前三個完整日
+// 資料完整度照底層：缺場、資料不完整、登板沒球數的日子，已取得的部分照算，寫明「已取得部分小計」與缺什麼，排名也只說「已取得資料中」
 export function bpDetail(t, full) {
-  const dates = full.filter(d => d.st === "played" && d.d).map(d => d.d);
+  const dates = full.filter(d => d.d && !["off", "ppd", "notstarted"].includes(d.st)).map(d => d.d);
+  const gaps = full.filter(d => d.d && (UNCERTAIN.has(d.st) || d.gamesMissing > 0 || d.rpAppsNoCount > 0))
+    .map(d => `${md(d.d)}${d.gamesMissing > 0 ? ` 缺 ${d.gamesMissing} 場` : UNCERTAIN.has(d.st) ? " 資料不完整" : ""}${d.rpAppsNoCount > 0 ? `${d.gamesMissing > 0 || UNCERTAIN.has(d.st) ? "、" : " "}${d.rpAppsNoCount} 次登板沒有球數` : ""}`);
   const rows = (t.pitchers || []).map(p => { const ds = dates.filter(d => p.days?.[d]);
     return { p, ds, pitches: ds.reduce((a, d) => a + (p.days[d].pitches || 0), 0), apps: ds.reduce((a, d) => a + (p.days[d].apps || 0), 0), noCount: ds.some(d => p.days[d].noCount) }; })
     .filter(r => r.apps).sort((a, b) => b.pitches - a.pitches || String(a.p.name).localeCompare(String(b.p.name)));
@@ -41,12 +44,14 @@ export function bpDetail(t, full) {
   const when = r => r.ds.map(d => `${md(d)}${dayOf(d)?.games?.[0]?.opp ? ` 對${dayOf(d).games[0].opp}` : ""}`).join("、");
   const after = r => { const last = r.ds.at(-1), later = t.days.filter(x => x.d && x.d > last);
     const apps = later.filter(x => r.p.days?.[x.d]).map(x => `${md(x.d)} ${r.p.days[x.d].noCount ? "登板（球數未取得）" : `${r.p.days[x.d].pitches} 球`}`);
-    if (apps.length) return `${md(last)} 之後又登板：${apps.join("、")}`;
-    if (later.some(x => UNCERTAIN.has(x.st) || x.st === "notstarted" || x.gamesMissing)) return `${md(last)} 之後到本場前的資料不完整，無法確認有沒有再登板`;
+    const unsure = later.some(x => UNCERTAIN.has(x.st) || x.st === "notstarted" || x.gamesMissing);
+    if (apps.length) return `${md(last)} 之後又登板：${apps.join("、")}${unsure ? "（之後有資料不完整的日子，可能不只這些）" : ""}`;
+    if (unsure) return `${md(last)} 之後到本場前的資料不完整，無法確認有沒有再登板`;
     return later.some(x => x.st === "played") ? `${md(last)} 之後到本場前沒有登板紀錄` : `${md(last)} 之後到本場前球隊沒有比賽`; };
   const afterBy = new Map(); for (const r of top) { const k = after(r); afterBy.set(k, [...(afterBy.get(k) || []), r.p.name]); }
-  const text = `${t.name}前三日牛棚 ${rows.reduce((a, r) => a + r.pitches, 0)} 球，投最多的是 ${top.map(r => `${r.p.name} ${r.pitches} 球（${when(r)}，${r.apps} 次登板${r.noCount ? "，部分球數缺" : ""}）`).join("、")}${rest.length ? `，其餘 ${rest.length} 人合計 ${rest.reduce((a, r) => a + r.pitches, 0)} 球` : ""}；${[...afterBy].map(([k, names]) => `${names.join("、")} ${k}`).join("；")}。`;
-  return { text, top: top.map(r => ({ id: r.p.id ?? null, name: r.p.name, pitches: r.pitches, apps: r.apps, dates: r.ds })), others: rest.length };
+  const sum = rows.reduce((a, r) => a + r.pitches, 0);
+  const text = `${t.name}前三日牛棚${gaps.length ? `已取得部分小計 ${sum} 球（${gaps.join("；")}），已取得資料中` : ` ${sum} 球，`}投最多的是 ${top.map(r => `${r.p.name} ${r.pitches} 球（${when(r)}，${r.apps} 次登板${r.noCount ? "，部分球數缺" : ""}）`).join("、")}${rest.length ? `，其餘 ${rest.length} 人合計 ${rest.reduce((a, r) => a + r.pitches, 0)} 球${rest.some(r => r.noCount) ? "（其中有登板沒有球數）" : ""}` : ""}；${[...afterBy].map(([k, names]) => `${names.join("、")} ${k}`).join("；")}。`;
+  return { text, partial: gaps.length > 0, gaps, top: top.map(r => ({ id: r.p.id ?? null, name: r.p.name, pitches: r.pitches, apps: r.apps, dates: r.ds })), others: rest.length };
 }
 
 // 每條規則：inputs＝用到哪些底層資料（用來判斷是否沿用舊值）；run 回傳 { state, v, value, nums, says, why }
@@ -185,9 +190,8 @@ export function compute(g, b, all, nowISO) {
     forecast: g.forecast ?? null, // 計算當下的模型預報（scripts/forecast.mjs；不是官方）
     inputs: { game: { updatedAt: g.updatedAt }, bullpen: b ? { fetchedAt: b.fetchedAt, status: b.status } : null },
     hits: checks.filter(c => c.state === "hit").map(c => c.id), checks,
-    // 牛棚背景（不論有沒有成卡都算，單場頁牛棚表上方顯示）；partial＝前三日有資料不完整，只算已取得的部分
-    bp: bpOk(b) ? Object.fromEntries(["away", "home"].map(s => { const full = b.summary[s].days.slice(0, 3), det = bpDetail({ ...b.summary[s], name: g[s].name }, full);
-      return [s, det ? { ...det, partial: full.some(d => !(d.complete || ["off", "ppd"].includes(d.st)) || d.rpAppsNoCount > 0) } : null]; })) : null };
+    // 牛棚背景（不論有沒有成卡都算，單場頁牛棚表上方顯示）；partial＝前三日有資料不完整，文字已寫明是已取得部分小計
+    bp: bpOk(b) ? Object.fromEntries(["away", "home"].map(s => [s, bpDetail({ ...b.summary[s], name: g[s].name }, b.summary[s].days.slice(0, 3))])) : null };
 }
 
 // 賽前才算；開賽後（或延賽、取消）沿用最後一次賽前的結果，第一次凍結時記下凍結時間與距「表定」開賽幾分鐘（game.startUTC 是 MLB 表定時間，不是實際第一球）
