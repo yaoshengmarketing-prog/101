@@ -883,7 +883,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T04:20:20.648Z"
+   "fetchedAt": "2026-09-29T06:07:26.100Z"
   },
   "RotoWire|2026-09-30|PHI@ATL|home": {
    "source": "RotoWire",
@@ -960,7 +960,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T04:20:20.648Z"
+   "fetchedAt": "2026-09-29T06:07:26.100Z"
   },
   "RotoWire|2026-09-30|CWS@HOU|away": {
    "source": "RotoWire",
@@ -1037,7 +1037,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T04:20:20.648Z"
+   "fetchedAt": "2026-09-29T06:07:26.100Z"
   },
   "RotoWire|2026-09-30|CWS@HOU|home": {
    "source": "RotoWire",
@@ -1114,7 +1114,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T04:20:20.648Z"
+   "fetchedAt": "2026-09-29T06:07:26.100Z"
   },
   "RotoWire|2026-09-30|BOS@NYY|away": {
    "source": "RotoWire",
@@ -1191,7 +1191,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T04:20:20.648Z"
+   "fetchedAt": "2026-09-29T06:07:26.100Z"
   },
   "RotoWire|2026-09-30|BOS@NYY|home": {
    "source": "RotoWire",
@@ -1268,7 +1268,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T04:20:20.648Z"
+   "fetchedAt": "2026-09-29T06:07:26.100Z"
   },
   "RotoWire|2026-09-30|CHC@SD|away": {
    "source": "RotoWire",
@@ -1345,7 +1345,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T04:20:20.648Z"
+   "fetchedAt": "2026-09-29T06:07:26.100Z"
   },
   "RotoWire|2026-09-30|CHC@SD|home": {
    "source": "RotoWire",
@@ -1422,7 +1422,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T04:20:20.648Z"
+   "fetchedAt": "2026-09-29T06:07:26.100Z"
   }
  }
 }
