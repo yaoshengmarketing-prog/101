@@ -1,5 +1,6 @@
 // 先發投手 × 對方打線（對位卡）：node scripts/matchup.mjs [輸出資料夾，預設 .build]
 // 站長 2026-09-29：一場範例（紅襪@洋基）確認方向後，套用到今天／明天全部賽前比賽（matchup v0.2）
+// v0.4（09-29）：用語縮短；登板次數（例行賽＋季後賽）與分項（例行賽）範圍分開寫，不說分項「包含下面全部登板」
 // v0.3（09-29）：不再只在「多數那邊樣本較少」時提醒（避免暗示樣本多的一邊就夠可靠）→ 改由頁面在分項旁固定寫閱讀提醒；
 //   先發不到 3 次時寫出本季登板與先發次數、分項包含後援登板；查不到登板紀錄和「0 次先發」分開寫
 // 每場兩組：客隊先發 × 主隊打線、主隊先發 × 客隊打線，寫 <out>/live-data/matchup/<gamePk>.json
@@ -16,7 +17,7 @@ import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 import { TEAM_ZH } from "./build-live.mjs";
 
-export const MU_RULES = "matchup v0.3";
+export const MU_RULES = "matchup v0.4";
 const MLB = "https://statsapi.mlb.com/api/v1";
 const FOCUS = 6; // 9 人中至少 6 人站同一邊打席，才說「先看那一邊的分項」；5 對 4 這種接近的，兩邊都看
 const SHORT_OUTS = 6; // 「投得短」＝最近一次先發比前兩次都少至少 2 局（6 個出局）；差一兩個出局不註記
@@ -75,7 +76,7 @@ export function notesOf({ pitcher, splits, recent, lineup }) {
   else {
     const c = lineup.comp, H = pitcher.hand, S = c.S.length, { L, R } = effective(c, H), swIn = H === "L" || H === "R", unk = unknownOf(c, H), M = focusOf(c, H);
     const base = `${T}${lineup.short}${c.n < 9 ? `目前只有 ${c.n} 人（未滿 9 人）：` : " 9 人中"}左打 ${c.L.length}、右打 ${c.R.length}${S ? `、左右開弓 ${S}` : ""}${c.U.length ? `、打擊側未知 ${c.U.length}` : ""}`;
-    const sw = S ? (swIn ? `；左右開弓依通常站位估算（面對${H === "R" ? "右投站左" : "左投站右"}打席），估算站左打席約 ${L} 位、右打席約 ${R} 位` : "；先發慣用手未知，左右開弓無法估算站位") : "";
+    const sw = S ? (swIn ? `；左右開弓依通常站位估算，站左打席約 ${L} 位、右打席約 ${R} 位` : "；先發慣用手未知，左右開弓無法估算站位") : "";
     if (c.n < 9) obs.push(`${base}，名單未滿 9 人，先不判斷以哪一邊為主：${both()}。`);
     else if (M) {
       const m = M === "L" ? "R" : "L", x = sp(M), y = sp(m), lead = `${base}${sw}，所以 ${P} 的「對${side(M)}」分項最值得先看`;
@@ -94,7 +95,7 @@ export function notesOf({ pitcher, splits, recent, lineup }) {
   const apps = recent.totalApps ?? null, gs = recent.totalStarts ?? s.length;
   if (apps === 0) recentNote = `MLB 官方資料查不到 ${P} 本季（例行賽＋季後賽）的大聯盟登板紀錄，本站沒有他的投球紀錄可列。`;
   else if (s.length < 3) recentNote = apps != null
-    ? `本季（例行賽＋季後賽）登板 ${apps} 次、先發 ${gs} 次${apps > gs ? `；上面的分項包含他${gs ? "其餘" : "全部"} ${apps - gs} 次後援登板` : ""}。`
+    ? `本季（例行賽＋季後賽）登板 ${apps} 次、先發 ${gs} 次${apps > gs ? `，${gs ? `其餘 ${apps - gs} 次` : "全部"}是後援` : ""}；上方對左右打分項只算例行賽的登板。`
     : `本季（例行賽＋季後賽）只有 ${s.length} 次先發紀錄。`;
   else if ([s[0], s[1]].every(p => outs(last.ip) != null && outs(p.ip) != null && outs(last.ip) <= outs(p.ip) - SHORT_OUTS))
     recentNote = `最近一次先發（${md(last.date)}）投 ${last.ip} 局${last.np != null ? `、${last.np} 球` : ""}，比前兩次（${s[0].ip} 局、${s[1].ip} 局）短；本站沒有原因資料，不推測傷病或限球數。`;

@@ -46,14 +46,14 @@ t("最近先發：只取先發、依日期、含季後賽；之後的中繼另�
   assert.deepEqual(r.starts.map(x => x.date), ["2026-09-10", "2026-09-20", "2026-09-27"]);
   assert.equal(r.starts[2].gameType, "F"); assert.equal(r.reliefAfter.date, "2026-10-01"); assert.equal(r.starts[0].opp, "光芒");
   assert.match(notesOf({ pitcher: { name: "Z" }, splits: TOLLE, recent: r, lineup: lu(NYY) }).recentNote, /最近一次登板是 10\/1 中繼 1\.0 局、15 球/);
-  assert.equal(notesOf({ pitcher: { name: "Z" }, splits: TOLLE, recent: recentStarts([log("2026-09-02", 1, "7.0", 99, 0)]), lineup: lu(NYY) }).recentNote, "本季（例行賽＋季後賽）登板 1 次、先發 1 次。");
+  assert.equal(notesOf({ pitcher: { name: "Z" }, splits: TOLLE, recent: recentStarts([log("2026-09-02", 1, "7.0", 99, 0)]), lineup: lu(NYY) }).recentNote, "本季（例行賽＋季後賽）登板 1 次、先發 1 次；上方對左右打分項只算例行賽的登板。");
   assert.equal(r.totalStarts, 4); assert.equal(r.totalApps, 6); });
-t("先發不到 3 次：寫登板與先發次數、分項含後援；0 次先發和查不到紀錄分開（AJ Blubaugh 64 次登板 0 先發）", () => {
+t("先發不到 3 次：寫登板與先發次數（例行賽＋季後賽），分項範圍（例行賽）另寫；0 次先發和查不到紀錄分開（AJ Blubaugh 64 次登板 0 先發）", () => {
   const bl = recentStarts(Array.from({ length: 64 }, (_, i) => log(`2026-0${4 + Math.floor(i / 12)}-${String(1 + (i % 12) * 2).padStart(2, "0")}`, 0, "1.0", 15, 0)));
   assert.deepEqual([bl.starts.length, bl.totalApps, bl.totalStarts], [0, 64, 0]);
-  assert.equal(notesOf({ pitcher: { name: "AJ Blubaugh", hand: "R" }, splits: TOLLE, recent: bl, lineup: lu(NYY) }).recentNote, "本季（例行賽＋季後賽）登板 64 次、先發 0 次；上面的分項包含他全部 64 次後援登板。");
+  assert.equal(notesOf({ pitcher: { name: "AJ Blubaugh", hand: "R" }, splits: TOLLE, recent: bl, lineup: lu(NYY) }).recentNote, "本季（例行賽＋季後賽）登板 64 次、先發 0 次，全部是後援；上方對左右打分項只算例行賽的登板。");
   const two = recentStarts([log("2026-09-02", 1, "3.0", 50, 0), log("2026-09-10", 0, "1.0", 12, 0), log("2026-09-20", 1, "2.0", 33, 0)]);
-  assert.equal(notesOf({ pitcher: { name: "H" }, splits: TOLLE, recent: two, lineup: lu(NYY) }).recentNote, "本季（例行賽＋季後賽）登板 3 次、先發 2 次；上面的分項包含他其餘 1 次後援登板。");
+  assert.equal(notesOf({ pitcher: { name: "H" }, splits: TOLLE, recent: two, lineup: lu(NYY) }).recentNote, "本季（例行賽＋季後賽）登板 3 次、先發 2 次，其餘 1 次是後援；上方對左右打分項只算例行賽的登板。");
   assert.equal(notesOf({ pitcher: { name: "New Guy" }, splits: { vl: null, vr: null }, recent: recentStarts([]), lineup: lu(NYY) }).recentNote, "MLB 官方資料查不到 New Guy 本季（例行賽＋季後賽）的大聯盟登板紀錄，本站沒有他的投球紀錄可列。");
   assert.doesNotMatch(notesOf({ pitcher: { name: "AJ" }, splits: TOLLE, recent: bl, lineup: lu(NYY) }).recentNote, /角色|限球|局數/); });
 t("左右開弓：面對右投算左打席、面對左投算右打席；慣用手未知不計；5 對 4 兩邊都看（紅襪預估 L3 R4 S2 對 Schlittler 右投）", () => {
@@ -61,7 +61,7 @@ t("左右開弓：面對右投算左打席、面對左投算右打席；慣用�
   assert.deepEqual(effective(c, "R"), { L: 5, R: 4 }); assert.deepEqual(effective(c, "L"), { L: 3, R: 6 }); assert.deepEqual(effective(c, null), { L: 3, R: 4 });
   const S = { vl: { ops: ".560", pa: 458 }, vr: { ops: ".520", pa: 303 } };
   const o = notesOf({ pitcher: { name: "Schlittler", hand: "R" }, splits: S, recent: R3, lineup: { team: "紅襪", short: "預估打線", comp: c } }).obs;
-  assert.equal(o[0], "紅襪預估打線 9 人中左打 3、右打 4、左右開弓 2；左右開弓依通常站位估算（面對右投站左打席），估算站左打席約 5 位、右打席約 4 位，兩邊人數接近，兩個分項都要看：Schlittler 對左打被打 OPS .560（458 打席）、對右打 .520（303 打席）。");
+  assert.equal(o[0], "紅襪預估打線 9 人中左打 3、右打 4、左右開弓 2；左右開弓依通常站位估算，站左打席約 5 位、右打席約 4 位，兩邊人數接近，兩個分項都要看：Schlittler 對左打被打 OPS .560（458 打席）、對右打 .520（303 打席）。");
   assert.equal(o.length, 1);
   assert.match(notesOf({ pitcher: { name: "X", hand: null }, splits: S, recent: R3, lineup: { team: "紅襪", short: "預估打線", comp: c } }).obs[0], /先發慣用手未知，左右開弓無法估算站位；站位已知的 7 人中左打席 3、右打席 4，另有 2 人無法判斷/); });
 t("明顯多數＝9 人中至少 6 人同一邊（6 對 3 指出先看哪邊）", () => {
