@@ -9,7 +9,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849845,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T23:31:01.353Z",
+   "fetchedAt": "2026-09-29T00:01:23.828Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -87,7 +87,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849845,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T23:31:01.353Z",
+   "fetchedAt": "2026-09-29T00:01:23.828Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -165,7 +165,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849849,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T23:31:01.353Z",
+   "fetchedAt": "2026-09-29T00:01:23.828Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -227,6 +227,67 @@
        "bats": "L"
       }
      ]
+    },
+    {
+     "at": "2026-09-29T00:01:23.828Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jeremy Pena",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Yordan Alvarez",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Isaac Paredes",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Jose Altuve",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Yainer Diaz",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Christian Walker",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Cam Smith",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Lucas Spence",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Jorge Barrosa",
+       "pos": "LF",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "noListBefore": "2026-09-28T10:43:04.028Z",
@@ -243,7 +304,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849851,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T23:31:01.353Z",
+   "fetchedAt": "2026-09-29T00:01:23.828Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -321,7 +382,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849851,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T23:31:01.353Z",
+   "fetchedAt": "2026-09-29T00:01:23.828Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -399,7 +460,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849843,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T23:31:01.353Z",
+   "fetchedAt": "2026-09-29T00:01:23.828Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -461,6 +522,67 @@
        "bats": "R"
       }
      ]
+    },
+    {
+     "at": "2026-09-29T00:01:23.828Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Pete Crow-Armstrong",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Seiya Suzuki",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Michael Busch",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Alex Bregman",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Ian Happ",
+       "pos": "LF",
+       "bats": "S"
+      },
+      {
+       "n": 6,
+       "name": "Michael Conforto",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Nico Hoerner",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Carson Kelly",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Dansby Swanson",
+       "pos": "SS",
+       "bats": "R"
+      }
+     ]
     }
    ],
    "noListBefore": "2026-09-28T10:43:04.028Z",
@@ -477,7 +599,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849843,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-28T23:31:01.353Z",
+   "fetchedAt": "2026-09-29T00:01:23.828Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -616,6 +738,67 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-09-29T00:01:23.828Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Sam Antonacci",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Kyle Teel",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Miguel Vargas",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Munetaka Murakami",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Andrew Benintendi",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Tristan Peters",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Chase Meidroth",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Colson Montgomery",
+       "pos": "SS",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Braden Montgomery",
+       "pos": "RF",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849849,
@@ -623,7 +806,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-28T23:31:01.353Z"
+   "fetchedAt": "2026-09-29T00:01:23.828Z"
   }
  }
 }
