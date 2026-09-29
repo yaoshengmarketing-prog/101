@@ -73,6 +73,9 @@ table.bp td.empty{color:var(--muted);font-size:12px}
 .tbl.lu tr.unc td{background:color-mix(in srgb,var(--tag) 55%,transparent)}
 @media (max-width:560px){.wxp{grid-template-columns:1fr}.wxfig{max-width:240px;margin:0 auto}}
 .tbl.lu.pj td.l:nth-child(2){white-space:nowrap}
+/* 手機：預估打線表的表頭、打擊側、比對欄可換行，表格寬度才不會超過卡片、把整頁撐寬；球員名到 380px 以下才換行 */
+@media (max-width:560px){.tbl.lu.pj th,.tbl.lu.pj td:not(.l){white-space:normal}.tbl.lu.pj td.l:not(:nth-child(2)){white-space:normal}}
+@media (max-width:380px){.tbl.lu.pj td.l:nth-child(2){white-space:normal}}
 .vsbox{margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;background:var(--surface)}
 .vsbox ul{margin:6px 0 4px;padding-left:18px}
 

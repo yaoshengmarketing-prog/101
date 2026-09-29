@@ -456,7 +456,7 @@ function bullpen(B, G, C) {
   const retry = B.retryFailedSince ? `<div class="notice warn"><b>這場牛棚自 ${stamp(B.retryFailedSince)} 起重抓失敗</b>（${esc(B.retryError || "")}）。以下仍是 ${stamp(B.fetchedAt)} 取得的資料，之後的登板不在表內。</div>` : "";
   const warn = retry + (B.status === "incomplete" ? `<div class="notice warn"><b>有比賽的 box score 沒有取得。</b>標「部分小計」的日子只含已取得的場次，不是當天完整合計；「?」＝那天資料不完整、無法確認有沒有登板；只在未取得場次登板的投手不會出現在表上。</div>` : "");
   // 牛棚背景（scripts/ctx.mjs bpDetail）：前三日誰投最多、哪天、之後到本場前有沒有再登板；只列事實
-  const bs = ["away", "home"].map(k => C?.bp?.[k] && `<li>${esc(C.bp[k].text)}${C.bp[k].partial ? "（前三日有資料不完整，只算已取得的部分）" : ""}</li>`).filter(Boolean);
+  const bs = ["away", "home"].map(k => C?.bp?.[k] && `<li>${esc(C.bp[k].text)}</li>`).filter(Boolean); // 不完整時文字本身已寫「已取得部分小計」與缺什麼
   const bgs = bs.length ? `<ul class="bpnote bpsum">${bs.join("")}<li>沒有登板紀錄只表示這段期間沒有出賽，不代表體力狀況。</li></ul>` : "";
   return `<section class="blk" id="bp">${h}${warn}<div class="panel">${bgs}
     ${bpTable(B.summary.away, G.away.name, "客隊", B.target)}${bpTable(B.summary.home, G.home.name, "主隊", B.target)}
