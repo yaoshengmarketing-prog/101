@@ -2178,11 +2178,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-29T14:45:59.767Z",
-    "key": "{\"condition\":\"Sunny\",\"temp\":\"82\",\"wind\":\"3 mph, In From LF\"}",
-    "changedAt": "2026-09-29T14:45:59.767Z"
+    "key": "{\"condition\":\"Sunny\",\"temp\":\"80\",\"wind\":\"3 mph, Calm\"}",
+    "changedAt": "2026-09-29T18:16:01.525Z"
    }
   },
   "849846": {
