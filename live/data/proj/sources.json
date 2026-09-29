@@ -9,7 +9,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849845,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T16:46:09.714Z",
+   "fetchedAt": "2026-09-29T17:01:10.294Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -148,7 +148,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849845,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T16:46:09.714Z",
+   "fetchedAt": "2026-09-29T17:01:10.294Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -287,7 +287,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849849,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T16:46:09.714Z",
+   "fetchedAt": "2026-09-29T17:01:10.294Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -410,6 +410,67 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-09-29T17:01:10.294Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jeremy Pena",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Yordan Alvarez",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Isaac Paredes",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Jose Altuve",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Yainer Diaz",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Christian Walker",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Lucas Spence",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Cam Smith",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Taylor Trammell",
+       "pos": "LF",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "noListBefore": "2026-09-28T10:43:04.028Z",
@@ -426,7 +487,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849851,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T16:46:09.714Z",
+   "fetchedAt": "2026-09-29T17:01:10.294Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -504,7 +565,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849851,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T16:46:09.714Z",
+   "fetchedAt": "2026-09-29T17:01:10.294Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -582,7 +643,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849843,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T16:46:09.714Z",
+   "fetchedAt": "2026-09-29T17:01:10.294Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -721,7 +782,7 @@
    "first": "2026-09-28T10:43:04.028Z",
    "pk": 849843,
    "inScopeAt": "2026-09-28T16:01:06.801Z",
-   "fetchedAt": "2026-09-29T16:46:09.714Z",
+   "fetchedAt": "2026-09-29T17:01:10.294Z",
    "versions": [
     {
      "at": "2026-09-28T11:21:33.959Z",
@@ -928,7 +989,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoWire|2026-09-30|PHI@ATL|away": {
    "source": "RotoWire",
@@ -1066,7 +1127,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoWire|2026-09-30|PHI@ATL|home": {
    "source": "RotoWire",
@@ -1143,7 +1204,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoWire|2026-09-30|CWS@HOU|away": {
    "source": "RotoWire",
@@ -1220,7 +1281,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoWire|2026-09-30|CWS@HOU|home": {
    "source": "RotoWire",
@@ -1358,7 +1419,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoWire|2026-09-30|BOS@NYY|away": {
    "source": "RotoWire",
@@ -1496,7 +1557,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoWire|2026-09-30|BOS@NYY|home": {
    "source": "RotoWire",
@@ -1695,7 +1756,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoWire|2026-09-30|CHC@SD|away": {
    "source": "RotoWire",
@@ -1772,7 +1833,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoWire|2026-09-30|CHC@SD|home": {
    "source": "RotoWire",
@@ -1910,7 +1971,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoGrinders|2026-09-29|PHI@ATL|away": {
    "source": "RotoGrinders",
@@ -2048,7 +2109,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoGrinders|2026-09-29|PHI@ATL|home": {
    "source": "RotoGrinders",
@@ -2186,7 +2247,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoGrinders|2026-09-29|CWS@HOU|away": {
    "source": "RotoGrinders",
@@ -2263,7 +2324,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoGrinders|2026-09-29|CWS@HOU|home": {
    "source": "RotoGrinders",
@@ -2333,14 +2394,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-09-29T17:01:10.294Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jeremy Pena",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Yordan Alvarez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Isaac Paredes",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Jose Altuve",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Yainer Diaz",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Christian Walker",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Lucas Spence",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Cam Smith",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Taylor Trammell",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849849,
    "inScopeAt": "2026-09-29T07:47:26.172Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoGrinders|2026-09-29|BOS@NYY|away": {
    "source": "RotoGrinders",
@@ -2417,7 +2539,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoGrinders|2026-09-29|BOS@NYY|home": {
    "source": "RotoGrinders",
@@ -2494,7 +2616,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoGrinders|2026-09-29|CHC@SD|away": {
    "source": "RotoGrinders",
@@ -2571,7 +2693,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   },
   "RotoGrinders|2026-09-29|CHC@SD|home": {
    "source": "RotoGrinders",
@@ -2648,7 +2770,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-29T16:46:09.714Z"
+   "fetchedAt": "2026-09-29T17:01:10.294Z"
   }
  }
 }

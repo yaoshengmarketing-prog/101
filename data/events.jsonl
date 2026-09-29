@@ -722,3 +722,6 @@
 {"at":"2026-09-29T16:01:11.188Z","pk":849841,"type":"sp","side":"home","from":null,"to":"Tyler Mahle"}
 {"at":"2026-09-29T16:01:11.188Z","pk":849848,"type":"sp","side":"away","from":null,"to":"Sonny Gray"}
 {"at":"2026-09-29T16:01:11.188Z","pk":849848,"type":"sp","side":"home","from":null,"to":"Max Fried"}
+{"at":"2026-09-29T17:01:04.575Z","pk":849849,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-29T17:01:04.575Z","pk":849849,"type":"lineup_official","side":"away"}
+{"at":"2026-09-29T17:01:04.575Z","pk":849849,"type":"lineup_official","side":"home"}
