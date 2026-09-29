@@ -2178,7 +2178,7 @@
     }
    },
    "late": {},
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-29T14:45:59.767Z",
     "key": "{\"condition\":\"Sunny\",\"temp\":\"80\",\"wind\":\"3 mph, Calm\"}",
@@ -2241,7 +2241,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-09-29T17:01:04.575Z",
     "key": "{\"condition\":\"Roof Closed\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
