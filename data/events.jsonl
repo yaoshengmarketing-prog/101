@@ -715,3 +715,5 @@
 {"at":"2026-09-28T22:01:09.332Z","pk":849849,"type":"sp","side":"home","from":null,"to":"AJ Blubaugh"}
 {"at":"2026-09-28T23:30:59.052Z","pk":849849,"type":"sp","side":"away","from":null,"to":"Hagen Smith"}
 {"at":"2026-09-28T23:30:59.052Z","pk":849843,"type":"sp","side":"away","from":null,"to":"Matthew Boyd"}
+{"at":"2026-09-29T14:45:59.767Z","pk":849845,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-29T14:45:59.767Z","pk":849845,"type":"lineup_official","side":"home"}
