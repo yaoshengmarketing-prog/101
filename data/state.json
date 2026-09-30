@@ -2255,7 +2255,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Game Over",
    "wx": {
     "firstSeen": "2026-09-29T17:01:04.575Z",
     "key": "{\"condition\":\"Roof Closed\",\"temp\":\"73\",\"wind\":\"0 mph, None\"}",
