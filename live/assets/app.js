@@ -208,18 +208,18 @@ async function renderGame() {
     const s = p.s, cell = (k, x) => `<div><span class="v num">${x ?? "—"}</span><span class="t">${k}</span></div>`;
     return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(p.name)}</b> ${hand(p.hand)} <span class="tag exp">預計</span></div>${failNote(t, ["sp"])}
       <div class="lmeta"><span>本站首次看到：<b>${stamp(p.firstSeen) || "—"}</b></span></div>
-      ${s ? `<div class="stats">${cell("勝-敗", s.wl)}${cell("ERA", s.era)}${cell("WHIP", s.whip)}${cell("局數", s.ip)}${cell("先發", s.gs)}${cell("三振", s.so)}${cell("保送", s.bb)}</div><p class="small">2026 大聯盟例行賽（被交易者為全季合計）</p>` : `<p class="small">${NA("本季無大聯盟成績")}（3A 等小聯盟成績本站尚未取得）</p>`}
+      ${s ? `<div class="stats">${cell("勝-敗", s.wl)}${cell("ERA", s.era)}${cell("WHIP", s.whip)}${cell("局數", s.ip)}${cell("先發", s.gs)}${cell("三振", s.so)}${cell("保送", s.bb)}</div><p class="small">2026 大聯盟例行賽（被交易者為全季合計）</p>` : `<p class="small">${p.sNote === "multi" ? `${NA("缺全季合計")}（MLB 資料只有分隊成績、沒有全季合計列，本站不自行合計）` : `${NA("本季無大聯盟成績")}（3A 等小聯盟成績本站尚未取得）`}</p>`}
     </div>`; };
   const pitchers = `<section class="blk" id="sp"><h2>先發投手 <small>MLB 官方預計先發</small></h2><div class="two">${pit(A)}${pit(H)}</div></section>`;
 
-  const table = slots => `<table class="tbl lu"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>AVG</th><th>OPS</th></tr></thead><tbody>${slots.map(x => `<tr><td class="n">${x.n}</td><td class="l">${esc(x.name)}</td><td>${esc(x.pos || "—")}</td><td class="num">${x.avg ?? "—"}</td><td class="num">${x.ops ?? "—"}</td></tr>`).join("")}</tbody></table>`;
+  const table = (slots, V) => `<table class="tbl lu"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>AVG</th><th>OPS</th>${V?.head ? `<th class="vs">${V.head}</th>` : ""}</tr></thead><tbody>${slots.map(x => `<tr><td class="n">${x.n}</td><td class="l">${esc(x.name)}</td><td>${esc(x.pos || "—")}</td><td class="num">${x.avg ?? "—"}</td><td class="num">${x.ops ?? "—"}</td>${V?.head ? `<td class="vs num">${V.cell(x, false)}</td>` : ""}</tr>`).join("")}</tbody></table>${V?.note ? `<p class="small">${V.note}</p>` : ""}`;
   const prevBlock = t => failNote(t, ["prev"]) + (t.prev?.slots ? `<p class="small">上一場：${t.prev.date.slice(5)} ${t.prev.ha}場對 ${esc(t.prev.opp)}（${t.prev.score}），<a href="https://www.mlb.com/gameday/${t.prev.pk}" rel="noopener">官方比賽紀錄</a></p>${table(t.prev.slots)}` : `<p class="small">${NA()} ${t.prev ? "上一場打線沒有取得。" : "找不到近 12 天內已完賽的上一場。"}</p>`);
-  const lu = (t, k) => { const L = t.lineup, P = G.proj?.[k];
+  const lu = (t, k) => { const L = t.lineup, P = G.proj?.[k], V = vsCol(G, MU, k);
     if (L.slots) return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)}</div>${failNote(t, ["lineup"])}
       <div class="lmeta"><span>本站首次看到官方打線：<b>${stamp(L.firstSeen) || "—"}</b></span>${L.lateAt ? `<span>偵測到臨場異動：<b>${stamp(L.lateAt)}</b></span>` : ""}</div>
-      ${table(L.slots)}${P ? `${vsBlock(P, G)}<details><summary class="small">官方公布前本站記下的最後一版預估（非官方）</summary>${projBlock(P, G)}</details>` : ""}<details><summary class="small">上一場官方打線（參考）</summary>${prevBlock(t)}</details></div>`;
+      ${table(L.slots, V)}${P ? `${vsBlock(P, G)}<details><summary class="small">官方公布前本站記下的最後一版預估（非官方）</summary>${projBlock(P, G)}</details>` : ""}<details><summary class="small">上一場官方打線（參考）</summary>${prevBlock(t)}</details></div>`;
     if (P) return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)} <span class="tag exp">預估（非官方）</span></div>${failNote(t, ["lineup"])}
-      ${projBlock(P, G)}<details><summary class="small">上一場官方打線（參考，不是本場預估）</summary>${prevBlock(t)}</details></div>`;
+      ${projBlock(P, G, V)}<details><summary class="small">上一場官方打線（參考，不是本場預估）</summary>${prevBlock(t)}</details></div>`;
     const why = L.state === "withdrawn" ? `MLB 官方先前公布的本場打線，本站 <b>${stamp(L.withdrawnAt)}</b> 檢查時已從官方資料撤下（官方回應正常、內容已沒有打線，不是本站抓取失敗）。`
       : t.failed?.lineup ? "這次沒有取得本場打線，無法確認官方是否已公布。" : "MLB 官方尚未公布本場打線。";
     return `<div class="panel"><div class="lhead"><b>${t.ab} ${esc(t.name)}</b> ${luTag(t)}</div>${failNote(t, ["lineup"])}
@@ -278,7 +278,24 @@ const BATS = { R: "右", L: "左", S: "左右開弓" };
 const pkey = x => { const w = (x || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[.,']/g, "").split(/\s+/).filter(y => y && !/^(jr|sr|ii|iii|iv)$/.test(y)); return w.length ? w[0][0] + w.at(-1).replace(/[^a-z]/g, "") : ""; };
 const minsTo = (G, iso) => G.tbd || !G.startUTC ? null : Math.round((Date.parse(G.startUTC) - Date.parse(iso)) / 6e4);
 const ccOf = P => P.crossCmp || (P.cross ? { people: P.slots.filter(s => s.check === "same" || s.altAt).length, order: P.slots.filter(s => s.check === "same").length, n: P.slots.length } : null);
-function projBlock(P, G) {
+// 打者端今日對位（scripts/matchup.mjs v0.5）：打線表加一欄「對左投／對右投 OPS（打席）」
+//   依 matchup 檔裡「對方先發 × 這隊打線」那組；先發已換就不列數字；名單換了，還在名單上的人照列（對同一手別的成績不隨名單改變），新進名單的人等下次更新
+function vsCol(G, MU, k) {
+  const o = k === "away" ? "home" : "away", sp = G[o].sp, pre = G.status.code === "pre", p = MU?.pairs?.find(q => q.battingSide === k);
+  if (!p) return pre ? { note: "每位打者對今天對方先發手別的成績，這場還沒算出來，下次更新會補上。" } : null;
+  if (!p.pitcher) return pre ? { note: "對方先發未公布，還不知道要看對左投或對右投的成績，公布後下次更新補上。" } : null;
+  if ((sp?.id ?? null) !== p.basis?.sp) return { note: `對方先發已${sp ? `是 ${esc(sp.name)}` : "改為未公布"}，每位打者「對左投／對右投」的成績要等下次更新重算（上次是依 ${esc(p.pitcher.name)} 算的，這裡先不列）。` };
+  if (!("vsCode" in p)) return null; // v0.5 之前算的檔案沒有這一欄
+  if (!p.vsCode) return { note: `${esc(p.pitcher.name)} 的慣用手不明，無法決定看對左投或對右投的成績。` };
+  const hz = p.vsCode === "vl" ? "左" : "右", WHY = { noperson: "未取得", nosplit: `本季沒有對${hz}投的例行賽紀錄`, multi: "只有分隊成績、缺全季合計", invalid: "數字無效", nomatch: "名字對不到 MLB 名單", ambiguous: "MLB 名單有同名，無法唯一配對" };
+  const find = (x, proj) => (p.lineup?.slots || []).find(y => proj ? y.name === x.name : y.id != null && y.id === x.id);
+  return { head: `對${hz}投 OPS<br>（打席）`,
+    note: `「對${hz}投」＝2026 例行賽面對所有${hz}投（先發＋牛棚）的成績（MLB 官方），不是對今天先發 ${esc(p.pitcher.name)} 的交手紀錄；請連同打席數看。`,
+    cell: (x, proj) => { const y = find(x, proj); if (!y) return `<span class="small">名單已更新，下次更新補上</span>`;
+      const v = y.vs, main = v ? v.pa === 0 ? `<span class="small">0 打席</span>` : `${v.ops}<br><span class="small">(${v.pa})</span>` : `<span class="small">${WHY[y.why] || "—"}</span>`;
+      return proj && y.id ? `${main}<br><span class="small">全季 ${y.season?.ops ?? "—"}</span>` : main; } };
+}
+function projBlock(P, G, V) {
   const chk = s => s.check === "same" ? `<span class="small">一致</span>`
     : s.check === "diff" && s.altAt ? `<span class="tag">棒次不同</span><br><span class="small">另一站把他排第 ${s.altAt} 棒</span>`
     : s.check === "diff" ? `<span class="tag late">人選不同</span><br><span class="small">另一站這棒是 ${s.alt ? esc(s.alt) : "空白"}，名單裡沒有他</span>` : `<span class="small">—</span>`;
@@ -293,7 +310,7 @@ function projBlock(P, G) {
     ${P.missingSince ? `<div class="notice warn">${esc(P.source)} 自 ${stamp(P.missingSince)} 起已沒有這隊的預估，以下是先前的版本。</div>` : ""}
     ${P.frozenAt ? `<p class="small">官方打線已公布或比賽已開始（本站 ${stamp(P.frozenAt)} 起停止更新預估）。以下是官方公布前最後一版。</p>` : ""}
     <p class="small">${sum}</p>
-    <table class="tbl lu pj"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>打</th><th class="l">和 ${esc(P.cross || "第二來源")} 比對</th></tr></thead><tbody>${P.slots.map(s => `<tr${s.check === "diff" && !s.altAt ? ` class="unc"` : ""}><td class="n">${s.n}</td><td class="l">${esc(s.name)}</td><td>${esc(s.pos || "—")}</td><td>${BATS[s.bats] || "—"}</td><td class="l">${chk(s)}</td></tr>`).join("")}</tbody></table>
+    <table class="tbl lu pj"><thead><tr><th>棒</th><th class="l">球員</th><th>守位</th><th>打</th><th class="l">和 ${esc(P.cross || "第二來源")} 比對</th>${V?.head ? `<th class="vs">${V.head}</th>` : ""}</tr></thead><tbody>${P.slots.map(s => `<tr${s.check === "diff" && !s.altAt ? ` class="unc"` : ""}><td class="n">${s.n}</td><td class="l">${esc(s.name)}</td><td>${esc(s.pos || "—")}</td><td>${BATS[s.bats] || "—"}</td><td class="l">${chk(s)}</td>${V?.head ? `<td class="vs num">${V.cell(s, true)}</td>` : ""}</tr>`).join("")}</tbody></table>${V?.note ? `<p class="small">${V.note}${V.head ? "預估打線是 RotoWire 的出場名單（非官方），旁邊的數字是 MLB 官方的例行賽成績：名字和 MLB 40 人名單全名相同且唯一才列，對不到就不列，不猜是誰；「全季」＝2026 例行賽整體 OPS。" : ""}</p>` : ""}
     ${P.slots.length < 9 ? `<p class="small">來源目前只列 ${P.slots.length} 棒。</p>` : ""}
     ${F && !same1 ? `<details><summary class="small">首份完整預估（${stamp(F.at)}，${dur(minsTo(G, F.at))}）</summary><p class="small">${F.slots.map(s => `${s.n}. ${esc(s.name)}`).join("　")}</p></details>` : ""}
     ${versionsBlock(P, G)}`;
