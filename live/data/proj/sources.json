@@ -1615,7 +1615,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-09-30|PHI@ATL|home": {
    "source": "RotoWire",
@@ -1753,7 +1753,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-09-30|CWS@HOU|away": {
    "source": "RotoWire",
@@ -1891,7 +1891,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-09-30|CWS@HOU|home": {
    "source": "RotoWire",
@@ -2029,7 +2029,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-09-30|BOS@NYY|away": {
    "source": "RotoWire",
@@ -2221,14 +2221,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-09-30T19:46:11.293Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jahmai Jones",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Adley Rutschman",
+       "pos": "C",
+       "bats": "S"
+      },
+      {
+       "n": 3,
+       "name": "Willson Contreras",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Wilyer Abreu",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Ceddanne Rafaela",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Caleb Durbin",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Nick Sogard",
+       "pos": "2B",
+       "bats": "S"
+      },
+      {
+       "n": 8,
+       "name": "Trevor Story",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Nate Eaton",
+       "pos": "LF",
+       "bats": "R"
+      }
+     ]
     }
    ],
    "pk": 849848,
    "inScopeAt": "2026-09-29T16:01:13.342Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-09-30|BOS@NYY|home": {
    "source": "RotoWire",
@@ -2420,14 +2481,75 @@
        "bats": "L"
       }
      ]
+    },
+    {
+     "at": "2026-09-30T19:46:11.293Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Ben Rice",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Cody Bellinger",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Luis Garcia",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Spencer Jones",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "George Lombard",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Jazz Chisholm",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Trent Grisham",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Austin Wells",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Ryan McMahon",
+       "pos": "3B",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849848,
    "inScopeAt": "2026-09-29T16:01:13.342Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-09-30|CHC@SD|away": {
    "source": "RotoWire",
@@ -2504,7 +2626,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-09-30|CHC@SD|home": {
    "source": "RotoWire",
@@ -2642,7 +2764,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoGrinders|2026-09-29|PHI@ATL|away": {
    "source": "RotoGrinders",
@@ -3823,7 +3945,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-10-01|PHI@ATL|home": {
    "source": "RotoWire",
@@ -3900,7 +4022,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-10-01|CWS@HOU|away": {
    "source": "RotoWire",
@@ -3977,7 +4099,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-10-01|CWS@HOU|home": {
    "source": "RotoWire",
@@ -4054,7 +4176,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-10-01|BOS@NYY|away": {
    "source": "RotoWire",
@@ -4131,7 +4253,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-10-01|BOS@NYY|home": {
    "source": "RotoWire",
@@ -4208,7 +4330,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-10-01|CHC@SD|away": {
    "source": "RotoWire",
@@ -4285,7 +4407,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoWire|2026-10-01|CHC@SD|home": {
    "source": "RotoWire",
@@ -4362,7 +4484,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoGrinders|2026-09-30|PHI@ATL|away": {
    "source": "RotoGrinders",
@@ -4561,7 +4683,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoGrinders|2026-09-30|PHI@ATL|home": {
    "source": "RotoGrinders",
@@ -4699,7 +4821,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoGrinders|2026-09-30|CWS@HOU|away": {
    "source": "RotoGrinders",
@@ -4837,7 +4959,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoGrinders|2026-09-30|CWS@HOU|home": {
    "source": "RotoGrinders",
@@ -4914,7 +5036,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoGrinders|2026-09-30|BOS@NYY|away": {
    "source": "RotoGrinders",
@@ -4984,14 +5106,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-09-30T19:46:11.293Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jahmai Jones",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Adley Rutschman",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Willson Contreras",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Wilyer Abreu",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Ceddanne Rafaela",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Caleb Durbin",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Nick Sogard",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Trevor Story",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Nate Eaton",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849848,
    "inScopeAt": "2026-09-30T07:20:52.541Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoGrinders|2026-09-30|BOS@NYY|home": {
    "source": "RotoGrinders",
@@ -5061,14 +5244,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-09-30T19:46:11.293Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Ben Rice",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Cody Bellinger",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Luis Garcia Jr.",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Spencer Jones",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "George Lombard",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Jazz Chisholm",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Trent Grisham",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Austin Wells",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Ryan McMahon",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849848,
    "inScopeAt": "2026-09-30T07:20:52.541Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoGrinders|2026-09-30|CHC@SD|away": {
    "source": "RotoGrinders",
@@ -5145,7 +5389,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   },
   "RotoGrinders|2026-09-30|CHC@SD|home": {
    "source": "RotoGrinders",
@@ -5222,7 +5466,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-30T19:31:01.548Z"
+   "fetchedAt": "2026-09-30T19:46:11.293Z"
   }
  }
 }
