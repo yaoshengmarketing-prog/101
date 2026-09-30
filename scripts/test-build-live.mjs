@@ -18,6 +18,8 @@ function api({ fail = [], lineup = true, sp = { away: SP2, home: SP1 }, wx } = {
     const no = k => { if (fail.includes(k)) throw new Error(`HTTP 503 ${k}`); };
     if (url.includes("/schedule")) return { dates: [{ games: [game(PREV, "2026-09-23T23:05:00Z", "Final"), game(PK, "2026-09-24T23:05:00Z", "Preview", sp, wx)] }] };
     if (url.includes("/standings")) { no("standings"); return { records: [{ teamRecords: [T1, T2].map((t, i) => ({ team: t, wins: 90 - i, losses: 70 + i, winningPercentage: ".560", records: { splitRecords: [] }, streak: { streakCode: "W2" }, runsScored: 700, runsAllowed: 600, gamesPlayed: 160 })) }] }; }
+    // 打者 people（例行賽成績）：和 boxscore 的 seasonStats 不同，用來確認打線 AVG／OPS 取自 people
+    if (url.includes("/people") && url.includes("group=[hitting]")) { no("bat"); return { people: url.match(/personIds=([\d,]+)/)[1].split(",").map(id => ({ id: +id, stats: [{ splits: [{ stat: { avg: ".281", ops: ".812" } }] }] })) }; }
     if (url.includes("group=hitting")) { no("hitting"); return { stats: [{ splits: [T1, T2].map(t => ({ team: t, stat: { ops: ".750" } })) }] }; }
     if (url.includes("group=pitching")) { no("pitching"); return { stats: [{ splits: [T1, T2].map(t => ({ team: t, stat: { era: "3.80" } })) }] }; }
     if (url.includes("/people")) { no("people"); return { people: [SP1, SP2, SP3].map(p => ({ id: p.id, pitchHand: { code: "R" }, stats: [{ splits: [{ stat: { wins: 10, losses: 5, era: "3.10", inningsPitched: "150.0", gamesStarted: 28, whip: "1.10", strikeOuts: 170, baseOnBalls: 40 } }] }] })) }; }
@@ -32,6 +34,9 @@ const run = async (at, opt, P0) => { const R = await build({ fetchJson: api(opt)
 // A：全部成功
 const A = await run("2026-09-24T12:00:00Z", {}); const a = A.games[PK];
 check("A 全部成功：兩隊官方打線、沒有 failed", a.away.lineup.state === "official" && a.home.lineup.slots?.length === 9 && !a.away.failed && !a.home.failed);
+check("A 打線 AVG／OPS 取自 people 例行賽成績，不用 boxscore seasonStats", a.home.lineup.slots.every(x => x.avg === ".281" && x.ops === ".812") && a.away.prev.slots.every(x => x.ops === ".812"));
+const A2 = await run("2026-09-24T12:01:00Z", { fail: ["bat"] }); const a2 = A2.games[PK];
+check("A2 打者成績查不到：AVG／OPS 為 null，不回頭用 boxscore 的數字；打線照常", a2.home.lineup.slots.length === 9 && a2.home.lineup.slots.every(x => x.avg === null && x.ops === null));
 
 // B：本場 boxscore、people、standings、hitting 都失敗 → 沿用 A 的值並標示 A 的取得時間
 const B = await run("2026-09-24T12:15:00Z", { fail: ["box", "people", "standings", "hitting", "prevbox"] }, a); const b = B.games[PK];

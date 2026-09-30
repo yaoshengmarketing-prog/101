@@ -82,9 +82,16 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
     let st = Object.values(t.players || {}).filter(p => p.battingOrder && +p.battingOrder % 100 === 0).sort((x, y) => x.battingOrder - y.battingOrder);
     if (!st.length && t.battingOrder?.length) st = t.battingOrder.map(id => t.players["ID" + id] || { person: { id } });
     if (!st.length) return null;
-    return st.map((p, i) => { const b = p.seasonStats?.batting || {};
+    return st.map((p, i) => { const b = bat[p.person?.id] || {};
       return { n: i + 1, id: p.person?.id, name: p.person?.fullName || String(p.person?.id), pos: p.allPositions?.[0]?.abbreviation || p.position?.abbreviation || null, avg: b.avg ?? null, ops: b.ops ?? null }; });
   };
+  // 打線 AVG／OPS：另查 people 的 2026 例行賽成績（被交易者取不分隊合計）。boxscore 的 seasonStats 在季後賽會變成季後賽累計（開賽前可能全是 .000），不能當「本季」
+  //   查不到就是 null（顯示 —），不回頭用 boxscore 的數字
+  const bat = {}, batIds = [...new Set(pks.flatMap(pk => ["away", "home"].flatMap(s => Object.values(box[pk]?.teams?.[s]?.players || {}).filter(p => p.battingOrder && +p.battingOrder % 100 === 0).map(p => p.person?.id).concat(box[pk]?.teams?.[s]?.battingOrder || []))).filter(Boolean))];
+  for (let i = 0; i < batIds.length; i += 100) {
+    const r = await soft("batters", fetchJson(`${API}/people?personIds=${batIds.slice(i, i + 100).join(",")}&hydrate=stats(group=[hitting],type=[season],season=${season},gameType=R)`));
+    for (const p of r?.people || []) { const sp = p.stats?.[0]?.splits || [], s = (sp.find(x => !x.team) || sp[0])?.stat; if (s) bat[p.id] = { avg: s.avg ?? null, ops: s.ops ?? null }; }
+  }
 
   // 天氣：MLB 官方賽前天氣（schedule 的 weather，通常開賽前幾小時才有）。沒有就是 null＝尚未公布，不補預報
   //   firstSeen＝本站第一次看到；changedAt＝內容最後一次變動。原文與數值都留著
