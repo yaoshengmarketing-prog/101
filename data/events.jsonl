@@ -755,3 +755,6 @@
 {"at":"2026-09-30T15:45:54.285Z","pk":849841,"type":"lineup_late","side":"away"}
 {"at":"2026-09-30T16:00:56.297Z","pk":849847,"type":"sp","side":"away","from":null,"to":"Ranger Suarez"}
 {"at":"2026-09-30T16:00:56.297Z","pk":849847,"type":"sp","side":"home","from":null,"to":"Gerrit Cole"}
+{"at":"2026-09-30T17:46:01.443Z","pk":849841,"type":"status","from":"Pre-Game","to":"Warmup"}
+{"at":"2026-09-30T17:46:01.443Z","pk":849846,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-30T17:46:01.443Z","pk":849846,"type":"lineup_official","side":"away"}
