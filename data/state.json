@@ -2163,8 +2163,8 @@
    "status": "Pre-Game",
    "wx": {
     "firstSeen": "2026-09-29T21:31:09.748Z",
-    "key": "{\"condition\":\"Clear\",\"temp\":\"73\",\"wind\":\"4 mph, In From RF\"}",
-    "changedAt": "2026-09-29T21:31:09.748Z"
+    "key": "{\"condition\":\"Clear\",\"temp\":\"77\",\"wind\":\"4 mph, L To R\"}",
+    "changedAt": "2026-09-30T00:45:59.896Z"
    }
   },
   "849845": {
@@ -2255,7 +2255,7 @@
     }
    },
    "late": {},
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-29T17:01:04.575Z",
     "key": "{\"condition\":\"Roof Closed\",\"temp\":\"73\",\"wind\":\"0 mph, None\"}",
