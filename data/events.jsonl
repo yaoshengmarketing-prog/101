@@ -742,3 +742,5 @@
 {"at":"2026-09-30T00:16:00.481Z","pk":849851,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-09-30T00:31:04.100Z","pk":849849,"type":"status","from":"In Progress","to":"Game Over"}
 {"at":"2026-09-30T00:45:59.896Z","pk":849849,"type":"status","from":"Game Over","to":"Final"}
+{"at":"2026-09-30T01:15:58.247Z","pk":849846,"type":"sp","side":"away","from":null,"to":"Sean Burke"}
+{"at":"2026-09-30T01:15:58.247Z","pk":849842,"type":"sp","side":"home","from":null,"to":"Nick Pivetta"}
