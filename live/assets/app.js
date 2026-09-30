@@ -290,7 +290,7 @@ function vsCol(G, MU, k) {
   const hz = p.vsCode === "vl" ? "左" : "右", WHY = { noperson: "未取得", nosplit: `本季沒有對${hz}投的例行賽紀錄`, multi: "只有分隊成績、缺全季合計", invalid: "數字無效", nomatch: "名字對不到 MLB 名單", ambiguous: "MLB 名單有同名，無法唯一配對" };
   const find = (x, proj) => (p.lineup?.slots || []).find(y => proj ? y.name === x.name : y.id != null && y.id === x.id);
   return { head: `對${hz}投 OPS<br>（打席）`,
-    note: `「對${hz}投」＝2026 例行賽面對所有${hz}投（先發＋牛棚）的成績（MLB 官方），不是對今天先發 ${esc(p.pitcher.name)} 的交手紀錄；請連同打席數看。`,
+    note: `「對${hz}投」＝2026 例行賽面對所有${hz}投的成績（MLB 官方；包含同手別的先發與後援投手），不是對今天先發 ${esc(p.pitcher.name)} 的交手紀錄。本欄依本場先發手別（${hz}投）選擇，不隨比賽中換投切換；請連同打席數看。`,
     cell: (x, proj) => { const y = find(x, proj); if (!y) return `<span class="small">名單已更新，下次更新補上</span>`;
       const v = y.vs, main = v ? v.pa === 0 ? `<span class="small">0 打席</span>` : `${v.ops}<br><span class="small">(${v.pa})</span>` : `<span class="small">${WHY[y.why] || "—"}</span>`;
       return proj && y.id ? `${main}<br><span class="small">全季 ${y.season?.ops ?? "—"}</span>` : main; } };
