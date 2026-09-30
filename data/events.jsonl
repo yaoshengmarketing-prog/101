@@ -749,3 +749,5 @@
 {"at":"2026-09-30T03:31:05.969Z","pk":849851,"type":"status","from":"In Progress","to":"Final"}
 {"at":"2026-09-30T07:20:47.927Z","pk":849843,"type":"status","from":"In Progress","to":"Final"}
 {"at":"2026-09-30T07:20:47.927Z","pk":849842,"type":"sp","side":"away","from":null,"to":"Kevin Gausman"}
+{"at":"2026-09-30T14:31:04.800Z","pk":849841,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-09-30T14:31:04.800Z","pk":849841,"type":"lineup_official","side":"home"}
