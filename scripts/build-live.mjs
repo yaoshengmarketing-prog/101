@@ -58,6 +58,8 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   const ops = Object.fromEntries((hit?.stats?.[0]?.splits || []).map(s => [s.team.id, s.stat.ops]));
   const era = Object.fromEntries((pit?.stats?.[0]?.splits || []).map(s => [s.team.id, s.stat.era]));
 
+  // 多隊分列時取不分隊合計列；只有一列就用那列；多隊分列但缺合計＝null（不把其中一隊當全季、不平均）
+  const tot = rows => rows.length === 1 ? rows[0] : rows.find(x => !x.team) || null;
   // 3) 先發投手：慣用手＋本季大聯盟成績（被交易者取不分隊合計）
   const spIds = [...new Set(games.flatMap(g => ["away", "home"].map(s => g.teams[s].probablePitcher?.id).filter(Boolean)))];
   const ppl = {}; let peopleOk = true;
@@ -65,8 +67,8 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
     const r = await soft("pitchers", fetchJson(`${API}/people?personIds=${spIds.join(",")}&hydrate=stats(group=[pitching],type=[season],season=${season})`));
     peopleOk = !!r;
     for (const p of r?.people || []) {
-      const sp = p.stats?.[0]?.splits || [], s = (sp.find(x => !x.team) || sp[0])?.stat;
-      ppl[p.id] = { hand: p.pitchHand?.code || null, s: s ? { wl: `${s.wins}-${s.losses}`, era: s.era, ip: s.inningsPitched, gs: s.gamesStarted, whip: s.whip, so: s.strikeOuts, bb: s.baseOnBalls } : null };
+      const sp = p.stats?.[0]?.splits || [], s = tot(sp)?.stat;
+      ppl[p.id] = { hand: p.pitchHand?.code || null, s: s ? { wl: `${s.wins}-${s.losses}`, era: s.era, ip: s.inningsPitched, gs: s.gamesStarted, whip: s.whip, so: s.strikeOuts, bb: s.baseOnBalls } : null, ...(sp.length > 1 && !s ? { sNote: "multi" } : {}) };
     }
   }
 
@@ -90,7 +92,7 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   const bat = {}, batIds = [...new Set(pks.flatMap(pk => ["away", "home"].flatMap(s => Object.values(box[pk]?.teams?.[s]?.players || {}).filter(p => p.battingOrder && +p.battingOrder % 100 === 0).map(p => p.person?.id).concat(box[pk]?.teams?.[s]?.battingOrder || []))).filter(Boolean))];
   for (let i = 0; i < batIds.length; i += 100) {
     const r = await soft("batters", fetchJson(`${API}/people?personIds=${batIds.slice(i, i + 100).join(",")}&hydrate=stats(group=[hitting],type=[season],season=${season},gameType=R)`));
-    for (const p of r?.people || []) { const sp = p.stats?.[0]?.splits || [], s = (sp.find(x => !x.team) || sp[0])?.stat; if (s) bat[p.id] = { avg: s.avg ?? null, ops: s.ops ?? null }; }
+    for (const p of r?.people || []) { const s = tot(p.stats?.[0]?.splits || [])?.stat; if (s) bat[p.id] = { avg: s.avg ?? null, ops: s.ops ?? null }; }
   }
 
   // 天氣：MLB 官方賽前天氣（schedule 的 weather，通常開賽前幾小時才有）。沒有就是 null＝尚未公布，不補預報
@@ -156,7 +158,7 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
         let prevSlots = pg ? slotsOf(box[pg.gamePk], ps) : null;
         if (pg && box[pg.gamePk] === null) { const same = o?.prev?.pk === pg.gamePk && o.prev.slots; prevSlots = same ? o.prev.slots : null; fail("prev", `boxscore ${pg.gamePk}`, !!same); }
         return { ...minimal(s), ...team,
-          sp: P ? { id: P.id, name: P.fullName, hand: pp?.hand || null, s: pp?.s || null, firstSeen: S.sp[s]?.at || null } : null,
+          sp: P ? { id: P.id, name: P.fullName, hand: pp?.hand || null, s: pp?.s || null, ...(pp?.sNote ? { sNote: pp.sNote } : {}), firstSeen: S.sp[s]?.at || null } : null,
           lineup,
           prev: pg ? { pk: pg.gamePk, date: pg.officialDate, ha: ps === "home" ? "主" : "客", opp: TEAM_ZH[pg.teams[os].team.id] || pg.teams[os].team.name, score: `${pg.teams[ps].score}-${pg.teams[os].score}`, slots: prevSlots } : null,
           ...(Object.keys(failed).length ? { failed } : {}) };

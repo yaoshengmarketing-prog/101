@@ -1,7 +1,7 @@
 // 對位卡離線測試：node scripts/test-matchup.mjs
 // 數字取自 2026-09-29 MLB Stats API 實查（Tolle 分項、Schlittler 最近三次先發、洋基預估打線打擊側）
 import assert from "node:assert/strict";
-import { outs, validOps, pickSplits, recentStarts, composition, effective, unknownOf, notesOf, lineupOf, lineupSig, buildMatchup } from "./matchup.mjs";
+import { outs, validOps, pickSplits, recentStarts, composition, effective, unknownOf, notesOf, lineupOf, lineupSig, buildMatchup, totalRow, normName, batVs, batSeason } from "./matchup.mjs";
 
 let n = 0; const t = (name, f) => { const r = f(); n++; console.log("ok", name); return r; };
 const split = (code, pa, ops, team) => ({ split: { code }, stat: { battersFaced: pa, ops }, ...(team ? { team: { id: team } } : {}) });
@@ -118,4 +118,40 @@ await (async () => { const urls = [];
   assert.ok(urls.some(u => u.includes("sitCodes=vl,vr&gameType=R")) && urls.some(u => u.includes("gameLog") && u.includes("gameType=R,F,D,L,W")));
   assert.equal(m.pairs[0].splitScope, "2026 例行賽");
   assert.deepEqual(m.pairs.map(p => p.basis), [{ sp: 10, lineup: "official:101,102" }, { sp: 20, lineup: `proj:expected:${NYY.map(x => x.name).join(",")}` }]); n++; console.log("ok 組裝：客隊先發對主隊官方打線、主隊先發對客隊預估；分項只取例行賽、最近先發含季後賽"); })();
+// ── 打者端今日對位（v0.5） ──
+const bsp = (code, pa, ops, team, avg = ".250") => ({ split: { code }, stat: { plateAppearances: pa, ops, avg }, ...(team ? { team: { id: team } } : {}) });
+const person = (id, splits, season, bats = "R") => ({ id, batSide: { code: bats }, stats: [{ type: { displayName: "statSplits" }, splits }, ...(season ? [{ type: { displayName: "season" }, splits: season }] : [])] });
+t("打者分項：單列直接用、多隊取合計、多隊缺合計不取（不當全季、不平均）、沒有分項、0 打席、未取得分開記", () => {
+  assert.deepEqual(batVs(person(1, [bsp("vl", 258, ".896", 143)]), "vl"), { vs: { pa: 258, avg: ".250", ops: ".896" }, why: null });
+  assert.equal(batVs(person(1, [bsp("vl", 79, ".775", 145), bsp("vl", 59, ".789", 143), bsp("vl", 138, ".781")]), "vl").vs.pa, 138); // Derek Hill 實例
+  assert.deepEqual(batVs(person(1, [bsp("vl", 79, ".775", 145), bsp("vl", 59, ".789", 143)]), "vl"), { vs: null, why: "multi" });
+  assert.deepEqual(batVs(person(1, [bsp("vr", 40, ".600")]), "vl"), { vs: null, why: "nosplit" });
+  assert.deepEqual(batVs(person(1, [bsp("vl", 0, ".000")]), "vl"), { vs: { pa: 0, avg: null, ops: null }, why: null });
+  assert.deepEqual(batVs(person(1, [bsp("vl", 10, "-.---")]), "vl"), { vs: null, why: "invalid" });
+  assert.deepEqual(batVs(undefined, "vl"), { vs: null, why: "noperson" });
+  assert.equal(totalRow([{ team: 1 }, { team: 2 }]), null);
+  assert.equal(batSeason(person(1, [], [bsp(undefined, 216, ".733", 143), bsp(undefined, 90, ".659", 145)])), null);
+  assert.equal(batSeason(person(1, [], [bsp(undefined, 700, ".675", 143)])).ops, ".675"); });
+t("預估名字比對鍵：去重音、Jr./II、句點", () => {
+  assert.equal(normName("Ronald Acuna"), normName("Ronald Acuña Jr.")); assert.equal(normName("Michael Harris"), normName("Michael Harris II"));
+  assert.equal(normName("J.T. Realmuto"), normName("JT Realmuto")); assert.notEqual(normName("Luis Garcia"), normName("Luis Gonzalez")); });
+await (async () => { const urls = [];
+  const P3 = [{ n: 1, name: "Ronald Acuna", bats: "R" }, { n: 2, name: "Luis Garcia", bats: "L" }, { n: 3, name: "Nobody Here", bats: "R" }];
+  const G2 = { pk: 2, usDate: "2026-10-01", away: { id: 143, name: "費城人", ab: "PHI", sp: { id: 30, name: "Sanchez", hand: "L" }, lineup: { state: "official", slots: [{ n: 1, id: 201, name: "Turner" }, { n: 2, id: 202, name: "Hill" }] } },
+    home: { id: 144, name: "勇士", ab: "ATL", sp: { id: 40, name: "Mahle", hand: "R" }, lineup: { state: "none", slots: null } }, proj: { home: { sourceStatusKey: "expected", slots: P3 } } };
+  const fj = async u => { urls.push(u);
+    if (u.includes("/roster")) return { roster: [{ person: { id: 301, fullName: "Ronald Acuña Jr." } }, { person: { id: 302, fullName: "Luis García" } }, { person: { id: 303, fullName: "Luis Garcia Jr." } }] };
+    if (u.includes("personIds")) return { people: [person(201, [bsp("vr", 465, ".709", 143), bsp("vl", 235, ".607", 143)]), person(202, [bsp("vr", 47, ".796", 145), bsp("vr", 31, ".406", 143)]), person(301, [bsp("vl", 145, ".749", 144)], [bsp(undefined, 469, ".796", 144)])] };
+    if (u.includes("statSplits")) return { stats: [{ splits: [split("vl", 173, ".705"), split("vr", 430, ".624")] }] };
+    return { stats: [{ splits: [log("2026-09-13", 1, "6.0", 94, 0)] }] }; };
+  const m = await buildMatchup(G2, "2026-10-01T00:00:00Z", fj);
+  const [aw, hm] = m.pairs; // aw：費城人先發（左投）× 勇士預估；hm：勇士先發（右投）× 費城人官方
+  assert.equal(aw.vsCode, "vl"); assert.equal(hm.vsCode, "vr");
+  assert.ok(urls.some(u => u.includes("/teams/144/roster?rosterType=40Man")) && !urls.some(u => u.includes("/teams/143/roster")));
+  assert.ok(urls.some(u => u.includes("personIds=201,202,301") && u.includes("sitCodes=[vl,vr],season=2026,gameType=R")));
+  assert.deepEqual(aw.lineup.slots.map(x => [x.id, x.vs?.ops ?? null, x.why ?? null, x.season?.ops ?? null]), [[301, ".749", null, ".796"], [null, null, "ambiguous", null], [null, null, "nomatch", null]]);
+  assert.deepEqual(hm.lineup.slots.map(x => [x.id, x.vs?.ops ?? null, x.why ?? null]), [[201, ".709", null], [202, null, "multi"]]);
+  const m2 = await buildMatchup({ ...G2, away: { ...G2.away, sp: { id: 30, name: "Sanchez", hand: null } } }, "2026-10-01T00:00:00Z", fj);
+  assert.equal(m2.pairs[0].vsCode, null); assert.ok(m2.pairs[0].lineup.slots.every(x => !("vs" in x)));
+  n++; console.log("ok 打者端：官方用 id、預估用 40 人名單唯一全名（不唯一、對不到記原因）、手別決定 vl／vr、慣用手未知不算"); })();
 console.log(`${n}/${n} 通過`);

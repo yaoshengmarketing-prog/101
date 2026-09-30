@@ -13,11 +13,14 @@
 //   已知人數不夠判斷（打擊側未知、慣用手未知使左右開弓無法估算）時，寫清楚已知多少、無法判斷多少，不說「兩邊接近」
 //   只在賽前計算；開賽後不再寫檔（保留最後一次賽前結果）；這次抓取失敗也不寫檔
 //   每組記下算的依據 basis（先發 id＋打線版本簽章 lineupSig）；頁面用目前單場資料算同一個簽章，不一致就標示「這張卡還是舊版本」
+// v0.5（10-01，站長核准打者端今日對位）：打線每位打者另記「對今天對方先發手別」的 2026 例行賽分項（對左投 vl／對右投 vr；
+//   對所有左投／右投，不是對這位先發的交手）。官方打線用球員 id；預估打線用名字對 MLB 40 人名單（去重音、Jr./II、句點後全名相同且唯一才算），
+//   對不到或不唯一就記原因、不猜。沒有分項、0 打席、多隊分列缺合計都照實記，不拿別的範圍補。不加觀察規則或門檻
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 import { TEAM_ZH } from "./build-live.mjs";
 
-export const MU_RULES = "matchup v0.4";
+export const MU_RULES = "matchup v0.5";
 const MLB = "https://statsapi.mlb.com/api/v1";
 const FOCUS = 6; // 9 人中至少 6 人站同一邊打席，才說「先看那一邊的分項」；5 對 4 這種接近的，兩邊都看
 const SHORT_OUTS = 6; // 「投得短」＝最近一次先發比前兩次都少至少 2 局（6 個出局）；差一兩個出局不註記
@@ -36,6 +39,27 @@ export function pickSplits(splits) {
     const pa = cnt(r?.stat?.battersFaced), ops = validOps(r?.stat?.ops);
     return r && pa > 0 && ops ? { ops, pa } : null; };
   return { vl: one("vl"), vr: one("vr") };
+}
+
+// 多隊分列時取不分隊合計列；只有一列就用那列；多隊分列但缺合計＝null（不把其中一隊當全季、不平均）
+export const totalRow = rows => rows.length === 1 ? rows[0] : rows.find(x => !x.team) || null;
+// 名字比對鍵（預估打線對 40 人名單）：去重音、句點、Jr./II 等字尾後的全名
+export const normName = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[.,']/g, "").replace(/\s+(jr|sr|ii|iii|iv)$/, "").replace(/\s+/g, " ").trim();
+// 打者本季例行賽分項（code＝vl 對左投／vr 對右投）→ { vs, why }；why：noperson 未取得、nosplit 沒有這個分項、multi 多隊分列缺合計、invalid 數字無效
+export function batVs(person, code) {
+  if (!person) return { vs: null, why: "noperson" };
+  const rows = ((person.stats || []).find(x => x.type?.displayName === "statSplits")?.splits || []).filter(x => x.split?.code === code);
+  if (!rows.length) return { vs: null, why: "nosplit" };
+  const r = totalRow(rows); if (!r) return { vs: null, why: "multi" };
+  const pa = cnt(r.stat?.plateAppearances), ops = validOps(r.stat?.ops);
+  if (pa === 0) return { vs: { pa: 0, avg: null, ops: null }, why: null };
+  return pa && ops ? { vs: { pa, avg: r.stat.avg ?? null, ops }, why: null } : { vs: null, why: "invalid" };
+}
+// 打者本季例行賽整體（預估打線表就地比較用）；多隊分列缺合計＝null
+export function batSeason(person) {
+  const rows = (person?.stats || []).find(x => x.type?.displayName === "season")?.splits || [], r = rows.length ? totalRow(rows) : null;
+  const pa = cnt(r?.stat?.plateAppearances), ops = validOps(r?.stat?.ops);
+  return r && pa != null && ops ? { pa, avg: r.stat.avg ?? null, ops } : null;
 }
 
 // gameLog → 最近三次先發（依日期）＋在那之後的中繼登板（如果有）
@@ -114,7 +138,7 @@ export const lineupSig = (g, side) => { const L = g[side]?.lineup, P = g.proj?.[
 export function lineupOf(g, side, batSide) {
   const t = g[side], L = t.lineup, P = g.proj?.[side];
   if (["official", "late"].includes(L?.state) && L.slots?.length) {
-    const slots = L.slots.map(x => ({ n: x.n, name: x.name, bats: batSide[x.id] || null }));
+    const slots = L.slots.map(x => ({ n: x.n, id: x.id ?? null, name: x.name, bats: batSide[x.id] || null }));
     return { team: t.name, ab: t.ab, source: L.state, short: "官方打線", label: L.state === "late" ? "MLB 官方打線（含臨場異動）" : "MLB 官方打線", at: L.lateAt || L.firstSeen, slots, comp: composition(slots) };
   }
   if (P?.slots?.length) {
@@ -137,9 +161,18 @@ async function getJson(url, tries = 3) {
 
 export async function buildMatchup(g, nowISO, fetchJson = getJson) {
   const season = (g.usDate || g.startUTC).slice(0, 4);
-  const ids = ["away", "home"].flatMap(s => ["official", "late"].includes(g[s].lineup?.state) ? (g[s].lineup.slots || []).map(x => x.id) : []).filter(Boolean);
-  const batSide = {};
-  if (ids.length) for (const p of (await fetchJson(`${MLB}/people?personIds=${ids.join(",")}`)).people || []) batSide[p.id] = p.batSide?.code || null;
+  const official = s => ["official", "late"].includes(g[s].lineup?.state) && g[s].lineup.slots?.length;
+  // 預估打線（官方未出、對方先發已知才需要）：名字對這隊 40 人名單，全名相同且唯一才算
+  const projId = {};
+  for (const [s, o] of [["away", "home"], ["home", "away"]]) {
+    const P = g.proj?.[s]; if (official(s) || !P?.slots?.length || !g[o].sp?.id) continue;
+    const idx = {};
+    if (g[s].id) for (const x of (await fetchJson(`${MLB}/teams/${g[s].id}/roster?rosterType=40Man&season=${season}`)).roster || []) (idx[normName(x.person?.fullName)] ||= []).push(x.person.id);
+    projId[s] = Object.fromEntries(P.slots.map(x => { const m = idx[normName(x.name)] || []; return [x.name, m.length === 1 ? { id: m[0] } : { id: null, why: m.length ? "ambiguous" : "nomatch" }]; }));
+  }
+  const ids = [...new Set(["away", "home"].flatMap(s => official(s) ? g[s].lineup.slots.map(x => x.id) : Object.values(projId[s] || {}).map(x => x.id)).filter(Boolean))];
+  const batSide = {}, people = {};
+  if (ids.length) for (const p of (await fetchJson(`${MLB}/people?personIds=${ids.join(",")}&hydrate=stats(group=[hitting],type=[season,statSplits],sitCodes=[vl,vr],season=${season},gameType=R)`)).people || []) { batSide[p.id] = p.batSide?.code || null; people[p.id] = p; }
   const pairs = [];
   for (const [ps, bs] of [["away", "home"], ["home", "away"]]) {
     const t = g[ps], sp = t.sp;
@@ -150,7 +183,14 @@ export async function buildMatchup(g, nowISO, fetchJson = getJson) {
       fetchJson(`${MLB}/people/${sp.id}/stats?stats=gameLog&group=pitching&season=${season}&gameType=R,F,D,L,W`)]);
     const splits = pickSplits(a.stats?.[0]?.splits), recent = recentStarts(b.stats?.[0]?.splits), lineup = lineupOf(g, bs, batSide);
     const pitcher = { id: sp.id, name: sp.name, hand: sp.hand, team: t.name, ab: t.ab };
-    pairs.push({ pitcherSide: ps, battingSide: bs, basis, pitcher, splits, splitScope: `${season} 例行賽`, recent, lineup, eff: lineup ? effective(lineup.comp, sp.hand) : null, focus: lineup ? focusOf(lineup.comp, sp.hand) : null, ...notesOf({ pitcher, splits, recent, lineup }) });
+    // 打者端：每位打者對這位先發手別的分項（慣用手未知就不算，vsCode＝null）
+    const vsCode = sp.hand === "L" ? "vl" : sp.hand === "R" ? "vr" : null;
+    if (lineup && vsCode) for (const x of lineup.slots) {
+      if (!lineup.source.startsWith("proj")) Object.assign(x, batVs(people[x.id], vsCode));
+      else { const m = projId[bs]?.[x.name] || { id: null, why: "nomatch" }; x.id = m.id;
+        Object.assign(x, m.id ? { ...batVs(people[m.id], vsCode), season: batSeason(people[m.id]) } : { vs: null, why: m.why }); }
+    }
+    pairs.push({ pitcherSide: ps, battingSide: bs, basis, pitcher, vsCode, splits, splitScope: `${season} 例行賽`, recent, lineup, eff: lineup ? effective(lineup.comp, sp.hand) : null, focus: lineup ? focusOf(lineup.comp, sp.hand) : null, ...notesOf({ pitcher, splits, recent, lineup }) });
   }
   return { rules: MU_RULES, pk: g.pk, fetchedAt: nowISO, pairs };
 }

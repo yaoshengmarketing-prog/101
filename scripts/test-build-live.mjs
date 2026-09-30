@@ -13,16 +13,16 @@ const box = on => ({ teams: { away: { players: on ? nine(100) : {} }, home: { pl
 const SP1 = { id: 1, fullName: "Ace One" }, SP2 = { id: 2, fullName: "Ace Two" }, SP3 = { id: 3, fullName: "New Guy" };
 
 // opt：fail＝要失敗的項目（box、prevbox、people、standings、hitting、pitching），lineup＝本場 boxscore 有沒有打線，sp＝先發
-function api({ fail = [], lineup = true, sp = { away: SP2, home: SP1 }, wx } = {}) {
+function api({ fail = [], lineup = true, sp = { away: SP2, home: SP1 }, wx, multi = false } = {}) {
   return async url => {
     const no = k => { if (fail.includes(k)) throw new Error(`HTTP 503 ${k}`); };
     if (url.includes("/schedule")) return { dates: [{ games: [game(PREV, "2026-09-23T23:05:00Z", "Final"), game(PK, "2026-09-24T23:05:00Z", "Preview", sp, wx)] }] };
     if (url.includes("/standings")) { no("standings"); return { records: [{ teamRecords: [T1, T2].map((t, i) => ({ team: t, wins: 90 - i, losses: 70 + i, winningPercentage: ".560", records: { splitRecords: [] }, streak: { streakCode: "W2" }, runsScored: 700, runsAllowed: 600, gamesPlayed: 160 })) }] }; }
     // 打者 people（例行賽成績）：和 boxscore 的 seasonStats 不同，用來確認打線 AVG／OPS 取自 people
-    if (url.includes("/people") && url.includes("group=[hitting]")) { no("bat"); return { people: url.match(/personIds=([\d,]+)/)[1].split(",").map(id => ({ id: +id, stats: [{ splits: [{ stat: { avg: ".281", ops: ".812" } }] }] })) }; }
+    if (url.includes("/people") && url.includes("group=[hitting]")) { no("bat"); return { people: url.match(/personIds=([\d,]+)/)[1].split(",").map(id => ({ id: +id, stats: [{ splits: multi ? [{ team: T1, stat: { avg: ".300", ops: ".900" } }, { team: T2, stat: { avg: ".200", ops: ".600" } }] : [{ stat: { avg: ".281", ops: ".812" } }] }] })) }; }
     if (url.includes("group=hitting")) { no("hitting"); return { stats: [{ splits: [T1, T2].map(t => ({ team: t, stat: { ops: ".750" } })) }] }; }
     if (url.includes("group=pitching")) { no("pitching"); return { stats: [{ splits: [T1, T2].map(t => ({ team: t, stat: { era: "3.80" } })) }] }; }
-    if (url.includes("/people")) { no("people"); return { people: [SP1, SP2, SP3].map(p => ({ id: p.id, pitchHand: { code: "R" }, stats: [{ splits: [{ stat: { wins: 10, losses: 5, era: "3.10", inningsPitched: "150.0", gamesStarted: 28, whip: "1.10", strikeOuts: 170, baseOnBalls: 40 } }] }] })) }; }
+    if (url.includes("/people")) { no("people"); return { people: [SP1, SP2, SP3].map(p => ({ id: p.id, pitchHand: { code: "R" }, stats: [{ splits: multi ? [{ team: T1, stat: { wins: 5, losses: 2, era: "2.10" } }, { team: T2, stat: { wins: 5, losses: 3, era: "4.10" } }] : [{ stat: { wins: 10, losses: 5, era: "3.10", inningsPitched: "150.0", gamesStarted: 28, whip: "1.10", strikeOuts: 170, baseOnBalls: 40 } }] }] })) }; }
     if (url.includes(`/game/${PK}/boxscore`)) { no("box"); return box(lineup); }
     if (url.includes(`/game/${PREV}/boxscore`)) { no("prevbox"); return box(true); }
     throw new Error("unexpected " + url);
@@ -37,6 +37,8 @@ check("A 全部成功：兩隊官方打線、沒有 failed", a.away.lineup.state
 check("A 打線 AVG／OPS 取自 people 例行賽成績，不用 boxscore seasonStats", a.home.lineup.slots.every(x => x.avg === ".281" && x.ops === ".812") && a.away.prev.slots.every(x => x.ops === ".812"));
 const A2 = await run("2026-09-24T12:01:00Z", { fail: ["bat"] }); const a2 = A2.games[PK];
 check("A2 打者成績查不到：AVG／OPS 為 null，不回頭用 boxscore 的數字；打線照常", a2.home.lineup.slots.length === 9 && a2.home.lineup.slots.every(x => x.avg === null && x.ops === null));
+const A3 = await run("2026-09-24T12:02:00Z", { multi: true }); const a3 = A3.games[PK];
+check("A3 多隊分列但缺合計：打者 AVG／OPS、先發成績都不取（不把其中一隊當全季、不平均），先發另記 sNote", a3.home.lineup.slots.every(x => x.avg === null && x.ops === null) && a3.home.sp.s === null && a3.home.sp.sNote === "multi");
 
 // B：本場 boxscore、people、standings、hitting 都失敗 → 沿用 A 的值並標示 A 的取得時間
 const B = await run("2026-09-24T12:15:00Z", { fail: ["box", "people", "standings", "hitting", "prevbox"] }, a); const b = B.games[PK];
