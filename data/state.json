@@ -2135,6 +2135,11 @@
      "id": 601713,
      "name": "Nick Pivetta",
      "at": "2026-09-30T01:15:58.247Z"
+    },
+    "away": {
+     "id": 592332,
+     "name": "Kevin Gausman",
+     "at": "2026-09-30T07:20:47.927Z"
     }
    },
    "lu": {},
@@ -2166,7 +2171,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-29T21:31:09.748Z",
     "key": "{\"condition\":\"Clear\",\"temp\":\"74\",\"wind\":\"4 mph, L To R\"}",
