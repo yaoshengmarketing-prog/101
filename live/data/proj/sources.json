@@ -1615,7 +1615,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-09-30|PHI@ATL|home": {
    "source": "RotoWire",
@@ -1753,7 +1753,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-09-30|CWS@HOU|away": {
    "source": "RotoWire",
@@ -1891,7 +1891,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-09-30|CWS@HOU|home": {
    "source": "RotoWire",
@@ -2090,7 +2090,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-09-30|BOS@NYY|away": {
    "source": "RotoWire",
@@ -2350,7 +2350,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-09-30|BOS@NYY|home": {
    "source": "RotoWire",
@@ -2610,7 +2610,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-09-30|CHC@SD|away": {
    "source": "RotoWire",
@@ -2687,7 +2687,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-09-30|CHC@SD|home": {
    "source": "RotoWire",
@@ -2818,14 +2818,75 @@
        "bats": "L"
       }
      ]
+    },
+    {
+     "at": "2026-09-30T21:46:11.021Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Fernando Tatis",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Dustin Harris",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Manny Machado",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Ty France",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Jackson Merrill",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Xander Bogaerts",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Ethan Salas",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Austin Hays",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Jake Cronenworth",
+       "pos": "2B",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849842,
    "inScopeAt": "2026-09-29T16:01:13.342Z",
    "time": "10:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoGrinders|2026-09-29|PHI@ATL|away": {
    "source": "RotoGrinders",
@@ -4006,7 +4067,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-10-01|PHI@ATL|home": {
    "source": "RotoWire",
@@ -4083,7 +4144,7 @@
    "time": "2:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-10-01|CWS@HOU|away": {
    "source": "RotoWire",
@@ -4160,7 +4221,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-10-01|CWS@HOU|home": {
    "source": "RotoWire",
@@ -4237,7 +4298,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-10-01|BOS@NYY|away": {
    "source": "RotoWire",
@@ -4375,7 +4436,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-10-01|BOS@NYY|home": {
    "source": "RotoWire",
@@ -4452,7 +4513,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-10-01|CHC@SD|away": {
    "source": "RotoWire",
@@ -4529,7 +4590,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoWire|2026-10-01|CHC@SD|home": {
    "source": "RotoWire",
@@ -4606,7 +4667,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoGrinders|2026-09-30|PHI@ATL|away": {
    "source": "RotoGrinders",
@@ -4805,7 +4866,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoGrinders|2026-09-30|PHI@ATL|home": {
    "source": "RotoGrinders",
@@ -4943,7 +5004,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoGrinders|2026-09-30|CWS@HOU|away": {
    "source": "RotoGrinders",
@@ -5081,7 +5142,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoGrinders|2026-09-30|CWS@HOU|home": {
    "source": "RotoGrinders",
@@ -5219,7 +5280,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoGrinders|2026-09-30|BOS@NYY|away": {
    "source": "RotoGrinders",
@@ -5357,7 +5418,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoGrinders|2026-09-30|BOS@NYY|home": {
    "source": "RotoGrinders",
@@ -5495,7 +5556,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoGrinders|2026-09-30|CHC@SD|away": {
    "source": "RotoGrinders",
@@ -5572,7 +5633,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   },
   "RotoGrinders|2026-09-30|CHC@SD|home": {
    "source": "RotoGrinders",
@@ -5642,14 +5703,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-09-30T21:46:11.021Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Fernando Tatis",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Dustin Harris",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Manny Machado",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Ty France",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Jackson Merrill",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Xander Bogaerts",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Ethan Salas",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Austin Hays",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Jake Cronenworth",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849842,
    "inScopeAt": "2026-09-30T07:20:52.541Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-09-30T21:30:56.942Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-09-30T21:46:11.021Z"
   }
  }
 }
