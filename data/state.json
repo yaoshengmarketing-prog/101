@@ -1403,7 +1403,7 @@
      "ids": "607208,656941,547180,664761,681082,669016,624641,702222,592663"
     }
    },
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-30T14:31:04.800Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"83\",\"wind\":\"4 mph, L To R\"}",
