@@ -2298,7 +2298,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-29T19:30:57.678Z",
     "key": "{\"condition\":\"Cloudy\",\"temp\":\"67\",\"wind\":\"8 mph, L To R\"}",
