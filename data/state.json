@@ -1538,7 +1538,7 @@
     }
    },
    "late": {},
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-30T17:46:01.443Z",
     "key": "{\"condition\":\"Roof Closed\",\"temp\":\"73\",\"wind\":\"0 mph, None\"}",
