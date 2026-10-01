@@ -1435,7 +1435,7 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-30T21:30:54.520Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"71\",\"wind\":\"6 mph, L To R\"}",
