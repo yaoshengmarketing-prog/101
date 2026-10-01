@@ -1588,7 +1588,7 @@
     }
    },
    "late": {},
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-09-30T19:30:59.281Z",
     "key": "{\"condition\":\"Cloudy\",\"temp\":\"68\",\"wind\":\"5 mph, Varies\"}",
