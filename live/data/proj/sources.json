@@ -4128,7 +4128,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-01T07:44:04.296Z"
+   "fetchedAt": "2026-10-01T12:59:58.705Z"
   },
   "RotoWire|2026-10-01|PHI@ATL|home": {
    "source": "RotoWire",
@@ -4205,7 +4205,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-01T07:44:04.296Z"
+   "fetchedAt": "2026-10-01T12:59:58.705Z"
   },
   "RotoWire|2026-10-01|CWS@HOU|away": {
    "source": "RotoWire",
@@ -4282,7 +4282,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-01T07:44:04.296Z"
+   "fetchedAt": "2026-10-01T12:59:58.705Z"
   },
   "RotoWire|2026-10-01|CWS@HOU|home": {
    "source": "RotoWire",
@@ -4359,7 +4359,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-01T07:44:04.296Z"
+   "fetchedAt": "2026-10-01T12:59:58.705Z"
   },
   "RotoWire|2026-10-01|BOS@NYY|away": {
    "source": "RotoWire",
@@ -4497,7 +4497,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-01T07:44:04.296Z"
+   "fetchedAt": "2026-10-01T12:59:58.705Z"
   },
   "RotoWire|2026-10-01|BOS@NYY|home": {
    "source": "RotoWire",
@@ -4574,7 +4574,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-01T07:44:04.296Z"
+   "fetchedAt": "2026-10-01T12:59:58.705Z"
   },
   "RotoWire|2026-10-01|CHC@SD|away": {
    "source": "RotoWire",
@@ -4651,7 +4651,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-01T07:44:04.296Z"
+   "fetchedAt": "2026-10-01T12:59:58.705Z"
   },
   "RotoWire|2026-10-01|CHC@SD|home": {
    "source": "RotoWire",
@@ -4728,7 +4728,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-01T07:44:04.296Z"
+   "fetchedAt": "2026-10-01T12:59:58.705Z"
   },
   "RotoGrinders|2026-09-30|PHI@ATL|away": {
    "source": "RotoGrinders",
@@ -5901,14 +5901,76 @@
    "team": "PHI",
    "side": "away",
    "game": "PHI@ATL",
-   "first": null,
-   "versions": [],
+   "first": "2026-10-01T12:59:58.705Z",
+   "versions": [
+    {
+     "at": "2026-10-01T12:59:58.705Z",
+     "statusKey": "unconfirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Trea Turner",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Kyle Schwarber",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Bryce Harper",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Alec Bohm",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Bryson Stott",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Brandon Marsh",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Edmundo Sosa",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Justin Crawford",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "J.T. Realmuto",
+       "pos": null,
+       "bats": null
+      }
+     ]
+    }
+   ],
    "pk": 849844,
    "inScopeAt": "2026-10-01T07:44:04.296Z",
    "time": null,
-   "n": 0,
-   "statusKey": "confirmed",
-   "fetchedAt": "2026-10-01T07:44:04.296Z"
+   "n": 9,
+   "statusKey": "unconfirmed",
+   "fetchedAt": "2026-10-01T12:59:58.705Z"
   },
   "RotoGrinders|2026-10-01|PHI@ATL|home": {
    "source": "RotoGrinders",
@@ -5916,14 +5978,76 @@
    "team": "ATL",
    "side": "home",
    "game": "PHI@ATL",
-   "first": null,
-   "versions": [],
+   "first": "2026-10-01T12:59:58.705Z",
+   "versions": [
+    {
+     "at": "2026-10-01T12:59:58.705Z",
+     "statusKey": "unconfirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Drake Baldwin",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Ronald Acuna",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Matt Olson",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Mauricio Dubon",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Michael Harris",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Ozzie Albies",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Austin Riley",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Mike Yastrzemski",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Ha-seong Kim",
+       "pos": null,
+       "bats": null
+      }
+     ]
+    }
+   ],
    "pk": 849844,
    "inScopeAt": "2026-10-01T07:44:04.296Z",
    "time": null,
-   "n": 0,
-   "statusKey": "confirmed",
-   "fetchedAt": "2026-10-01T07:44:04.296Z"
+   "n": 9,
+   "statusKey": "unconfirmed",
+   "fetchedAt": "2026-10-01T12:59:58.705Z"
   }
  }
 }
