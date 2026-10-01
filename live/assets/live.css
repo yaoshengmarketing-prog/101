@@ -103,3 +103,14 @@ table.bp td.empty{color:var(--muted);font-size:12px}
 .mu .chip.S{border-style:dashed;color:var(--ink)}
 .mu table.mut{margin-top:8px;font-size:13px}.mu table.mut th small,.mu table.mut td small{display:block;font-size:10.5px;color:var(--muted);font-weight:400}
 .bpnote.bpsum{margin:0 0 10px;color:var(--ink);font-size:12.5px}
+
+/* 名單狀態（試作）：清單排版、長英文原文可換行，不撐寬 */
+#rs>details>summary{display:block;list-style:none;cursor:pointer}#rs>details>summary::-webkit-details-marker{display:none}
+#rs>details>summary h2::after{content:" ▸";font-size:14px;color:var(--muted)}#rs>details[open]>summary h2::after{content:" ▾"}
+#rs .notice{margin:0 0 10px}
+.rs ul{margin:6px 0;padding-left:18px;font-size:13.5px;line-height:1.6;overflow-wrap:anywhere}
+.rs .rs1>li+li{margin-top:4px}.rs .rsil{margin:2px 0 0}
+.rs h4{font-size:13.5px;margin:10px 0 2px}
+.rs .rsp>li{margin-top:8px}.rs .rstx{margin:2px 0;font-size:13px}
+.rs .en,.rs .sub{display:block;font-size:12px;color:var(--muted)}
+.rs details{margin-top:8px}
