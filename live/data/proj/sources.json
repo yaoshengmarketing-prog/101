@@ -4128,7 +4128,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-01T20:15:26.995Z"
+   "fetchedAt": "2026-10-01T20:30:32.479Z"
   },
   "RotoWire|2026-10-01|PHI@ATL|home": {
    "source": "RotoWire",
@@ -4198,14 +4198,75 @@
        "bats": "R"
       }
      ]
+    },
+    {
+     "at": "2026-10-01T20:30:32.479Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Drake Baldwin",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Ronald Acuna",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Matt Olson",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Michael Harris",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Mauricio Dubon",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Mike Yastrzemski",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Austin Riley",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Ozzie Albies",
+       "pos": "2B",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "Dominic Smith",
+       "pos": "DH",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849844,
    "inScopeAt": "2026-09-30T16:00:58.074Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-01T20:15:26.995Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-01T20:30:32.479Z"
   },
   "RotoWire|2026-10-01|CWS@HOU|away": {
    "source": "RotoWire",
@@ -5970,7 +6031,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-01T20:15:26.995Z"
+   "fetchedAt": "2026-10-01T20:30:32.479Z"
   },
   "RotoGrinders|2026-10-01|PHI@ATL|home": {
    "source": "RotoGrinders",
@@ -6040,14 +6101,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-01T20:30:32.479Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Drake Baldwin",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Ronald Acuna",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Matt Olson",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Michael Harris",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Mauricio Dubon",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Mike Yastrzemski",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Austin Riley",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Ozzie Albies",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Dominic Smith",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849844,
    "inScopeAt": "2026-10-01T07:44:04.296Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-01T20:15:26.995Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-01T20:30:32.479Z"
   }
  }
 }
