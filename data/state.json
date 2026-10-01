@@ -1588,11 +1588,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-09-30T19:30:59.281Z",
-    "key": "{\"condition\":\"Cloudy\",\"temp\":\"72\",\"wind\":\"8 mph, In From CF\"}",
-    "changedAt": "2026-09-30T22:30:57.748Z"
+    "key": "{\"condition\":\"Cloudy\",\"temp\":\"68\",\"wind\":\"5 mph, Varies\"}",
+    "changedAt": "2026-10-01T00:16:03.684Z"
    }
   },
   "849849": {
