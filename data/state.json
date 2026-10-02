@@ -1040,7 +1040,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-10-01T20:30:30.304Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"84\",\"wind\":\"5 mph, L To R\"}",
