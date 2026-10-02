@@ -1040,11 +1040,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-10-01T20:30:30.304Z",
-    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"79\",\"wind\":\"5 mph, L To R\"}",
-    "changedAt": "2026-10-01T22:45:21.146Z"
+    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"84\",\"wind\":\"5 mph, L To R\"}",
+    "changedAt": "2026-10-02T00:15:26.807Z"
    }
   },
   "849845": {
