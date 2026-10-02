@@ -238,12 +238,11 @@ const rsSt = c => c == null ? "不在取得時的 40Man 回應中" : /^D(\d+)$/.
 const md = d => d ? `${+d.slice(5, 7)}/${+d.slice(8)}` : "—";
 const rsIl = e => `${e.kind === "placed" ? `登錄 ${e.days} 天傷兵` : e.kind === "activated" ? `自 ${e.days} 天傷兵名單回歸` : e.kind === "transferred" ? `轉 ${e.days} 天傷兵` : "傷兵相關異動"}${e.retro ? `（回溯 ${md(e.retro)}）` : ""}${e.kind === "activated" ? "" : e.injury ? `；官方部位：${esc(e.injury)}` : "；官方未寫部位"}`;
 const RS_TY = { CU: "從小聯盟召回", OPT: "下放小聯盟", SE: "簽上大聯盟名單", DES: "指定讓渡（DFA）", OUT: "讓渡至小聯盟", CLW: "被他隊認領", ASG: "復健指派" };
-const rsTx = x => x.il ? rsIl(x.il) : x.unexplained ? "名單狀態變更：<b>原因未確認</b>（官方只寫 roster status changed）"
+const rsTx = x => x.il ? rsIl(x.il) : x.unexplained ? "名單狀態變更（<b>原因未確認</b>）"
   : /elected free agency/i.test(x.text) ? "選擇成為自由球員" : RS_TY[x.type] || "官方異動";
 function rosterSection(RS, G) {
   if (!RS) return "";
   const pre = G.status.code === "pre", A = { away: G.away, home: G.home };
-  const prior = RS.prior.map(p => `第 ${p.n} 戰（${md(p.date)}）`).join("、");
   const use = p => !p.reg ? "例行賽無紀錄" : p.reg.pa != null ? `例行賽 ${p.reg.pa} 打席` : `例行賽 ${p.reg.g} 場（先發 ${p.reg.gs}）`;
   const post = p => !p.listed ? "" : `<br>本輪已完賽比賽：${p.post.length ? p.post.map(x => `${md(x.date)} 第 ${x.n} 戰${x.role}`).join("、") : `第 ${RS.prior.map(x => x.n).join("、")} 戰未上場`}`;
   const person = p => `<li><b>${esc(p.name)}</b> ${esc(p.pos)}・${rsSt(p.status)}・本場資料名單${p.listed ? "有列" : "<b>未列</b>"}
@@ -255,24 +254,25 @@ function rosterSection(RS, G) {
     const same = T.sameAsPrior.every(x => x.same);
     // 第一層只放和本場名單變化有關的人：增減各附「比較日之後第一筆官方異動」，沒有或官方沒寫原因就寫原因未確認；長期傷兵、其餘 40 人名單、較早下放者在折疊層
     const why = p => { const x = p.tx.find(x => x.date > RS.basis.date); return !x || x.unexplained ? "原因未確認" : `${md(x.date)} ${rsTx(x)}`; };
-    const diff = g => ex.filter(p => p.group === g).map(p => `${esc(p.name)}（${why(p)}）`).join("、");
+    const diff = g => { const m = new Map(); ex.filter(p => p.group === g).forEach(p => { const w = why(p); m.set(w, [...(m.get(w) || []), esc(p.name)]); }); // 同一種原因的人併成一組，不逐人重複
+      return [...m].map(([w, ns]) => `${ns.join("、")}（${ns.length > 1 ? (/^\d/.test(w) ? "皆 " : "皆") : ""}${w}）`).join("；"); };
     const rel = ex.filter(p => p.group === "recentOff" || p.group === "ilMove");
     return `<div class="panel rs"><div class="lhead"><b>${esc(T.ab)} ${esc(t.name)}</b></div>
       <ul class="rs1">
-        <li><b>本場資料列出的名單</b>（gamePk ${RS.pk}，${stamp(RS.fetchedAt)} 取得）：${T.listedN} 人${RS.prior.length ? `。${same ? `與本輪${prior}的比賽資料名單相同` : `與本輪${prior}的比賽資料名單不同`}，之後仍可能變動` : ""}</li>
+        <li><b>本場資料列出的名單</b>：${T.listedN} 人${RS.prior.length ? `（和本輪前 ${RS.prior.length} 場${same ? "相同" : "不同"}；之後仍可能變動）` : ""}</li>
         <li><b>對照 ${md(RS.basis.date)} 例行賽最後一天現役名單（${T.basisN} 人）</b>：<ul class="rsil"><li>${T.out.length ? `少了 ${T.out.length} 人：${diff("out")}` : "沒有人不在本場名單"}</li><li>${T.in.length ? `多了 ${T.in.length} 人：${diff("in")}` : "沒有新增"}</li></ul></li>
-        <li><b>近期官方傷兵／下放／回歸紀錄</b>（${md(RS.txFrom.all)} 起，只列和本場名單有關的 ${rel.length} 人）：${rel.length ? `<ul class="rsil">${rel.map(p => { const xs = p.tx.filter(x => x.date >= RS.txFrom.all);
-          return `<li>${esc(p.name)}（${p.listed ? "本場名單內" : "未列本場名單"}；取得時狀態：${rsSt(p.status)}）：${xs.length ? xs.map(x => `${md(x.date)} ${rsTx(x)}`).join(" → ") : "沒有官方異動"}</li>`; }).join("")}</ul>` : "沒有"}</li>
-        <li><b>取得時官方傷兵名單</b>：${T.ilCount} 人（${Object.entries(T.ilBy).map(([c, n]) => `${c.slice(1)} 天 ${n}`).join("、")}）。長期傷兵和其餘未列本場名單的人在下方折疊層</li>
+        <li><b>近期官方傷兵／下放／回歸紀錄</b>（${md(RS.txFrom.all)} 起，和本場名單有關的 ${rel.length} 人）：${rel.length ? `<ul class="rsil">${rel.map(p => { const xs = p.tx.filter(x => x.date >= RS.txFrom.all);
+          return `<li>${esc(p.name)}（${p.listed ? "本場名單內" : `未列本場名單，${rsSt(p.status).replace(/（[^（）]*）$/, "")}`}）：${xs.length ? xs.map(x => `${md(x.date)} ${rsTx(x)}`).join(" → ") : "沒有官方異動"}</li>`; }).join("")}</ul>` : "沒有"}</li>
+        <li><b>取得時官方傷兵名單</b>：${T.ilCount} 人（${Object.entries(T.ilBy).map(([c, n]) => `${c.slice(1)} 天 ${n}`).join("、")}），詳見下方折疊層</li>
       </ul>
       <details><summary class="small">詳細：名單增減與近期相關的人（${ex.length} 人）</summary>${GR.map(([g, h]) => { const ps = ex.filter(p => p.group === g);
         return ps.length ? `<h4>${h}（${ps.length}）</h4><ul class="rsp">${ps.map(person).join("")}</ul>` : ""; }).join("")}</details>
       <details><summary class="small">其他保留資料：未列本場名單的其餘 ${oth.length} 人</summary><p class="small">依例行賽最後出賽日排序（新到舊，本季未出賽在最後）。排在後面只是排序選擇，不代表對本場沒有影響。</p><ul class="rsp">${oth.map(person).join("")}</ul></details></div>`; };
   return `<section class="blk" id="rs"><details open><summary><h2>名單狀態 <small>試作・${pre ? "賽前資料" : "賽前回放"}・取得 ${stamp(RS.fetchedAt)}</small></h2></summary>
-    <div class="notice">${pre ? `本區是 <b>${stamp(RS.fetchedAt)}</b>（台灣）取得的 MLB 官方資料整理，取得後沒有再更新，之後的名單變動不在此區。` : `<b>賽前回放</b>：以下是 <b>${stamp(RS.fetchedAt)}</b>（台灣）賽前取得的名單狀態，不含之後的變動，也不含本場實際出賽。`}
-      比較基準：<b>${md(RS.basis.date)} 例行賽最後一天</b>的現役名單。${RS.lineupPostedAtFetch ? "" : "取得時官方打線尚未公布，本區不判斷「未列先發」，請看上方打線表。"}「未列本場名單」「官方傷兵」「未列先發」是不同的事，本區不寫「不能出賽」。</div>
+    <div class="notice">${pre ? `gamePk ${RS.pk} 在 <b>${stamp(RS.fetchedAt)}</b>（台灣）取得的名單狀態，取得後沒有再更新。` : `<b>賽前回放</b>：gamePk ${RS.pk} 在 <b>${stamp(RS.fetchedAt)}</b>（台灣）賽前取得的名單狀態，不含之後的變動和本場實際出賽。`}
+      比較基準是 <b>${md(RS.basis.date)} 例行賽最後一天</b>的現役名單。${RS.lineupPostedAtFetch ? "" : "取得時官方打線還沒公布，本區不判斷誰未列先發。"}</div>
     <div class="two">${team("away")}${team("home")}</div>
-    <p class="small">來源：MLB 官方 Stats API（本場比賽資料的名單、現役名單、40Man 狀態碼、官方異動原文、例行賽 gameLog；本輪出賽取自取得時已完賽的本輪比賽資料）。官方異動：全隊自 ${md(RS.txFrom.all)} 起；更早只查了部分球員的傷兵相關紀錄。${md(RS.window.from)}–${md(RS.window.to)}（14 天）是暫定的閱讀整理範圍，沒有回測。</p></details></section>`;
+    <p class="small">來源：MLB 官方 Stats API。官方異動只涵蓋 ${md(RS.txFrom.all)} 起，更早只查了部分球員的傷兵紀錄。出賽量和「例行賽最後出賽」只含例行賽，本輪出賽另外列。${md(RS.window.from)}–${md(RS.window.to)} 這 14 天是暫定的閱讀整理範圍，沒有回測。</p></details></section>`;
 }
 
 /* ================= 先發 × 對方打線（scripts/matchup.mjs；今天／明天賽前比賽） ================= */
