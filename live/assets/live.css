@@ -114,3 +114,6 @@ table.bp td.empty{color:var(--muted);font-size:12px}
 .rs .rsp>li{margin-top:8px}.rs .rstx{margin:2px 0;font-size:13px}
 .rs .en,.rs .sub{display:block;font-size:12px;color:var(--muted)}
 .rs details{margin-top:8px}
+/* 手機：完賽頁「賽後結果」的先發／牛棚表、打線區「逐棒對照」表頭可換行，不再把整頁撐寬（10-02 在 320／360 寬發現） */
+#post .tbl:not(.ls) th,#post .tbl:not(.ls) td{white-space:normal}
+.vsbox .tbl.lu th{white-space:normal}
