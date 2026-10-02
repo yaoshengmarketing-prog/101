@@ -907,6 +907,57 @@
     "changedAt": "2026-09-27T00:46:02.485Z"
    }
   },
+  "849828": {
+   "firstSeen": "2026-10-02T16:00:54.552Z",
+   "sp": {},
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
+  },
+  "849829": {
+   "firstSeen": "2026-10-02T16:00:54.552Z",
+   "sp": {
+    "home": {
+     "id": 800048,
+     "name": "Parker Messick",
+     "at": "2026-10-02T16:00:54.552Z"
+    }
+   },
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
+  },
+  "849830": {
+   "firstSeen": "2026-10-02T16:00:54.552Z",
+   "sp": {
+    "home": {
+     "id": 694819,
+     "name": "Jacob Misiorowski",
+     "at": "2026-10-02T16:00:54.552Z"
+    }
+   },
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
+  },
+  "849835": {
+   "firstSeen": "2026-10-02T16:00:54.552Z",
+   "sp": {
+    "away": {
+     "id": 543037,
+     "name": "Gerrit Cole",
+     "at": "2026-10-02T16:00:54.552Z"
+    },
+    "home": {
+     "id": 656876,
+     "name": "Drew Rasmussen",
+     "at": "2026-10-02T16:00:54.552Z"
+    }
+   },
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
+  },
   "849840": {
    "firstSeen": "2026-09-30T16:00:56.297Z",
    "sp": {},
