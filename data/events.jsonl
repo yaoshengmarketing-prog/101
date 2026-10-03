@@ -793,3 +793,5 @@
 {"at":"2026-10-02T19:00:35.737Z","pk":849828,"type":"sp","side":"home","from":null,"to":"Tarik Skubal"}
 {"at":"2026-10-02T19:15:25.153Z","pk":849829,"type":"sp","side":"away","from":null,"to":"Hagen Smith"}
 {"at":"2026-10-02T20:45:31.215Z","pk":849830,"type":"sp","side":"away","from":null,"to":"Robbie Ray"}
+{"at":"2026-10-03T13:30:24.754Z","pk":849829,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-10-03T13:30:24.754Z","pk":849829,"type":"lineup_official","side":"away"}
