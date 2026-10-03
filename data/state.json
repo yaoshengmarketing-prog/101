@@ -152,7 +152,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-10-03T19:00:44.579Z",
     "key": "{\"condition\":\"Dome\",\"temp\":\"70\",\"wind\":\"0 mph, None\"}",
