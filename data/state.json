@@ -2,7 +2,13 @@
  "games": {
   "849823": {
    "firstSeen": "2026-10-03T16:00:39.459Z",
-   "sp": {},
+   "sp": {
+    "home": {
+     "id": 605483,
+     "name": "Blake Snell",
+     "at": "2026-10-03T16:15:32.388Z"
+    }
+   },
    "lu": {},
    "late": {},
    "status": "Scheduled"
