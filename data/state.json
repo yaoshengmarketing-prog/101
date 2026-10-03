@@ -38,6 +38,11 @@
      "id": 669373,
      "name": "Tarik Skubal",
      "at": "2026-10-02T19:00:35.737Z"
+    },
+    "away": {
+     "id": 689266,
+     "name": "Dylan Dodd",
+     "at": "2026-10-03T17:12:20.008Z"
     }
    },
    "lu": {},
@@ -69,7 +74,7 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-10-03T13:30:24.754Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"63\",\"wind\":\"9 mph, R To L\"}",
