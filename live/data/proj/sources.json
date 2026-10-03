@@ -6361,14 +6361,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-03T14:00:26.261Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Chase Meidroth",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Randal Grichuk",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Miguel Vargas",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Munetaka Murakami",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Tommy Pham",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Brenton Doyle",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Kyle Teel",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Braden Montgomery",
+       "pos": "RF",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "Colson Montgomery",
+       "pos": "SS",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849829,
    "inScopeAt": "2026-10-02T16:00:57.052Z",
    "time": "1:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoWire|2026-10-03|CWS@CLE|home": {
    "source": "RotoWire",
@@ -6445,7 +6506,7 @@
    "time": "1:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoWire|2026-10-03|ATL@LAD|away": {
    "source": "RotoWire",
@@ -6522,7 +6583,7 @@
    "time": "4:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoWire|2026-10-03|ATL@LAD|home": {
    "source": "RotoWire",
@@ -6599,7 +6660,7 @@
    "time": "4:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoWire|2026-10-03|NYY@TB|away": {
    "source": "RotoWire",
@@ -6676,7 +6737,7 @@
    "time": "6:30 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoWire|2026-10-03|NYY@TB|home": {
    "source": "RotoWire",
@@ -6753,7 +6814,7 @@
    "time": "6:30 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoWire|2026-10-03|SD@MIL|away": {
    "source": "RotoWire",
@@ -6830,7 +6891,7 @@
    "time": "8:30 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoWire|2026-10-03|SD@MIL|home": {
    "source": "RotoWire",
@@ -6907,7 +6968,7 @@
    "time": "8:30 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoWire|2026-10-04|SD@MIL|away": {
    "source": "RotoWire",
@@ -6984,7 +7045,7 @@
    "time": "4:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoWire|2026-10-04|SD@MIL|home": {
    "source": "RotoWire",
@@ -7061,7 +7122,7 @@
    "time": "4:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoWire|2026-10-04|ATL@LAD|away": {
    "source": "RotoWire",
@@ -7138,7 +7199,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoWire|2026-10-04|ATL@LAD|home": {
    "source": "RotoWire",
@@ -7215,7 +7276,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoGrinders|2026-10-03|CWS@CLE|away": {
    "source": "RotoGrinders",
@@ -7353,7 +7414,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoGrinders|2026-10-03|CWS@CLE|home": {
    "source": "RotoGrinders",
@@ -7430,7 +7491,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoGrinders|2026-10-03|ATL@LAD|away": {
    "source": "RotoGrinders",
@@ -7507,7 +7568,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoGrinders|2026-10-03|ATL@LAD|home": {
    "source": "RotoGrinders",
@@ -7584,7 +7645,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoGrinders|2026-10-03|NYY@TB|away": {
    "source": "RotoGrinders",
@@ -7661,7 +7722,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoGrinders|2026-10-03|NYY@TB|home": {
    "source": "RotoGrinders",
@@ -7738,7 +7799,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoGrinders|2026-10-03|SD@MIL|away": {
    "source": "RotoGrinders",
@@ -7815,7 +7876,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   },
   "RotoGrinders|2026-10-03|SD@MIL|home": {
    "source": "RotoGrinders",
@@ -7892,7 +7953,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-03T13:45:28.942Z"
+   "fetchedAt": "2026-10-03T14:00:26.261Z"
   }
  }
 }
