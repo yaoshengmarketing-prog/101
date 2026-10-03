@@ -804,3 +804,4 @@
 {"at":"2026-10-03T17:12:20.008Z","pk":849828,"type":"sp","side":"away","from":null,"to":"Dylan Dodd"}
 {"at":"2026-10-03T17:30:23.909Z","pk":849828,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-10-03T17:30:23.909Z","pk":849828,"type":"lineup_official","side":"home"}
+{"at":"2026-10-03T18:45:30.866Z","pk":849828,"type":"lineup_official","side":"away"}
