@@ -120,11 +120,11 @@
     }
    },
    "late": {},
-   "status": "Warmup",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-10-03T20:09:32.340Z",
-    "key": "{\"condition\":\"Roof Closed\",\"temp\":\"71\",\"wind\":\"0 mph, None\"}",
-    "changedAt": "2026-10-03T20:09:32.340Z"
+    "key": "{\"condition\":\"Roof Closed\",\"temp\":\"69\",\"wind\":\"0 mph, None\"}",
+    "changedAt": "2026-10-04T00:45:23.009Z"
    }
   },
   "849835": {
