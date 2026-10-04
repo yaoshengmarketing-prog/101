@@ -14,9 +14,19 @@
      "at": "2026-10-04T18:15:24.659Z"
     }
    },
-   "lu": {},
+   "lu": {
+    "home": {
+     "at": "2026-10-04T20:00:29.700Z",
+     "ids": "605141,660271,669257,518692,606192,663656,681624,500743,669242"
+    }
+   },
    "late": {},
-   "status": "Scheduled"
+   "status": "Pre-Game",
+   "wx": {
+    "firstSeen": "2026-10-04T20:00:29.700Z",
+    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"88\",\"wind\":\"4 mph, Varies\"}",
+    "changedAt": "2026-10-04T20:00:29.700Z"
+   }
   },
   "849825": {
    "firstSeen": "2026-10-03T16:00:39.459Z",
@@ -51,8 +61,8 @@
    "status": "Warmup",
    "wx": {
     "firstSeen": "2026-10-04T16:45:22.112Z",
-    "key": "{\"condition\":\"Roof Closed\",\"temp\":\"68\",\"wind\":\"11 mph, Out To CF\"}",
-    "changedAt": "2026-10-04T18:45:24.233Z"
+    "key": "{\"condition\":\"Sunny\",\"temp\":\"68\",\"wind\":\"11 mph, Out To CF\"}",
+    "changedAt": "2026-10-04T20:00:29.700Z"
    }
   },
   "849828": {
