@@ -46,8 +46,8 @@
    "status": "Pre-Game",
    "wx": {
     "firstSeen": "2026-10-04T16:45:22.112Z",
-    "key": "{\"condition\":\"Roof Closed\",\"temp\":\"69\",\"wind\":\"0 mph, None\"}",
-    "changedAt": "2026-10-04T16:45:22.112Z"
+    "key": "{\"condition\":\"Roof Closed\",\"temp\":\"68\",\"wind\":\"11 mph, Out To CF\"}",
+    "changedAt": "2026-10-04T18:45:24.233Z"
    }
   },
   "849828": {
