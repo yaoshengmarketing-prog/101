@@ -829,3 +829,4 @@
 {"at":"2026-10-04T16:45:22.112Z","pk":849825,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-10-04T16:45:22.112Z","pk":849825,"type":"lineup_official","side":"home"}
 {"at":"2026-10-04T17:00:23.771Z","pk":849825,"type":"lineup_official","side":"away"}
+{"at":"2026-10-04T17:27:04.850Z","pk":849834,"type":"sp","side":"away","from":null,"to":"Anthony Kay"}
