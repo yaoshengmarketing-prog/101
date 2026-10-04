@@ -25,7 +25,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-10-04T20:00:29.700Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"88\",\"wind\":\"4 mph, Varies\"}",
@@ -62,7 +62,7 @@
      "ids": "665487,687957,592518,664034,701538,657757,593428,669134,630105"
     }
    },
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-10-04T16:45:22.112Z",
     "key": "{\"condition\":\"Sunny\",\"temp\":\"68\",\"wind\":\"11 mph, Out To CF\"}",
