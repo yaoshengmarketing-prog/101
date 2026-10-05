@@ -9372,7 +9372,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   },
   "RotoWire|2026-10-05|CWS@CLE|home": {
    "source": "RotoWire",
@@ -9503,14 +9503,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-05T17:30:30.387Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": "3B",
+       "bats": "S"
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Angel Martinez",
+       "pos": "LF",
+       "bats": "S"
+      },
+      {
+       "n": 7,
+       "name": "Travis Bazzana",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Patrick Bailey",
+       "pos": "C",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849834,
    "inScopeAt": "2026-10-04T16:00:24.196Z",
    "time": "5:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   },
   "RotoWire|2026-10-05|NYY@TB|away": {
    "source": "RotoWire",
@@ -9587,7 +9648,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   },
   "RotoWire|2026-10-05|NYY@TB|home": {
    "source": "RotoWire",
@@ -9664,7 +9725,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   },
   "RotoGrinders|2026-10-04|SD@MIL|away": {
    "source": "RotoGrinders",
@@ -10354,7 +10415,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   },
   "RotoWire|2026-10-06|LAD@ATL|home": {
    "source": "RotoWire",
@@ -10431,7 +10492,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   },
   "RotoWire|2026-10-06|MIL@SD|away": {
    "source": "RotoWire",
@@ -10508,7 +10569,7 @@
    "time": "9:30 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   },
   "RotoWire|2026-10-06|MIL@SD|home": {
    "source": "RotoWire",
@@ -10585,7 +10646,7 @@
    "time": "9:30 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   },
   "RotoGrinders|2026-10-05|CWS@CLE|away": {
    "source": "RotoGrinders",
@@ -10723,7 +10784,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   },
   "RotoGrinders|2026-10-05|CWS@CLE|home": {
    "source": "RotoGrinders",
@@ -10861,7 +10922,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   },
   "RotoGrinders|2026-10-05|NYY@TB|away": {
    "source": "RotoGrinders",
@@ -10938,7 +10999,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   },
   "RotoGrinders|2026-10-05|NYY@TB|home": {
    "source": "RotoGrinders",
@@ -11015,7 +11076,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-05T17:15:32.944Z"
+   "fetchedAt": "2026-10-05T17:30:30.387Z"
   }
  }
 }
