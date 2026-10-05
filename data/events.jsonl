@@ -847,3 +847,6 @@
 {"at":"2026-10-05T16:00:31.277Z","pk":849819,"type":"sp","side":"home","from":null,"to":"Chris Sale"}
 {"at":"2026-10-05T16:00:31.277Z","pk":849826,"type":"sp","side":"away","from":null,"to":"Dustin May"}
 {"at":"2026-10-05T16:00:31.277Z","pk":849826,"type":"sp","side":"home","from":null,"to":"Nick Pivetta"}
+{"at":"2026-10-05T17:00:31.118Z","pk":849834,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-10-05T17:00:31.118Z","pk":849834,"type":"lineup_official","side":"away"}
+{"at":"2026-10-05T17:00:31.118Z","pk":849834,"type":"lineup_official","side":"home"}
