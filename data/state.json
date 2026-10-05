@@ -1,5 +1,23 @@
 {
  "games": {
+  "849819": {
+   "firstSeen": "2026-10-05T16:00:31.277Z",
+   "sp": {
+    "away": {
+     "id": 808967,
+     "name": "Yoshinobu Yamamoto",
+     "at": "2026-10-05T16:00:31.277Z"
+    },
+    "home": {
+     "id": 519242,
+     "name": "Chris Sale",
+     "at": "2026-10-05T16:00:31.277Z"
+    }
+   },
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
+  },
   "849823": {
    "firstSeen": "2026-10-03T16:00:39.459Z",
    "sp": {
@@ -68,6 +86,24 @@
     "key": "{\"condition\":\"Sunny\",\"temp\":\"68\",\"wind\":\"11 mph, Out To CF\"}",
     "changedAt": "2026-10-04T20:00:29.700Z"
    }
+  },
+  "849826": {
+   "firstSeen": "2026-10-05T16:00:31.277Z",
+   "sp": {
+    "away": {
+     "id": 669160,
+     "name": "Dustin May",
+     "at": "2026-10-05T16:00:31.277Z"
+    },
+    "home": {
+     "id": 601713,
+     "name": "Nick Pivetta",
+     "at": "2026-10-05T16:00:31.277Z"
+    }
+   },
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
   },
   "849828": {
    "firstSeen": "2026-10-02T16:00:54.552Z",
