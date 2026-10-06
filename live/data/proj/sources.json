@@ -10598,7 +10598,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoWire|2026-10-06|LAD@ATL|home": {
    "source": "RotoWire",
@@ -10797,7 +10797,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoWire|2026-10-06|MIL@SD|away": {
    "source": "RotoWire",
@@ -10935,7 +10935,7 @@
    "time": "9:30 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoWire|2026-10-06|MIL@SD|home": {
    "source": "RotoWire",
@@ -11066,6 +11066,67 @@
        "bats": "L"
       }
      ]
+    },
+    {
+     "at": "2026-10-06T23:30:44.158Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Fernando Tatis",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jackson Merrill",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Manny Machado",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Ty France",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Ethan Salas",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Xander Bogaerts",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Dustin Harris",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Samad Taylor",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Jake Cronenworth",
+       "pos": "2B",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849826,
@@ -11073,7 +11134,7 @@
    "time": "9:30 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoGrinders|2026-10-05|CWS@CLE|away": {
    "source": "RotoGrinders",
@@ -11702,7 +11763,7 @@
    "time": "4:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoWire|2026-10-07|CLE@CWS|home": {
    "source": "RotoWire",
@@ -11779,7 +11840,7 @@
    "time": "4:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoWire|2026-10-07|LAD@ATL|away": {
    "source": "RotoWire",
@@ -11856,7 +11917,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoWire|2026-10-07|LAD@ATL|home": {
    "source": "RotoWire",
@@ -11994,7 +12055,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoWire|2026-10-07|TB@NYY|away": {
    "source": "RotoWire",
@@ -12071,7 +12132,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoWire|2026-10-07|TB@NYY|home": {
    "source": "RotoWire",
@@ -12148,7 +12209,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoWire|2026-10-07|MIL@SD|away": {
    "source": "RotoWire",
@@ -12225,7 +12286,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoWire|2026-10-07|MIL@SD|home": {
    "source": "RotoWire",
@@ -12302,7 +12363,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoGrinders|2026-10-06|LAD@ATL|away": {
    "source": "RotoGrinders",
@@ -12440,7 +12501,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoGrinders|2026-10-06|LAD@ATL|home": {
    "source": "RotoGrinders",
@@ -12639,7 +12700,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoGrinders|2026-10-06|MIL@SD|away": {
    "source": "RotoGrinders",
@@ -12777,7 +12838,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   },
   "RotoGrinders|2026-10-06|MIL@SD|home": {
    "source": "RotoGrinders",
@@ -12908,6 +12969,67 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-06T23:30:44.158Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Fernando Tatis",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Jackson Merrill",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Manny Machado",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Ty France",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Ethan Salas",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Xander Bogaerts",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Dustin Harris",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Samad Taylor",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Jake Cronenworth",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849826,
@@ -12915,7 +13037,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T23:15:32.591Z"
+   "fetchedAt": "2026-10-06T23:30:44.158Z"
   }
  }
 }
