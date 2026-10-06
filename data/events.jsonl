@@ -869,3 +869,6 @@
 {"at":"2026-10-06T19:30:31.326Z","pk":849822,"type":"sp","side":"away","from":null,"to":"Tyler Glasnow"}
 {"at":"2026-10-06T19:30:31.326Z","pk":849822,"type":"sp","side":"home","from":null,"to":"Tyler Mahle"}
 {"at":"2026-10-06T20:30:41.720Z","pk":849819,"type":"lineup_late","side":"home"}
+{"at":"2026-10-06T21:01:00.701Z","pk":849826,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-10-06T21:01:00.701Z","pk":849826,"type":"lineup_official","side":"home"}
+{"at":"2026-10-06T21:01:00.701Z","pk":849833,"type":"sp","side":"away","from":null,"to":"Daniel Espino"}
