@@ -872,3 +872,4 @@
 {"at":"2026-10-06T21:01:00.701Z","pk":849826,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-10-06T21:01:00.701Z","pk":849826,"type":"lineup_official","side":"home"}
 {"at":"2026-10-06T21:01:00.701Z","pk":849833,"type":"sp","side":"away","from":null,"to":"Daniel Espino"}
+{"at":"2026-10-06T21:45:25.775Z","pk":849819,"type":"status","from":"Pre-Game","to":"Warmup"}
