@@ -34,7 +34,18 @@
   },
   "849822": {
    "firstSeen": "2026-10-06T16:00:28.718Z",
-   "sp": {},
+   "sp": {
+    "away": {
+     "id": 607192,
+     "name": "Tyler Glasnow",
+     "at": "2026-10-06T19:30:31.326Z"
+    },
+    "home": {
+     "id": 641816,
+     "name": "Tyler Mahle",
+     "at": "2026-10-06T19:30:31.326Z"
+    }
+   },
    "lu": {},
    "late": {},
    "status": "Scheduled"
@@ -231,7 +242,13 @@
   },
   "849833": {
    "firstSeen": "2026-10-06T16:00:28.718Z",
-   "sp": {},
+   "sp": {
+    "home": {
+     "id": 656794,
+     "name": "Sean Newcomb",
+     "at": "2026-10-06T19:30:31.326Z"
+    }
+   },
    "lu": {},
    "late": {},
    "status": "Scheduled"

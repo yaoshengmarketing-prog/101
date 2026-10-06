@@ -10598,7 +10598,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoWire|2026-10-06|LAD@ATL|home": {
    "source": "RotoWire",
@@ -10736,7 +10736,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoWire|2026-10-06|MIL@SD|away": {
    "source": "RotoWire",
@@ -10813,7 +10813,7 @@
    "time": "9:30 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoWire|2026-10-06|MIL@SD|home": {
    "source": "RotoWire",
@@ -10890,7 +10890,7 @@
    "time": "9:30 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoGrinders|2026-10-05|CWS@CLE|away": {
    "source": "RotoGrinders",
@@ -11519,7 +11519,7 @@
    "time": "4:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoWire|2026-10-07|CLE@CWS|home": {
    "source": "RotoWire",
@@ -11596,7 +11596,7 @@
    "time": "4:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoWire|2026-10-07|LAD@ATL|away": {
    "source": "RotoWire",
@@ -11673,7 +11673,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoWire|2026-10-07|LAD@ATL|home": {
    "source": "RotoWire",
@@ -11743,6 +11743,67 @@
        "bats": "R"
       }
      ]
+    },
+    {
+     "at": "2026-10-06T19:30:33.517Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Drake Baldwin",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Ronald Acuna",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Matt Olson",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Ozzie Albies",
+       "pos": "2B",
+       "bats": "S"
+      },
+      {
+       "n": 5,
+       "name": "Michael Harris",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Mauricio Dubon",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Mike Yastrzemski",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Austin Riley",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Sean Murphy",
+       "pos": "C",
+       "bats": "R"
+      }
+     ]
     }
    ],
    "pk": 849822,
@@ -11750,7 +11811,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoWire|2026-10-07|TB@NYY|away": {
    "source": "RotoWire",
@@ -11827,7 +11888,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoWire|2026-10-07|TB@NYY|home": {
    "source": "RotoWire",
@@ -11904,7 +11965,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoWire|2026-10-07|MIL@SD|away": {
    "source": "RotoWire",
@@ -11981,7 +12042,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoWire|2026-10-07|MIL@SD|home": {
    "source": "RotoWire",
@@ -12058,7 +12119,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoGrinders|2026-10-06|LAD@ATL|away": {
    "source": "RotoGrinders",
@@ -12196,7 +12257,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoGrinders|2026-10-06|LAD@ATL|home": {
    "source": "RotoGrinders",
@@ -12334,7 +12395,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoGrinders|2026-10-06|MIL@SD|away": {
    "source": "RotoGrinders",
@@ -12411,7 +12472,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   },
   "RotoGrinders|2026-10-06|MIL@SD|home": {
    "source": "RotoGrinders",
@@ -12488,7 +12549,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-06T19:15:33.398Z"
+   "fetchedAt": "2026-10-06T19:30:33.517Z"
   }
  }
 }
