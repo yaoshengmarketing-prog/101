@@ -18,6 +18,13 @@
    "late": {},
    "status": "Scheduled"
   },
+  "849822": {
+   "firstSeen": "2026-10-06T16:00:28.718Z",
+   "sp": {},
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
+  },
   "849823": {
    "firstSeen": "2026-10-03T16:00:39.459Z",
    "sp": {
@@ -101,6 +108,13 @@
      "at": "2026-10-05T16:00:31.277Z"
     }
    },
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
+  },
+  "849827": {
+   "firstSeen": "2026-10-06T16:00:28.718Z",
+   "sp": {},
    "lu": {},
    "late": {},
    "status": "Scheduled"
@@ -201,6 +215,13 @@
     "changedAt": "2026-10-04T00:45:23.009Z"
    }
   },
+  "849833": {
+   "firstSeen": "2026-10-06T16:00:28.718Z",
+   "sp": {},
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
+  },
   "849834": {
    "firstSeen": "2026-10-04T16:00:22.074Z",
    "sp": {
@@ -264,6 +285,24 @@
     "key": "{\"condition\":\"Dome\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
     "changedAt": "2026-10-03T22:45:28.528Z"
    }
+  },
+  "849838": {
+   "firstSeen": "2026-10-06T16:00:28.718Z",
+   "sp": {
+    "away": {
+     "id": 607259,
+     "name": "Nick Martinez",
+     "at": "2026-10-06T16:00:28.718Z"
+    },
+    "home": {
+     "id": 608331,
+     "name": "Max Fried",
+     "at": "2026-10-06T16:00:28.718Z"
+    }
+   },
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
   },
   "849839": {
    "firstSeen": "2026-10-04T16:00:22.074Z",
