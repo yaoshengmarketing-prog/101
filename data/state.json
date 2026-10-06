@@ -290,7 +290,7 @@
     }
    },
    "late": {},
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-10-05T20:06:25.652Z",
     "key": "{\"condition\":\"Dome\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
