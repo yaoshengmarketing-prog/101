@@ -11824,7 +11824,7 @@
    "time": "4:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoWire|2026-10-07|CLE@CWS|home": {
    "source": "RotoWire",
@@ -11962,7 +11962,7 @@
    "time": "4:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoWire|2026-10-07|LAD@ATL|away": {
    "source": "RotoWire",
@@ -12100,7 +12100,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoWire|2026-10-07|LAD@ATL|home": {
    "source": "RotoWire",
@@ -12299,7 +12299,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoWire|2026-10-07|TB@NYY|away": {
    "source": "RotoWire",
@@ -12437,7 +12437,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoWire|2026-10-07|TB@NYY|home": {
    "source": "RotoWire",
@@ -12575,7 +12575,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoWire|2026-10-07|MIL@SD|away": {
    "source": "RotoWire",
@@ -12645,14 +12645,75 @@
        "bats": "R"
       }
      ]
+    },
+    {
+     "at": "2026-10-07T22:45:44.159Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Christian Yelich",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "William Contreras",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Brice Turang",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Jake Bauers",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Cooper Pratt",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Sal Frelick",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Garrett Mitchell",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Joey Ortiz",
+       "pos": "3B",
+       "bats": "R"
+      }
+     ]
     }
    ],
    "pk": 849827,
    "inScopeAt": "2026-10-06T16:00:31.758Z",
    "time": "10:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoWire|2026-10-07|MIL@SD|home": {
    "source": "RotoWire",
@@ -12790,7 +12851,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoGrinders|2026-10-06|LAD@ATL|away": {
    "source": "RotoGrinders",
@@ -13541,7 +13602,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoWire|2026-10-08|CLE@CWS|home": {
    "source": "RotoWire",
@@ -13618,7 +13679,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoWire|2026-10-08|TB@NYY|away": {
    "source": "RotoWire",
@@ -13695,7 +13756,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoWire|2026-10-08|TB@NYY|home": {
    "source": "RotoWire",
@@ -13772,7 +13833,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoGrinders|2026-10-07|CLE@CWS|away": {
    "source": "RotoGrinders",
@@ -13910,7 +13971,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoGrinders|2026-10-07|CLE@CWS|home": {
    "source": "RotoGrinders",
@@ -14048,7 +14109,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoGrinders|2026-10-07|LAD@ATL|away": {
    "source": "RotoGrinders",
@@ -14186,7 +14247,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoGrinders|2026-10-07|LAD@ATL|home": {
    "source": "RotoGrinders",
@@ -14385,7 +14446,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoGrinders|2026-10-07|TB@NYY|away": {
    "source": "RotoGrinders",
@@ -14523,7 +14584,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoGrinders|2026-10-07|TB@NYY|home": {
    "source": "RotoGrinders",
@@ -14661,7 +14722,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoGrinders|2026-10-07|MIL@SD|away": {
    "source": "RotoGrinders",
@@ -14731,14 +14792,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-07T22:45:44.159Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Christian Yelich",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "William Contreras",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Brice Turang",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Jakob Bauers",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Cooper Pratt",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Sal Frelick",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Garrett Mitchell",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Joey Ortiz",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849827,
    "inScopeAt": "2026-10-07T09:11:35.141Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   },
   "RotoGrinders|2026-10-07|MIL@SD|home": {
    "source": "RotoGrinders",
@@ -14876,7 +14998,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-07T22:30:35.151Z"
+   "fetchedAt": "2026-10-07T22:45:44.159Z"
   }
  }
 }
