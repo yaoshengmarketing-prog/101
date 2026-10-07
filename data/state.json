@@ -30,7 +30,7 @@
      "ids": "686948,660670,621566,645277,671739,643289,657041,663586,673490"
     }
    },
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-10-06T18:15:37.096Z",
     "key": "{\"condition\":\"Clear\",\"temp\":\"75\",\"wind\":\"6 mph, L To R\"}",
@@ -157,8 +157,8 @@
    "status": "Warmup",
    "wx": {
     "firstSeen": "2026-10-06T21:01:00.701Z",
-    "key": "{\"condition\":\"Clear\",\"temp\":\"84\",\"wind\":\"9 mph, In From LF\"}",
-    "changedAt": "2026-10-07T00:00:52.565Z"
+    "key": "{\"condition\":\"Clear\",\"temp\":\"83\",\"wind\":\"9 mph, In From LF\"}",
+    "changedAt": "2026-10-07T01:30:25.057Z"
    }
   },
   "849827": {
