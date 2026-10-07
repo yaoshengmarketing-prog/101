@@ -415,6 +415,11 @@
      "id": 607074,
      "name": "Carlos Rodón",
      "at": "2026-10-07T16:00:28.063Z"
+    },
+    "away": {
+     "id": 656876,
+     "name": "Drew Rasmussen",
+     "at": "2026-10-07T21:45:19.705Z"
     }
    },
    "lu": {},
@@ -449,8 +454,8 @@
    "status": "Pre-Game",
    "wx": {
     "firstSeen": "2026-10-07T20:00:55.000Z",
-    "key": "{\"condition\":\"Clear\",\"temp\":\"61\",\"wind\":\"8 mph, R To L\"}",
-    "changedAt": "2026-10-07T20:00:55.000Z"
+    "key": "{\"condition\":\"Clear\",\"temp\":\"67\",\"wind\":\"15 mph, R To L\"}",
+    "changedAt": "2026-10-07T21:45:19.705Z"
    }
   },
   "849839": {
