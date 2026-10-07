@@ -880,3 +880,5 @@
 {"at":"2026-10-07T01:15:26.130Z","pk":849826,"type":"status","from":"Pre-Game","to":"Warmup"}
 {"at":"2026-10-07T01:30:25.057Z","pk":849819,"type":"status","from":"Game Over","to":"Final"}
 {"at":"2026-10-07T01:45:25.772Z","pk":849826,"type":"status","from":"Warmup","to":"In Progress"}
+{"at":"2026-10-07T09:11:32.305Z","pk":849826,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-10-07T09:11:32.305Z","pk":849827,"type":"sp","side":"home","from":null,"to":"Walker Buehler"}
