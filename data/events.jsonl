@@ -902,3 +902,4 @@
 {"at":"2026-10-07T22:00:41.577Z","pk":849822,"type":"status","from":"Pre-Game","to":"Warmup"}
 {"at":"2026-10-07T22:15:27.142Z","pk":849822,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-10-07T22:45:39.875Z","pk":849827,"type":"lineup_official","side":"away"}
+{"at":"2026-10-07T23:30:31.824Z","pk":849833,"type":"status","from":"In Progress","to":"Game Over"}
