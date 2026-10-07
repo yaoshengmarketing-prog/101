@@ -65,8 +65,8 @@
    "status": "Pre-Game",
    "wx": {
     "firstSeen": "2026-10-07T18:45:43.856Z",
-    "key": "{\"condition\":\"Clear\",\"temp\":\"77\",\"wind\":\"2 mph, L To R\"}",
-    "changedAt": "2026-10-07T18:45:43.856Z"
+    "key": "{\"condition\":\"Clear\",\"temp\":\"80\",\"wind\":\"4 mph, Varies\"}",
+    "changedAt": "2026-10-07T21:00:46.690Z"
    }
   },
   "849823": {
@@ -184,9 +184,19 @@
      "at": "2026-10-07T09:11:32.305Z"
     }
    },
-   "lu": {},
+   "lu": {
+    "home": {
+     "at": "2026-10-07T21:00:46.690Z",
+     "ids": "665487,701538,592518,664034,669720,593428,669134,630105,669392"
+    }
+   },
    "late": {},
-   "status": "Scheduled"
+   "status": "Pre-Game",
+   "wx": {
+    "firstSeen": "2026-10-07T21:00:46.690Z",
+    "key": "{\"condition\":\"Clear\",\"temp\":\"78\",\"wind\":\"6 mph, In From LF\"}",
+    "changedAt": "2026-10-07T21:00:46.690Z"
+   }
   },
   "849828": {
    "firstSeen": "2026-10-02T16:00:54.552Z",
