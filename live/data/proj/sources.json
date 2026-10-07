@@ -11763,7 +11763,7 @@
    "time": "4:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoWire|2026-10-07|CLE@CWS|home": {
    "source": "RotoWire",
@@ -11833,14 +11833,75 @@
        "bats": "R"
       }
      ]
+    },
+    {
+     "at": "2026-10-07T16:15:42.224Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Sam Antonacci",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Miguel Vargas",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Munetaka Murakami",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Kyle Teel",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Chase Meidroth",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Tristan Peters",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Braden Montgomery",
+       "pos": "RF",
+       "bats": "S"
+      },
+      {
+       "n": 8,
+       "name": "Randal Grichuk",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Colson Montgomery",
+       "pos": "SS",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849833,
    "inScopeAt": "2026-10-06T16:00:31.758Z",
    "time": "4:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoWire|2026-10-07|LAD@ATL|away": {
    "source": "RotoWire",
@@ -11917,7 +11978,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoWire|2026-10-07|LAD@ATL|home": {
    "source": "RotoWire",
@@ -12055,7 +12116,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoWire|2026-10-07|TB@NYY|away": {
    "source": "RotoWire",
@@ -12132,7 +12193,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoWire|2026-10-07|TB@NYY|home": {
    "source": "RotoWire",
@@ -12209,7 +12270,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoWire|2026-10-07|MIL@SD|away": {
    "source": "RotoWire",
@@ -12286,7 +12347,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoWire|2026-10-07|MIL@SD|home": {
    "source": "RotoWire",
@@ -12363,7 +12424,7 @@
    "time": "10:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoGrinders|2026-10-06|LAD@ATL|away": {
    "source": "RotoGrinders",
@@ -13114,7 +13175,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoWire|2026-10-08|CLE@CWS|home": {
    "source": "RotoWire",
@@ -13191,7 +13252,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoWire|2026-10-08|TB@NYY|away": {
    "source": "RotoWire",
@@ -13268,7 +13329,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoWire|2026-10-08|TB@NYY|home": {
    "source": "RotoWire",
@@ -13345,7 +13406,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoGrinders|2026-10-07|CLE@CWS|away": {
    "source": "RotoGrinders",
@@ -13422,7 +13483,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoGrinders|2026-10-07|CLE@CWS|home": {
    "source": "RotoGrinders",
@@ -13492,14 +13553,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-07T16:15:42.224Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Sam Antonacci",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Miguel Vargas",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Munetaka Murakami",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Kyle Teel",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Chase Meidroth",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Tristan Peters",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Braden Montgomery",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Randal Grichuk",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Colson Montgomery",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849833,
    "inScopeAt": "2026-10-07T09:11:35.141Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoGrinders|2026-10-07|LAD@ATL|away": {
    "source": "RotoGrinders",
@@ -13576,7 +13698,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoGrinders|2026-10-07|LAD@ATL|home": {
    "source": "RotoGrinders",
@@ -13653,7 +13775,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoGrinders|2026-10-07|TB@NYY|away": {
    "source": "RotoGrinders",
@@ -13730,7 +13852,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoGrinders|2026-10-07|TB@NYY|home": {
    "source": "RotoGrinders",
@@ -13807,7 +13929,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoGrinders|2026-10-07|MIL@SD|away": {
    "source": "RotoGrinders",
@@ -13884,7 +14006,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   },
   "RotoGrinders|2026-10-07|MIL@SD|home": {
    "source": "RotoGrinders",
@@ -13961,7 +14083,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-07T16:00:32.642Z"
+   "fetchedAt": "2026-10-07T16:15:42.224Z"
   }
  }
 }
