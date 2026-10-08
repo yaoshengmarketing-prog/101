@@ -913,3 +913,4 @@
 {"at":"2026-10-08T02:15:41.913Z","pk":849827,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-10-08T03:15:33.632Z","pk":849838,"type":"status","from":"In Progress","to":"Game Over"}
 {"at":"2026-10-08T03:30:38.413Z","pk":849838,"type":"status","from":"Game Over","to":"Final"}
+{"at":"2026-10-08T03:45:25.519Z","pk":849832,"type":"sp","side":"home","from":null,"to":"Hagen Smith"}
