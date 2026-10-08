@@ -13785,7 +13785,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-08T22:00:29.909Z"
+   "fetchedAt": "2026-10-08T22:45:20.674Z"
   },
   "RotoWire|2026-10-08|CLE@CWS|home": {
    "source": "RotoWire",
@@ -14045,7 +14045,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-08T22:00:29.909Z"
+   "fetchedAt": "2026-10-08T22:45:20.674Z"
   },
   "RotoWire|2026-10-08|TB@NYY|away": {
    "source": "RotoWire",
@@ -16516,7 +16516,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-08T22:00:29.909Z"
+   "fetchedAt": "2026-10-08T22:45:20.674Z"
   },
   "RotoGrinders|2026-10-08|CLE@CWS|home": {
    "source": "RotoGrinders",
@@ -16654,7 +16654,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-08T22:00:29.909Z"
+   "fetchedAt": "2026-10-08T22:45:20.674Z"
   }
  }
 }
