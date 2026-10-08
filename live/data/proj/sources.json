@@ -13717,14 +13717,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-08T20:45:26.579Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": "3B",
+       "bats": "S"
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Angel Martinez",
+       "pos": "LF",
+       "bats": "S"
+      },
+      {
+       "n": 7,
+       "name": "Travis Bazzana",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Austin Hedges",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849832,
    "inScopeAt": "2026-10-07T16:00:32.642Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-08T20:30:26.290Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-08T20:45:26.579Z"
   },
   "RotoWire|2026-10-08|CLE@CWS|home": {
    "source": "RotoWire",
@@ -13984,7 +14045,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-08T20:30:26.290Z"
+   "fetchedAt": "2026-10-08T20:45:26.579Z"
   },
   "RotoWire|2026-10-08|TB@NYY|away": {
    "source": "RotoWire",
@@ -16387,14 +16448,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-08T20:45:26.579Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Angel Martinez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Travis Bazzana",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Austin Hedges",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849832,
    "inScopeAt": "2026-10-08T13:01:00.651Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-08T20:30:26.290Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-08T20:45:26.579Z"
   },
   "RotoGrinders|2026-10-08|CLE@CWS|home": {
    "source": "RotoGrinders",
@@ -16532,7 +16654,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-08T20:30:26.290Z"
+   "fetchedAt": "2026-10-08T20:45:26.579Z"
   }
  }
 }
