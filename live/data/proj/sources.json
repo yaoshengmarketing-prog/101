@@ -13724,7 +13724,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-08T20:01:07.752Z"
+   "fetchedAt": "2026-10-08T20:15:38.449Z"
   },
   "RotoWire|2026-10-08|CLE@CWS|home": {
    "source": "RotoWire",
@@ -13916,14 +13916,75 @@
        "bats": "R"
       }
      ]
+    },
+    {
+     "at": "2026-10-08T20:15:38.449Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Chase Meidroth",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Randal Grichuk",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Miguel Vargas",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Munetaka Murakami",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Tommy Pham",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Brenton Doyle",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Kyle Teel",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Braden Montgomery",
+       "pos": "RF",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "Colson Montgomery",
+       "pos": "SS",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849832,
    "inScopeAt": "2026-10-07T16:00:32.642Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-08T20:01:07.752Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-08T20:15:38.449Z"
   },
   "RotoWire|2026-10-08|TB@NYY|away": {
    "source": "RotoWire",
@@ -16333,7 +16394,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-08T20:01:07.752Z"
+   "fetchedAt": "2026-10-08T20:15:38.449Z"
   },
   "RotoGrinders|2026-10-08|CLE@CWS|home": {
    "source": "RotoGrinders",
@@ -16403,14 +16464,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-08T20:15:38.449Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Chase Meidroth",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Randal Grichuk",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Miguel Vargas",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Munetaka Murakami",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Tommy Pham",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Brenton Doyle",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Kyle Teel",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Braden Montgomery",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Colson Montgomery",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849832,
    "inScopeAt": "2026-10-08T13:01:00.651Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-08T20:01:07.752Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-08T20:15:38.449Z"
   }
  }
 }
