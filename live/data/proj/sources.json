@@ -13656,14 +13656,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-08T13:01:00.651Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": "3B",
+       "bats": "S"
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Angel Martinez",
+       "pos": "LF",
+       "bats": "S"
+      },
+      {
+       "n": 7,
+       "name": "Travis Bazzana",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Patrick Bailey",
+       "pos": "C",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849832,
    "inScopeAt": "2026-10-07T16:00:32.642Z",
-   "time": "4:00 PM ET",
+   "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "confirmed",
-   "fetchedAt": "2026-10-08T05:52:48.976Z"
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-08T13:01:00.651Z"
   },
   "RotoWire|2026-10-08|CLE@CWS|home": {
    "source": "RotoWire",
@@ -13794,14 +13855,75 @@
        "bats": "L"
       }
      ]
+    },
+    {
+     "at": "2026-10-08T13:01:00.651Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Miguel Vargas",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Tommy Pham",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Randal Grichuk",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Munetaka Murakami",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Chase Meidroth",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Brenton Doyle",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Kyle Teel",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Braden Montgomery",
+       "pos": "RF",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "Luisangel Acuna",
+       "pos": "SS",
+       "bats": "R"
+      }
+     ]
     }
    ],
    "pk": 849832,
    "inScopeAt": "2026-10-07T16:00:32.642Z",
-   "time": "4:00 PM ET",
+   "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "confirmed",
-   "fetchedAt": "2026-10-08T05:52:48.976Z"
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-08T13:01:00.651Z"
   },
   "RotoWire|2026-10-08|TB@NYY|away": {
    "source": "RotoWire",
@@ -13932,14 +14054,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-08T13:01:00.651Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Yandy Diaz",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jonathan Aranda",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Junior Caminero",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Ryan Vilade",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Jonny DeLuca",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Chandler Simpson",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Nick Fortes",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Jorge Mateo",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Taylor Walls",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849837,
    "inScopeAt": "2026-10-07T16:00:32.642Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "confirmed",
-   "fetchedAt": "2026-10-08T05:52:48.976Z"
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-08T13:01:00.651Z"
   },
   "RotoWire|2026-10-08|TB@NYY|home": {
    "source": "RotoWire",
@@ -14070,14 +14253,75 @@
        "bats": "R"
       }
      ]
+    },
+    {
+     "at": "2026-10-08T13:01:00.651Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Ben Rice",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Cody Bellinger",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Luis Garcia",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Spencer Jones",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "George Lombard",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Jazz Chisholm",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Trent Grisham",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Austin Wells",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Ryan McMahon",
+       "pos": "3B",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849837,
    "inScopeAt": "2026-10-07T16:00:32.642Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "confirmed",
-   "fetchedAt": "2026-10-08T05:52:48.976Z"
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-08T13:01:00.651Z"
   },
   "RotoGrinders|2026-10-07|CLE@CWS|away": {
    "source": "RotoGrinders",
@@ -15859,6 +16103,314 @@
    "n": 9,
    "statusKey": "expected",
    "fetchedAt": "2026-10-08T05:52:48.976Z"
+  },
+  "RotoWire|2026-10-09|SD@MIL|away": {
+   "source": "RotoWire",
+   "date": "2026-10-09",
+   "team": "SD",
+   "side": "away",
+   "game": "SD@MIL",
+   "first": "2026-10-08T13:01:00.651Z",
+   "versions": [
+    {
+     "at": "2026-10-08T13:01:00.651Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Fernando Tatis",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Dustin Harris",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Manny Machado",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Jackson Merrill",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Ty France",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Xander Bogaerts",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Ethan Salas",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Luis Campusano",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Jake Cronenworth",
+       "pos": "2B",
+       "bats": "L"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "8:00 PM ET",
+   "n": 9,
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-08T13:01:00.651Z"
+  },
+  "RotoWire|2026-10-09|SD@MIL|home": {
+   "source": "RotoWire",
+   "date": "2026-10-09",
+   "team": "MIL",
+   "side": "home",
+   "game": "SD@MIL",
+   "first": "2026-10-08T13:01:00.651Z",
+   "versions": [
+    {
+     "at": "2026-10-08T13:01:00.651Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Brice Turang",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Jake Bauers",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "William Contreras",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Garrett Mitchell",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Christian Yelich",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Cooper Pratt",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Luis Lara",
+       "pos": "RF",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "Joey Ortiz",
+       "pos": "3B",
+       "bats": "R"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "8:00 PM ET",
+   "n": 9,
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-08T13:01:00.651Z"
+  },
+  "RotoGrinders|2026-10-08|CLE@CWS|away": {
+   "source": "RotoGrinders",
+   "date": "2026-10-08",
+   "team": "CLE",
+   "side": "away",
+   "game": "CLE@CWS",
+   "first": "2026-10-08T13:01:00.651Z",
+   "versions": [
+    {
+     "at": "2026-10-08T13:01:00.651Z",
+     "statusKey": "unconfirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Angel Martinez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Travis Bazzana",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Patrick Bailey",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": null,
+       "bats": null
+      }
+     ]
+    }
+   ],
+   "pk": 849832,
+   "inScopeAt": "2026-10-08T13:01:00.651Z",
+   "time": null,
+   "n": 9,
+   "statusKey": "unconfirmed",
+   "fetchedAt": "2026-10-08T13:01:00.651Z"
+  },
+  "RotoGrinders|2026-10-08|CLE@CWS|home": {
+   "source": "RotoGrinders",
+   "date": "2026-10-08",
+   "team": "CWS",
+   "side": "home",
+   "game": "CLE@CWS",
+   "first": "2026-10-08T13:01:00.651Z",
+   "versions": [
+    {
+     "at": "2026-10-08T13:01:00.651Z",
+     "statusKey": "unconfirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Chase Meidroth",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Randal Grichuk",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Miguel Vargas",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Munetaka Murakami",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Tommy Pham",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Brenton Doyle",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Kyle Teel",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Braden Montgomery",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Colson Montgomery",
+       "pos": null,
+       "bats": null
+      }
+     ]
+    }
+   ],
+   "pk": 849832,
+   "inScopeAt": "2026-10-08T13:01:00.651Z",
+   "time": null,
+   "n": 9,
+   "statusKey": "unconfirmed",
+   "fetchedAt": "2026-10-08T13:01:00.651Z"
   }
  }
 }
