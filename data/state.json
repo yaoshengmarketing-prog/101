@@ -455,7 +455,7 @@
     }
    },
    "late": {},
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-10-07T20:00:55.000Z",
     "key": "{\"condition\":\"Clear\",\"temp\":\"64\",\"wind\":\"9 mph, R To L\"}",
