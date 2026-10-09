@@ -331,8 +331,8 @@
    "status": "Warmup",
    "wx": {
     "firstSeen": "2026-10-08T20:01:06.341Z",
-    "key": "{\"condition\":\"Clear\",\"temp\":\"64\",\"wind\":\"3 mph, In From CF\"}",
-    "changedAt": "2026-10-08T20:15:37.143Z"
+    "key": "{\"condition\":\"Clear\",\"temp\":\"65\",\"wind\":\"3 mph, In From CF\"}",
+    "changedAt": "2026-10-09T00:00:23.485Z"
    }
   },
   "849833": {
