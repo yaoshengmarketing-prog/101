@@ -16777,6 +16777,160 @@
    "n": 9,
    "statusKey": "confirmed",
    "fetchedAt": "2026-10-09T05:58:41.446Z"
+  },
+  "RotoWire|2026-10-10|CWS@CLE|away": {
+   "source": "RotoWire",
+   "date": "2026-10-10",
+   "team": "CWS",
+   "side": "away",
+   "game": "CWS@CLE",
+   "first": "2026-10-09T13:00:24.822Z",
+   "versions": [
+    {
+     "at": "2026-10-09T13:00:24.822Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Sam Antonacci",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Kyle Teel",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Miguel Vargas",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Munetaka Murakami",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Andrew Benintendi",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Tristan Peters",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Braden Montgomery",
+       "pos": "RF",
+       "bats": "S"
+      },
+      {
+       "n": 8,
+       "name": "Chase Meidroth",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Colson Montgomery",
+       "pos": "SS",
+       "bats": "L"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "8:00 PM ET",
+   "n": 9,
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-09T13:00:24.822Z"
+  },
+  "RotoWire|2026-10-10|CWS@CLE|home": {
+   "source": "RotoWire",
+   "date": "2026-10-10",
+   "team": "CLE",
+   "side": "home",
+   "game": "CWS@CLE",
+   "first": "2026-10-09T13:00:24.822Z",
+   "versions": [
+    {
+     "at": "2026-10-09T13:00:24.822Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": "3B",
+       "bats": "S"
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Angel Martinez",
+       "pos": "LF",
+       "bats": "S"
+      },
+      {
+       "n": 7,
+       "name": "Travis Bazzana",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Patrick Bailey",
+       "pos": "C",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "8:00 PM ET",
+   "n": 9,
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-09T13:00:24.822Z"
   }
  }
 }
