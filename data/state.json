@@ -184,8 +184,8 @@
    "status": "Pre-Game",
    "wx": {
     "firstSeen": "2026-10-10T20:00:26.818Z",
-    "key": "{\"condition\":\"Cloudy\",\"temp\":\"73\",\"wind\":\"6 mph, Varies\"}",
-    "changedAt": "2026-10-10T20:00:26.818Z"
+    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"70\",\"wind\":\"11 mph, Out To CF\"}",
+    "changedAt": "2026-10-10T21:45:25.274Z"
    }
   },
   "849832": {
