@@ -172,7 +172,12 @@
    },
    "lu": {},
    "late": {},
-   "status": "Scheduled"
+   "status": "Pre-Game",
+   "wx": {
+    "firstSeen": "2026-10-10T20:00:26.818Z",
+    "key": "{\"condition\":\"Cloudy\",\"temp\":\"73\",\"wind\":\"6 mph, Varies\"}",
+    "changedAt": "2026-10-10T20:00:26.818Z"
+   }
   },
   "849832": {
    "firstSeen": "2026-10-07T16:00:28.063Z",
