@@ -14387,14 +14387,75 @@
        "bats": "L"
       }
      ]
+    },
+    {
+     "at": "2026-10-10T20:15:33.075Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Sam Antonacci",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Kyle Teel",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Miguel Vargas",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Munetaka Murakami",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Andrew Benintendi",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Tristan Peters",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Chase Meidroth",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Colson Montgomery",
+       "pos": "SS",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Brenton Doyle",
+       "pos": "CF",
+       "bats": "R"
+      }
+     ]
     }
    ],
    "pk": 849831,
    "inScopeAt": "2026-10-09T16:01:01.042Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-10T20:00:28.630Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-10T20:15:33.075Z"
   },
   "RotoWire|2026-10-10|CWS@CLE|home": {
    "source": "RotoWire",
@@ -14464,14 +14525,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-10T20:15:33.075Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": "3B",
+       "bats": "S"
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Travis Bazzana",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Patrick Bailey",
+       "pos": "C",
+       "bats": "S"
+      },
+      {
+       "n": 8,
+       "name": "Petey Halpin",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849831,
    "inScopeAt": "2026-10-09T16:01:01.042Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-10T20:00:28.630Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-10T20:15:33.075Z"
   },
   "RotoWire|2026-10-11|LAD@MIL|away": {
    "source": "RotoWire",
@@ -14548,7 +14670,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-10T20:00:28.630Z"
+   "fetchedAt": "2026-10-10T20:15:33.075Z"
   },
   "RotoWire|2026-10-11|LAD@MIL|home": {
    "source": "RotoWire",
@@ -14625,7 +14747,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-10T20:00:28.630Z"
+   "fetchedAt": "2026-10-10T20:15:33.075Z"
   },
   "RotoGrinders|2026-10-10|CWS@CLE|away": {
    "source": "RotoGrinders",
@@ -14695,14 +14817,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-10T20:15:33.075Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Sam Antonacci",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Kyle Teel",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Miguel Vargas",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Munetaka Murakami",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Andrew Benintendi",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Tristan Peters",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Chase Meidroth",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Colson Montgomery",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Brenton Doyle",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849831,
    "inScopeAt": "2026-10-10T09:43:33.074Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-10T20:00:28.630Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-10T20:15:33.075Z"
   },
   "RotoGrinders|2026-10-10|CWS@CLE|home": {
    "source": "RotoGrinders",
@@ -14772,14 +14955,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-10T20:15:33.075Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Travis Bazzana",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Patrick Bailey",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Petey Halpin",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849831,
    "inScopeAt": "2026-10-10T09:43:33.074Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-10T20:00:28.630Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-10T20:15:33.075Z"
   }
  }
 }
