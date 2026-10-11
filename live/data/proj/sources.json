@@ -11906,14 +11906,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-11T20:15:36.620Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Mookie Betts",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Freddie Freeman",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Will Smith",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Shohei Ohtani",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Teoscar Hernandez",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Max Muncy",
+       "pos": "3B",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Andy Pages",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Kyle Tucker",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Enrique Hernandez",
+       "pos": "2B",
+       "bats": "R"
+      }
+     ]
     }
    ],
    "pk": 849809,
    "inScopeAt": "2026-10-10T16:00:21.803Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-11T20:00:46.430Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-11T20:15:36.620Z"
   },
   "RotoWire|2026-10-11|LAD@MIL|home": {
    "source": "RotoWire",
@@ -11990,7 +12051,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-11T20:00:46.430Z"
+   "fetchedAt": "2026-10-11T20:15:36.620Z"
   },
   "RotoGrinders|2026-10-10|CWS@CLE|away": {
    "source": "RotoGrinders",
@@ -12490,6 +12551,67 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-11T20:15:36.620Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Shohei Ohtani",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Mookie Betts",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Freddie Freeman",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Will Smith",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Max Muncy",
+       "pos": "3B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Kyle Tucker",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Teoscar Hernandez",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Andy Pages",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Enrique Hernandez",
+       "pos": "2B",
+       "bats": "R"
+      }
+     ]
     }
    ],
    "pk": 849812,
@@ -12497,7 +12619,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-11T20:00:46.430Z"
+   "fetchedAt": "2026-10-11T20:15:36.620Z"
   },
   "RotoWire|2026-10-12|LAD@MIL|home": {
    "source": "RotoWire",
@@ -12635,7 +12757,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-11T20:00:46.430Z"
+   "fetchedAt": "2026-10-11T20:15:36.620Z"
   },
   "RotoWire|2026-10-12|CLE@TB|away": {
    "source": "RotoWire",
@@ -12712,7 +12834,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-11T20:00:46.430Z"
+   "fetchedAt": "2026-10-11T20:15:36.620Z"
   },
   "RotoWire|2026-10-12|CLE@TB|home": {
    "source": "RotoWire",
@@ -12789,7 +12911,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-11T20:00:46.430Z"
+   "fetchedAt": "2026-10-11T20:15:36.620Z"
   },
   "RotoGrinders|2026-10-11|LAD@MIL|away": {
    "source": "RotoGrinders",
@@ -12859,14 +12981,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-11T20:15:36.620Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Mookie Betts",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Freddie Freeman",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Will Smith",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Shohei Ohtani",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Teoscar Hernandez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Max Muncy",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Andy Pages",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Kyle Tucker",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Enrique Hernandez",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849809,
    "inScopeAt": "2026-10-11T12:37:28.565Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-11T20:00:46.430Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-11T20:15:36.620Z"
   },
   "RotoGrinders|2026-10-11|LAD@MIL|home": {
    "source": "RotoGrinders",
@@ -12943,7 +13126,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-11T20:00:46.430Z"
+   "fetchedAt": "2026-10-11T20:15:36.620Z"
   }
  }
 }
