@@ -75,7 +75,13 @@
   },
   "849820": {
    "firstSeen": "2026-10-11T16:00:53.361Z",
-   "sp": {},
+   "sp": {
+    "home": {
+     "id": 656876,
+     "name": "Drew Rasmussen",
+     "at": "2026-10-11T17:45:22.092Z"
+    }
+   },
    "lu": {},
    "late": {},
    "status": "Scheduled"
