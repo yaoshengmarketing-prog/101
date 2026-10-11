@@ -11974,7 +11974,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-11T20:15:36.620Z"
+   "fetchedAt": "2026-10-11T20:30:43.207Z"
   },
   "RotoWire|2026-10-11|LAD@MIL|home": {
    "source": "RotoWire",
@@ -12044,14 +12044,75 @@
        "bats": "R"
       }
      ]
+    },
+    {
+     "at": "2026-10-11T20:30:43.207Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Brice Turang",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "William Contreras",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Jake Bauers",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Andrew Vaughn",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Garrett Mitchell",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Cooper Pratt",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Luis Lara",
+       "pos": "RF",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "Joey Ortiz",
+       "pos": "3B",
+       "bats": "R"
+      }
+     ]
     }
    ],
    "pk": 849809,
    "inScopeAt": "2026-10-10T16:00:21.803Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-11T20:15:36.620Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-11T20:30:43.207Z"
   },
   "RotoGrinders|2026-10-10|CWS@CLE|away": {
    "source": "RotoGrinders",
@@ -12619,7 +12680,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-11T20:15:36.620Z"
+   "fetchedAt": "2026-10-11T20:30:43.207Z"
   },
   "RotoWire|2026-10-12|LAD@MIL|home": {
    "source": "RotoWire",
@@ -12757,7 +12818,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-11T20:15:36.620Z"
+   "fetchedAt": "2026-10-11T20:30:43.207Z"
   },
   "RotoWire|2026-10-12|CLE@TB|away": {
    "source": "RotoWire",
@@ -12834,7 +12895,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-11T20:15:36.620Z"
+   "fetchedAt": "2026-10-11T20:30:43.207Z"
   },
   "RotoWire|2026-10-12|CLE@TB|home": {
    "source": "RotoWire",
@@ -12911,7 +12972,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-11T20:15:36.620Z"
+   "fetchedAt": "2026-10-11T20:30:43.207Z"
   },
   "RotoGrinders|2026-10-11|LAD@MIL|away": {
    "source": "RotoGrinders",
@@ -13049,7 +13110,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-11T20:15:36.620Z"
+   "fetchedAt": "2026-10-11T20:30:43.207Z"
   },
   "RotoGrinders|2026-10-11|LAD@MIL|home": {
    "source": "RotoGrinders",
@@ -13119,14 +13180,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-11T20:30:43.207Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Brice Turang",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "William Contreras",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Jakob Bauers",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Andrew Vaughn",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Garrett Mitchell",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Cooper Pratt",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Luis Lara",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Joey Ortiz",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849809,
    "inScopeAt": "2026-10-11T12:37:28.565Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-11T20:15:36.620Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-11T20:30:43.207Z"
   }
  }
 }

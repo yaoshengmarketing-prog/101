@@ -937,3 +937,4 @@
 {"at":"2026-10-11T17:45:22.092Z","pk":849820,"type":"sp","side":"home","from":null,"to":"Drew Rasmussen"}
 {"at":"2026-10-11T20:00:45.047Z","pk":849809,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-10-11T20:00:45.047Z","pk":849809,"type":"lineup_official","side":"away"}
+{"at":"2026-10-11T20:30:40.759Z","pk":849809,"type":"lineup_official","side":"home"}
