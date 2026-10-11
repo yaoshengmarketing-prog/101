@@ -28,8 +28,8 @@
    "status": "Pre-Game",
    "wx": {
     "firstSeen": "2026-10-11T20:00:45.047Z",
-    "key": "{\"condition\":\"Dome\",\"temp\":\"68\",\"wind\":\"0 mph, None\"}",
-    "changedAt": "2026-10-11T20:00:45.047Z"
+    "key": "{\"condition\":\"Clear\",\"temp\":\"68\",\"wind\":\"1 mph, Varies\"}",
+    "changedAt": "2026-10-11T21:45:30.347Z"
    }
   },
   "849812": {
