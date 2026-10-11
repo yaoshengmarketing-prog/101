@@ -184,8 +184,8 @@
    "status": "Warmup",
    "wx": {
     "firstSeen": "2026-10-10T20:00:26.818Z",
-    "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"70\",\"wind\":\"11 mph, Out To CF\"}",
-    "changedAt": "2026-10-10T21:45:25.274Z"
+    "key": "{\"condition\":\"Cloudy\",\"temp\":\"65\",\"wind\":\"11 mph, Out To CF\"}",
+    "changedAt": "2026-10-11T00:00:42.406Z"
    }
   },
   "849832": {
