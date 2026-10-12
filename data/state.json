@@ -57,11 +57,11 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Player challenge",
    "wx": {
     "firstSeen": "2026-10-12T17:30:34.060Z",
-    "key": "{\"condition\":\"Dome\",\"temp\":\"85\",\"wind\":\"1 mph, Varies\"}",
-    "changedAt": "2026-10-12T21:00:31.148Z"
+    "key": "{\"condition\":\"Sunny\",\"temp\":\"85\",\"wind\":\"1 mph, Varies\"}",
+    "changedAt": "2026-10-12T21:30:23.178Z"
    }
   },
   "849813": {
