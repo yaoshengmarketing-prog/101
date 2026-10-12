@@ -11727,7 +11727,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-12T20:00:27.802Z"
+   "fetchedAt": "2026-10-12T20:15:27.304Z"
   },
   "RotoWire|2026-10-12|LAD@MIL|home": {
    "source": "RotoWire",
@@ -11926,7 +11926,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-12T20:00:27.802Z"
+   "fetchedAt": "2026-10-12T20:15:27.304Z"
   },
   "RotoWire|2026-10-12|CLE@TB|away": {
    "source": "RotoWire",
@@ -11996,14 +11996,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-12T20:15:27.304Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": "3B",
+       "bats": "S"
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Travis Bazzana",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Patrick Bailey",
+       "pos": "C",
+       "bats": "S"
+      },
+      {
+       "n": 8,
+       "name": "Petey Halpin",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849820,
    "inScopeAt": "2026-10-11T16:00:56.200Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-12T20:00:27.802Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-12T20:15:27.304Z"
   },
   "RotoWire|2026-10-12|CLE@TB|home": {
    "source": "RotoWire",
@@ -12073,14 +12134,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-12T20:15:27.304Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Yandy Diaz",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jonathan Aranda",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Junior Caminero",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Ryan Vilade",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Victor Mesa",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Jonny DeLuca",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Ben Williamson",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Taylor Walls",
+       "pos": "SS",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "Nick Fortes",
+       "pos": "C",
+       "bats": "R"
+      }
+     ]
     }
    ],
    "pk": 849820,
    "inScopeAt": "2026-10-11T16:00:56.200Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-12T20:00:27.802Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-12T20:15:27.304Z"
   },
   "RotoGrinders|2026-10-11|LAD@MIL|away": {
    "source": "RotoGrinders",
@@ -12433,7 +12555,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-12T20:00:27.802Z"
+   "fetchedAt": "2026-10-12T20:15:27.304Z"
   },
   "RotoWire|2026-10-13|CLE@TB|home": {
    "source": "RotoWire",
@@ -12510,7 +12632,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-12T20:00:27.802Z"
+   "fetchedAt": "2026-10-12T20:15:27.304Z"
   },
   "RotoGrinders|2026-10-12|LAD@MIL|away": {
    "source": "RotoGrinders",
@@ -12648,7 +12770,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-12T20:00:27.802Z"
+   "fetchedAt": "2026-10-12T20:15:27.304Z"
   },
   "RotoGrinders|2026-10-12|LAD@MIL|home": {
    "source": "RotoGrinders",
@@ -12786,7 +12908,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-12T20:00:27.802Z"
+   "fetchedAt": "2026-10-12T20:15:27.304Z"
   },
   "RotoGrinders|2026-10-12|CLE@TB|away": {
    "source": "RotoGrinders",
@@ -12856,14 +12978,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-12T20:15:27.304Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Travis Bazzana",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Patrick Bailey",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Petey Halpin",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849820,
    "inScopeAt": "2026-10-12T07:56:25.400Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-12T20:00:27.802Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-12T20:15:27.304Z"
   },
   "RotoGrinders|2026-10-12|CLE@TB|home": {
    "source": "RotoGrinders",
@@ -12933,14 +13116,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-12T20:15:27.304Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Yandy Diaz",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Jonathan Aranda",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Junior Caminero",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Ryan Vilade",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Victor Mesa",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Jonny DeLuca",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Ben Williamson",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Taylor Walls",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Nick Fortes",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849820,
    "inScopeAt": "2026-10-12T07:56:25.400Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-12T20:00:27.802Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-12T20:15:27.304Z"
   }
  }
 }

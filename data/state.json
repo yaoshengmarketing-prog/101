@@ -66,7 +66,13 @@
   },
   "849813": {
    "firstSeen": "2026-10-12T16:00:44.770Z",
-   "sp": {},
+   "sp": {
+    "home": {
+     "id": 642547,
+     "name": "Freddy Peralta",
+     "at": "2026-10-12T20:15:24.750Z"
+    }
+   },
    "lu": {},
    "late": {},
    "status": "Scheduled"
