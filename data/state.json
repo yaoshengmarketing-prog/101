@@ -57,7 +57,7 @@
     }
    },
    "late": {},
-   "status": "Player challenge",
+   "status": "In Progress",
    "wx": {
     "firstSeen": "2026-10-12T17:30:34.060Z",
     "key": "{\"condition\":\"Sunny\",\"temp\":\"85\",\"wind\":\"1 mph, Varies\"}",
@@ -71,6 +71,11 @@
      "id": 642547,
      "name": "Freddy Peralta",
      "at": "2026-10-12T20:15:24.750Z"
+    },
+    "away": {
+     "id": 800048,
+     "name": "Parker Messick",
+     "at": "2026-10-12T21:42:04.189Z"
     }
    },
    "lu": {},
