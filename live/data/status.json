@@ -1,9 +1,9 @@
 {
- "lastAttemptAt": "2026-10-12T15:00:36.482Z",
+ "lastAttemptAt": "2026-10-12T15:11:02.957Z",
  "lastAttemptOk": true,
- "lastSuccessAt": "2026-10-12T15:00:36.482Z",
- "runId": "38267043423",
- "runUrl": "https://github.com/yaoshengmarketing-prog/101/actions/runs/38267043423",
- "trigger": "workflow_dispatch",
+ "lastSuccessAt": "2026-10-12T15:11:02.957Z",
+ "runId": "38268335387",
+ "runUrl": "https://github.com/yaoshengmarketing-prog/101/actions/runs/38268335387",
+ "trigger": "schedule",
  "failed": null
 }
