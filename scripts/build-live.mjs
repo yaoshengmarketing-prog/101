@@ -115,8 +115,9 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
     const base = { pk, twDate: twDate(g.gameDate), usDate: g.officialDate, startUTC: g.gameDate, tbd, twTime: tbd ? null : twTime(g.gameDate), localTime: tbd || !tz ? null : localTime(g.gameDate, tz), tz,
       venue: g.venue?.name || null, status, dh: g.doubleHeader && g.doubleHeader !== "N" ? `G${g.gameNumber}` : null,
       rescheduledFrom: g.rescheduledFrom || null, rescheduleDate: g.rescheduleDate || null, inning: g.linescore?.currentInningOrdinal || null, inningHalf: g.linescore?.inningHalf || null,
+      gameType: g.gameType || null, series: g.seriesDescription ? { desc: g.seriesDescription, n: g.seriesGameNumber ?? null, of: g.gamesInSeries ?? null } : null, // 名單狀態的比較基準依賽事型態選（scripts/roster.mjs）
       firstSeen: S.firstSeen, updatedAt: nowISO, errors: [], weather: weatherOf(g.weather, S, nowISO) };
-    const minimal = s => { const t = g.teams[s].team; return { id: t.id, ab: t.abbreviation || null, name: TEAM_ZH[t.id] || t.name, en: t.name, score: g.teams[s].score ?? null, sp: null, lineup: { state: "none", firstSeen: null, lateAt: null, slots: null }, prev: null }; };
+    const minimal = s => { const t = g.teams[s].team; return { id: t.id, ab: t.abbreviation || null, name: TEAM_ZH[t.id] || t.name, en: t.name, score: g.teams[s].score ?? null, sp: null, lineup: { state: "none", firstSeen: null, lateAt: null, slots: null }, roster: null, prev: null }; };
     try {
       if (S.status && S.status !== status.raw) ev(pk, "status", { from: S.status, to: status.raw });
       S.status = status.raw;
@@ -148,6 +149,10 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
           }
           lineup = { state: lu, firstSeen: S.lu[s]?.at || null, lateAt: S.late[s]?.at || null, slots, ...(withdrawnAt ? { withdrawnAt } : {}) };
         }
+        // 本場資料列出的名單（同一份 boxscore 的 players，賽前＝該隊本場可用名單；名單狀態模組用，不另外呼叫）；boxscore 失敗就沿用上一版
+        let roster = box[pk] === null ? (o?.roster ?? null)
+          : Object.values(box[pk]?.teams?.[s]?.players || {}).map(p => ({ id: p.person?.id, name: p.person?.fullName || String(p.person?.id), pos: p.position?.abbreviation || null })).filter(p => p.id);
+        if (!roster?.length) roster = null;
         // 戰績／團隊打擊／團隊投球
         const team = { ...(rec[id] || {}), ops: ops[id] || null, era: era[id] || null };
         if (!st) { const has = REC.some(k => o?.[k] != null); if (has) for (const k of REC) team[k] = o[k]; fail("rec", "standings", has); }
@@ -159,8 +164,8 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
         if (pg && box[pg.gamePk] === null) { const same = o?.prev?.pk === pg.gamePk && o.prev.slots; prevSlots = same ? o.prev.slots : null; fail("prev", `boxscore ${pg.gamePk}`, !!same); }
         return { ...minimal(s), ...team,
           sp: P ? { id: P.id, name: P.fullName, hand: pp?.hand || null, s: pp?.s || null, ...(pp?.sNote ? { sNote: pp.sNote } : {}), firstSeen: S.sp[s]?.at || null } : null,
-          lineup,
-          prev: pg ? { pk: pg.gamePk, date: pg.officialDate, ha: ps === "home" ? "主" : "客", opp: TEAM_ZH[pg.teams[os].team.id] || pg.teams[os].team.name, score: `${pg.teams[ps].score}-${pg.teams[os].score}`, slots: prevSlots } : null,
+          lineup, roster,
+          prev: pg ? { pk: pg.gamePk, date: pg.officialDate, gameType: pg.gameType || null, ha: ps === "home" ? "主" : "客", opp: TEAM_ZH[pg.teams[os].team.id] || pg.teams[os].team.name, score: `${pg.teams[ps].score}-${pg.teams[os].score}`, slots: prevSlots } : null,
           ...(Object.keys(failed).length ? { failed } : {}) };
       };
       out[pk] = { ...base, away: side("away"), home: side("home") };
@@ -183,7 +188,7 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
 }
 
 // 首頁卡用：去掉打線名單，其餘同單場
-export const cardOf = g => ({ ...g, away: { ...g.away, lineup: { ...g.away.lineup, slots: null }, prev: g.away.prev ? { ...g.away.prev, slots: null, has: !!g.away.prev.slots } : null }, home: { ...g.home, lineup: { ...g.home.lineup, slots: null }, prev: g.home.prev ? { ...g.home.prev, slots: null, has: !!g.home.prev.slots } : null } });
+export const cardOf = g => ({ ...g, away: { ...g.away, lineup: { ...g.away.lineup, slots: null }, roster: null, prev: g.away.prev ? { ...g.away.prev, slots: null, has: !!g.away.prev.slots } : null }, home: { ...g.home, lineup: { ...g.home.lineup, slots: null }, roster: null, prev: g.home.prev ? { ...g.home.prev, slots: null, has: !!g.home.prev.slots } : null } });
 
 export function report({ manifest, days, games, events, errors }) {
   const L = [`# Daily Production 自動報告 ${days[0].date}（台灣）`, "", `產生時間：${manifest.generatedAtTW}（台灣）｜來源：${manifest.source}`, ""];

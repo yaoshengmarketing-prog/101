@@ -47,9 +47,9 @@ jobs:
         run: node scripts/watch.mjs gap
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - name: 離線測試（牛棚、單場抓取失敗沿用舊值、情境卡）
+      - name: 離線測試（牛棚、單場抓取失敗沿用舊值、情境卡、預估打線、對位卡、名單狀態）
         id: test
-        run: node scripts/test-bullpen.mjs && node scripts/test-build-live.mjs && node scripts/test-ctx.mjs && node scripts/test-proj.mjs && node scripts/test-matchup.mjs
+        run: node scripts/test-bullpen.mjs && node scripts/test-build-live.mjs && node scripts/test-ctx.mjs && node scripts/test-proj.mjs && node scripts/test-matchup.mjs && node scripts/test-roster.mjs
       - name: build（抓取＋標準化，寫到 .build）
         id: build
         run: node scripts/build-live.mjs .build
@@ -70,6 +70,9 @@ jobs:
       - name: 先發 × 對方打線（對位卡，今天／明天賽前比賽；失敗不擋當次資料，保留上一版）
         continue-on-error: true
         run: node scripts/matchup.mjs .build
+      - name: 名單狀態（今天／明天賽前比賽；球隊層級資料同 run 共用、輸入未變不查球員；失敗不擋當次資料，保留上一版）
+        continue-on-error: true
+        run: node scripts/roster.mjs .build
       - name: 情境卡（賽前計算，開賽後凍結）
         id: ctx
         run: node scripts/ctx.mjs .build
