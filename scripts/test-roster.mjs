@@ -14,16 +14,16 @@ const stat = (id, name, pos, { pa, g, gs, ip, log = [] } = {}) => ({ id, fullNam
 
 // 兩隊：1 客 AAA、2 主 BBB。基準日 10-10（上一場），本場 10-12
 const A40 = [per(11, "Al One", "C", "A"), per(12, "Al Two", "1B", "A"), per(13, "Al Three", "P", "A"), per(14, "Al Four", "P", "D15"), per(15, "Al Five", "OF", "40M"), per(16, "Al Six", "P", "D60"), per(17, "Al Seven", "SS", "A")];
-const B40 = [per(21, "Bo One", "C", "A"), per(22, "Bo Two", "2B", "A"), per(23, "Bo Three", "P", "A"), per(24, "Bo Four", "P", "RM"), per(25, "Bo Five", "OF", "A")];
+const B40 = [per(21, "Bo One", "C", "A"), per(22, "Bo Two", "2B", "A"), per(23, "Bo Three", "P", "A"), per(24, "Bo Four", "P", "RM"), per(25, "Bo Five", "OF", "A"), per(26, "Bo Six", "P", "RM")];
 const toRoster = (list, ids) => ({ roster: list.filter(x => ids.includes(x.person.id)).map(x => ({ ...x, status: { code: "A" } })) });
 const ATX = [tx("2026-10-01", 14, "Al Four", "SC", "AAA placed RHP Al Four on the 15-day injured list retroactive to September 29, 2026. Right forearm strain."),
   tx("2026-10-11", 12, "Al Two", "SC", "1B Al Two roster status changed by AAA."), tx("2026-10-11", 17, "Al Seven", "SC", "SS Al Seven roster status changed by AAA."),
   tx("2026-10-05", 13, "Al Three", "SC", "AAA activated RHP Al Three from the 15-day injured list."), tx("2026-09-20", 16, "Al Six", "SC", "AAA transferred LHP Al Six from the 15-day injured list to the 60-day injured list. Left elbow sprain.")];
-const BTX = [tx("2026-10-04", 24, "Bo Four", "OPT", "BBB optioned RHP Bo Four to Triple-A."), tx("2026-10-11", 25, "Bo Five", "CU", "BBB recalled OF Bo Five from Triple-A.")];
+const BTX = [tx("2026-10-04", 24, "Bo Four", "OPT", "BBB optioned RHP Bo Four to Triple-A."), tx("2026-10-11", 25, "Bo Five", "CU", "BBB recalled OF Bo Five from Triple-A."), tx("2026-10-02", 26, "Bo Six", "OPT", "BBB optioned RHP Bo Six to Triple-A.")];
 const PEOPLE = { 11: stat(11, "Al One", "C", { pa: 400, log: [["2026-09-27", "R", 1], ["2026-10-10", "D", 500]] }), 12: stat(12, "Al Two", "1B", { pa: 500, log: [["2026-09-27", "R", 1]] }),
   13: stat(13, "Al Three", "P", { g: 40, gs: 0, ip: "40.0", log: [["2026-09-26", "R", 1, 0], ["2026-10-10", "D", 500, 1]] }), 14: stat(14, "Al Four", "P", { g: 50, gs: 0, ip: "50.1", log: [["2026-09-28", "R", 2, 0]] }),
   15: stat(15, "Al Five", "OF", { pa: 20 }), 16: stat(16, "Al Six", "P", { g: 10, gs: 10, ip: "55.0" }), 17: stat(17, "Al Seven", "SS", { pa: 90, log: [["2026-09-27", "R", 1]] }),
-  21: stat(21, "Bo One", "C", { pa: 300 }), 22: stat(22, "Bo Two", "2B", { pa: 310 }), 23: stat(23, "Bo Three", "P", { g: 30, gs: 30, ip: "180.0" }), 24: stat(24, "Bo Four", "P", { g: 12, gs: 0, ip: "15.0", log: [["2026-10-03", "R", 3, 0]] }), 25: stat(25, "Bo Five", "OF", { pa: 50, log: [["2026-10-09", "R", 4]] }) };
+  21: stat(21, "Bo One", "C", { pa: 300 }), 22: stat(22, "Bo Two", "2B", { pa: 310 }), 23: stat(23, "Bo Three", "P", { g: 30, gs: 30, ip: "180.0" }), 24: stat(24, "Bo Four", "P", { g: 12, gs: 0, ip: "15.0", log: [["2026-10-03", "R", 3, 0]] }), 25: stat(25, "Bo Five", "OF", { pa: 50, log: [["2026-10-09", "R", 4]] }), 26: stat(26, "Bo Six", "P", { g: 8, gs: 0, ip: "9.0", log: [["2026-09-20", "R", 5, 0]] }) };
 
 // 本場名單：AAA 少了 12、17，多了 15；BBB 多了 25（24 在基準日之前就下放）
 const LISTED_A = [11, 13, 14, 15], BASIS_A = [11, 12, 13, 14, 17], LISTED_B = [21, 22, 23, 25], BASIS_B = [21, 22, 23];
@@ -78,12 +78,14 @@ await t("官方原因未寫明：Al Two 的異動是 roster status changed → u
 await t("傷兵／下放／回歸：Al Four 在本場名單內且範圍內登錄傷兵→ilMove；Al Three 回歸→ilMove；Bo Four 基準前下放→recentTx；Al Six 9/20 轉 60 天在範圍外→other；Bo Five 召回後已在名單（in）", () => {
   assert.deepEqual(names(R1.away, "ilMove"), ["Al Four", "Al Three"]); assert.equal(by(R1.away, "Al Four").tx[0].il.kind, "placed"); assert.equal(by(R1.away, "Al Four").tx[0].il.injury, "Right forearm strain");
   assert.deepEqual(names(R1.home, "recentTx"), ["Bo Four"]); assert.deepEqual(names(R1.away, "other"), ["Al Six"]); assert.equal(by(R1.away, "Al Six").status, "D60");
+  // 第一層收斂（站長 10-14）：Bo Six 10/2 下放在範圍內，但最後出賽 9/20 在 14 天範圍（9/27 起）之前 → 折疊層，資料保留
+  assert.deepEqual(names(R1.home, "other"), ["Bo Six"]); assert.equal(by(R1.home, "Bo Six").lastApp, "2026-09-20"); assert.equal(by(R1.home, "Bo Four").lastApp, "2026-10-03");
   assert.deepEqual(R1.away.ilBy, { D15: 1, D60: 1 }); assert.equal(R1.away.ilCount, 2); });
 
 await t("球員資料只查需要的人：重點組含 gameLog（例行賽最後出賽、季後賽出賽），折疊組只查 season；跨隊合併成 2 次 people 呼叫", async () => {
   const ctx = makeCtx(api()); const { out: R } = await buildRosterStatus(game(), ctx, NOW, null);
   const pp = ctx.calls.filter(u => u.includes("/people?")); assert.equal(pp.length, 2);
-  assert.ok(pp[0].includes("gameLog") && !pp[1].includes("gameLog")); assert.ok(pp[1].includes("personIds=16"));
+  assert.ok(pp[0].includes("gameLog") && !pp[1].includes("gameLog")); assert.ok(pp[1].includes("personIds=16")); const ids = u => u.match(/personIds=([\d,]+)/)[1].split(","); assert.ok(ids(pp[0]).includes("26") && !ids(pp[1]).includes("26")); // 候選人在第一批查 gameLog，降級後不重查
   assert.equal(ctx.calls.filter(u => u.includes("/roster?")).length, 4); assert.equal(ctx.calls.filter(u => u.includes("/transactions?")).length, 2);
   assert.equal(by(R.away, "Al Three").lastReg, "2026-09-26"); assert.deepEqual(by(R.away, "Al Three").post, [{ date: "2026-10-10", gt: "D", pk: 500, role: "先發投手" }]);
   assert.deepEqual(by(R.away, "Al Two").reg, { pa: 500 }); assert.deepEqual(by(R.away, "Al Six").reg, { g: 10, gs: 10, ip: "55.0" }); assert.equal(by(R.away, "Al Six").lastReg, null); });
@@ -107,7 +109,8 @@ await t("API 部分失敗沿用上一版：40Man 失敗→丟錯（呼叫端保�
 await t("沒有基準（找不到上一場）：增減不判斷、只列傷兵與近期異動；inBasis＝null", async () => {
   const { out } = await buildRosterStatus(game({ noPrev: true }), makeCtx(api()), NOW, null);
   assert.equal(out.away.basis, null); assert.equal(out.away.basisN, null); assert.deepEqual(out.away.out, []); assert.deepEqual(out.away.in, []);
-  assert.deepEqual(names(out.away, "ilMove").sort(), ["Al Four", "Al Three"]); assert.equal(by(out.away, "Al Four").inBasis, null); assert.ok(names(out.away, "recentTx").includes("Al Two")); });
+  assert.deepEqual(names(out.away, "ilMove").sort(), ["Al Four", "Al Three"]); assert.equal(by(out.away, "Al Four").inBasis, null);
+  assert.equal(out.away.from, "2026-09-29"); assert.equal(by(out.away, "Al Two").group, "other"); }); // 原因未寫明但最後出賽 9/27 在範圍前 → 折疊層
 
 await t("開賽後凍結：呼叫端只處理 status.code＝pre（模擬 CLI 的篩選），非賽前不呼叫 API", async () => {
   const G = game({ status: "live" }), ctx = makeCtx(api());
@@ -144,9 +147,13 @@ await t("真實快照 849844：PHI 少 3（Arraez、Raley、Lazar）多 1（Kemp
   assert.deepEqual(names(R.away, "out").sort(), ["Brooks Raley", "Luis Arraez", "Max Lazar"]); assert.deepEqual(names(R.away, "in"), ["Otto Kemp"]);
   assert.equal(names(R.home, "out").length, 4); assert.deepEqual(names(R.home, "in").sort(), ["Luke Williams", "Rowdy Tellez"]);
   assert.ok(names(R.home, "recentTx").includes("Martín Pérez")); assert.equal(by(R.home, "Martín Pérez").status, "D15");
-  assert.deepEqual(names(R.away, "recentTx"), ["Orion Kerkering", "Kyle Backhus"]); // 9/20、9/18 下放的兩人算近期相關；9/28 只被召回到 40 人名單、9/17 轉 60 天傷兵、被他隊認領的人都不算近期相關（折疊層或不列）
+  assert.deepEqual(names(R.away, "recentTx"), ["Orion Kerkering"]); // 9/20 下放、9/20 前有出賽；Backhus 9/18 下放但沒有大聯盟出賽紀錄 → 折疊層；9/28 只被召回到 40 人名單、9/17 轉 60 天傷兵、被他隊認領的人都不算近期相關（折疊層或不列）
   assert.ok(!R.away.people.some(p => /^\d+$/.test(p.name))); // 不在 40 人名單、也不在本場／基準名單的人（例如被他隊認領）不列
   assert.ok(names(R.away, "ilMove").includes("Jesús Luzardo")); assert.ok(by(R.away, "Luis Arraez").tx.some(x => x.unexplained));
-  assert.equal(R.away.ilCount, 5); assert.deepEqual(R.home.ilBy, { D60: 5, D15: 1 }); });
+  assert.equal(R.away.ilCount, 5); assert.deepEqual(R.home.ilBy, { D60: 5, D15: 1 });
+  // 回歸試作版第一層（10-02）：PHI 近期相關 Kerkering、Luzardo；ATL Pérez、López、Murphy、Suarez；Elder、Waldrep、Grove 在折疊層
+  const rel = T => T.people.filter(p => p.group === "recentTx" || p.group === "ilMove").map(p => p.name).sort();
+  assert.deepEqual(rel(R.away), ["Jesús Luzardo", "Orion Kerkering"]); assert.deepEqual(rel(R.home), ["Martín Pérez", "Owen Murphy", "Reynaldo López", "Robert Suarez"]);
+  for (const nm of ["Bryce Elder", "Hurston Waldrep", "Michael Grove"]) assert.equal(by(R.home, nm).group, "other"); });
 
 console.log(`名單狀態測試 ${n}/${n} 通過`);

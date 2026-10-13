@@ -13,13 +13,15 @@
 // 失敗：任何一隊的球隊層級或球員查詢失敗 → 這場不寫新檔，上一版（如果有）加 failed 標示沿用；沒有上一版就不產生檔案（頁面寫尚未取得）。不擋 live-data 其他步驟
 // 分組：out＝基準有、本場無；in＝本場有、基準無；recentTx＝未列本場、也不在增減，但 14 天範圍內有「和出賽名單直接相關」的官方異動
 //       （登錄傷兵、傷兵回歸、下放；沒有基準時另含原因未寫明的名單狀態變更）；只是召回／簽約到 40 人名單、或轉 60 天傷兵、被他隊認領等，不算近期相關，放折疊層；
+//       recentTx 是候選：查 gameLog 後，14 天範圍內（基準日往前 13 天到本場前）沒有實際大聯盟出賽的人降到折疊層（站長 10-14：第一層只留「這場真正的人員變化」；
+//       只有近期 transaction、既不是增減、最近也沒出賽的人保留資料但放折疊層）；gameLog 仍只查候選人，不查全部 40 人
 //       ilMove＝本場名單內、範圍內有傷兵登錄／回歸／轉列；other＝其餘不在本場名單的 40 人（含長期傷兵），折疊、依本季例行賽出賽量排序
 //   14 天＝基準日往前 13 天到基準日，是暫定閱讀整理範圍（站長 10-01、10-13），不當預測門檻、不回測；基準日之後到今天的異動都看（解釋增減）
 //   姓名、狀態、異動原文只取來源；官方沒寫原因（roster status changed）標 unexplained，頁面寫「原因未確認」；不判斷「未列先發」、不加影響分數
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 
-export const RS_RULES = "roster-status v1";
+export const RS_RULES = "roster-status v1.1";
 const MLB = "https://statsapi.mlb.com/api/v1";
 const WINDOW = 14;
 const day = (d, n) => new Date(Date.parse(d + "T00:00:00Z") + n * 864e5).toISOString().slice(0, 10);
@@ -55,8 +57,8 @@ const txRows = r => (r?.transactions || []).filter(x => x.person?.id).map(x => (
 
 // 球隊層級資料 → 分組（純函式；不含球員查詢）
 export function classify({ listed, basis, m40, tx, basisDate, today }) {
-  const from = basisDate ? day(basisDate, -(WINDOW - 1)) : null;
-  const inWin = d => !from || (d >= from && d <= today);
+  const from = day(basisDate || today, -(WINDOW - 1)); // 沒有基準就以本場日往前算
+  const inWin = d => d >= from && d <= today;
   const L = new Set(listed.map(x => x.id)), B = basis ? new Set(basis.map(x => x.id)) : null;
   const info = new Map(); for (const x of [...m40, ...(basis || []), ...listed]) if (!info.has(x.id)) info.set(x.id, { name: x.name, pos: x.pos });
   const status = new Map(m40.map(x => [x.id, x.status]));
@@ -71,7 +73,7 @@ export function classify({ listed, basis, m40, tx, basisDate, today }) {
     const related = recent.some(x => ["placed", "activated"].includes(x.il?.kind) || x.type === "OPT" || (x.unexplained && !B));
     const group = B && inBasis && !listedHere ? "out" : B && listedHere && !inBasis ? "in"
       : !listedHere && related ? "recentTx" : listedHere && ilRecent ? "ilMove" : !listedHere && status.has(id) ? "other" : null;
-    if (group) people.push({ id, name: nm.name, pos: nm.pos, listed: listedHere, inBasis, status: status.get(id) ?? null, group, tx: myTx, reg: null, lastReg: null, post: [] });
+    if (group) people.push({ id, name: nm.name, pos: nm.pos, listed: listedHere, inBasis, status: status.get(id) ?? null, group, tx: myTx, reg: null, lastReg: null, lastApp: null, post: [] });
   }
   const il = m40.filter(x => /^D\d+$/.test(x.status)), ilBy = {}; il.forEach(x => ilBy[x.status] = (ilBy[x.status] || 0) + 1);
   return { from, people, out: people.filter(p => p.group === "out").map(p => p.id), in: people.filter(p => p.group === "in").map(p => p.id), ilCount: il.length, ilBy };
@@ -91,6 +93,7 @@ export function enrich(people, resp, beforeDate) {
     const G = (p.stats || []).filter(s => s.type?.displayName === "gameLog").flatMap(s => (s.splits || []).map(x => ({ ...x, grp: s.group?.displayName })));
     if (G.length) {
       const reg = G.filter(x => (x.gameType || "R") === "R").map(x => x.date).sort(); o.lastReg = reg.at(-1) || null;
+      o.lastApp = G.filter(x => x.date < beforeDate).map(x => x.date).sort().at(-1) || null; // 任何賽事型態、本場前的最後一次大聯盟出賽
       o.post = G.filter(x => x.gameType && x.gameType !== "R" && x.date < beforeDate).sort((a, b) => a.date.localeCompare(b.date))
         .map(x => ({ date: x.date, gt: x.gameType, pk: x.game?.gamePk ?? null, role: x.grp === "pitching" ? (x.stat?.gamesStarted ? "先發投手" : "登板") : "出賽" }));
     }
@@ -154,7 +157,10 @@ export async function buildRosterStatus(g, ctx, nowISO, prev = null) {
       enrich(list, r, today);
     }
   };
-  await fetchPeople(top, true); await fetchPeople(oth, false);
+  await fetchPeople(top, true);
+  // 近期異動候選人：14 天範圍內沒有實際大聯盟出賽 → 折疊層（資料保留，不再另查）
+  for (const s of ["away", "home"]) for (const p of sides[s].people) if (p.group === "recentTx" && !(p.lastApp && p.lastApp >= sides[s].from)) p.group = "other";
+  await fetchPeople(oth, false);
   for (const s of ["away", "home"]) sortPeople(sides[s].people);
   return { out: { ...base, changedAt: nowISO, inputSig, away: sides.away, home: sides.home }, changed: true };
 }
