@@ -107,7 +107,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-10-13T20:01:10.591Z",
     "key": "{\"condition\":\"Dome\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
