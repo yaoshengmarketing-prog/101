@@ -975,3 +975,4 @@
 {"at":"2026-10-14T20:30:39.909Z","pk":849818,"type":"sp","side":"home","from":null,"to":"Gavin Williams"}
 {"at":"2026-10-14T20:45:37.183Z","pk":849811,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-10-14T20:45:37.183Z","pk":849811,"type":"lineup_official","side":"home"}
+{"at":"2026-10-14T21:30:37.820Z","pk":849811,"type":"lineup_official","side":"away"}
