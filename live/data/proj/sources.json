@@ -11114,7 +11114,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-14T20:30:42.665Z"
+   "fetchedAt": "2026-10-14T20:45:40.141Z"
   },
   "RotoWire|2026-10-14|MIL@LAD|home": {
    "source": "RotoWire",
@@ -11184,14 +11184,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-14T20:45:40.141Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Mookie Betts",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Freddie Freeman",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Teoscar Hernandez",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Kyle Tucker",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Andy Pages",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Shohei Ohtani",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Will Smith",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Miguel Rojas",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Tommy Edman",
+       "pos": "2B",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849811,
    "inScopeAt": "2026-10-13T16:01:12.112Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-14T20:30:42.665Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-14T20:45:40.141Z"
   },
   "RotoGrinders|2026-10-13|CLE@TB|away": {
    "source": "RotoGrinders",
@@ -11759,7 +11820,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-14T20:30:42.665Z"
+   "fetchedAt": "2026-10-14T20:45:40.141Z"
   },
   "RotoWire|2026-10-15|MIL@LAD|home": {
    "source": "RotoWire",
@@ -11897,7 +11958,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-14T20:30:42.665Z"
+   "fetchedAt": "2026-10-14T20:45:40.141Z"
   },
   "RotoWire|2026-10-15|TB@CLE|away": {
    "source": "RotoWire",
@@ -11974,7 +12035,7 @@
    "time": "1:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-14T20:30:42.665Z"
+   "fetchedAt": "2026-10-14T20:45:40.141Z"
   },
   "RotoWire|2026-10-15|TB@CLE|home": {
    "source": "RotoWire",
@@ -12051,7 +12112,7 @@
    "time": "1:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-14T20:30:42.665Z"
+   "fetchedAt": "2026-10-14T20:45:40.141Z"
   },
   "RotoGrinders|2026-10-14|MIL@LAD|away": {
    "source": "RotoGrinders",
@@ -12128,7 +12189,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-14T20:30:42.665Z"
+   "fetchedAt": "2026-10-14T20:45:40.141Z"
   },
   "RotoGrinders|2026-10-14|MIL@LAD|home": {
    "source": "RotoGrinders",
@@ -12198,14 +12259,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-14T20:45:40.141Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Mookie Betts",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Freddie Freeman",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Teoscar Hernandez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Kyle Tucker",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Andy Pages",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Shohei Ohtani",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Will Smith",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Miguel Rojas",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Tommy Edman",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849811,
    "inScopeAt": "2026-10-14T11:39:40.038Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-14T20:30:42.665Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-14T20:45:40.141Z"
   }
  }
 }

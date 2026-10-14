@@ -973,3 +973,5 @@
 {"at":"2026-10-14T16:00:46.648Z","pk":849818,"type":"sp","side":"away","from":null,"to":"Griffin Jax"}
 {"at":"2026-10-14T16:00:46.648Z","pk":849810,"type":"sp","side":"home","from":null,"to":"Tyler Glasnow"}
 {"at":"2026-10-14T20:30:39.909Z","pk":849818,"type":"sp","side":"home","from":null,"to":"Gavin Williams"}
+{"at":"2026-10-14T20:45:37.183Z","pk":849811,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-10-14T20:45:37.183Z","pk":849811,"type":"lineup_official","side":"home"}
