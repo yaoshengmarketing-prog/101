@@ -984,3 +984,4 @@
 {"at":"2026-10-15T14:00:49.185Z","pk":849818,"type":"lineup_official","side":"away"}
 {"at":"2026-10-15T14:00:49.185Z","pk":849818,"type":"lineup_official","side":"home"}
 {"at":"2026-10-15T16:49:16.452Z","pk":849818,"type":"status","from":"Pre-Game","to":"Warmup"}
+{"at":"2026-10-15T17:15:35.808Z","pk":849818,"type":"status","from":"Warmup","to":"In Progress"}
