@@ -10716,7 +10716,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   },
   "RotoWire|2026-10-15|MIL@LAD|home": {
    "source": "RotoWire",
@@ -10976,7 +10976,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   },
   "RotoWire|2026-10-15|TB@CLE|away": {
    "source": "RotoWire",
@@ -11046,14 +11046,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-15T14:15:42.811Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Yandy Diaz",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jonathan Aranda",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Junior Caminero",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Victor Mesa",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Chandler Simpson",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Liam Hicks",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Jonny DeLuca",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Richie Palacios",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Taylor Walls",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849818,
    "inScopeAt": "2026-10-14T16:00:50.628Z",
    "time": "1:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   },
   "RotoWire|2026-10-15|TB@CLE|home": {
    "source": "RotoWire",
@@ -11123,14 +11184,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-15T14:15:42.811Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": "3B",
+       "bats": "S"
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Travis Bazzana",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Patrick Bailey",
+       "pos": "C",
+       "bats": "S"
+      },
+      {
+       "n": 8,
+       "name": "Petey Halpin",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849818,
    "inScopeAt": "2026-10-14T16:00:50.628Z",
    "time": "1:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   },
   "RotoGrinders|2026-10-14|MIL@LAD|away": {
    "source": "RotoGrinders",
@@ -11544,7 +11666,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   },
   "RotoWire|2026-10-16|TB@CLE|home": {
    "source": "RotoWire",
@@ -11621,7 +11743,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   },
   "RotoWire|2026-10-16|MIL@LAD|away": {
    "source": "RotoWire",
@@ -11759,7 +11881,7 @@
    "time": "9:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   },
   "RotoWire|2026-10-16|MIL@LAD|home": {
    "source": "RotoWire",
@@ -11836,7 +11958,7 @@
    "time": "9:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   },
   "RotoGrinders|2026-10-15|TB@CLE|away": {
    "source": "RotoGrinders",
@@ -11974,7 +12096,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   },
   "RotoGrinders|2026-10-15|TB@CLE|home": {
    "source": "RotoGrinders",
@@ -12044,14 +12166,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-15T14:15:42.811Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Travis Bazzana",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Patrick Bailey",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Petey Halpin",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849818,
    "inScopeAt": "2026-10-15T11:17:52.720Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   },
   "RotoGrinders|2026-10-15|MIL@LAD|away": {
    "source": "RotoGrinders",
@@ -12128,7 +12311,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   },
   "RotoGrinders|2026-10-15|MIL@LAD|home": {
    "source": "RotoGrinders",
@@ -12205,7 +12388,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-15T14:00:51.112Z"
+   "fetchedAt": "2026-10-15T14:15:42.811Z"
   }
  }
 }
