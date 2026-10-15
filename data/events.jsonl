@@ -991,3 +991,4 @@
 {"at":"2026-10-15T20:30:43.227Z","pk":849810,"type":"lineup_official","side":"home"}
 {"at":"2026-10-15T20:30:43.227Z","pk":849817,"type":"sp","side":"away","from":null,"to":"Nick Martinez"}
 {"at":"2026-10-15T21:15:34.945Z","pk":849810,"type":"lineup_official","side":"away"}
+{"at":"2026-10-15T23:45:35.942Z","pk":849810,"type":"status","from":"Pre-Game","to":"Warmup"}
