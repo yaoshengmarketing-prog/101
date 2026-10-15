@@ -10716,7 +10716,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   },
   "RotoWire|2026-10-15|MIL@LAD|home": {
    "source": "RotoWire",
@@ -10969,14 +10969,75 @@
        "bats": "R"
       }
      ]
+    },
+    {
+     "at": "2026-10-15T20:45:43.884Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Shohei Ohtani",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Mookie Betts",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Freddie Freeman",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Will Smith",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Kyle Tucker",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Teoscar Hernandez",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Miguel Rojas",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Andy Pages",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Enrique Hernandez",
+       "pos": "3B",
+       "bats": "R"
+      }
+     ]
     }
    ],
    "pk": 849810,
    "inScopeAt": "2026-10-14T16:00:50.628Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   },
   "RotoWire|2026-10-15|TB@CLE|away": {
    "source": "RotoWire",
@@ -11114,7 +11175,7 @@
    "time": "1:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   },
   "RotoWire|2026-10-15|TB@CLE|home": {
    "source": "RotoWire",
@@ -11252,7 +11313,7 @@
    "time": "1:00 PM ET",
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   },
   "RotoGrinders|2026-10-14|MIL@LAD|away": {
    "source": "RotoGrinders",
@@ -11666,7 +11727,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   },
   "RotoWire|2026-10-16|TB@CLE|home": {
    "source": "RotoWire",
@@ -11743,7 +11804,7 @@
    "time": "6:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   },
   "RotoWire|2026-10-16|MIL@LAD|away": {
    "source": "RotoWire",
@@ -11881,7 +11942,7 @@
    "time": "9:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   },
   "RotoWire|2026-10-16|MIL@LAD|home": {
    "source": "RotoWire",
@@ -11958,7 +12019,7 @@
    "time": "9:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   },
   "RotoGrinders|2026-10-15|TB@CLE|away": {
    "source": "RotoGrinders",
@@ -12096,7 +12157,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   },
   "RotoGrinders|2026-10-15|TB@CLE|home": {
    "source": "RotoGrinders",
@@ -12234,7 +12295,7 @@
    "time": null,
    "n": 9,
    "statusKey": "confirmed",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   },
   "RotoGrinders|2026-10-15|MIL@LAD|away": {
    "source": "RotoGrinders",
@@ -12311,7 +12372,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   },
   "RotoGrinders|2026-10-15|MIL@LAD|home": {
    "source": "RotoGrinders",
@@ -12381,14 +12442,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-15T20:45:43.884Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Shohei Ohtani",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Mookie Betts",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Freddie Freeman",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Will Smith",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Kyle Tucker",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Teoscar Hernandez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Miguel Rojas",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Andy Pages",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Enrique Hernandez",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849810,
    "inScopeAt": "2026-10-15T11:17:52.720Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-15T20:30:47.505Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-15T20:45:43.884Z"
   }
  }
 }
