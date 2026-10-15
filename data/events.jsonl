@@ -980,3 +980,6 @@
 {"at":"2026-10-15T00:15:38.113Z","pk":849811,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-10-15T03:15:35.756Z","pk":849811,"type":"status","from":"In Progress","to":"Game Over"}
 {"at":"2026-10-15T03:30:45.548Z","pk":849811,"type":"status","from":"Game Over","to":"Final"}
+{"at":"2026-10-15T14:00:49.185Z","pk":849818,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-10-15T14:00:49.185Z","pk":849818,"type":"lineup_official","side":"away"}
+{"at":"2026-10-15T14:00:49.185Z","pk":849818,"type":"lineup_official","side":"home"}
