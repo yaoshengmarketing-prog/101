@@ -183,8 +183,8 @@
    "status": "Warmup",
    "wx": {
     "firstSeen": "2026-10-15T14:00:49.185Z",
-    "key": "{\"condition\":\"Sunny\",\"temp\":\"57\",\"wind\":\"3 mph, Varies\"}",
-    "changedAt": "2026-10-15T14:00:49.185Z"
+    "key": "{\"condition\":\"Sunny\",\"temp\":\"62\",\"wind\":\"7 mph, Out To CF\"}",
+    "changedAt": "2026-10-15T17:00:41.448Z"
    }
   },
   "849820": {
