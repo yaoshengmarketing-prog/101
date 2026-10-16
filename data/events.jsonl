@@ -995,3 +995,4 @@
 {"at":"2026-10-16T00:15:35.609Z","pk":849810,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-10-16T03:15:37.279Z","pk":849810,"type":"status","from":"In Progress","to":"Game Over"}
 {"at":"2026-10-16T03:30:36.527Z","pk":849810,"type":"status","from":"Game Over","to":"Final"}
+{"at":"2026-10-16T14:46:16.812Z","pk":849817,"type":"sp","side":"home","from":null,"to":"Shawn Armstrong"}
