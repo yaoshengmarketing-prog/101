@@ -169,7 +169,18 @@
   },
   "849816": {
    "firstSeen": "2026-10-16T16:01:26.762Z",
-   "sp": {},
+   "sp": {
+    "away": {
+     "id": 607259,
+     "name": "Nick Martinez",
+     "at": "2026-10-17T01:31:13.087Z"
+    },
+    "home": {
+     "id": 542888,
+     "name": "Shawn Armstrong",
+     "at": "2026-10-17T01:31:13.087Z"
+    }
+   },
    "lu": {},
    "late": {},
    "status": "Scheduled"
