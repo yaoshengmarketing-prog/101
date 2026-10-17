@@ -10743,9 +10743,9 @@
    "pk": 849816,
    "inScopeAt": "2026-10-16T16:01:27.960Z",
    "time": "8:00 PM ET",
-   "n": 0,
-   "statusKey": null,
-   "fetchedAt": "2026-10-17T06:05:54.485Z"
+   "n": 9,
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-17T10:31:12.439Z"
   },
   "RotoWire|2026-10-17|TB@CLE|home": {
    "source": "RotoWire",
@@ -10881,9 +10881,9 @@
    "pk": 849816,
    "inScopeAt": "2026-10-16T16:01:27.960Z",
    "time": "8:00 PM ET",
-   "n": 0,
-   "statusKey": null,
-   "fetchedAt": "2026-10-17T06:05:54.485Z"
+   "n": 9,
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-17T10:31:12.439Z"
   },
   "RotoGrinders|2026-10-16|TB@CLE|away": {
    "source": "RotoGrinders",
@@ -11233,10 +11233,10 @@
    ],
    "pk": 849817,
    "inScopeAt": "2026-10-17T06:05:54.485Z",
-   "time": "8:00 PM ET",
-   "n": 9,
+   "time": "5:00 PM ET",
+   "n": 0,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-17T06:05:54.485Z"
+   "fetchedAt": "2026-10-17T10:31:12.439Z"
   },
   "RotoWire|2026-10-18|TB@CLE|home": {
    "source": "RotoWire",
@@ -11310,10 +11310,164 @@
    ],
    "pk": 849817,
    "inScopeAt": "2026-10-17T06:05:54.485Z",
-   "time": "8:00 PM ET",
-   "n": 9,
+   "time": "5:00 PM ET",
+   "n": 0,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-17T06:05:54.485Z"
+   "fetchedAt": "2026-10-17T10:31:12.439Z"
+  },
+  "RotoGrinders|2026-10-17|TB@CLE|away": {
+   "source": "RotoGrinders",
+   "date": "2026-10-17",
+   "team": "TB",
+   "side": "away",
+   "game": "TB@CLE",
+   "first": "2026-10-17T10:31:12.439Z",
+   "versions": [
+    {
+     "at": "2026-10-17T10:31:12.439Z",
+     "statusKey": "unconfirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Yandy Diaz",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Jonathan Aranda",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Chandler Simpson",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Junior Caminero",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Liam Hicks",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Victor Mesa",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Jonny DeLuca",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Richie Palacios",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Taylor Walls",
+       "pos": null,
+       "bats": null
+      }
+     ]
+    }
+   ],
+   "pk": 849816,
+   "inScopeAt": "2026-10-17T10:31:12.439Z",
+   "time": null,
+   "n": 9,
+   "statusKey": "unconfirmed",
+   "fetchedAt": "2026-10-17T10:31:12.439Z"
+  },
+  "RotoGrinders|2026-10-17|TB@CLE|home": {
+   "source": "RotoGrinders",
+   "date": "2026-10-17",
+   "team": "CLE",
+   "side": "home",
+   "game": "TB@CLE",
+   "first": "2026-10-17T10:31:12.439Z",
+   "versions": [
+    {
+     "at": "2026-10-17T10:31:12.439Z",
+     "statusKey": "unconfirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Steven Kwan",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Jose Ramirez",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Chase DeLauter",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Jo Adell",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Nathaniel Lowe",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Travis Bazzana",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Patrick Bailey",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Petey Halpin",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Brayan Rocchio",
+       "pos": null,
+       "bats": null
+      }
+     ]
+    }
+   ],
+   "pk": 849816,
+   "inScopeAt": "2026-10-17T10:31:12.439Z",
+   "time": null,
+   "n": 9,
+   "statusKey": "unconfirmed",
+   "fetchedAt": "2026-10-17T10:31:12.439Z"
   }
  }
 }
