@@ -10745,7 +10745,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-17T19:31:11.394Z"
+   "fetchedAt": "2026-10-17T20:01:10.749Z"
   },
   "RotoWire|2026-10-17|TB@CLE|home": {
    "source": "RotoWire",
@@ -10883,7 +10883,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-17T19:31:11.394Z"
+   "fetchedAt": "2026-10-17T20:01:10.749Z"
   },
   "RotoGrinders|2026-10-16|TB@CLE|away": {
    "source": "RotoGrinders",
@@ -11236,7 +11236,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-17T19:31:11.394Z"
+   "fetchedAt": "2026-10-17T20:01:10.749Z"
   },
   "RotoWire|2026-10-18|TB@CLE|home": {
    "source": "RotoWire",
@@ -11313,7 +11313,7 @@
    "time": "5:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-17T19:31:11.394Z"
+   "fetchedAt": "2026-10-17T20:01:10.749Z"
   },
   "RotoGrinders|2026-10-17|TB@CLE|away": {
    "source": "RotoGrinders",
@@ -11390,7 +11390,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-17T19:31:11.394Z"
+   "fetchedAt": "2026-10-17T20:01:10.749Z"
   },
   "RotoGrinders|2026-10-17|TB@CLE|home": {
    "source": "RotoGrinders",
@@ -11467,7 +11467,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-17T19:31:11.394Z"
+   "fetchedAt": "2026-10-17T20:01:10.749Z"
   }
  }
 }
