@@ -184,7 +184,7 @@
     }
    },
    "late": {},
-   "status": "Scheduled",
+   "status": "Delayed Start",
    "wx": {
     "firstSeen": "2026-10-16T20:01:19.425Z",
     "key": "{\"condition\":\"Cloudy\",\"temp\":\"59\",\"wind\":\"9 mph, Varies\"}",
