@@ -1,6 +1,6 @@
 {
- "generatedAt": "2026-10-18T06:33:01.032Z",
- "generatedAtTW": "10/18 14:33",
+ "generatedAt": "2026-10-18T06:45:46.427Z",
+ "generatedAtTW": "10/18 14:45",
  "source": "MLB Stats API（statsapi.mlb.com）",
  "days": [
   {
@@ -16,5 +16,183 @@
    "count": 1
   }
  ],
- "errors": []
+ "upcoming": {
+  "from": "2026-10-20",
+  "to": "2026-10-26",
+  "count": 4,
+  "next": "2026-10-20"
+ },
+ "errors": [],
+ "recent": [
+  {
+   "pk": 849816,
+   "twDate": "2026-10-18",
+   "usDate": "2026-10-17",
+   "gameType": "L",
+   "dh": null,
+   "away": {
+    "ab": "TB",
+    "name": "光芒",
+    "score": 7
+   },
+   "home": {
+    "ab": "CLE",
+    "name": "守護者",
+    "score": 3
+   }
+  },
+  {
+   "pk": 849810,
+   "twDate": "2026-10-16",
+   "usDate": "2026-10-15",
+   "gameType": "L",
+   "dh": null,
+   "away": {
+    "ab": "MIL",
+    "name": "釀酒人",
+    "score": 6
+   },
+   "home": {
+    "ab": "LAD",
+    "name": "道奇",
+    "score": 4
+   }
+  },
+  {
+   "pk": 849818,
+   "twDate": "2026-10-16",
+   "usDate": "2026-10-15",
+   "gameType": "L",
+   "dh": null,
+   "away": {
+    "ab": "TB",
+    "name": "光芒",
+    "score": 2
+   },
+   "home": {
+    "ab": "CLE",
+    "name": "守護者",
+    "score": 3
+   }
+  },
+  {
+   "pk": 849811,
+   "twDate": "2026-10-15",
+   "usDate": "2026-10-14",
+   "gameType": "L",
+   "dh": null,
+   "away": {
+    "ab": "MIL",
+    "name": "釀酒人",
+    "score": 6
+   },
+   "home": {
+    "ab": "LAD",
+    "name": "道奇",
+    "score": 2
+   }
+  },
+  {
+   "pk": 849813,
+   "twDate": "2026-10-14",
+   "usDate": "2026-10-13",
+   "gameType": "L",
+   "dh": null,
+   "away": {
+    "ab": "CLE",
+    "name": "守護者",
+    "score": 1
+   },
+   "home": {
+    "ab": "TB",
+    "name": "光芒",
+    "score": 3
+   }
+  },
+  {
+   "pk": 849820,
+   "twDate": "2026-10-13",
+   "usDate": "2026-10-12",
+   "gameType": "L",
+   "dh": null,
+   "away": {
+    "ab": "CLE",
+    "name": "守護者",
+    "score": 7
+   },
+   "home": {
+    "ab": "TB",
+    "name": "光芒",
+    "score": 3
+   }
+  },
+  {
+   "pk": 849812,
+   "twDate": "2026-10-13",
+   "usDate": "2026-10-12",
+   "gameType": "L",
+   "dh": null,
+   "away": {
+    "ab": "LAD",
+    "name": "道奇",
+    "score": 4
+   },
+   "home": {
+    "ab": "MIL",
+    "name": "釀酒人",
+    "score": 7
+   }
+  },
+  {
+   "pk": 849809,
+   "twDate": "2026-10-12",
+   "usDate": "2026-10-11",
+   "gameType": null,
+   "dh": null,
+   "away": {
+    "ab": "LAD",
+    "name": "道奇",
+    "score": 1
+   },
+   "home": {
+    "ab": "MIL",
+    "name": "釀酒人",
+    "score": 2
+   }
+  },
+  {
+   "pk": 849831,
+   "twDate": "2026-10-11",
+   "usDate": "2026-10-10",
+   "gameType": null,
+   "dh": null,
+   "away": {
+    "ab": "CWS",
+    "name": "白襪",
+    "score": 0
+   },
+   "home": {
+    "ab": "CLE",
+    "name": "守護者",
+    "score": 2
+   }
+  },
+  {
+   "pk": 849832,
+   "twDate": "2026-10-09",
+   "usDate": "2026-10-08",
+   "gameType": null,
+   "dh": null,
+   "away": {
+    "ab": "CLE",
+    "name": "守護者",
+    "score": 9
+   },
+   "home": {
+    "ab": "CWS",
+    "name": "白襪",
+    "score": 5
+   }
+  }
+ ]
 }
