@@ -170,7 +170,11 @@
   "849817": {
    "firstSeen": "2026-10-15T16:00:42.246Z",
    "sp": {
-    "away": null,
+    "away": {
+     "id": 656876,
+     "name": "Drew Rasmussen",
+     "at": "2026-10-18T03:45:24.324Z"
+    },
     "home": {
      "id": 800048,
      "name": "Parker Messick",
