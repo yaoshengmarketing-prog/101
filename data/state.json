@@ -160,7 +160,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-10-17T20:01:09.306Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"46\",\"wind\":\"5 mph, L To R\"}",
@@ -171,7 +171,11 @@
    "firstSeen": "2026-10-15T16:00:42.246Z",
    "sp": {
     "away": null,
-    "home": null
+    "home": {
+     "id": 800048,
+     "name": "Parker Messick",
+     "at": "2026-10-18T03:31:13.429Z"
+    }
    },
    "lu": {
     "home": {
