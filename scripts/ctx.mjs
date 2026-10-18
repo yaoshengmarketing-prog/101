@@ -175,8 +175,59 @@ export function staleOf(inputs, g, b) {
   return out;
 }
 
-export const ident = g => ({ pk: g.pk, usDate: g.usDate, twDate: g.twDate, startUTC: g.startUTC, dh: g.dh ?? null, venue: g.venue,
+export const ident = g => ({ pk: g.pk, usDate: g.usDate, twDate: g.twDate, startUTC: g.startUTC, dh: g.dh ?? null, venue: g.venue, gameType: g.gameType ?? null,
   away: { id: g.away.id, ab: g.away.ab }, home: { id: g.home.id, ab: g.home.ab } });
+
+// ===== 歷史相似情境紀錄（站長 10-18 核准 A）=====
+// 定位：同一條規則在本站過去賽前紀錄中出現過哪些場次、那些場次賽後怎麼了——案例列舉，不是機率或預測
+//   合格樣本（四個條件同時成立）：sample＝pregame、post.complete＝true、同規則版本（RULES）且該條門檻定義（th）與現行相同、能確認是哪一隊符合
+//   只取表定開賽早於本場的紀錄；不算勝率、命中率、平均、分布、趨勢，不判斷好壞（等同版本累積 ≥30 個完整賽前樣本再另提）
+//   顯示：n＝0 不顯示；1–4「樣本累積中」；≥5「本站已有 n 場相同賽前情境」；都只列案例，最多最近 10 場
+// 符合方（matchedOf）：
+//   team＝這一隊本身符合條件，賽後從這隊角度看：bp_load 前三日用球較多一方、l10 近十場勝率較高（≥ .700）一方、home 主隊、bp_streak 連投達標的一方（兩隊都達標就兩隊都列）
+//   pair＝兩隊差距達門檻（rpg／rapg／ops），以數值較高一方為觀察方並寫明「較高一方」
+//   game＝整場條件，不指定一隊：dh 雙重賽、whip 兩名先發都達標
+export const SIM_MAX = 10, SIM_GROW = 5;
+const PAIR_LABEL = { rpg: "每場平均得分較高一方", rapg: "每場平均失分較多一方", ops: "團隊 OPS 較高一方" };
+export function matchedOf(c) {
+  const v = c?.v || {};
+  if (c.id === "dh" || c.id === "whip") return { scope: "game", sides: [] };
+  if (c.id === "home") return { scope: "team", sides: ["home"], label: "主隊" };
+  if (c.id === "bp_streak") { const s = ["away", "home"].filter(k => fin(v[k]) && v[k] >= TH.bp_streak.pitchers); return s.length ? { scope: "team", sides: s, label: "連投達標的一方" } : null; }
+  if (!fin(v.away, v.home) || v.away === v.home) return null;
+  const hi = v.away > v.home ? "away" : "home";
+  if (c.id === "bp_load") return { scope: "team", sides: [hi], label: "前三日牛棚用球較多一方" };
+  if (c.id === "l10") return v[hi] >= TH.l10.high - EPS ? { scope: "team", sides: [hi], label: "近十場勝率較高一方" } : null;
+  if (PAIR_LABEL[c.id]) return { scope: "pair", sides: [hi], label: PAIR_LABEL[c.id] };
+  return null;
+}
+const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+const GT_OF = r => r.game?.gameType || null;
+// pool＝本站已存的情境紀錄（live/data/ctx/*.json）；rec＝本場（剛算好的賽前紀錄）
+export function similarOf(rec, pool) {
+  const out = {};
+  for (const id of rec.hits) {
+    const ex = { late: 0, rules: 0, th: 0, incomplete: 0, undetermined: 0 }, rows = [];
+    for (const r of pool) {
+      if (!r?.game || r.game.pk === rec.game.pk || !(r.game.startUTC < rec.game.startUTC)) continue;
+      const c = r.checks?.find(x => x.id === id); if (c?.state !== "hit") continue;
+      if ((r.sample || "late") !== "pregame") { ex.late++; continue; }
+      if (r.rules !== RULES) { ex.rules++; continue; }
+      if (!same(c.th, TH[id])) { ex.th++; continue; }
+      if (r.post?.complete !== true || !r.post.final) { ex.incomplete++; continue; }
+      const m = matchedOf(c); if (!m) { ex.undetermined++; continue; }
+      const P = r.post, G = r.game, other = s => s === "away" ? "home" : "away";
+      rows.push({ pk: G.pk, twDate: G.twDate, usDate: G.usDate, startUTC: G.startUTC, gameType: GT_OF(r), scope: m.scope, label: m.label || null,
+        teams: m.scope === "game" ? null : m.sides.map(s => ({ side: s, ab: G[s].ab, opp: G[other(s)].ab, runs: P.final[s].runs, oppRuns: P.final[other(s)].runs, lateRuns: P.late?.[s] ?? null })),
+        score: { away: { ab: G.away.ab, runs: P.final.away.runs, lateRuns: P.late?.away ?? null }, home: { ab: G.home.ab, runs: P.final.home.runs, lateRuns: P.late?.home ?? null } },
+        lateFrom: P.late?.fromInning ?? 7 });
+    }
+    rows.sort((a, b) => b.startUTC.localeCompare(a.startUTC) || b.pk - a.pk);
+    const n = rows.length, byType = { R: rows.filter(x => x.gameType === "R").length, post: rows.filter(x => x.gameType && x.gameType !== "R").length, unknown: rows.filter(x => !x.gameType).length };
+    out[id] = { rules: RULES, th: TH[id] ?? null, n, byType, level: n === 0 ? "none" : n < SIM_GROW ? "growing" : "has", matchedNow: matchedOf(rec.checks.find(x => x.id === id)), excluded: ex, games: rows.slice(0, SIM_MAX) };
+  }
+  return out;
+}
 
 // 純函式：單場 → 情境紀錄
 export function compute(g, b, all, nowISO) {
@@ -209,15 +260,20 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const read = f => { try { return JSON.parse(fs.readFileSync(f, "utf8")); } catch { return null; } };
   const all = fs.readdirSync(`${D}/games`).map(f => read(`${D}/games/${f}`)).filter(Boolean);
   fs.mkdirSync(`${D}/ctx`, { recursive: true });
+  // 歷史相似情境的樣本池：已公開的情境紀錄（含 post.mjs 補好的賽後結果）；0 次 API 呼叫
+  const pool = fs.existsSync("live/data/ctx") ? fs.readdirSync("live/data/ctx").filter(f => /^\d+\.json$/.test(f)).map(f => read(`live/data/ctx/${f}`)).filter(Boolean) : [];
+  let simN = 0;
   const c = { pre: 0, frozen: 0, late: 0, hits: 0, cards: 0, stale: 0 };
   for (const g of all) {
     const prev = read(`live/data/ctx/${g.pk}.json`);
-    const out = decide(g, prev, compute(g, read(`${D}/bullpen/${g.pk}.json`), all, nowISO), nowISO);
+    const fresh = compute(g, read(`${D}/bullpen/${g.pk}.json`), all, nowISO);
+    if (g.status.code === "pre") { fresh.similar = similarOf(fresh, pool); simN += Object.values(fresh.similar).filter(x => x.n).length; } // 賽前才算；開賽後跟著整份紀錄凍結
+    const out = decide(g, prev, fresh, nowISO);
     if (g.status.code === "pre") c.pre++; else if (out.sample === "pregame") c.frozen++; else c.late++;
     c.hits += out.hits.length; c.cards += Math.min(out.hits.length, MAXCARDS); c.stale += out.checks.some(x => x.stale) ? 1 : 0;
     fs.writeFileSync(`${D}/ctx/${g.pk}.json`, JSON.stringify(out));
   }
-  const line = `賽前計算 ${c.pre} 場／開賽後沿用賽前 ${c.frozen} 場／開賽後才第一次計算（不列入賽前樣本）${c.late} 場；成立 ${c.hits} 條，顯示 ${c.cards} 張；有沿用舊值的 ${c.stale} 場（共 ${all.length} 場）`;
+  const line = `賽前計算 ${c.pre} 場／開賽後沿用賽前 ${c.frozen} 場／開賽後才第一次計算（不列入賽前樣本）${c.late} 場；成立 ${c.hits} 條，顯示 ${c.cards} 張；有沿用舊值的 ${c.stale} 場（共 ${all.length} 場）；歷史相似情境：樣本池 ${pool.length} 筆，有案例的卡 ${simN} 張`;
   fs.appendFileSync(`${OUT}/report.md`, `\n## 情境卡（${RULES}）\n\n${line}\n`);
   console.log("情境卡：" + line);
 }

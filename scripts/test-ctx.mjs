@@ -1,5 +1,5 @@
 // 情境卡規則的離線測試（不連網）：node scripts/test-ctx.mjs
-import { compute, decide, MAXCARDS, RULES } from "./ctx.mjs";
+import { compute, decide, MAXCARDS, RULES, similarOf, matchedOf, SIM_MAX } from "./ctx.mjs";
 import { summarizePost, pickEntry, pending } from "./post.mjs";
 import { relLabel, pickForecast, wanted } from "./forecast.mjs";
 
@@ -170,5 +170,33 @@ check("預報：沒有那一小時＝ null", pickForecast(hourly, "2026-09-28T01
 check("預報：缺值記 null、0 風速記 None（不補 0、不亂給方向）", (() => { const h2 = { ...hourly, temperature_2m: [null, null], wind_speed_10m: [0, 0] }; const f = pickForecast(h2, "2026-09-27T17:30:00Z", { azimuth: 28 }, NOW); return f.tempC === null && f.windKmh === 0 && f.windRel === "None"; })());
 check("預報對象：賽前、時間已定、48 小時內", wanted({ status: { code: "pre" }, tbd: false, startUTC: "2026-09-26T23:00:00Z" }, Date.parse(NOW)) && !wanted({ status: { code: "pre" }, tbd: false, startUTC: "2026-09-28T01:00:00Z" }, Date.parse(NOW)) && !wanted({ status: { code: "live" }, tbd: false, startUTC: "2026-09-25T23:00:00Z" }, Date.parse(NOW)) && !wanted({ status: { code: "pre" }, tbd: true, startUTC: "2026-09-26T00:00:00Z" }, Date.parse(NOW)));
 
+
+// ===== 歷史相似情境紀錄（站長 10-18 A）=====
+{ const TH0 = { diff: 80 }, L10 = { high: 0.7, diff: 0.2 };
+  const H = (pk, start, { id = "bp_load", v = { away: 300, home: 150 }, th = TH0, sample = "pregame", rules = RULES, complete = true, gt = "R" } = {}) => ({
+    rules, sample, game: { pk, twDate: start.slice(0, 10), usDate: start.slice(0, 10), startUTC: start, gameType: gt, away: { ab: "AAA" }, home: { ab: "BBB" } },
+    checks: [{ id, state: "hit", th, v }], hits: [id],
+    post: complete ? { complete: true, final: { away: { runs: 2 }, home: { runs: 5 } }, late: { fromInning: 7, away: 0, home: 3 } } : { complete: false, gameOver: true } });
+  const now = { game: { pk: 999, startUTC: "2026-10-20T00:00:00Z" }, hits: ["bp_load"], checks: [{ id: "bp_load", state: "hit", v: { away: 100, home: 260 } }] };
+  const pool = [H(1, "2026-09-20T00:00:00Z"), H(2, "2026-09-21T00:00:00Z", { sample: "late" }), H(3, "2026-09-22T00:00:00Z", { rules: "ctx-rules v0.2" }),
+    H(4, "2026-09-23T00:00:00Z", { th: { diff: 60 } }), H(5, "2026-09-24T00:00:00Z", { complete: false }), H(6, "2026-09-25T00:00:00Z", { v: { away: 200, home: 200 } }),
+    H(7, "2026-10-21T00:00:00Z"), H(999, "2026-09-26T00:00:00Z"), H(8, "2026-10-05T00:00:00Z", { gt: "D", v: { away: 100, home: 220 } })];
+  const S = similarOf(now, pool).bp_load;
+  check("相似情境：只收賽前、賽後完整、同版本同門檻、能確認符合方、早於本場、非本場（合格 2 場）", S.n === 2 && S.games.map(g => g.pk).join() === "8,1");
+  check("相似情境：排除原因分開記（late 1、版本 1、門檻 1、賽後不完整 1、無法確認符合方 1）", JSON.stringify(S.excluded) === JSON.stringify({ late: 1, rules: 1, th: 1, incomplete: 1, undetermined: 1 }));
+  check("相似情境：例行賽／季後賽分開計數；樣本 1–4 是「累積中」", S.byType.R === 1 && S.byType.post === 1 && S.level === "growing");
+  const g8 = S.games[0], g1 = S.games[1];
+  check("相似情境：從符合方的角度記賽後（pk8 主隊用球較多→BBB 5:2、第 7 局起 3；pk1 客隊→AAA 2:5、第 7 局起 0）",
+    g8.teams.length === 1 && g8.teams[0].ab === "BBB" && g8.teams[0].runs === 5 && g8.teams[0].oppRuns === 2 && g8.teams[0].lateRuns === 3 && g1.teams[0].ab === "AAA" && g1.teams[0].lateRuns === 0 && g1.scope === "team");
+  const many = Array.from({ length: 12 }, (_, i) => H(100 + i, `2026-09-${String(i + 1).padStart(2, "0")}T00:00:00Z`)), M = similarOf(now, many).bp_load;
+  check(`相似情境：n ≥ 5 為「已有」、最多列最近 ${SIM_MAX} 場（12 場合格只列 10、最新在前）`, M.n === 12 && M.level === "has" && M.games.length === SIM_MAX && M.games[0].pk === 111);
+  check("相似情境：n＝0 時 level none、games 空", similarOf({ ...now, hits: ["home"], checks: [{ id: "home", state: "hit", v: {} }] }, pool).home.n === 0);
+  check("符合方：dh／whip 是整場條件；home 是主隊；bp_streak 兩隊都達標就兩隊；l10 取較高且 ≥ .700；rapg 是較高一方（pair）",
+    matchedOf({ id: "dh", v: {} }).scope === "game" && matchedOf({ id: "whip", v: {} }).scope === "game" && matchedOf({ id: "home", v: {} }).sides.join() === "home"
+    && matchedOf({ id: "bp_streak", v: { away: 2, home: 3 } }).sides.join() === "away,home" && matchedOf({ id: "l10", v: { away: 0.8, home: 0.5 } }).sides.join() === "away"
+    && matchedOf({ id: "l10", v: { away: 0.6, home: 0.4 } }) === null && matchedOf({ id: "rapg", v: { away: 3.9, home: 5.1 } }).scope === "pair" && matchedOf({ id: "rapg", v: { away: 3.9, home: 5.1 } }).sides.join() === "home");
+  const gp = similarOf({ game: { pk: 999, startUTC: "2026-10-20T00:00:00Z" }, hits: ["whip"], checks: [{ id: "whip", state: "hit", v: {} }] },
+    [H(9, "2026-10-01T00:00:00Z", { id: "whip", th: { whipBelow: 1, ipAtLeast: 100 }, v: {}, gt: "L" })]).whip;
+  check("整場條件：不指定一隊（teams null），記兩隊比分與第 7 局起得分", gp.n === 1 && gp.games[0].teams === null && gp.games[0].score.home.lateRuns === 3 && gp.byType.post === 1); }
 console.log(`\n${fails.length ? "FAIL" : "PASS"}：${total - fails.length}/${total}`);
 process.exit(fails.length ? 1 : 0);

@@ -469,7 +469,7 @@ function ctxSection(C, G) {
     : G.status.code === "pre" ? `賽前每次更新重算・計算於 ${stamp(C.updatedAt)}` : `開賽前最後一次計算（${stamp(C.updatedAt)}），之後不再改`;
   const card = c => `<div class="ctx"><h3>${esc(c.title)}</h3>${c.stale ? `<p class="stale">${esc(staleNote(c, G))}</p>` : ""}
     ${c.nums?.length ? `<div class="nums">${c.nums.map(x => `<div><b class="num">${esc(x.v)}</b><span>${esc(x.k)}</span></div>`).join("")}</div>` : ""}
-    <ul>${(c.says || []).map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+    <ul>${(c.says || []).map(t => `<li>${esc(t)}</li>`).join("")}</ul>${simBlock(C.similar?.[c.id])}
     <details><summary class="small">查看依據與門檻</summary><p class="small">門檻：${esc(c.threshold)}<br>本場算出：${esc(c.value)}</p></details></div>`;
   const body = shown.length ? `<div class="ctxg">${shown.map(card).join("")}</div>`
     : `<div class="panel"><p><b>在已有資料與已啟用的比較項目中，沒有額外提示。</b></p><p class="small">${miss.length ? `比較過：${miss.map(c => esc(c.title)).join("、")}，都沒有達到門檻。` : ""}${na.length ? `${na.map(c => esc(c.title)).join("、")}這次資料不足，沒有比較——不代表那裡沒有值得看的條件。` : ""}</p></div>`;
@@ -499,6 +499,23 @@ function postSection(C, G) {
     <p class="small">x＝確定沒打（主隊領先、最後一局下半不用打）；?＝這個半局的得分還沒取得；「—」＝那一段有半局未取得，不加總。每隊第一位上場的投手視為先發，其餘算牛棚。${late(C) ? "這場的情境不是賽前留下的，不列入賽前研究樣本。" : ""}來源：MLB Stats API（linescore、box score）。</p></div></section>`;
 }
 const late = C => (C.sample || (C.phase === "pre" ? "pregame" : "late")) === "late";
+// 歷史相似情境紀錄（scripts/ctx.mjs similarOf；站長 10-18）：只列案例，不算勝率、平均、分布，不判斷好壞；n＝0 不顯示
+const GTN = { R: "例行賽", F: "外卡賽", D: "分區賽", L: "聯盟冠軍賽", W: "世界大賽" };
+function simBlock(S) {
+  if (!S?.n) return "";
+  const b = S.byType, cnt = [b.R && `例行賽 ${b.R}`, b.post && `季後賽 ${b.post}`, b.unknown && `賽別未標 ${b.unknown}`].filter(Boolean).join("・");
+  const head = S.level === "has" ? `本站已有 <b class="num">${S.n}</b> 場相同賽前情境` : `樣本累積中，共 <b class="num">${S.n}</b> 場`;
+  const who = S.games[0]?.scope === "game" ? "整場條件，不指定一隊" : `從符合條件的一方看（${esc(S.games.find(g => g.label)?.label || "")}）`;
+  const row = g => { const tag = `<em>${GTN[g.gameType] || "賽別未標"}</em>`, lf = g.lateFrom;
+    const body = g.scope === "game"
+      ? `${esc(g.score.away.ab)} <b class="num">${g.score.away.runs} : ${g.score.home.runs}</b> ${esc(g.score.home.ab)}<span class="sub">整場條件・第 ${lf} 局起 ${g.score.away.lateRuns ?? "—"} : ${g.score.home.lateRuns ?? "—"}</span>`
+      : g.teams.map(t => `<b>${esc(t.ab)}</b> 對 ${esc(t.opp)} <b class="num">${t.runs} : ${t.oppRuns}</b><span class="sub">${esc(t.ab)} 第 ${lf} 局起得分 ${t.lateRuns ?? "—"}</span>`).join("<br>");
+    return `<li><a href="game.html?pk=${g.pk}"><span class="d">${dayLabel(g.twDate)} ${tag}</span><span class="m">${body}</span></a></li>`; };
+  return `<details class="sim"><summary class="small">${head}${cnt ? `（${cnt}）` : ""}</summary>
+    <p class="small">${who}。列出最近 ${S.games.length} 場，比分寫成「${S.games[0]?.scope === "game" ? "客隊 : 主隊" : "該隊 : 對手"}」。只列案例，不是機率、不算勝率或平均。</p>
+    <ul>${S.games.map(row).join("")}</ul>
+    <p class="small">樣本條件：賽前留下的紀錄、賽後資料完整、同規則版本（${esc(S.rules)}）與相同門檻、能確認符合的是哪一方；只取本場表定開賽之前的場次。</p></details>`;
+}
 
 /* ================= 牛棚（scripts/bullpen.mjs 產出；規則見該檔） ================= */
 const BPST = { off: "無賽程", ppd: "延賽", notstarted: "未開打", error: "整天未取得", other: "其他" };
