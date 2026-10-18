@@ -1,6 +1,6 @@
 {
  "rules": "bullpen v0.2",
- "generatedAt": "2026-10-18T15:30:20.988Z",
+ "generatedAt": "2026-10-18T16:00:29.646Z",
  "counts": {
   "ok": 2,
   "incomplete": 0,
@@ -8,7 +8,7 @@
   "total": 2
  },
  "games": {
-  "849816": {
+  "849815": {
    "status": "ok",
    "gamesMissing": 0
   },
