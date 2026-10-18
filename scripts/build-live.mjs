@@ -31,8 +31,9 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   const errBy = {}; // 抓取失敗的項目 → 錯誤訊息
   const soft = async (what, p) => { try { return await p; } catch (e) { const error = String(e.message || e); errors.push({ what, error }); errBy[what] = error; return null; } };
 
-  // 1) 賽程（必要；失敗就整次失敗，保留上一版）：台灣今天/明天 ≈ 美國前一天到當天；往前多抓 12 天找各隊上一場
-  const sched = await fetchJson(`${API}/schedule?sportId=1&startDate=${addDays(today, -12)}&endDate=${tomorrow}&hydrate=probablePitcher,linescore,venue(timezone),team,weather`);
+  // 1) 賽程（必要；失敗就整次失敗，保留上一版）：台灣今天/明天 ≈ 美國前一天到當天；往前多抓 12 天找各隊上一場；
+  //    往後多看 7 天（同一次呼叫）只用來判斷「近期有沒有賽事」（首頁無賽呈現，站長 10-18 B1），不產生那幾天的資料
+  const sched = await fetchJson(`${API}/schedule?sportId=1&startDate=${addDays(today, -12)}&endDate=${addDays(tomorrow, 7)}&hydrate=probablePitcher,linescore,venue(timezone),team,weather`);
   const all = sched.dates.flatMap(d => d.games);
   const byPk = new Map();
   for (const g of all) {
@@ -42,6 +43,10 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
     if (!prev || (statusOf(prev).code === "ppd" && statusOf(g).code !== "ppd")) byPk.set(g.gamePk, g);
   }
   const games = [...byPk.values()].sort((a, b) => a.gameDate.localeCompare(b.gameDate) || a.gamePk - b.gamePk);
+  // 明天之後 7 天（台灣日期）的正式賽程場數；延期、取消不算。只說「有沒有近期賽事」，不推論賽季是否結束
+  const upFrom = addDays(tomorrow, 1), upTo = addDays(tomorrow, 7);
+  const ahead = [...new Map(all.filter(g => { const d = twDate(g.gameDate); return d >= upFrom && d <= upTo && !["ppd", "cxl"].includes(statusOf(g).code); }).map(g => [g.gamePk, g])).values()];
+  const upcoming = { from: upFrom, to: upTo, count: ahead.length, next: ahead.length ? ahead.map(g => twDate(g.gameDate)).sort()[0] : null };
   const finals = all.filter(g => g.status?.abstractGameState === "Final" && !/Postponed|Cancel/i.test(g.status.detailedState));
 
   // 2) 戰績、團隊打擊／投球（選配；失敗記錯誤，欄位顯示尚未取得）
@@ -183,9 +188,15 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   }
   const days = [[today, "today", "今天"], [tomorrow, "tomorrow", "明天"]].map(([date, key, label]) => ({ key, label, date, pks: games.filter(g => twDate(g.gameDate) === date).map(g => g.gamePk) }));
   for (const pk of Object.keys(state.games)) if (Date.parse(state.games[pk].firstSeen) < now - 7 * 864e5) delete state.games[pk]; // state 只留 7 天
-  const manifest = { generatedAt: nowISO, generatedAtTW: twStamp(nowISO), source: "MLB Stats API（statsapi.mlb.com）", days: days.map(({ pks, ...d }) => ({ ...d, count: pks.length })), errors };
+  const manifest = { generatedAt: nowISO, generatedAtTW: twStamp(nowISO), source: "MLB Stats API（statsapi.mlb.com）", days: days.map(({ pks, ...d }) => ({ ...d, count: pks.length })), upcoming, errors };
   return { manifest, days, games: out, state, events, errors };
 }
+
+// 首頁無賽時的「最近完賽」：本站已存的單場資料（live/data/games）中狀態為已結束的，依表定開賽新到舊取 n 場；只放日期、對戰、比分、單場頁入口
+export const recentFinals = (games, n = 10) => [...new Map(games.filter(g => g?.status?.code === "final" && g.away?.score != null && g.home?.score != null).map(g => [g.pk, g])).values()]
+  .sort((a, b) => b.startUTC.localeCompare(a.startUTC) || b.pk - a.pk).slice(0, n)
+  .map(g => ({ pk: g.pk, twDate: g.twDate, usDate: g.usDate, gameType: g.gameType ?? null, dh: g.dh ?? null,
+    away: { ab: g.away.ab, name: g.away.name, score: g.away.score }, home: { ab: g.home.ab, name: g.home.name, score: g.home.score } }));
 
 // 首頁卡用：去掉打線名單，其餘同單場
 export const cardOf = g => ({ ...g, away: { ...g.away, lineup: { ...g.away.lineup, slots: null }, roster: null, prev: g.away.prev ? { ...g.away.prev, slots: null, has: !!g.away.prev.slots } : null }, home: { ...g.home, lineup: { ...g.home.lineup, slots: null }, roster: null, prev: g.home.prev ? { ...g.home.prev, slots: null, has: !!g.home.prev.slots } : null } });
@@ -207,6 +218,7 @@ export function report({ manifest, days, games, events, errors }) {
   L.push(`## 抓取失敗、沿用舊值的項目（${kept.length}）`, "", ...(kept.length ? kept : ["無"]), "");
   L.push(`## 錯誤（${errors.length}）`, "", ...(errors.length ? errors.map(e => `- ${e.what}：${e.error}`) : ["無"]), "",
     `本次事件：${events.length} 筆（先發變動、官方打線首次出現、臨場異動、狀態變化）`, "",
+    `之後 7 天（${manifest.upcoming.from}～${manifest.upcoming.to}）正式賽程：${manifest.upcoming.count} 場${manifest.upcoming.next ? `，最近一場 ${manifest.upcoming.next}` : ""}`, "",
     "未取得（本版不顯示）：初步預估打線、盤口、天氣、主審、傷兵、投手 3A／分項成績。");
   return L.join("\n") + "\n";
 }
@@ -221,6 +233,8 @@ if (typeof process !== "undefined" && process.argv[1] && import.meta.url.endsWit
   fs.mkdirSync(`${D}/dates`, { recursive: true }); fs.mkdirSync(`${D}/games`, { recursive: true });
   try {
     const R = await build({ fetchJson, state: read("data/state.json", { games: {} }), prevGame: pk => read(`live/data/games/${pk}.json`, null) });
+    const kept = fs.existsSync("live/data/games") ? fs.readdirSync("live/data/games").filter(f => f.endsWith(".json")).map(f => read(`live/data/games/${f}`, null)) : [];
+    R.manifest.recent = recentFinals([...Object.values(R.games), ...kept.filter(g => g && !R.games[g.pk])]);
     fs.writeFileSync(`${D}/manifest.json`, JSON.stringify(R.manifest, null, 1));
     for (const d of R.days) fs.writeFileSync(`${D}/dates/${d.date}.json`, JSON.stringify({ date: d.date, generatedAt: R.manifest.generatedAt, games: d.pks.map(pk => cardOf(R.games[pk])) }));
     for (const g of Object.values(R.games)) fs.writeFileSync(`${D}/games/${g.pk}.json`, JSON.stringify(g));

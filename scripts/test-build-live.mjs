@@ -1,6 +1,6 @@
 // build-live 單場抓取失敗／來源撤回的情境測試（離線，不連網）
 // 執行：node scripts/test-build-live.mjs
-import { build } from "./build-live.mjs";
+import { build, recentFinals } from "./build-live.mjs";
 
 let total = 0; const fails = []; const check = (n, c) => { total++; console.log((c ? "PASS " : "FAIL ") + n); if (!c) fails.push(n); };
 const T1 = { id: 147, name: "New York Yankees", abbreviation: "NYY" }, T2 = { id: 111, name: "Boston Red Sox", abbreviation: "BOS" };
@@ -90,5 +90,15 @@ check("H 天氣變了：firstSeen 不動、changedAt 更新", H2.games[PK].weath
 const H3 = await run("2026-09-24T22:00:00Z", { wx: { condition: "Roof Closed", temp: "72", wind: "0 mph, None" } }, H2.games[PK]);
 check("H 屋頂關閉、0 mph：風速記 0，不是 null", H3.games[PK].weather.windMph === 0 && H3.games[PK].weather.windDir === "None");
 
+
+// I：近期賽事（站長 10-18 B1）：明天之後 7 天的正式賽程場數；最近完賽清單
+{ const R1 = await build({ fetchJson: api(), now: new Date("2026-09-20T04:00:00Z"), state: { games: {} } });
+  check("I 明天之後 7 天（09-22～09-28）測試賽程有 2 場（台灣 09-24、09-25）：upcoming.count 2、next 09-24；今天／明天 0 場", R1.manifest.upcoming.count === 2 && R1.manifest.upcoming.next === "2026-09-24" && R1.manifest.upcoming.from === "2026-09-22" && R1.manifest.upcoming.to === "2026-09-28" && R1.days.every(d => !d.pks.length));
+  const R2 = await build({ fetchJson: api(), now: new Date("2026-10-10T04:00:00Z"), state: { games: {} } });
+  check("I 之後 7 天沒有賽程：upcoming.count 0、next null", R2.manifest.upcoming.count === 0 && R2.manifest.upcoming.next === null);
+  const g = (pk, at, code, a, h) => ({ pk, startUTC: at, twDate: at.slice(0, 10), usDate: at.slice(0, 10), status: { code }, away: { ab: "A", name: "甲", score: a }, home: { ab: "B", name: "乙", score: h } });
+  const L = recentFinals([g(1, "2026-10-01T00:00:00Z", "final", 1, 2), g(2, "2026-10-03T00:00:00Z", "final", 3, 4), g(3, "2026-10-04T00:00:00Z", "pre", null, null), g(4, "2026-10-02T00:00:00Z", "final", 5, null), g(2, "2026-10-03T00:00:00Z", "final", 3, 4)], 10);
+  check("I 最近完賽：只取已結束且有比分、去重、新到舊", L.map(x => x.pk).join() === "2,1" && L[0].away.score === 3 && L[0].home.score === 4);
+  check("I 最近完賽最多 n 場", recentFinals(Array.from({ length: 15 }, (_, i) => g(100 + i, `2026-10-${String(i + 1).padStart(2, "0")}T00:00:00Z`, "final", 1, 0)), 10).length === 10); }
 console.log(`\n${fails.length ? "FAIL" : "PASS"}：${total - fails.length}/${total}`);
 process.exit(fails.length ? 1 : 0);

@@ -75,6 +75,9 @@ function keepFresh(M, extra, onDay) {
 async function renderHome() {
   let D; try { D = await load("manifest.json"); for (const d of D.days) d.games = (await load(`dates/${d.date}.json`)).games; } catch (e) { return fail($("#games"), e); }
   await freshness(D);
+  // 近期無賽（站長 10-18 B1）：今天、明天都 0 場，而且之後 7 天正式賽程也是 0 場 → 只寫「目前沒有近期賽事」＋最近 10 場完賽；
+  //   不憑 7 天沒比賽就寫「本季已結束」。舊版 manifest 沒有 upcoming 時照原本畫面
+  if (D.upcoming && D.upcoming.count === 0 && D.days.every(d => !d.games.length)) return renderQuiet(D);
   const realDay = d => d.date === twToday() ? "今天" : d.date === nextDay(twToday()) ? "明天" : "";
   const BI = (await load("bullpen/index.json").catch(() => null))?.games || {};
   const bpOf = pk => BI[pk]?.status || "none";
@@ -103,7 +106,7 @@ async function renderHome() {
       <span>盤口 <b class="num">0/${n}</b></span>
       <small>資料最後變動 ${D.generatedAtTW}</small></div>`;
     const autoNote = auto && state.day === "tomorrow" ? `<div class="notice">今天${todayD.games.length ? "的比賽都已結束或取消" : "沒有 MLB 比賽"}，先顯示<b>明天</b>；要看今天請按上方「今天」。</div>` : "";
-    $("#games").innerHTML = autoNote + ready + (games.length ? games.map(card).join("") : `<div class="empty">${n ? "此篩選條件下沒有比賽。" : "這一天沒有 MLB 比賽。"}</div>`);
+    $("#games").innerHTML = autoNote + ready + (games.length ? games.map(card).join("") : `<div class="empty">${n ? "此篩選條件下沒有比賽。" : `這一天沒有 MLB 比賽。${D.upcoming?.next ? `下一場正式賽程在 ${dayLabel(D.upcoming.next)}。` : ""}`}</div>`);
   };
   const card = g => {
     const sc = ["final", "live"].includes(g.status.code);
@@ -126,6 +129,18 @@ async function renderHome() {
   document.addEventListener("click", e => { const b = e.target.closest("button[data-d],button[data-st]"); if (!b) return;
     if (b.dataset.d) { state.day = b.dataset.d; auto = false; history.replaceState(null, "", `?d=${state.day}`); } if (b.dataset.st) state.status = b.dataset.st; draw(); });
   draw(); keepFresh(D, [], draw);
+}
+
+const GTL = { F: "外卡賽", D: "分區賽", L: "聯盟冠軍賽", W: "世界大賽" };
+function renderQuiet(D) {
+  const U = D.upcoming, R = D.recent || [];
+  $("#days").hidden = true; $("#status").hidden = true;
+  $("#dayTitle").innerHTML = `目前沒有近期賽事 <small>MLB 官方賽程</small>`;
+  const row = g => `<li><a href="game.html?pk=${g.pk}"><span class="d">${dayLabel(g.twDate)}${GTL[g.gameType] ? `<em>${GTL[g.gameType]}</em>` : ""}${g.dh ? `<em>雙重賽 ${esc(g.dh)}</em>` : ""}</span>
+    <span class="m"><b>${esc(g.away.ab)}</b> ${esc(g.away.name)} <b class="num">${g.away.score} : ${g.home.score}</b> ${esc(g.home.name)} <b>${esc(g.home.ab)}</b></span><span class="go">→</span></a></li>`;
+  $("#games").innerHTML = `<div class="notice">今天、明天與之後 7 天（${dayLabel(U.from)}–${dayLabel(U.to)}）MLB 官方賽程都沒有比賽。有新賽程時會自動換回比賽列表。</div>
+    ${R.length ? `<section class="blk recent"><h2>最近 ${R.length} 場完賽 <small>台灣日期・點進去看單場資料</small></h2><ul>${R.map(row).join("")}</ul></section>` : `<div class="empty">本站目前沒有已存的完賽紀錄。</div>`}`;
+  keepFresh(D, []);
 }
 
 /* ================= 提前預估打線（data/proj/sources.json：來源有就先存，不管是否已進首頁今天／明天） ================= */
