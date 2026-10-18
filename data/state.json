@@ -160,7 +160,7 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-10-17T20:01:09.306Z",
     "key": "{\"condition\":\"Partly Cloudy\",\"temp\":\"46\",\"wind\":\"5 mph, L To R\"}",
@@ -184,7 +184,7 @@
     }
    },
    "late": {},
-   "status": "Delayed Start",
+   "status": "Scheduled",
    "wx": {
     "firstSeen": "2026-10-16T20:01:19.425Z",
     "key": "{\"condition\":\"Cloudy\",\"temp\":\"59\",\"wind\":\"9 mph, Varies\"}",
