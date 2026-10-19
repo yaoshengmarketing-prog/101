@@ -1,26 +1,26 @@
 {
- "generatedAt": "2026-10-19T15:15:24.595Z",
- "generatedAtTW": "10/19 23:15",
+ "generatedAt": "2026-10-19T16:00:24.004Z",
+ "generatedAtTW": "10/20 00:00",
  "source": "MLB Stats API（statsapi.mlb.com）",
  "days": [
   {
    "key": "today",
    "label": "今天",
-   "date": "2026-10-19",
+   "date": "2026-10-20",
    "count": 1
   },
   {
    "key": "tomorrow",
    "label": "明天",
-   "date": "2026-10-20",
+   "date": "2026-10-21",
    "count": 1
   }
  ],
  "upcoming": {
-  "from": "2026-10-21",
-  "to": "2026-10-27",
+  "from": "2026-10-22",
+  "to": "2026-10-28",
   "count": 4,
-  "next": "2026-10-21"
+  "next": "2026-10-24"
  },
  "errors": [],
  "recent": [
