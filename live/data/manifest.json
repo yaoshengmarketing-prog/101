@@ -1,6 +1,6 @@
 {
- "generatedAt": "2026-10-18T23:45:18.891Z",
- "generatedAtTW": "10/19 07:45",
+ "generatedAt": "2026-10-19T00:00:19.952Z",
+ "generatedAtTW": "10/19 08:00",
  "source": "MLB Stats API（statsapi.mlb.com）",
  "days": [
   {
@@ -24,6 +24,23 @@
  },
  "errors": [],
  "recent": [
+  {
+   "pk": 849817,
+   "twDate": "2026-10-19",
+   "usDate": "2026-10-18",
+   "gameType": "L",
+   "dh": null,
+   "away": {
+    "ab": "TB",
+    "name": "光芒",
+    "score": 3
+   },
+   "home": {
+    "ab": "CLE",
+    "name": "守護者",
+    "score": 1
+   }
+  },
   {
    "pk": 849816,
    "twDate": "2026-10-18",
@@ -175,23 +192,6 @@
     "ab": "CLE",
     "name": "守護者",
     "score": 2
-   }
-  },
-  {
-   "pk": 849832,
-   "twDate": "2026-10-09",
-   "usDate": "2026-10-08",
-   "gameType": null,
-   "dh": null,
-   "away": {
-    "ab": "CLE",
-    "name": "守護者",
-    "score": 9
-   },
-   "home": {
-    "ab": "CWS",
-    "name": "白襪",
-    "score": 5
    }
   }
  ]
