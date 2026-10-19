@@ -1030,3 +1030,4 @@
 {"at":"2026-10-19T15:15:24.595Z","pk":849815,"type":"sp","side":"away","from":null,"to":"Shawn Armstrong"}
 {"at":"2026-10-19T20:00:25.326Z","pk":849815,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-10-19T20:15:19.192Z","pk":849815,"type":"lineup_official","side":"home"}
+{"at":"2026-10-19T20:30:22.136Z","pk":849815,"type":"lineup_official","side":"away"}
