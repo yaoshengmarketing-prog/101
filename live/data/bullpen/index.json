@@ -1,17 +1,13 @@
 {
  "rules": "bullpen v0.2",
- "generatedAt": "2026-10-20T03:00:43.350Z",
+ "generatedAt": "2026-10-20T03:15:40.241Z",
  "counts": {
-  "ok": 2,
+  "ok": 1,
   "incomplete": 0,
   "failed": 0,
-  "total": 2
+  "total": 1
  },
  "games": {
-  "849814": {
-   "status": "ok",
-   "gamesMissing": 0
-  },
   "849815": {
    "status": "ok",
    "gamesMissing": 0
