@@ -103,11 +103,11 @@
     }
    },
    "late": {},
-   "status": "Pre-Game",
+   "status": "Warmup",
    "wx": {
     "firstSeen": "2026-10-19T20:00:25.326Z",
-    "key": "{\"condition\":\"Dome\",\"temp\":\"71\",\"wind\":\"0 mph, None\"}",
-    "changedAt": "2026-10-19T20:00:25.326Z"
+    "key": "{\"condition\":\"Dome\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
+    "changedAt": "2026-10-20T00:00:48.101Z"
    }
   },
   "849816": {
