@@ -1034,3 +1034,4 @@
 {"at":"2026-10-20T00:00:48.101Z","pk":849815,"type":"status","from":"Pre-Game","to":"Warmup"}
 {"at":"2026-10-20T00:15:40.927Z","pk":849815,"type":"status","from":"Warmup","to":"In Progress"}
 {"at":"2026-10-20T03:15:39.542Z","pk":849815,"type":"status","from":"In Progress","to":"Final"}
+{"at":"2026-10-22T16:00:41.884Z","pk":849805,"type":"sp","side":"home","from":null,"to":"Jacob Misiorowski"}

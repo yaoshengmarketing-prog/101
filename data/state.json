@@ -1,5 +1,18 @@
 {
  "games": {
+  "849805": {
+   "firstSeen": "2026-10-22T16:00:41.884Z",
+   "sp": {
+    "home": {
+     "id": 694819,
+     "name": "Jacob Misiorowski",
+     "at": "2026-10-22T16:00:41.884Z"
+    }
+   },
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
+  },
   "849808": {
    "firstSeen": "2026-10-15T16:00:42.246Z",
    "sp": {},
