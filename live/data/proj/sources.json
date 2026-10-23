@@ -6329,7 +6329,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-23T20:00:30.486Z"
+   "fetchedAt": "2026-10-23T20:15:23.475Z"
   },
   "RotoWire|2026-10-23|TB@MIL|home": {
    "source": "RotoWire",
@@ -6399,14 +6399,75 @@
        "bats": "R"
       }
      ]
+    },
+    {
+     "at": "2026-10-23T20:15:23.475Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jake Bauers",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Christian Yelich",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "William Contreras",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Brice Turang",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Garrett Mitchell",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Cooper Pratt",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Sal Frelick",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "David Hamilton",
+       "pos": "3B",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849805,
    "inScopeAt": "2026-10-22T16:00:45.799Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-23T20:00:30.486Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-23T20:15:23.475Z"
   },
   "RotoWire|2026-10-24|TB@MIL|away": {
    "source": "RotoWire",
@@ -6483,7 +6544,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-23T20:00:30.486Z"
+   "fetchedAt": "2026-10-23T20:15:23.475Z"
   },
   "RotoWire|2026-10-24|TB@MIL|home": {
    "source": "RotoWire",
@@ -6553,6 +6614,67 @@
        "bats": "R"
       }
      ]
+    },
+    {
+     "at": "2026-10-23T20:15:23.475Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Brice Turang",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Jake Bauers",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "William Contreras",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Garrett Mitchell",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Christian Yelich",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Cooper Pratt",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Luis Lara",
+       "pos": "RF",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "David Hamilton",
+       "pos": "3B",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849802,
@@ -6560,7 +6682,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-23T20:00:30.486Z"
+   "fetchedAt": "2026-10-23T20:15:23.475Z"
   },
   "RotoGrinders|2026-10-23|TB@MIL|away": {
    "source": "RotoGrinders",
@@ -6637,7 +6759,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-23T20:00:30.486Z"
+   "fetchedAt": "2026-10-23T20:15:23.475Z"
   },
   "RotoGrinders|2026-10-23|TB@MIL|home": {
    "source": "RotoGrinders",
@@ -6707,14 +6829,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-23T20:15:23.475Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Jakob Bauers",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Christian Yelich",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "William Contreras",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Brice Turang",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Garrett Mitchell",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Cooper Pratt",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Sal Frelick",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "David Hamilton",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849805,
    "inScopeAt": "2026-10-23T11:27:15.578Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-23T20:00:30.486Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-23T20:15:23.475Z"
   }
  }
 }
