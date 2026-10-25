@@ -6619,6 +6619,160 @@
    "n": 9,
    "statusKey": "confirmed",
    "fetchedAt": "2026-10-25T04:30:22.591Z"
+  },
+  "RotoWire|2026-10-26|MIL@TB|away": {
+   "source": "RotoWire",
+   "date": "2026-10-26",
+   "team": "MIL",
+   "side": "away",
+   "game": "MIL@TB",
+   "first": "2026-10-25T11:11:39.704Z",
+   "versions": [
+    {
+     "at": "2026-10-25T11:11:39.704Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Brice Turang",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Jake Bauers",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "William Contreras",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Garrett Mitchell",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Christian Yelich",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Cooper Pratt",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Luis Lara",
+       "pos": "RF",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "David Hamilton",
+       "pos": "3B",
+       "bats": "L"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "8:00 PM ET",
+   "n": 9,
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-25T11:11:39.704Z"
+  },
+  "RotoWire|2026-10-26|MIL@TB|home": {
+   "source": "RotoWire",
+   "date": "2026-10-26",
+   "team": "TB",
+   "side": "home",
+   "game": "MIL@TB",
+   "first": "2026-10-25T11:11:39.704Z",
+   "versions": [
+    {
+     "at": "2026-10-25T11:11:39.704Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Yandy Diaz",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jonathan Aranda",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Junior Caminero",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Ryan Vilade",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Jonny DeLuca",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Chandler Simpson",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Nick Fortes",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Jorge Mateo",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Taylor Walls",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "8:00 PM ET",
+   "n": 9,
+   "statusKey": "expected",
+   "fetchedAt": "2026-10-25T11:11:39.704Z"
   }
  }
 }
