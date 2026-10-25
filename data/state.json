@@ -25,7 +25,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-10-24T20:00:30.079Z",
     "key": "{\"condition\":\"Roof Closed\",\"temp\":\"71\",\"wind\":\"0 mph, None\"}",
