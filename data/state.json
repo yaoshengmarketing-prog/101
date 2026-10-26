@@ -32,6 +32,13 @@
     "changedAt": "2026-10-25T00:15:18.285Z"
    }
   },
+  "849803": {
+   "firstSeen": "2026-10-26T16:00:24.547Z",
+   "sp": {},
+   "lu": {},
+   "late": {},
+   "status": "Scheduled"
+  },
   "849804": {
    "firstSeen": "2026-10-25T16:00:15.927Z",
    "sp": {
@@ -81,13 +88,6 @@
     "key": "{\"condition\":\"Roof Closed\",\"temp\":\"69\",\"wind\":\"0 mph, None\"}",
     "changedAt": "2026-10-24T00:15:15.739Z"
    }
-  },
-  "849814": {
-   "firstSeen": "2026-10-19T16:00:24.004Z",
-   "sp": {},
-   "lu": {},
-   "late": {},
-   "status": "Scheduled"
   }
  }
 }
