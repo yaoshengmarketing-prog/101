@@ -1053,3 +1053,5 @@
 {"at":"2026-10-25T04:30:21.302Z","pk":849802,"type":"status","from":"In Progress","to":"Final"}
 {"at":"2026-10-25T16:00:15.927Z","pk":849804,"type":"sp","side":"away","from":null,"to":"Robert Gasser"}
 {"at":"2026-10-25T16:00:15.927Z","pk":849804,"type":"sp","side":"home","from":null,"to":"Freddy Peralta"}
+{"at":"2026-10-26T20:00:19.561Z","pk":849804,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-10-26T20:00:19.561Z","pk":849804,"type":"lineup_official","side":"home"}
