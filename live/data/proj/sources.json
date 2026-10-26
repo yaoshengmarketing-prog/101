@@ -5225,7 +5225,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-26T20:00:22.982Z"
+   "fetchedAt": "2026-10-26T20:15:22.967Z"
   },
   "RotoWire|2026-10-26|MIL@TB|home": {
    "source": "RotoWire",
@@ -5295,14 +5295,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-26T20:15:22.967Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Yandy Diaz",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Ryan Vilade",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Chandler Simpson",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Junior Caminero",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Ben Williamson",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Jonny DeLuca",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Victor Mesa",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Nick Fortes",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Taylor Walls",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849804,
    "inScopeAt": "2026-10-25T16:00:17.034Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-26T20:00:22.982Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-26T20:15:22.967Z"
   },
   "RotoWire|2026-10-27|MIL@TB|away": {
    "source": "RotoWire",
@@ -5379,7 +5440,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-26T20:00:22.982Z"
+   "fetchedAt": "2026-10-26T20:15:22.967Z"
   },
   "RotoWire|2026-10-27|MIL@TB|home": {
    "source": "RotoWire",
@@ -5517,7 +5578,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-26T20:00:22.982Z"
+   "fetchedAt": "2026-10-26T20:15:22.967Z"
   },
   "RotoGrinders|2026-10-26|MIL@TB|away": {
    "source": "RotoGrinders",
@@ -5594,7 +5655,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-26T20:00:22.982Z"
+   "fetchedAt": "2026-10-26T20:15:22.967Z"
   },
   "RotoGrinders|2026-10-26|MIL@TB|home": {
    "source": "RotoGrinders",
@@ -5664,14 +5725,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-26T20:15:22.967Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Yandy Diaz",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Ryan Vilade",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Chandler Simpson",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Junior Caminero",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Ben Williamson",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Jonny DeLuca",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Victor Mesa",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Nick Fortes",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Taylor Walls",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849804,
    "inScopeAt": "2026-10-26T12:45:38.125Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-26T20:00:22.982Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-26T20:15:22.967Z"
   }
  }
 }
