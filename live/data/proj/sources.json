@@ -4361,6 +4361,67 @@
        "bats": "L"
       }
      ]
+    },
+    {
+     "at": "2026-10-27T20:15:37.227Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jake Bauers",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Christian Yelich",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "William Contreras",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Brice Turang",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Garrett Mitchell",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Cooper Pratt",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Sal Frelick",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "David Hamilton",
+       "pos": "3B",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849803,
@@ -4368,7 +4429,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-27T20:00:41.519Z"
+   "fetchedAt": "2026-10-27T20:15:37.227Z"
   },
   "RotoWire|2026-10-27|MIL@TB|home": {
    "source": "RotoWire",
@@ -4499,14 +4560,75 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-27T20:15:37.227Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Yandy Diaz",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jonathan Aranda",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Junior Caminero",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Liam Hicks",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Jonny DeLuca",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Chandler Simpson",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Ryan Vilade",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Richie Palacios",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Taylor Walls",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849803,
    "inScopeAt": "2026-10-26T16:00:27.213Z",
    "time": "8:00 PM ET",
    "n": 9,
-   "statusKey": "expected",
-   "fetchedAt": "2026-10-27T20:00:41.519Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-27T20:15:37.227Z"
   },
   "RotoGrinders|2026-10-26|MIL@TB|away": {
    "source": "RotoGrinders",
@@ -4852,6 +4974,67 @@
        "bats": "L"
       }
      ]
+    },
+    {
+     "at": "2026-10-27T20:15:37.227Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jake Bauers",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Christian Yelich",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "William Contreras",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Brice Turang",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Garrett Mitchell",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Cooper Pratt",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Sal Frelick",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "David Hamilton",
+       "pos": "3B",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849799,
@@ -4859,7 +5042,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-27T20:00:41.519Z"
+   "fetchedAt": "2026-10-27T20:15:37.227Z"
   },
   "RotoWire|2026-10-28|MIL@TB|home": {
    "source": "RotoWire",
@@ -4929,6 +5112,67 @@
        "bats": "S"
       }
      ]
+    },
+    {
+     "at": "2026-10-27T20:15:37.227Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Yandy Diaz",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jonathan Aranda",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Junior Caminero",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Liam Hicks",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Jonny DeLuca",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Chandler Simpson",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Richie Palacios",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Victor Mesa",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Taylor Walls",
+       "pos": "SS",
+       "bats": "S"
+      }
+     ]
     }
    ],
    "pk": 849799,
@@ -4936,7 +5180,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-27T20:00:41.519Z"
+   "fetchedAt": "2026-10-27T20:15:37.227Z"
   },
   "RotoGrinders|2026-10-27|MIL@TB|away": {
    "source": "RotoGrinders",
@@ -5013,7 +5257,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-27T20:00:41.519Z"
+   "fetchedAt": "2026-10-27T20:15:37.227Z"
   },
   "RotoGrinders|2026-10-27|MIL@TB|home": {
    "source": "RotoGrinders",
@@ -5083,14 +5327,75 @@
        "bats": null
       }
      ]
+    },
+    {
+     "at": "2026-10-27T20:15:37.227Z",
+     "statusKey": "confirmed",
+     "status": null,
+     "slots": [
+      {
+       "n": 1,
+       "name": "Yandy Diaz",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 2,
+       "name": "Jonathan Aranda",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 3,
+       "name": "Junior Caminero",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 4,
+       "name": "Liam Hicks",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 5,
+       "name": "Jonny DeLuca",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 6,
+       "name": "Chandler Simpson",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 7,
+       "name": "Ryan Vilade",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 8,
+       "name": "Richie Palacios",
+       "pos": null,
+       "bats": null
+      },
+      {
+       "n": 9,
+       "name": "Taylor Walls",
+       "pos": null,
+       "bats": null
+      }
+     ]
     }
    ],
    "pk": 849803,
    "inScopeAt": "2026-10-27T08:20:49.928Z",
    "time": null,
    "n": 9,
-   "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-27T20:00:41.519Z"
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-10-27T20:15:37.227Z"
   }
  }
 }
