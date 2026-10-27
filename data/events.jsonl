@@ -1064,3 +1064,4 @@
 {"at":"2026-10-27T03:30:14.968Z","pk":849803,"type":"sp","side":"home","from":null,"to":"Griffin Jax"}
 {"at":"2026-10-27T20:00:39.316Z","pk":849803,"type":"status","from":"Scheduled","to":"Pre-Game"}
 {"at":"2026-10-27T20:00:39.316Z","pk":849803,"type":"lineup_official","side":"home"}
+{"at":"2026-10-27T20:30:38.940Z","pk":849803,"type":"lineup_official","side":"away"}
