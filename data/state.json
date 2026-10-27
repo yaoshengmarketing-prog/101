@@ -34,7 +34,13 @@
   },
   "849803": {
    "firstSeen": "2026-10-26T16:00:24.547Z",
-   "sp": {},
+   "sp": {
+    "home": {
+     "id": 643377,
+     "name": "Griffin Jax",
+     "at": "2026-10-27T03:30:14.968Z"
+    }
+   },
    "lu": {},
    "late": {},
    "status": "Scheduled"
@@ -64,7 +70,7 @@
     }
    },
    "late": {},
-   "status": "Game Over",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-10-26T20:00:19.561Z",
     "key": "{\"condition\":\"Dome\",\"temp\":\"70\",\"wind\":\"0 mph, None\"}",

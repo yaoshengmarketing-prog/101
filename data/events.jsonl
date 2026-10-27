@@ -1060,3 +1060,5 @@
 {"at":"2026-10-27T00:15:16.993Z","pk":849804,"type":"status","from":"Warmup","to":"Player challenge"}
 {"at":"2026-10-27T00:30:17.900Z","pk":849804,"type":"status","from":"Player challenge","to":"In Progress"}
 {"at":"2026-10-27T03:15:14.901Z","pk":849804,"type":"status","from":"In Progress","to":"Game Over"}
+{"at":"2026-10-27T03:30:14.968Z","pk":849804,"type":"status","from":"Game Over","to":"Final"}
+{"at":"2026-10-27T03:30:14.968Z","pk":849803,"type":"sp","side":"home","from":null,"to":"Griffin Jax"}
