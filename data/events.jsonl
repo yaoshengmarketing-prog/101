@@ -1059,3 +1059,4 @@
 {"at":"2026-10-26T23:45:14.250Z","pk":849804,"type":"status","from":"Pre-Game","to":"Warmup"}
 {"at":"2026-10-27T00:15:16.993Z","pk":849804,"type":"status","from":"Warmup","to":"Player challenge"}
 {"at":"2026-10-27T00:30:17.900Z","pk":849804,"type":"status","from":"Player challenge","to":"In Progress"}
+{"at":"2026-10-27T03:15:14.901Z","pk":849804,"type":"status","from":"In Progress","to":"Game Over"}
