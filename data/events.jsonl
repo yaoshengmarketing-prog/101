@@ -1073,3 +1073,5 @@
 {"at":"2026-10-28T08:56:07.894Z","pk":849803,"type":"status","from":"In Progress","to":"Final"}
 {"at":"2026-10-28T08:56:07.894Z","pk":849799,"type":"sp","side":"away","from":null,"to":"Jacob Misiorowski"}
 {"at":"2026-10-28T19:15:34.787Z","pk":849799,"type":"sp","side":"home","from":null,"to":"Drew Rasmussen"}
+{"at":"2026-10-28T20:00:51.705Z","pk":849799,"type":"status","from":"Scheduled","to":"Pre-Game"}
+{"at":"2026-10-28T20:00:51.705Z","pk":849799,"type":"lineup_official","side":"home"}
