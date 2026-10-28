@@ -2,7 +2,13 @@
  "games": {
   "849799": {
    "firstSeen": "2026-10-27T16:03:00.150Z",
-   "sp": {},
+   "sp": {
+    "away": {
+     "id": 694819,
+     "name": "Jacob Misiorowski",
+     "at": "2026-10-28T08:56:07.894Z"
+    }
+   },
    "lu": {},
    "late": {},
    "status": "Scheduled"
@@ -64,7 +70,7 @@
     }
    },
    "late": {},
-   "status": "In Progress",
+   "status": "Final",
    "wx": {
     "firstSeen": "2026-10-27T20:00:39.316Z",
     "key": "{\"condition\":\"Roof Closed\",\"temp\":\"72\",\"wind\":\"0 mph, None\"}",
