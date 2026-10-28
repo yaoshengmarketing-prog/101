@@ -4422,6 +4422,67 @@
        "bats": "L"
       }
      ]
+    },
+    {
+     "at": "2026-10-28T19:45:36.216Z",
+     "statusKey": "expected",
+     "status": "Expected Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jackson Chourio",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jake Bauers",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Christian Yelich",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "William Contreras",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Brice Turang",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Sal Frelick",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Cooper Pratt",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Garrett Mitchell",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "David Hamilton",
+       "pos": "3B",
+       "bats": "L"
+      }
+     ]
     }
    ],
    "pk": 849799,
@@ -4429,7 +4490,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-28T19:15:36.585Z"
+   "fetchedAt": "2026-10-28T19:45:36.216Z"
   },
   "RotoWire|2026-10-28|MIL@TB|home": {
    "source": "RotoWire",
@@ -4567,7 +4628,7 @@
    "time": "8:00 PM ET",
    "n": 9,
    "statusKey": "expected",
-   "fetchedAt": "2026-10-28T19:15:36.585Z"
+   "fetchedAt": "2026-10-28T19:45:36.216Z"
   },
   "RotoGrinders|2026-10-27|MIL@TB|away": {
    "source": "RotoGrinders",
@@ -4920,7 +4981,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-28T19:15:36.585Z"
+   "fetchedAt": "2026-10-28T19:45:36.216Z"
   },
   "RotoGrinders|2026-10-28|MIL@TB|home": {
    "source": "RotoGrinders",
@@ -4997,7 +5058,7 @@
    "time": null,
    "n": 9,
    "statusKey": "unconfirmed",
-   "fetchedAt": "2026-10-28T19:15:36.585Z"
+   "fetchedAt": "2026-10-28T19:45:36.216Z"
   }
  }
 }
