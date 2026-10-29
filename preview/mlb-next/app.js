@@ -9,7 +9,7 @@
   const test=legit!=="official";
   const newSeason=["new","small","official_empty"].includes(legit);
   const fmtOut=o=>o==null?"—":`${Math.floor(o/3)}.${o%3}`;
-  const base=(p)=>`<div class="source-ribbon"><span class="source-dot"></span><span>${p}</span><strong>固定歷史資料，不是即時頁面</strong></div>`;
+  const base=(p)=>`<div class="source-ribbon"><span class="source-dot"></span><span>${p}／第一版閱讀草案已成形</span><strong>固定歷史資料，不是即時頁面</strong></div>`;
   const link=(title,href,active)=>`<a href="${href}" class="${active?"active":""}" ${active?'aria-current="page"':""}>${title}</a>`;
   const g=D.game;
   const heroTeams=(post)=>`<div class="match-header">
@@ -107,11 +107,12 @@
       const late=`第 ${x.lateFrom} 局起：${esc(x.score.away.ab)} ${x.score.away.lateRuns} 分／${esc(x.score.home.ab)} ${x.score.home.lateRuns} 分`;
       return `<li><div><b>${esc(x.twDate)}</b><span>${type(x.gameType)}・符合方：${match}</span></div><strong>${score}</strong><small>${late}</small><a href="../../live/game.html?pk=${x.pk}">既有單場頁 ↗</a></li>`;
     };
-    return `<div class="history-list"><p>符合條件共 ${h.n} 場；本賽前快照保留最近 ${h.listed} 場明細（最多 10 場）。規則 ${esc(h.rules)}。比分與後段得分是案例的賽後結果，列在這場賽前已保存的案例清單內，未改寫案例各自的賽前快照。</p><ol>${h.games.map(caseRow).join("")}</ol>${h.listed<h.n?`<p>其餘 ${h.n-h.listed} 場已計入符合總數；固定設計只附最近 10 場明細，這不是漏存或遺失，也不從後來資料補寫舊快照。</p>`:""}<p>上方日期為台灣賽事日；「既有單場頁」連到目前的 /live/ 頁面，並非該案例當時的賽前快照。849799 情境凍結：${twTime(D.history.frozenAt)}。</p></div>`;
+    const counts=`例行賽 ${h.byType?.R??0}、季後賽 ${h.byType?.post??0}${h.byType?.unknown?`、其他 ${h.byType.unknown}`:""}`;
+    return `<div class="history-list"><p>符合條件共 ${h.n} 場（${counts}）；本賽前快照保留最近 ${h.listed} 場明細（上限 10 場）。</p><ol>${h.games.map(caseRow).join("")}</ol><p><b>查證註記：</b>僅納入同規則、同門檻且賽後完整的案例，不換算勝率。${h.listed<h.n?" 未逐筆列出的案例已計入上方總數；不以後來資料補寫舊快照。":""}規則版本 ${esc(h.rules)}；849799 賽前情境凍結於 ${twTime(D.history.frozenAt)}。日期為台灣賽事日；比分與第 7 局起得分是本場賽前清單已保存的案例結果，沒有改寫案例各自的賽前快照。「既有單場頁」連到目前 /live/，不是案例當時的賽前版本。</p></div>`;
   }
   function contextSection(){
     if(test&&legit!=="bp_missing")return `<section class="context-block"><div class="section-head"><h2>值得一起看的條件</h2><span>固定規則產生的事實提示</span></div><div class="empty-copy inset">此測試狀態未用真實輸入重算情境卡，因此不顯示條件判斷。</div></section>`;
-    return `<section class="context-block"><div class="section-head"><h2>值得一起看的條件</h2><span>成立 ${D.context.length} 項・只列事實</span></div><div class="context-list">${D.context.map(x=>`<div class="context-row"><div><span class="context-rule">${esc(x.title)}</span><strong>${esc(x.value)}</strong></div><details><summary>依據與歷史例子</summary><p>${esc(x.threshold)}</p><p>${esc(x.says?.[0]||"")}</p><p>本站同規則、同門檻且賽後完整的案例：${x.similar?.n??0} 場（例行賽 ${x.similar?.byType?.R??0}、季後賽 ${x.similar?.byType?.post??0}）。只列案例，不換算勝率。</p>${historyList(x.id)}</details></div>`).join("")}</div></section>`;
+    return `<section class="context-block"><div class="section-head"><h2>值得一起看的條件</h2><span>成立 ${D.context.length} 項・只列事實</span></div><div class="context-list">${D.context.map(x=>`<div class="context-row"><div><span class="context-rule">${esc(x.title)}</span><strong>${esc(x.value)}</strong></div><details><summary>依據與歷史例子</summary><p>門檻：${esc(x.threshold)}</p><p>${esc(x.says?.[0]||"")}</p>${historyList(x.id)}</details></div>`).join("")}</div></section>`;
   }
   function bullpenHistorical(){
     const windowDates=D.bullpen.window, dates=[...windowDates.full,windowDates.today];
