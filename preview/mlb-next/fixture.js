@@ -1,4 +1,4 @@
-/* Fixed historical preview fixture. No third-party projected lineup content is copied here. */
+/* Fixed historical preview fixture. testOnly is artificial and excluded from formal data. */
 window.PREVIEW_DATA = {
   "meta": {
     "label": "2026 世界大賽 G5｜固定歷史資料",
@@ -294,26 +294,34 @@ window.PREVIEW_DATA = {
         {
           "date": "2026-10-25",
           "state": "off",
+          "complete": false,
           "pitches": null,
-          "complete": false
+          "apps": 0,
+          "pitchers": 0
         },
         {
           "date": "2026-10-26",
           "state": "played",
+          "complete": true,
           "pitches": 44,
-          "complete": true
+          "apps": 2,
+          "pitchers": 2
         },
         {
           "date": "2026-10-27",
           "state": "played",
+          "complete": true,
           "pitches": 123,
-          "complete": true
+          "apps": 7,
+          "pitchers": 7
         },
         {
           "date": "2026-10-28",
           "state": "off",
+          "complete": false,
           "pitches": null,
-          "complete": false
+          "apps": 0,
+          "pitchers": 0
         }
       ],
       "top": [
@@ -335,6 +343,108 @@ window.PREVIEW_DATA = {
           "total": 24,
           "last": "2026-10-27"
         }
+      ],
+      "pitchers": [
+        {
+          "id": 622608,
+          "name": "Antonio Senzatela",
+          "total": 44,
+          "streak": 2,
+          "days": {
+            "2026-10-26": {
+              "pitches": 26,
+              "apps": 1
+            },
+            "2026-10-27": {
+              "pitches": 18,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 676879,
+          "name": "Aaron Ashby",
+          "total": 31,
+          "streak": 1,
+          "days": {
+            "2026-10-27": {
+              "pitches": 31,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 669084,
+          "name": "DL Hall",
+          "total": 24,
+          "streak": 1,
+          "days": {
+            "2026-10-27": {
+              "pitches": 24,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 682842,
+          "name": "Abner Uribe",
+          "total": 19,
+          "streak": 1,
+          "days": {
+            "2026-10-27": {
+              "pitches": 19,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 675660,
+          "name": "Shane Drohan",
+          "total": 15,
+          "streak": 1,
+          "days": {
+            "2026-10-27": {
+              "pitches": 15,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 668941,
+          "name": "JoJo Romero",
+          "total": 11,
+          "streak": 1,
+          "days": {
+            "2026-10-27": {
+              "pitches": 11,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 656730,
+          "name": "Trevor Megill",
+          "total": 5,
+          "streak": 1,
+          "days": {
+            "2026-10-27": {
+              "pitches": 5,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 605540,
+          "name": "Brandon Woodruff",
+          "total": 18,
+          "streak": 0,
+          "days": {
+            "2026-10-26": {
+              "pitches": 18,
+              "apps": 1
+            }
+          }
+        }
       ]
     },
     "home": {
@@ -342,26 +452,34 @@ window.PREVIEW_DATA = {
         {
           "date": "2026-10-25",
           "state": "off",
+          "complete": false,
           "pitches": null,
-          "complete": false
+          "apps": 0,
+          "pitchers": 0
         },
         {
           "date": "2026-10-26",
           "state": "played",
+          "complete": true,
           "pitches": 88,
-          "complete": true
+          "apps": 5,
+          "pitchers": 5
         },
         {
           "date": "2026-10-27",
           "state": "played",
+          "complete": true,
           "pitches": 131,
-          "complete": true
+          "apps": 6,
+          "pitchers": 6
         },
         {
           "date": "2026-10-28",
           "state": "off",
+          "complete": false,
           "pitches": null,
-          "complete": false
+          "apps": 0,
+          "pitchers": 0
         }
       ],
       "top": [
@@ -383,7 +501,134 @@ window.PREVIEW_DATA = {
           "total": 33,
           "last": "2026-10-27"
         }
+      ],
+      "pitchers": [
+        {
+          "id": 669330,
+          "name": "Tyler Wells",
+          "total": 40,
+          "streak": 2,
+          "days": {
+            "2026-10-26": {
+              "pitches": 16,
+              "apps": 1
+            },
+            "2026-10-27": {
+              "pitches": 24,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 592155,
+          "name": "Cam Booser",
+          "total": 21,
+          "streak": 2,
+          "days": {
+            "2026-10-26": {
+              "pitches": 12,
+              "apps": 1
+            },
+            "2026-10-27": {
+              "pitches": 9,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 607259,
+          "name": "Nick Martinez",
+          "total": 33,
+          "streak": 1,
+          "days": {
+            "2026-10-27": {
+              "pitches": 33,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 693855,
+          "name": "Ian Seymour",
+          "total": 32,
+          "streak": 1,
+          "days": {
+            "2026-10-27": {
+              "pitches": 32,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 641329,
+          "name": "Bryan Baker",
+          "total": 21,
+          "streak": 1,
+          "days": {
+            "2026-10-27": {
+              "pitches": 21,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 687330,
+          "name": "Kevin Kelly",
+          "total": 12,
+          "streak": 1,
+          "days": {
+            "2026-10-27": {
+              "pitches": 12,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 642121,
+          "name": "Cole Sulser",
+          "total": 32,
+          "streak": 0,
+          "days": {
+            "2026-10-26": {
+              "pitches": 32,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 571927,
+          "name": "Steven Matz",
+          "total": 17,
+          "streak": 0,
+          "days": {
+            "2026-10-26": {
+              "pitches": 17,
+              "apps": 1
+            }
+          }
+        },
+        {
+          "id": 664076,
+          "name": "Garrett Cleavinger",
+          "total": 11,
+          "streak": 0,
+          "days": {
+            "2026-10-26": {
+              "pitches": 11,
+              "apps": 1
+            }
+          }
+        }
       ]
+    },
+    "window": {
+      "full": [
+        "2026-10-25",
+        "2026-10-26",
+        "2026-10-27"
+      ],
+      "today": "2026-10-28",
+      "officialDate": "2026-10-28"
     }
   },
   "roster": {
@@ -822,5 +1067,60 @@ window.PREVIEW_DATA = {
       ],
       "lineupN": 9
     }
-  ]
+  ],
+  "testOnly": {
+    "description": "人工版型測試，不是真實賽事或研究樣本",
+    "small": {
+      "pitchers": {
+        "away": {
+          "ip": "3.2",
+          "outs": 11,
+          "er": 2,
+          "h": 3,
+          "bb": 2,
+          "era": "4.91",
+          "whip": "1.36"
+        },
+        "home": {
+          "ip": "8.0",
+          "outs": 24,
+          "er": 2,
+          "h": 6,
+          "bb": 1,
+          "era": "2.25",
+          "whip": "0.88"
+        }
+      },
+      "hitters": {
+        "away": {
+          "pa": 7,
+          "ab": 6,
+          "h": 2,
+          "bb": 1,
+          "tb": 2,
+          "obp": ".429",
+          "slg": ".333",
+          "ops": ".762"
+        },
+        "home": {
+          "pa": 12,
+          "ab": 11,
+          "h": 3,
+          "bb": 1,
+          "tb": 5,
+          "obp": ".333",
+          "slg": ".455",
+          "ops": ".788"
+        },
+        "validZero": {
+          "pa": 5,
+          "ab": 5,
+          "h": 0,
+          "bb": 0,
+          "tb": 0,
+          "ops": ".000"
+        }
+      }
+    }
+  }
 };
