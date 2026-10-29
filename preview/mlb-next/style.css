@@ -95,3 +95,13 @@ small,.site-foot{font-size:12px;color:var(--ink-soft)}
 .bp-day-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:5px}.bp-day-grid span{display:flex;justify-content:space-between;gap:3px;padding:4px 5px;background:var(--paper);border-radius:4px}.bp-day-grid small,.bp-day-grid b{font-size:10px;white-space:nowrap}
 .bp-reference .bp-grid{margin-top:10px}.bp-reference .bp-team{background:#fff}
 @media(max-width:650px){.lineup-list li{grid-template-columns:20px minmax(0,1fr) 36px;row-gap:1px}.lineup-list li>small{grid-column:2/-1;text-align:left}.bp-grid{grid-template-columns:1fr}.bp-team{padding:13px}.bp-player>div:first-child{display:block}.bp-player>div:first-child small{display:block}.bp-day-grid span{display:block}.bp-day-grid b{display:block}}
+
+/* Existing matchup data beside its pitcher and lineup, preview only. */
+.pitcher-research{border-top:1px solid var(--line);margin-top:10px;padding-top:5px}
+.pitcher-research>summary{cursor:pointer;color:var(--blue);font-size:12px;font-weight:700;padding:6px 0}
+.pitcher-research p,.pitcher-research>small{display:block;font-size:11px;line-height:1.55;color:var(--ink-soft);margin:6px 0}
+.recent-starts{list-style:none;padding:0;margin:9px 0}
+.recent-starts li{display:grid;grid-template-columns:82px minmax(0,1fr);gap:3px 8px;border-top:1px solid var(--line);padding:6px 0;font-size:11px}
+.recent-starts li b{font-weight:700}
+.recent-starts li span:last-child{grid-column:2;color:var(--ink-soft)}
+@media(max-width:650px){.recent-starts li{grid-template-columns:76px minmax(0,1fr)}.lineup-list li>small{line-height:1.45}}
