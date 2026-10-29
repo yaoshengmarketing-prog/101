@@ -112,7 +112,7 @@
       };
       const player=p=>{
         const n=playerKnown(p),hasMissing=windowDates.full.some(date=>days.find(x=>x.date===date)?.state!=="off"&&p.days[date]&&!Number.isFinite(p.days[date].pitches));
-        return `<div class="bp-player"><div><strong>${esc(p.name)}</strong><small>前三日 ${hasMissing?"已知 ":""}${n} 球${hasMissing?"・部分未取得":""}${p.streak>=2?`・連 ${p.streak} 日登板`:""}</small></div><div class="bp-day-grid">${dates.map(date=>`<span><small>${dateLabel(date)}</small><b>${cell(p,date)}</b></span>`).join("")}</div></div>`;
+        return `<div class="bp-player"><div><strong>${esc(p.name)}</strong><small>${hasMissing&&n===0?"前三日部分未取得；已知日未登板":`前三日 ${hasMissing?"已知 ":""}${n} 球${hasMissing?"・部分未取得":""}`}${p.streak>=2?`・連 ${p.streak} 日登板`:""}</small></div><div class="bp-day-grid">${dates.map(date=>`<span><small>${dateLabel(date)}</small><b>${cell(p,date)}</b></span>`).join("")}</div></div>`;
       };
       return `<div class="bp-team"><h3>${esc(team.ab)} ${esc(team.name)}</h3><p class="bp-summary">${amount}；主要承擔者：${leaders.map(p=>`${esc(p.name)} ${playerKnown(p)} 球`).join("、")}。這是用量紀錄，不推論今天可否登板。</p><div class="bp-calendar">${days.map(day).join("")}</div><details class="bp-details"><summary>展開逐投手用球（${pitchers.length} 人）</summary>${pitchers.map(player).join("")}<p class="lineup-foot">無賽程＝確定沒比賽；—＝確定沒登板；0 球＝有效 0；?＝未取得。有缺值時僅顯示已取得部分小計。</p></details></div>`;
     };
