@@ -11,7 +11,8 @@ window.PREVIEW_DATA = {
       "live/data/ctx/849799.json",
       "live/data/bullpen/849799.json",
       "live/data/roster/849799.json",
-      "live/data/manifest.json"
+      "live/data/manifest.json",
+      "live/data/matchup/849799.json"
     ],
     "mode": "歷史回放，非即時資料"
   },
@@ -1349,6 +1350,1496 @@ window.PREVIEW_DATA = {
       "side": "away",
       "date": "2026-10-27",
       "pitcherId": 669084
+    }
+  },
+  "history": {
+    "snapshotAt": "2026-10-28T23:30:42.547Z",
+    "frozenAt": "2026-10-28T23:45:39.295Z",
+    "rules": "ctx-rules v0.3",
+    "byRule": {
+      "bp_streak": {
+        "rules": "ctx-rules v0.3",
+        "threshold": {
+          "pitchers": 2,
+          "days": 2
+        },
+        "n": 4,
+        "byType": {
+          "R": 2,
+          "post": 2,
+          "unknown": 0
+        },
+        "scope": "team",
+        "listed": 4,
+        "games": [
+          {
+            "pk": 849815,
+            "twDate": "2026-10-20",
+            "usDate": "2026-10-19",
+            "gameType": "L",
+            "scope": "team",
+            "label": "連投達標的一方",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "TB",
+                "opp": "CLE",
+                "runs": 7,
+                "oppRuns": 3,
+                "lateRuns": 4
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "CLE",
+                "runs": 3,
+                "lateRuns": 2
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 7,
+                "lateRuns": 4
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849844,
+            "twDate": "2026-10-02",
+            "usDate": "2026-10-01",
+            "gameType": "F",
+            "scope": "team",
+            "label": "連投達標的一方",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "ATL",
+                "opp": "PHI",
+                "runs": 6,
+                "oppRuns": 2,
+                "lateRuns": 1
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "PHI",
+                "runs": 2,
+                "lateRuns": 1
+              },
+              "home": {
+                "ab": "ATL",
+                "runs": 6,
+                "lateRuns": 1
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 823408,
+            "twDate": "2026-09-28",
+            "usDate": "2026-09-27",
+            "gameType": "R",
+            "scope": "team",
+            "label": "連投達標的一方",
+            "teams": [
+              {
+                "side": "away",
+                "ab": "TB",
+                "opp": "PHI",
+                "runs": 3,
+                "oppRuns": 7,
+                "lateRuns": 2
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "TB",
+                "runs": 3,
+                "lateRuns": 2
+              },
+              "home": {
+                "ab": "PHI",
+                "runs": 7,
+                "lateRuns": 0
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 824057,
+            "twDate": "2026-09-27",
+            "usDate": "2026-09-26",
+            "gameType": "R",
+            "scope": "team",
+            "label": "連投達標的一方",
+            "teams": [
+              {
+                "side": "away",
+                "ab": "CLE",
+                "opp": "KC",
+                "runs": 11,
+                "oppRuns": 5,
+                "lateRuns": 5
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "CLE",
+                "runs": 11,
+                "lateRuns": 5
+              },
+              "home": {
+                "ab": "KC",
+                "runs": 5,
+                "lateRuns": 2
+              }
+            },
+            "lateFrom": 7
+          }
+        ]
+      },
+      "whip": {
+        "rules": "ctx-rules v0.3",
+        "threshold": {
+          "whipBelow": 1,
+          "ipAtLeast": 100
+        },
+        "n": 2,
+        "byType": {
+          "R": 0,
+          "post": 2,
+          "unknown": 0
+        },
+        "scope": "game",
+        "listed": 2,
+        "games": [
+          {
+            "pk": 849809,
+            "twDate": "2026-10-12",
+            "usDate": "2026-10-11",
+            "gameType": "L",
+            "scope": "game",
+            "label": null,
+            "teams": null,
+            "score": {
+              "away": {
+                "ab": "LAD",
+                "runs": 1,
+                "lateRuns": 0
+              },
+              "home": {
+                "ab": "MIL",
+                "runs": 2,
+                "lateRuns": 0
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849819,
+            "twDate": "2026-10-07",
+            "usDate": "2026-10-06",
+            "gameType": "D",
+            "scope": "game",
+            "label": null,
+            "teams": null,
+            "score": {
+              "away": {
+                "ab": "LAD",
+                "runs": 3,
+                "lateRuns": 0
+              },
+              "home": {
+                "ab": "ATL",
+                "runs": 1,
+                "lateRuns": 0
+              }
+            },
+            "lateFrom": 7
+          }
+        ]
+      },
+      "l10": {
+        "rules": "ctx-rules v0.3",
+        "threshold": {
+          "high": 0.7,
+          "diff": 0.2
+        },
+        "n": 26,
+        "byType": {
+          "R": 8,
+          "post": 18,
+          "unknown": 0
+        },
+        "scope": "team",
+        "listed": 10,
+        "games": [
+          {
+            "pk": 849803,
+            "twDate": "2026-10-28",
+            "usDate": "2026-10-27",
+            "gameType": "W",
+            "scope": "team",
+            "label": "近十場勝率較高一方",
+            "teams": [
+              {
+                "side": "away",
+                "ab": "MIL",
+                "opp": "TB",
+                "runs": 3,
+                "oppRuns": 4,
+                "lateRuns": 1
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "MIL",
+                "runs": 3,
+                "lateRuns": 1
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 4,
+                "lateRuns": 2
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849804,
+            "twDate": "2026-10-27",
+            "usDate": "2026-10-26",
+            "gameType": "W",
+            "scope": "team",
+            "label": "近十場勝率較高一方",
+            "teams": [
+              {
+                "side": "away",
+                "ab": "MIL",
+                "opp": "TB",
+                "runs": 10,
+                "oppRuns": 1,
+                "lateRuns": 0
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "MIL",
+                "runs": 10,
+                "lateRuns": 0
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 1,
+                "lateRuns": 1
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849802,
+            "twDate": "2026-10-25",
+            "usDate": "2026-10-24",
+            "gameType": "W",
+            "scope": "team",
+            "label": "近十場勝率較高一方",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "MIL",
+                "opp": "TB",
+                "runs": 5,
+                "oppRuns": 4,
+                "lateRuns": 1
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "TB",
+                "runs": 4,
+                "lateRuns": 0
+              },
+              "home": {
+                "ab": "MIL",
+                "runs": 5,
+                "lateRuns": 1
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849805,
+            "twDate": "2026-10-24",
+            "usDate": "2026-10-23",
+            "gameType": "W",
+            "scope": "team",
+            "label": "近十場勝率較高一方",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "MIL",
+                "opp": "TB",
+                "runs": 3,
+                "oppRuns": 2,
+                "lateRuns": 1
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "TB",
+                "runs": 2,
+                "lateRuns": 1
+              },
+              "home": {
+                "ab": "MIL",
+                "runs": 3,
+                "lateRuns": 1
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849815,
+            "twDate": "2026-10-20",
+            "usDate": "2026-10-19",
+            "gameType": "L",
+            "scope": "team",
+            "label": "近十場勝率較高一方",
+            "teams": [
+              {
+                "side": "away",
+                "ab": "CLE",
+                "opp": "TB",
+                "runs": 3,
+                "oppRuns": 7,
+                "lateRuns": 2
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "CLE",
+                "runs": 3,
+                "lateRuns": 2
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 7,
+                "lateRuns": 4
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849817,
+            "twDate": "2026-10-19",
+            "usDate": "2026-10-18",
+            "gameType": "L",
+            "scope": "team",
+            "label": "近十場勝率較高一方",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "CLE",
+                "opp": "TB",
+                "runs": 1,
+                "oppRuns": 3,
+                "lateRuns": 0
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "TB",
+                "runs": 3,
+                "lateRuns": 0
+              },
+              "home": {
+                "ab": "CLE",
+                "runs": 1,
+                "lateRuns": 0
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849816,
+            "twDate": "2026-10-18",
+            "usDate": "2026-10-17",
+            "gameType": "L",
+            "scope": "team",
+            "label": "近十場勝率較高一方",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "CLE",
+                "opp": "TB",
+                "runs": 3,
+                "oppRuns": 7,
+                "lateRuns": 2
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "TB",
+                "runs": 7,
+                "lateRuns": 5
+              },
+              "home": {
+                "ab": "CLE",
+                "runs": 3,
+                "lateRuns": 2
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849818,
+            "twDate": "2026-10-16",
+            "usDate": "2026-10-15",
+            "gameType": "L",
+            "scope": "team",
+            "label": "近十場勝率較高一方",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "CLE",
+                "opp": "TB",
+                "runs": 3,
+                "oppRuns": 2,
+                "lateRuns": 0
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "TB",
+                "runs": 2,
+                "lateRuns": 0
+              },
+              "home": {
+                "ab": "CLE",
+                "runs": 3,
+                "lateRuns": 0
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849813,
+            "twDate": "2026-10-14",
+            "usDate": "2026-10-13",
+            "gameType": "L",
+            "scope": "team",
+            "label": "近十場勝率較高一方",
+            "teams": [
+              {
+                "side": "away",
+                "ab": "CLE",
+                "opp": "TB",
+                "runs": 1,
+                "oppRuns": 3,
+                "lateRuns": 1
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "CLE",
+                "runs": 1,
+                "lateRuns": 1
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 3,
+                "lateRuns": 0
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849820,
+            "twDate": "2026-10-13",
+            "usDate": "2026-10-12",
+            "gameType": "L",
+            "scope": "team",
+            "label": "近十場勝率較高一方",
+            "teams": [
+              {
+                "side": "away",
+                "ab": "CLE",
+                "opp": "TB",
+                "runs": 7,
+                "oppRuns": 3,
+                "lateRuns": 6
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "CLE",
+                "runs": 7,
+                "lateRuns": 6
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 3,
+                "lateRuns": 1
+              }
+            },
+            "lateFrom": 7
+          }
+        ]
+      },
+      "home": {
+        "rules": "ctx-rules v0.3",
+        "threshold": {
+          "pct": 0.65
+        },
+        "n": 15,
+        "byType": {
+          "R": 2,
+          "post": 13,
+          "unknown": 0
+        },
+        "scope": "team",
+        "listed": 10,
+        "games": [
+          {
+            "pk": 849803,
+            "twDate": "2026-10-28",
+            "usDate": "2026-10-27",
+            "gameType": "W",
+            "scope": "team",
+            "label": "主隊",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "TB",
+                "opp": "MIL",
+                "runs": 4,
+                "oppRuns": 3,
+                "lateRuns": 2
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "MIL",
+                "runs": 3,
+                "lateRuns": 1
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 4,
+                "lateRuns": 2
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849804,
+            "twDate": "2026-10-27",
+            "usDate": "2026-10-26",
+            "gameType": "W",
+            "scope": "team",
+            "label": "主隊",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "TB",
+                "opp": "MIL",
+                "runs": 1,
+                "oppRuns": 10,
+                "lateRuns": 1
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "MIL",
+                "runs": 10,
+                "lateRuns": 0
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 1,
+                "lateRuns": 1
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849802,
+            "twDate": "2026-10-25",
+            "usDate": "2026-10-24",
+            "gameType": "W",
+            "scope": "team",
+            "label": "主隊",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "MIL",
+                "opp": "TB",
+                "runs": 5,
+                "oppRuns": 4,
+                "lateRuns": 1
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "TB",
+                "runs": 4,
+                "lateRuns": 0
+              },
+              "home": {
+                "ab": "MIL",
+                "runs": 5,
+                "lateRuns": 1
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849805,
+            "twDate": "2026-10-24",
+            "usDate": "2026-10-23",
+            "gameType": "W",
+            "scope": "team",
+            "label": "主隊",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "MIL",
+                "opp": "TB",
+                "runs": 3,
+                "oppRuns": 2,
+                "lateRuns": 1
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "TB",
+                "runs": 2,
+                "lateRuns": 1
+              },
+              "home": {
+                "ab": "MIL",
+                "runs": 3,
+                "lateRuns": 1
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849815,
+            "twDate": "2026-10-20",
+            "usDate": "2026-10-19",
+            "gameType": "L",
+            "scope": "team",
+            "label": "主隊",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "TB",
+                "opp": "CLE",
+                "runs": 7,
+                "oppRuns": 3,
+                "lateRuns": 4
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "CLE",
+                "runs": 3,
+                "lateRuns": 2
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 7,
+                "lateRuns": 4
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849813,
+            "twDate": "2026-10-14",
+            "usDate": "2026-10-13",
+            "gameType": "L",
+            "scope": "team",
+            "label": "主隊",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "TB",
+                "opp": "CLE",
+                "runs": 3,
+                "oppRuns": 1,
+                "lateRuns": 0
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "CLE",
+                "runs": 1,
+                "lateRuns": 1
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 3,
+                "lateRuns": 0
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849820,
+            "twDate": "2026-10-13",
+            "usDate": "2026-10-12",
+            "gameType": "L",
+            "scope": "team",
+            "label": "主隊",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "TB",
+                "opp": "CLE",
+                "runs": 3,
+                "oppRuns": 7,
+                "lateRuns": 1
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "CLE",
+                "runs": 7,
+                "lateRuns": 6
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 3,
+                "lateRuns": 1
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849812,
+            "twDate": "2026-10-13",
+            "usDate": "2026-10-12",
+            "gameType": "L",
+            "scope": "team",
+            "label": "主隊",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "MIL",
+                "opp": "LAD",
+                "runs": 7,
+                "oppRuns": 4,
+                "lateRuns": 2
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "LAD",
+                "runs": 4,
+                "lateRuns": 0
+              },
+              "home": {
+                "ab": "MIL",
+                "runs": 7,
+                "lateRuns": 2
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849809,
+            "twDate": "2026-10-12",
+            "usDate": "2026-10-11",
+            "gameType": "L",
+            "scope": "team",
+            "label": "主隊",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "MIL",
+                "opp": "LAD",
+                "runs": 2,
+                "oppRuns": 1,
+                "lateRuns": 0
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "LAD",
+                "runs": 1,
+                "lateRuns": 0
+              },
+              "home": {
+                "ab": "MIL",
+                "runs": 2,
+                "lateRuns": 0
+              }
+            },
+            "lateFrom": 7
+          },
+          {
+            "pk": 849839,
+            "twDate": "2026-10-06",
+            "usDate": "2026-10-05",
+            "gameType": "D",
+            "scope": "team",
+            "label": "主隊",
+            "teams": [
+              {
+                "side": "home",
+                "ab": "TB",
+                "opp": "NYY",
+                "runs": 5,
+                "oppRuns": 2,
+                "lateRuns": 0
+              }
+            ],
+            "score": {
+              "away": {
+                "ab": "NYY",
+                "runs": 2,
+                "lateRuns": 1
+              },
+              "home": {
+                "ab": "TB",
+                "runs": 5,
+                "lateRuns": 0
+              }
+            },
+            "lateFrom": 7
+          }
+        ]
+      }
+    }
+  },
+  "lineupResearch": {
+    "away": {
+      "previous": {
+        "pk": 849803,
+        "date": "2026-10-27",
+        "gameType": "W",
+        "ha": "客",
+        "opp": "光芒",
+        "score": "3-4",
+        "slots": [
+          {
+            "n": 1,
+            "id": 694192,
+            "name": "Jackson Chourio",
+            "pos": "LF"
+          },
+          {
+            "n": 2,
+            "id": 641343,
+            "name": "Jake Bauers",
+            "pos": "1B"
+          },
+          {
+            "n": 3,
+            "id": 592885,
+            "name": "Christian Yelich",
+            "pos": "DH"
+          },
+          {
+            "n": 4,
+            "id": 661388,
+            "name": "William Contreras",
+            "pos": "C"
+          },
+          {
+            "n": 5,
+            "id": 668930,
+            "name": "Brice Turang",
+            "pos": "2B"
+          },
+          {
+            "n": 6,
+            "id": 686217,
+            "name": "Sal Frelick",
+            "pos": "RF"
+          },
+          {
+            "n": 7,
+            "id": 806198,
+            "name": "Cooper Pratt",
+            "pos": "SS"
+          },
+          {
+            "n": 8,
+            "id": 669003,
+            "name": "Garrett Mitchell",
+            "pos": "CF"
+          },
+          {
+            "n": 9,
+            "id": 666152,
+            "name": "David Hamilton",
+            "pos": "3B"
+          }
+        ]
+      },
+      "projected": {
+        "source": "RotoWire",
+        "status": "Expected Lineup",
+        "statusKey": "expected",
+        "first": {
+          "at": "2026-10-27T08:20:49.928Z",
+          "statusKey": "expected",
+          "slots": [
+            {
+              "n": 1,
+              "name": "Jackson Chourio",
+              "pos": "LF"
+            },
+            {
+              "n": 2,
+              "name": "Brice Turang",
+              "pos": "2B"
+            },
+            {
+              "n": 3,
+              "name": "Jake Bauers",
+              "pos": "1B"
+            },
+            {
+              "n": 4,
+              "name": "William Contreras",
+              "pos": "C"
+            },
+            {
+              "n": 5,
+              "name": "Garrett Mitchell",
+              "pos": "CF"
+            },
+            {
+              "n": 6,
+              "name": "Christian Yelich",
+              "pos": "DH"
+            },
+            {
+              "n": 7,
+              "name": "Cooper Pratt",
+              "pos": "SS"
+            },
+            {
+              "n": 8,
+              "name": "Luis Lara",
+              "pos": "RF"
+            },
+            {
+              "n": 9,
+              "name": "David Hamilton",
+              "pos": "3B"
+            }
+          ]
+        },
+        "versions": [
+          {
+            "at": "2026-10-27T08:20:49.928Z",
+            "status": "Expected Lineup",
+            "statusKey": "expected",
+            "slots": [
+              {
+                "n": 1,
+                "name": "Jackson Chourio",
+                "pos": "LF"
+              },
+              {
+                "n": 2,
+                "name": "Brice Turang",
+                "pos": "2B"
+              },
+              {
+                "n": 3,
+                "name": "Jake Bauers",
+                "pos": "1B"
+              },
+              {
+                "n": 4,
+                "name": "William Contreras",
+                "pos": "C"
+              },
+              {
+                "n": 5,
+                "name": "Garrett Mitchell",
+                "pos": "CF"
+              },
+              {
+                "n": 6,
+                "name": "Christian Yelich",
+                "pos": "DH"
+              },
+              {
+                "n": 7,
+                "name": "Cooper Pratt",
+                "pos": "SS"
+              },
+              {
+                "n": 8,
+                "name": "Luis Lara",
+                "pos": "RF"
+              },
+              {
+                "n": 9,
+                "name": "David Hamilton",
+                "pos": "3B"
+              }
+            ]
+          },
+          {
+            "at": "2026-10-27T20:15:37.227Z",
+            "status": "Expected Lineup",
+            "statusKey": "expected",
+            "slots": [
+              {
+                "n": 1,
+                "name": "Jackson Chourio",
+                "pos": "LF"
+              },
+              {
+                "n": 2,
+                "name": "Jake Bauers",
+                "pos": "1B"
+              },
+              {
+                "n": 3,
+                "name": "Christian Yelich",
+                "pos": "DH"
+              },
+              {
+                "n": 4,
+                "name": "William Contreras",
+                "pos": "C"
+              },
+              {
+                "n": 5,
+                "name": "Brice Turang",
+                "pos": "2B"
+              },
+              {
+                "n": 6,
+                "name": "Garrett Mitchell",
+                "pos": "CF"
+              },
+              {
+                "n": 7,
+                "name": "Cooper Pratt",
+                "pos": "SS"
+              },
+              {
+                "n": 8,
+                "name": "Sal Frelick",
+                "pos": "RF"
+              },
+              {
+                "n": 9,
+                "name": "David Hamilton",
+                "pos": "3B"
+              }
+            ]
+          },
+          {
+            "at": "2026-10-28T19:45:36.216Z",
+            "status": "Expected Lineup",
+            "statusKey": "expected",
+            "slots": [
+              {
+                "n": 1,
+                "name": "Jackson Chourio",
+                "pos": "LF"
+              },
+              {
+                "n": 2,
+                "name": "Jake Bauers",
+                "pos": "1B"
+              },
+              {
+                "n": 3,
+                "name": "Christian Yelich",
+                "pos": "DH"
+              },
+              {
+                "n": 4,
+                "name": "William Contreras",
+                "pos": "C"
+              },
+              {
+                "n": 5,
+                "name": "Brice Turang",
+                "pos": "2B"
+              },
+              {
+                "n": 6,
+                "name": "Sal Frelick",
+                "pos": "RF"
+              },
+              {
+                "n": 7,
+                "name": "Cooper Pratt",
+                "pos": "SS"
+              },
+              {
+                "n": 8,
+                "name": "Garrett Mitchell",
+                "pos": "CF"
+              },
+              {
+                "n": 9,
+                "name": "David Hamilton",
+                "pos": "3B"
+              }
+            ]
+          }
+        ],
+        "crossSource": "RotoGrinders",
+        "crossCmp": {
+          "people": 9,
+          "order": 9,
+          "n": 9
+        },
+        "confirmed": null,
+        "frozenAt": "2026-10-28T20:30:41.877Z"
+      },
+      "official": {
+        "at": "2026-10-28T20:30:41.051Z",
+        "slots": [
+          {
+            "n": 1,
+            "name": "Jackson Chourio",
+            "pos": "LF"
+          },
+          {
+            "n": 2,
+            "name": "Jake Bauers",
+            "pos": "1B"
+          },
+          {
+            "n": 3,
+            "name": "Christian Yelich",
+            "pos": "DH"
+          },
+          {
+            "n": 4,
+            "name": "William Contreras",
+            "pos": "C"
+          },
+          {
+            "n": 5,
+            "name": "Brice Turang",
+            "pos": "2B"
+          },
+          {
+            "n": 6,
+            "name": "Sal Frelick",
+            "pos": "RF"
+          },
+          {
+            "n": 7,
+            "name": "Cooper Pratt",
+            "pos": "SS"
+          },
+          {
+            "n": 8,
+            "name": "Garrett Mitchell",
+            "pos": "CF"
+          },
+          {
+            "n": 9,
+            "name": "David Hamilton",
+            "pos": "3B"
+          }
+        ],
+        "lateAt": null
+      }
+    },
+    "home": {
+      "previous": {
+        "pk": 849803,
+        "date": "2026-10-27",
+        "gameType": "W",
+        "ha": "主",
+        "opp": "釀酒人",
+        "score": "4-3",
+        "slots": [
+          {
+            "n": 1,
+            "id": 650490,
+            "name": "Yandy Díaz",
+            "pos": "DH"
+          },
+          {
+            "n": 2,
+            "id": 666018,
+            "name": "Jonathan Aranda",
+            "pos": "1B"
+          },
+          {
+            "n": 3,
+            "id": 691406,
+            "name": "Junior Caminero",
+            "pos": "3B"
+          },
+          {
+            "n": 4,
+            "id": 689414,
+            "name": "Liam Hicks",
+            "pos": "C"
+          },
+          {
+            "n": 5,
+            "id": 676356,
+            "name": "Jonny DeLuca",
+            "pos": "CF"
+          },
+          {
+            "n": 6,
+            "id": 802415,
+            "name": "Chandler Simpson",
+            "pos": "LF"
+          },
+          {
+            "n": 7,
+            "id": 668723,
+            "name": "Ryan Vilade",
+            "pos": "RF"
+          },
+          {
+            "n": 8,
+            "id": 680700,
+            "name": "Richie Palacios",
+            "pos": "2B"
+          },
+          {
+            "n": 9,
+            "id": 670764,
+            "name": "Taylor Walls",
+            "pos": "SS"
+          }
+        ]
+      },
+      "projected": {
+        "source": "RotoWire",
+        "status": "Expected Lineup",
+        "statusKey": "expected",
+        "first": {
+          "at": "2026-10-27T08:20:49.928Z",
+          "statusKey": "expected",
+          "slots": [
+            {
+              "n": 1,
+              "name": "Yandy Diaz",
+              "pos": "DH"
+            },
+            {
+              "n": 2,
+              "name": "Jonathan Aranda",
+              "pos": "1B"
+            },
+            {
+              "n": 3,
+              "name": "Junior Caminero",
+              "pos": "3B"
+            },
+            {
+              "n": 4,
+              "name": "Liam Hicks",
+              "pos": "C"
+            },
+            {
+              "n": 5,
+              "name": "Chandler Simpson",
+              "pos": "LF"
+            },
+            {
+              "n": 6,
+              "name": "Victor Mesa",
+              "pos": "RF"
+            },
+            {
+              "n": 7,
+              "name": "Jonny DeLuca",
+              "pos": "CF"
+            },
+            {
+              "n": 8,
+              "name": "Richie Palacios",
+              "pos": "2B"
+            },
+            {
+              "n": 9,
+              "name": "Taylor Walls",
+              "pos": "SS"
+            }
+          ]
+        },
+        "versions": [
+          {
+            "at": "2026-10-27T08:20:49.928Z",
+            "status": "Expected Lineup",
+            "statusKey": "expected",
+            "slots": [
+              {
+                "n": 1,
+                "name": "Yandy Diaz",
+                "pos": "DH"
+              },
+              {
+                "n": 2,
+                "name": "Jonathan Aranda",
+                "pos": "1B"
+              },
+              {
+                "n": 3,
+                "name": "Junior Caminero",
+                "pos": "3B"
+              },
+              {
+                "n": 4,
+                "name": "Liam Hicks",
+                "pos": "C"
+              },
+              {
+                "n": 5,
+                "name": "Chandler Simpson",
+                "pos": "LF"
+              },
+              {
+                "n": 6,
+                "name": "Victor Mesa",
+                "pos": "RF"
+              },
+              {
+                "n": 7,
+                "name": "Jonny DeLuca",
+                "pos": "CF"
+              },
+              {
+                "n": 8,
+                "name": "Richie Palacios",
+                "pos": "2B"
+              },
+              {
+                "n": 9,
+                "name": "Taylor Walls",
+                "pos": "SS"
+              }
+            ]
+          },
+          {
+            "at": "2026-10-27T20:15:37.227Z",
+            "status": "Expected Lineup",
+            "statusKey": "expected",
+            "slots": [
+              {
+                "n": 1,
+                "name": "Yandy Diaz",
+                "pos": "DH"
+              },
+              {
+                "n": 2,
+                "name": "Jonathan Aranda",
+                "pos": "1B"
+              },
+              {
+                "n": 3,
+                "name": "Junior Caminero",
+                "pos": "3B"
+              },
+              {
+                "n": 4,
+                "name": "Liam Hicks",
+                "pos": "C"
+              },
+              {
+                "n": 5,
+                "name": "Jonny DeLuca",
+                "pos": "CF"
+              },
+              {
+                "n": 6,
+                "name": "Chandler Simpson",
+                "pos": "LF"
+              },
+              {
+                "n": 7,
+                "name": "Richie Palacios",
+                "pos": "2B"
+              },
+              {
+                "n": 8,
+                "name": "Victor Mesa",
+                "pos": "RF"
+              },
+              {
+                "n": 9,
+                "name": "Taylor Walls",
+                "pos": "SS"
+              }
+            ]
+          }
+        ],
+        "crossSource": "RotoGrinders",
+        "crossCmp": {
+          "people": 8,
+          "order": 7,
+          "n": 9
+        },
+        "confirmed": null,
+        "frozenAt": "2026-10-28T20:00:52.776Z"
+      },
+      "official": {
+        "at": "2026-10-28T20:00:51.705Z",
+        "slots": [
+          {
+            "n": 1,
+            "name": "Yandy Díaz",
+            "pos": "DH"
+          },
+          {
+            "n": 2,
+            "name": "Jonathan Aranda",
+            "pos": "1B"
+          },
+          {
+            "n": 3,
+            "name": "Junior Caminero",
+            "pos": "3B"
+          },
+          {
+            "n": 4,
+            "name": "Liam Hicks",
+            "pos": "C"
+          },
+          {
+            "n": 5,
+            "name": "Jonny DeLuca",
+            "pos": "CF"
+          },
+          {
+            "n": 6,
+            "name": "Chandler Simpson",
+            "pos": "LF"
+          },
+          {
+            "n": 7,
+            "name": "Ben Williamson",
+            "pos": "2B"
+          },
+          {
+            "n": 8,
+            "name": "Ryan Vilade",
+            "pos": "RF"
+          },
+          {
+            "n": 9,
+            "name": "Taylor Walls",
+            "pos": "SS"
+          }
+        ],
+        "lateAt": null
+      }
     }
   }
 };

@@ -40,16 +40,42 @@
       const sample=D.testOnly.small.pitchers[side];
       const stats=legit==="small"?`<div class="pitcher-metrics"><span>ERA <b>${sample.era}</b></span><span>WHIP <b>${sample.whip}</b></span><span>IP <b>${sample.ip}</b></span></div><small>2027 例行賽・人工測試：${sample.er} 自責分／${sample.outs} 出局；${sample.h} 安＋${sample.bb} 保送。樣本少，不下高低結論。</small>`:newSeason?`<div class="sample-message"><b>2027 例行賽確定尚無出賽</b><span>ERA、WHIP 尚無計算基礎；不填 0。</span></div><p class="last-season-line">上季參考｜2026 例行賽：ERA ${team.sp.era}、WHIP ${team.sp.whip}，${team.sp.ip} 局。非 2027 成績。</p>`:`<div class="pitcher-metrics"><span>ERA <b>${team.sp.era}</b></span><span>WHIP <b>${team.sp.whip}</b></span><span>IP <b>${team.sp.ip}</b></span></div><small>2026 大聯盟例行賽・${team.sp.gs} 場先發</small>`;
       const pair=D.matchup.find(x=>x.pitcherSide===side);
-      const research=newSeason?`<p>2027 本季最近先發與對左右打分項未取得；不挪用 2026 紀錄。</p>`:`<p>2026 例行賽對左打 OPS ${esc(pair.splits.vl?.ops??"?")}（${esc(pair.splits.vl?.pa??"?")} 打席）；對右打 OPS ${esc(pair.splits.vr?.ops??"?")}（${esc(pair.splits.vr?.pa??"?")} 打席）。</p><ol class="recent-starts">${pair.recent.map(x=>`<li><b>${esc(x.date)}</b><span>${esc(x.ha)}對${esc(x.opp)}・${({D:"分區賽",L:"聯盟冠軍賽",W:"世界大賽",R:"例行賽"}[x.gameType]||esc(x.gameType))}</span><span>${esc(x.ip)} 局／${esc(x.np)} 球／${esc(x.er)} 自責</span></li>`).join("")}</ol><small>最近三次先發包含季後賽，賽別逐筆標示；上方手別分項只取 2026 例行賽。</small>`;
+      const research=newSeason?`<p>2027 本季最近先發與對左右打分項未取得；不挪用 2026 紀錄。</p>`:`<p>2026 例行賽對左打被打 OPS ${esc(pair.splits.vl?.ops??"?")}（${esc(pair.splits.vl?.pa??"?")} 打席）；對右打被打 OPS ${esc(pair.splits.vr?.ops??"?")}（${esc(pair.splits.vr?.pa??"?")} 打席）。</p><ol class="recent-starts">${pair.recent.map(x=>`<li><b>${esc(x.date)}</b><span>${esc(x.ha)}對${esc(x.opp)}・${({D:"分區賽",L:"聯盟冠軍賽",W:"世界大賽",R:"例行賽"}[x.gameType]||esc(x.gameType))}</span><span>${esc(x.ip)} 局／${esc(x.np)} 球／${esc(x.er)} 自責</span></li>`).join("")}</ol><small>最近三次先發包含季後賽，賽別逐筆標示；上方手別分項只取 2026 例行賽。</small>`;
       return `<div class="pitcher"><span class="pitcher-label">${esc(team.ab)} 預計先發</span><strong>${esc(team.sp.name)}</strong><span>${team.sp.hand==="R"?"右投":"左投"}</span>${stats}<details class="pitcher-research"><summary>對左右打與最近三次先發</summary>${research}</details>${newSeason?`<details class="last-season"><summary>展開上季完整資料</summary><p>2026 例行賽固定快照：ERA ${team.sp.era}、WHIP ${team.sp.whip}、${team.sp.ip} 局／${team.sp.gs} 先發。這不是 2027 成績。</p></details>`:""}</div>`;
     };
     return `<section class="primary-block"><div class="section-head"><h2>先發投手</h2><span>客隊在左・主隊在右</span></div><div class="pitcher-grid">${t(g.away,"away")}${t(g.home,"home")}</div></section>`;
+  }
+  const nameKey=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]/g,"");
+  const twTime=s=>s?new Date(s).toLocaleString("zh-TW",{timeZone:"Asia/Taipei",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}):"未取得";
+  function previousLineup(side){
+    if(newSeason)return "<p>人工 2027 情境未提供上一場正式打線；不能把 2026 的上一場當成本季上一場。</p>";
+    const prev=D.lineupResearch[side].previous;
+    if(!prev?.slots?.length)return "<p>這場固定版本未保存上一場逐棒資料。</p>";
+    return `<p class="research-note">上一場實際打線參考｜美國賽程日 ${esc(prev.date)}，${esc(prev.ha)}對${esc(prev.opp)}，比分 ${esc(prev.score)}。這不是本場的預估或官方九棒。</p><ol class="reference-lineup">${prev.slots.map(x=>`<li><b>${x.n}</b><strong>${esc(x.name)}</strong><span>${esc(x.pos)}</span></li>`).join("")}</ol><a class="research-link" href="../../live/game.html?pk=${prev.pk}">查看上一場既有單場頁 ↗</a>`;
+  }
+  function compareProjection(version,official){
+    const projected=version?.slots||[],officialSlots=official?.slots||[];
+    if(!projected.length||!officialSlots.length)return "<p>這個版本缺少完整預估或官方逐棒快照，無法逐棒比對。</p>";
+    const pm=new Map(projected.map(x=>[nameKey(x.name),x])),om=new Map(officialSlots.map(x=>[nameKey(x.name),x]));
+    const entered=officialSlots.filter(x=>!pm.has(nameKey(x.name))),left=projected.filter(x=>!om.has(nameKey(x.name)));
+    const moved=officialSlots.filter(x=>pm.has(nameKey(x.name))&&pm.get(nameKey(x.name)).n!==x.n);
+    const people=entered.length||left.length?`官方新增：${entered.map(x=>esc(x.name)).join("、")||"無"}；預估未入官方：${left.map(x=>esc(x.name)).join("、")||"無"}。`:"九棒人選相同。";
+    const order=moved.length?moved.map(x=>`${esc(x.name)} 預估 ${pm.get(nameKey(x.name)).n} 棒 → 官方 ${x.n} 棒`).join("；")+"。":"共同人選棒次相同。";
+    return `<p class="research-note">本站保存 ${twTime(version.at)} 的 ${esc(version.status||"預估")}；官方首次取得 ${twTime(official.at)}。兩者都是本站時間，來源發布時刻未取得。</p><div class="source-diff"><p><b>人選差異</b>${people}</p><p><b>棒次差異</b>${order}</p></div><div class="source-table"><div class="source-table-head"><b>棒次</b><b>預估・${esc(version.status||"Expected")}</b><b>MLB 官方</b></div>${officialSlots.map(x=>{const p=projected.find(y=>y.n===x.n);return `<div class="${nameKey(p?.name)===nameKey(x.name)?"":"changed"}"><b>${x.n}</b><span>${esc(p?.name??"未取得")}</span><strong>${esc(x.name)}</strong></div>`}).join("")}</div>`;
+  }
+  function sourceComparison(side){
+    if(newSeason)return "<p>人工 2027 情境沒有真實預估、第三方確認、官方與臨場異動的逐棒版本；本場固定的 2026 來源不得移作新季來源。</p>";
+    if((legit==="projection"&&side==="home")||(legit==="partial"&&side==="home"))return "<p>此隊打線是人工測試狀態，沒有可核對的本測試預估與官方逐棒來源。切回「官方打線」可看 2026 固定版本。</p>";
+    const r=D.lineupResearch[side],p=r.projected,o=r.official;
+    const versions=p.versions.filter(v=>new Date(v.at)<=new Date(p.frozenAt));
+    const latest=versions.at(-1),first=versions[0];
+    return `<p class="research-note">預估：${esc(p.source)}／${esc(p.status)}；MLB 官方：另存九棒。以下只使用賽前已保存的版本，不拿賽後結果改寫。</p>${compareProjection(latest,o)}${versions.length>1?`<details class="source-earlier"><summary>查看最早保存預估（${twTime(first.at)}）</summary>${compareProjection(first,o)}</details>`:""}<div class="source-status"><p><b>第三方交叉來源｜${esc(p.crossSource||"未取得")}</b>固定檔只有人選／棒次彙總 ${esc(p.crossCmp?.people??"?")}／9、${esc(p.crossCmp?.order??"?")}／9；未保存可展示的逐棒快照。第三方「已確認官方」狀態：${p.confirmed?"有保存":"未取得"}。</p><p><b>MLB 官方</b>本站首次取得 ${twTime(o.at)}；來源發布時刻未取得。</p><p><b>臨場異動</b>${o.lateAt?`本站記錄 ${twTime(o.lateAt)}`:"此固定快照沒有記錄異動時間；不能推定之後絕無異動。"} </p></div>`;
   }
   function lineupFor(team,side){
     const missing=legit==="new"||(legit==="partial"&&side==="home");
     const projected=legit==="projection"&&side==="home";
     const synthetic=newSeason||projected;
-    if(missing)return `<div class="lineup-panel"><div class="lineup-title"><h3>${esc(team.ab)} ${esc(team.name)}</h3><span class="status-tag muted">本場打線未取得</span></div><p class="empty-copy">本場沒有可確認的 1–9 棒；此狀態不影響其他區塊。上一場打線不可充當本場官方名單。</p></div>`;
+    if(missing)return `<div class="lineup-panel"><div class="lineup-title"><h3>${esc(team.ab)} ${esc(team.name)}</h3><span class="status-tag muted">本場打線未取得</span></div><p class="empty-copy">本場沒有可確認的 1–9 棒；其他已取得資料仍可讀。上一場打線不充當本場官方名單。</p><details class="lineup-more"><summary>預估／官方來源狀態</summary>${sourceComparison(side)}</details><details class="lineup-more"><summary>上一場打線參考</summary>${previousLineup(side)}</details></div>`;
     const slots=synthetic?Array.from({length:9},(_,i)=>({n:i+1,name:`測試球員 ${i+1}`,pos:["CF","2B","RF","1B","DH","3B","LF","C","SS"][i]})):team.lineup.slots;
     const pair=D.matchup.find(x=>x.battingSide===side);
     const vsById=new Map(pair.lineup.map(x=>[x.id,x.vs]));
@@ -67,13 +93,25 @@
     };
     const row=x=>`<li><span>${x.n}</span><strong>${esc(x.name)}</strong><em>${esc(x.pos)}</em>${seasonCell(x)}</li>`;
     const status=synthetic?(projected?"人工預估名單測試":"官方九棒情境・人工測試"):"MLB 官方打線";
-    const source=synthetic?"人工測試名單；沒有宣稱 2027 官方真的公布。":`2026 MLB 官方九棒；本站首次取得 ${esc(team.lineup.firstSeen)}。來源發布時刻未取得，不以本站時間代替。`;
+    
     const more=legit==="small"?`<p>人工小樣本第一棒：${side==="away"?"OPS .762 = OBP .429（2 安＋1 保送／7）＋SLG .333（2 壘打／6 打數）":"OPS .788 = OBP .333（3 安＋1 保送／12）＋SLG .455（5 壘打／11 打數）"}；只列數值和分母，不下高低結論。</p>${side==="away"?"<p>第二棒 OPS .000：5 打席、5 打數、0 安、0 保送、0 壘打，是有效的 0，不是未取得。</p>":""}`:legit==="official_empty"?"<p>本季確定尚無出賽與打席，OPS 尚無計算基礎；不填 0。春訓另列。</p>":projected?"<p>人工預估示例沒有真實球員成績。</p>":`<p>2026 例行賽 AVG／OPS：${slots.map(x=>`${esc(x.name)} ${esc(x.avg)} / ${esc(x.ops)}`).join("；")}。</p>`;
-    return `<div class="lineup-panel"><div class="lineup-title"><h3>${esc(team.ab)} ${esc(team.name)}</h3><span class="status-tag ${synthetic?"projected":"confirmed"}">${status}</span></div><ol class="lineup-list">${slots.map(row).join("")}</ol><p class="lineup-foot">${newSeason?"2027 例行賽版型測試；人工名單和人工成績不進正式資料。":projected?"這組預估姓名是人工測試，不是第三方來源內容。":"對本場先發手別 OPS／打席取 2026 例行賽；不是兩人直接對戰。"}</p><details class="lineup-more"><summary>整體成績與計算基礎</summary>${more}</details><details class="lineup-more"><summary>來源與預估對照</summary><p>${source}</p><p>預估／第三方確認／MLB 官方／臨場異動各自保留狀態；逐棒來源比對在本預覽待補，既有 /live/ 已接入。</p></details><details class="lineup-more"><summary>上一場打線參考</summary><p>既有 /live/ 已接入上一場打線；本預覽待補逐棒畫面。上一場名單不充當本場官方九棒。</p></details></div>`;
+    return `<div class="lineup-panel"><div class="lineup-title"><h3>${esc(team.ab)} ${esc(team.name)}</h3><span class="status-tag ${synthetic?"projected":"confirmed"}">${status}</span></div><ol class="lineup-list">${slots.map(row).join("")}</ol><p class="lineup-foot">${newSeason?"2027 例行賽版型測試；人工名單和人工成績不進正式資料。":projected?"這組預估姓名是人工測試，不是第三方來源內容。":"對本場先發手別 OPS／打席取 2026 例行賽；不是兩人直接對戰。"}</p><details class="lineup-more"><summary>整體成績與計算基礎</summary>${more}</details><details class="lineup-more"><summary>預估與官方逐棒來源對照</summary>${sourceComparison(side)}</details><details class="lineup-more"><summary>上一場打線參考</summary>${previousLineup(side)}</details></div>`;
+  }
+  function historyList(id){
+    const h=D.history.byRule[id];
+    if(!h)return "<p>此固定賽前版本沒有保存這項條件的逐筆清單。</p>";
+    const type=x=>x==="R"?"例行賽":"季後賽";
+    const caseRow=x=>{
+      const match=x.scope==="team"&&x.teams?.length?x.teams.map(t=>`${esc(t.ab)}（${t.side==="home"?"主":"客"}）`).join("、"):"整場條件（雙方）";
+      const score=`${esc(x.score.away.ab)} ${x.score.away.runs}：${x.score.home.runs} ${esc(x.score.home.ab)}`;
+      const late=`第 ${x.lateFrom} 局起：${esc(x.score.away.ab)} ${x.score.away.lateRuns} 分／${esc(x.score.home.ab)} ${x.score.home.lateRuns} 分`;
+      return `<li><div><b>${esc(x.twDate)}</b><span>${type(x.gameType)}・符合方：${match}</span></div><strong>${score}</strong><small>${late}</small><a href="../../live/game.html?pk=${x.pk}">既有單場頁 ↗</a></li>`;
+    };
+    return `<div class="history-list"><p>849799 賽前固定版本已存逐筆 ${h.listed}／${h.n} 場；規則 ${esc(h.rules)}。比分與後段得分是案例的賽後結果，列在這場賽前已保存的案例清單內，未改寫案例各自的賽前快照。</p><ol>${h.games.map(caseRow).join("")}</ol>${h.listed<h.n?`<p>另有 ${h.n-h.listed} 場只保留在本固定版本的彙總數，未保存逐筆欄位；此預覽不補造案例。</p>`:""}<p>上方日期為台灣賽事日；「既有單場頁」連到目前的 /live/ 頁面，並非該案例當時的賽前快照。849799 情境凍結：${twTime(D.history.frozenAt)}。</p></div>`;
   }
   function contextSection(){
     if(test&&legit!=="bp_missing")return `<section class="context-block"><div class="section-head"><h2>值得一起看的條件</h2><span>固定規則產生的事實提示</span></div><div class="empty-copy inset">此測試狀態未用真實輸入重算情境卡，因此不顯示條件判斷。</div></section>`;
-    return `<section class="context-block"><div class="section-head"><h2>值得一起看的條件</h2><span>成立 ${D.context.length} 項・只列事實</span></div><div class="context-list">${D.context.map(x=>`<div class="context-row"><div><span class="context-rule">${esc(x.title)}</span><strong>${esc(x.value)}</strong></div><details><summary>依據與歷史例子</summary><p>${esc(x.threshold)}</p><p>${esc(x.says?.[0]||"")}</p><p>本站同規則、同門檻且賽後完整的案例：${x.similar?.n??0} 場（例行賽 ${x.similar?.byType?.R??0}、季後賽 ${x.similar?.byType?.post??0}）。只列案例，不換算勝率。</p></details></div>`).join("")}</div></section>`;
+    return `<section class="context-block"><div class="section-head"><h2>值得一起看的條件</h2><span>成立 ${D.context.length} 項・只列事實</span></div><div class="context-list">${D.context.map(x=>`<div class="context-row"><div><span class="context-rule">${esc(x.title)}</span><strong>${esc(x.value)}</strong></div><details><summary>依據與歷史例子</summary><p>${esc(x.threshold)}</p><p>${esc(x.says?.[0]||"")}</p><p>本站同規則、同門檻且賽後完整的案例：${x.similar?.n??0} 場（例行賽 ${x.similar?.byType?.R??0}、季後賽 ${x.similar?.byType?.post??0}）。只列案例，不換算勝率。</p>${historyList(x.id)}</details></div>`).join("")}</div></section>`;
   }
   function bullpenHistorical(){
     const windowDates=D.bullpen.window, dates=[...windowDates.full,windowDates.today];
@@ -114,7 +152,7 @@
         const n=playerKnown(p),hasMissing=windowDates.full.some(date=>days.find(x=>x.date===date)?.state!=="off"&&p.days[date]&&!Number.isFinite(p.days[date].pitches));
         return `<div class="bp-player"><div><strong>${esc(p.name)}</strong><small>${hasMissing&&n===0?"前三日部分未取得；已知日未登板":`前三日 ${hasMissing?"已知 ":""}${n} 球${hasMissing?"・部分未取得":""}`}${p.streak>=2?`・連 ${p.streak} 日登板`:""}</small></div><div class="bp-day-grid">${dates.map(date=>`<span><small>${dateLabel(date)}</small><b>${cell(p,date)}</b></span>`).join("")}</div></div>`;
       };
-      return `<div class="bp-team"><h3>${esc(team.ab)} ${esc(team.name)}</h3><p class="bp-summary">${amount}；主要承擔者：${leaders.map(p=>`${esc(p.name)} ${playerKnown(p)} 球`).join("、")}。這是用量紀錄，不推論今天可否登板。</p><div class="bp-calendar">${days.map(day).join("")}</div><details class="bp-details"><summary>展開逐投手用球（${pitchers.length} 人）</summary>${pitchers.map(player).join("")}<p class="lineup-foot">無賽程＝確定沒比賽；—＝確定沒登板；0 球＝有效 0；?＝未取得。有缺值時僅顯示已取得部分小計。</p></details></div>`;
+      return `<div class="bp-team"><h3>${esc(team.ab)} ${esc(team.name)}</h3><p class="bp-summary">${amount}；${incomplete?"已取得資料中，用球最多的是":"主要承擔者："}${leaders.map(p=>`${esc(p.name)} ${playerKnown(p)} 球`).join("、")}。這是用量紀錄，不推論今天可否登板。</p><div class="bp-calendar">${days.map(day).join("")}</div><details class="bp-details"><summary>展開逐投手用球（${pitchers.length} 人）</summary>${pitchers.map(player).join("")}<p class="lineup-foot">無賽程＝確定沒比賽；—＝確定沒登板；0 球＝有效 0；?＝未取得。有缺值時僅顯示已取得部分小計。</p></details></div>`;
     };
     return `<div class="bp-grid">${box("away",g.away)}${box("home",g.home)}</div>`;
   }
@@ -124,8 +162,7 @@
   function deepSection(){
     const weather=newSeason?"本場 2027 天氣未取得；此人工情境不拿 2026 固定場次天氣冒充。":`${esc(g.venue)}：${esc(D.weather.condition)}；${esc(D.weather.tempF)}°F；風 ${esc(D.weather.wind)}。此場為 Dome，不解讀風向優勢。`;
     const roster=newSeason?"此人工新季情境未提供球員名單異動；標為未取得，不能把舊季零異動當新季現況。":`2026 固定場次：${["away","home"].map(s=>`${esc(g[s].ab)}：${D.roster[s].changes.length?D.roster[s].changes.map(x=>esc(x.name)+" 有近期傷兵回歸紀錄").join("；"):"沒有列出第一層新增／減少人物"}（基準 ${esc(D.roster[s].basis)}）`).join("；")}`;
-    const similar=newSeason?"2027 尚無此人工情境的可比較賽前樣本；歷史案例須分賽季、賽別、規則版本及門檻查詢。案例列版型預覽待補。":test&&legit!=="bp_missing"?"人工名單沒有重新計算相似情境；既有 2026 案例不當作本測試樣本。案例列版型預覽待補。":"同規則版本、同門檻、賽前樣本且賽後完整，才列入相似紀錄。上方每項條件可展開看已存案例數；完整案例列版型預覽待補。";
-    return `<section class="deep-section"><div class="section-head"><h2>再往下查</h2><span>各區塊按自身資料狀態呈現</span></div><div class="deep-list"><details><summary><span>球場天氣</span><small>${newSeason?"本場未取得":"2026 固定場次官方資料"}</small></summary><div class="deep-item"><p>${weather}</p></div></details><details><summary><span>名單變動</span><small>${newSeason?"本場未取得":"與合理名單基準比較"}</small></summary><div class="deep-item"><p>${roster}</p></div></details><details><summary><span>歷史相似情境</span><small>案例列舉，不算機率</small></summary><div class="deep-item"><p>${similar}</p></div></details></div></section>`;
+    return `<section class="deep-section"><div class="section-head"><h2>再往下查</h2><span>各區塊按自身資料狀態呈現</span></div><div class="deep-list"><details><summary><span>球場天氣</span><small>${newSeason?"本場未取得":"2026 固定場次官方資料"}</small></summary><div class="deep-item"><p>${weather}</p></div></details><details><summary><span>名單變動</span><small>${newSeason?"本場未取得":"與合理名單基準比較"}</small></summary><div class="deep-item"><p>${roster}</p></div></details></div></section>`;
   }
   function comparison(){
     const next=newSeason;
