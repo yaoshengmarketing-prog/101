@@ -21,12 +21,15 @@
     const quiet=qs.get("view")==="quiet";
     const homeLink=`game.html?mode=pre`;
     const recent=D.recent.map((r,i)=>`<li class="recent-row"><span class="recent-date">${dateLabel(r.twDate)}</span><span class="recent-pair">${esc(r.away.ab)} <b>${r.away.score} : ${r.home.score}</b> ${esc(r.home.ab)}</span>${i===0?`<a href="game.html?mode=post" aria-label="查看 ${esc(r.away.ab)} 對 ${esc(r.home.ab)} 的單場回放">單場回放</a>`:`<a href="../../live/game.html?pk=${r.pk}" aria-label="查看 ${esc(r.away.ab)} 對 ${esc(r.home.ab)} 的既有單場資料">既有資料頁</a>`}</li>`).join("");
+    const S=window.SPRING_PREVIEW_DATA;
+    const spring=S?`<section id="spring-example" class="spring-section"><div class="section-head"><h2>春訓｜完賽回看示例</h2><span>2026/3/24 美國賽程日・與例行賽分開</span></div><article class="game-row"><div class="game-time"><strong>${esc(S.game.twTime)}</strong><span>完賽後回查</span><small>春訓 S・台灣 3/25</small></div><div class="game-clubs"><div><b>${esc(S.game.away.ab)}</b><strong>${esc(S.game.away.name)}</strong><span>客</span></div><div><b>${esc(S.game.home.ab)}</b><strong>${esc(S.game.home.name)}</strong><span>主</span></div></div><div class="game-essential"><span>最終比分</span><p>${S.game.away.score}：${S.game.home.score}</p><small>原先發九棒、逐局與實際用球可回看</small></div><div class="game-action"><a href="spring.html" class="action-link">看春訓單場 <span aria-hidden="true">↗</span></a><small>不是當時賽前快照</small></div></article><p class="page-note">本區只示範春訓賽別入口；資料是賽後回查，不代表 2027 賽前來源已驗證。</p></section>`:"";
     root.innerHTML=`${base("設計預覽 / 賽事入口")}
       <section class="page-title"><div><p class="overline">MLB 比賽資料</p><h1>從賽事進入研究</h1><p>首頁只顯示找比賽需要的資料；完整脈絡留在單場頁。</p></div><div class="date-stamp"><b>2026.10.29</b><span>固定回放日</span></div></section>
       <nav class="segment-tabs" aria-label="預覽情境">${link("賽事入口示例","./",!quiet)}${link("近期無賽", "?view=quiet",quiet)}</nav>
       ${quiet?`<section class="quiet-intro"><h2>目前沒有近期賽事</h2><p>人工情境測試：假設今天、明天和之後七天均無賽程。保留最近完賽入口，不推定球季已結束。</p></section>`:
       `<div class="test-notice"><b>歷史賽前閱讀示例</b><span>以已保存的 2026 賽前欄位重建頁面；不是當時整頁快照，也不是今天有賽事。</span></div><section class="list-heading"><h2>10 月 29 日</h2><span>世界大賽　1 場・台灣時間</span></section>
       <article class="game-row"><div class="game-time"><strong>08:00</strong><span>賽前回放</span><small>世界大賽 G5</small></div><div class="game-clubs"><div><b>${esc(g.away.ab)}</b><strong>${esc(g.away.name)}</strong><span>客</span></div><div><b>${esc(g.home.ab)}</b><strong>${esc(g.home.name)}</strong><span>主</span></div></div><div class="game-essential"><span>先發</span><p>${esc(g.away.sp.name)}<br>${esc(g.home.sp.name)}</p><small>雙方官方打線已存・當時版本</small></div><div class="game-action"><a href="${homeLink}" class="action-link">看單場研究 <span aria-hidden="true">↗</span></a><a href="game.html?mode=post" class="text-link">直接看賽後</a></div></article>`}
+      ${spring}
       <section class="recent-section"><div class="section-head"><h2>最近完賽</h2><span>固定快照中的 10 場・日期與比分</span></div><ul class="recent-list">${recent}</ul></section>
       <p class="page-note">本草案的單場研究示例為 gamePk ${g.pk}。其他完賽列連到既有 /live/ 資料頁，用於檢查回看入口。</p>`;
   }

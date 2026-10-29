@@ -125,3 +125,9 @@ small,.site-foot{font-size:12px;color:var(--ink-soft)}
 .mode-nav{position:sticky;top:0;z-index:12;background:var(--paper);padding:7px 0;box-shadow:0 1px 0 var(--line)}
 .history-list ol{max-height:none;overflow:visible}
 @media(max-width:650px){.history-list ol{max-height:none;overflow:visible}}
+
+/* Spring replay uses the existing cards and two-column layout. */
+.spring-section{margin-top:34px}.spring-section .game-row{margin-top:13px}.spring-section .page-note{margin:10px 0 0}
+.spring-lineup li{grid-template-columns:23px minmax(0,1fr) 48px}.spring-lineup strong{white-space:normal;overflow:visible;text-overflow:clip}.spring-lineup em{text-align:right}
+.spring-rule-note{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);margin:30px 0 0;padding:15px 18px;color:var(--ink-soft);font-size:13px}.spring-rule-note b{color:var(--ink)}
+.spring-replay-notice{background:var(--blue-soft);border:1px solid var(--line);border-left:4px solid var(--blue);margin:16px 0;padding:12px 16px;display:flex;gap:7px 16px;flex-wrap:wrap;font-size:13px}.spring-replay-notice b{color:var(--ink)}.spring-replay-notice span{color:var(--ink-soft)}
