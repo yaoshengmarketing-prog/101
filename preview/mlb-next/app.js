@@ -107,7 +107,7 @@
       const late=`第 ${x.lateFrom} 局起：${esc(x.score.away.ab)} ${x.score.away.lateRuns} 分／${esc(x.score.home.ab)} ${x.score.home.lateRuns} 分`;
       return `<li><div><b>${esc(x.twDate)}</b><span>${type(x.gameType)}・符合方：${match}</span></div><strong>${score}</strong><small>${late}</small><a href="../../live/game.html?pk=${x.pk}">既有單場頁 ↗</a></li>`;
     };
-    return `<div class="history-list"><p>849799 賽前固定版本已存逐筆 ${h.listed}／${h.n} 場；規則 ${esc(h.rules)}。比分與後段得分是案例的賽後結果，列在這場賽前已保存的案例清單內，未改寫案例各自的賽前快照。</p><ol>${h.games.map(caseRow).join("")}</ol>${h.listed<h.n?`<p>另有 ${h.n-h.listed} 場只保留在本固定版本的彙總數，未保存逐筆欄位；此預覽不補造案例。</p>`:""}<p>上方日期為台灣賽事日；「既有單場頁」連到目前的 /live/ 頁面，並非該案例當時的賽前快照。849799 情境凍結：${twTime(D.history.frozenAt)}。</p></div>`;
+    return `<div class="history-list"><p>符合條件共 ${h.n} 場；本賽前快照保留最近 ${h.listed} 場明細（最多 10 場）。規則 ${esc(h.rules)}。比分與後段得分是案例的賽後結果，列在這場賽前已保存的案例清單內，未改寫案例各自的賽前快照。</p><ol>${h.games.map(caseRow).join("")}</ol>${h.listed<h.n?`<p>其餘 ${h.n-h.listed} 場已計入符合總數；固定設計只附最近 10 場明細，這不是漏存或遺失，也不從後來資料補寫舊快照。</p>`:""}<p>上方日期為台灣賽事日；「既有單場頁」連到目前的 /live/ 頁面，並非該案例當時的賽前快照。849799 情境凍結：${twTime(D.history.frozenAt)}。</p></div>`;
   }
   function contextSection(){
     if(test&&legit!=="bp_missing")return `<section class="context-block"><div class="section-head"><h2>值得一起看的條件</h2><span>固定規則產生的事實提示</span></div><div class="empty-copy inset">此測試狀態未用真實輸入重算情境卡，因此不顯示條件判斷。</div></section>`;
@@ -190,5 +190,25 @@
       ${mode==="post"?`${innings()}${pitchingPost()}<details class="pregame-archive"><summary><span>展開當時的賽前研究資料</span><small>賽前快照，未用賽後結果改寫</small></summary>${preBody()}</details>`:preBody()}
       <div class="end-note"><b>資料範圍</b><p>真實示例固定於 101 commit ${D.meta.snapshotCommit.slice(0,7)}，台灣日期 ${g.twDate}。條件卡為賽前保存版本；比分與投手實際使用來自獨立賽後資料。人工測試狀態只檢查版型，不代表歷史事實。</p></div>`;
   }
+  function keepReadingPlace(){
+    try{
+      const prior=window.history.state&&typeof window.history.state==="object"?window.history.state:{};
+      const id=prior.mlbPreviewEntry||String(Date.now())+"-"+Math.random().toString(36).slice(2);
+      if(!prior.mlbPreviewEntry)window.history.replaceState({...prior,mlbPreviewEntry:id},"");
+      const key="mlb-preview-reading:"+id;
+      const details=()=>[...document.querySelectorAll("details")];
+      const save=()=>window.sessionStorage.setItem(key,JSON.stringify({y:window.scrollY,open:details().flatMap((x,i)=>x.open?[i]:[])}));
+      const raw=window.sessionStorage.getItem(key);
+      if(raw){
+        const saved=JSON.parse(raw);
+        details().forEach((x,i)=>{x.open=Array.isArray(saved.open)&&saved.open.includes(i)});
+        window.history.scrollRestoration="manual";
+        window.requestAnimationFrame(()=>window.requestAnimationFrame(()=>window.scrollTo(0,Number(saved.y)||0)));
+      }
+      window.addEventListener("pagehide",save);
+      document.addEventListener("click",e=>{if(e.target.closest?.("a[href]"))save()},true);
+    }catch(_){/* Storage can be unavailable; ordinary navigation still works. */}
+  }
   if(document.body.dataset.page==="home")renderHome();else renderGame();
+  keepReadingPlace();
 })();
