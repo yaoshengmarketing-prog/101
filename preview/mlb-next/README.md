@@ -30,4 +30,4 @@
 
 牛棚依原檔 `window.full` 顯示美國賽程日 10/25–10/27；`window.today` 10/28 另列。第一層列前三日總用球與主要承擔者，展開可看逐投手每日用球。打線直接列 1–9 棒及對本場先發手別的 2026 例行賽 OPS／打席；先發投手卡展開顯示對左右打分項與最近三次先發（逐筆標賽別）。更多整體成績、來源對照和上一場參考收合。`bp_missing` 人工拿掉釀酒人 10/27 一名投手的用球，顯示「?」及已取得部分小計，真實案例仍保持 167／219 球。歷史案例逐筆、上一場打線和逐棒來源對照仍為「預覽待補」。
 
-手機打線／對位的固定版本畫面見 [`screenshots/mobile-lineup-matchup.png`](./screenshots/mobile-lineup-matchup.png)。
+手機打線／對位的固定版本畫面見 [`screenshots/mobile-lineup-matchup.jpg`](./screenshots/mobile-lineup-matchup.jpg)。
