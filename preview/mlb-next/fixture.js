@@ -994,8 +994,10 @@ window.PREVIEW_DATA = {
   ],
   "matchup": [
     {
+      "pitcherSide": "away",
+      "battingSide": "home",
+      "starterHand": "R",
       "pitcher": "Jacob Misiorowski",
-      "team": "釀酒人",
       "batting": "光芒",
       "splitScope": "2026 例行賽",
       "splits": {
@@ -1011,28 +1013,139 @@ window.PREVIEW_DATA = {
       "recent": [
         {
           "date": "2026-10-03",
+          "gameType": "D",
+          "opp": "教士",
+          "ha": "主",
           "ip": "4.0",
           "np": 88,
           "er": 2
         },
         {
           "date": "2026-10-11",
+          "gameType": "L",
+          "opp": "道奇",
+          "ha": "主",
           "ip": "4.1",
           "np": 94,
           "er": 1
         },
         {
           "date": "2026-10-23",
+          "gameType": "W",
+          "opp": "光芒",
+          "ha": "主",
           "ip": "5.0",
           "np": 78,
           "er": 1
         }
       ],
-      "lineupN": 9
+      "lineup": [
+        {
+          "n": 1,
+          "id": 650490,
+          "name": "Yandy Díaz",
+          "bats": "R",
+          "vs": {
+            "pa": 484,
+            "avg": ".305",
+            "ops": ".816"
+          }
+        },
+        {
+          "n": 2,
+          "id": 666018,
+          "name": "Jonathan Aranda",
+          "bats": "L",
+          "vs": {
+            "pa": 478,
+            "avg": ".284",
+            "ops": ".837"
+          }
+        },
+        {
+          "n": 3,
+          "id": 691406,
+          "name": "Junior Caminero",
+          "bats": "R",
+          "vs": {
+            "pa": 507,
+            "avg": ".272",
+            "ops": ".871"
+          }
+        },
+        {
+          "n": 4,
+          "id": 689414,
+          "name": "Liam Hicks",
+          "bats": "L",
+          "vs": {
+            "pa": 436,
+            "avg": ".309",
+            "ops": ".883"
+          }
+        },
+        {
+          "n": 5,
+          "id": 676356,
+          "name": "Jonny DeLuca",
+          "bats": "R",
+          "vs": {
+            "pa": 215,
+            "avg": ".267",
+            "ops": ".773"
+          }
+        },
+        {
+          "n": 6,
+          "id": 802415,
+          "name": "Chandler Simpson",
+          "bats": "L",
+          "vs": {
+            "pa": 401,
+            "avg": ".318",
+            "ops": ".718"
+          }
+        },
+        {
+          "n": 7,
+          "id": 810938,
+          "name": "Ben Williamson",
+          "bats": "R",
+          "vs": {
+            "pa": 153,
+            "avg": ".250",
+            "ops": ".649"
+          }
+        },
+        {
+          "n": 8,
+          "id": 668723,
+          "name": "Ryan Vilade",
+          "bats": "R",
+          "vs": {
+            "pa": 108,
+            "avg": ".202",
+            "ops": ".641"
+          }
+        },
+        {
+          "n": 9,
+          "id": 670764,
+          "name": "Taylor Walls",
+          "bats": "S",
+          "vs": {
+            "pa": 278,
+            "avg": ".233",
+            "ops": ".644"
+          }
+        }
+      ]
     },
     {
+      "pitcherSide": "home",
+      "battingSide": "away",
+      "starterHand": "R",
       "pitcher": "Drew Rasmussen",
-      "team": "光芒",
       "batting": "釀酒人",
       "splitScope": "2026 例行賽",
       "splits": {
@@ -1048,24 +1161,133 @@ window.PREVIEW_DATA = {
       "recent": [
         {
           "date": "2026-10-12",
+          "gameType": "L",
+          "opp": "守護者",
+          "ha": "主",
           "ip": "6.0",
           "np": 91,
           "er": 2
         },
         {
           "date": "2026-10-18",
+          "gameType": "L",
+          "opp": "守護者",
+          "ha": "客",
           "ip": "7.0",
           "np": 95,
           "er": 1
         },
         {
           "date": "2026-10-24",
+          "gameType": "W",
+          "opp": "釀酒人",
+          "ha": "客",
           "ip": "3.2",
           "np": 89,
           "er": 3
         }
       ],
-      "lineupN": 9
+      "lineup": [
+        {
+          "n": 1,
+          "id": 694192,
+          "name": "Jackson Chourio",
+          "bats": "R",
+          "vs": {
+            "pa": 402,
+            "avg": ".274",
+            "ops": ".778"
+          }
+        },
+        {
+          "n": 2,
+          "id": 641343,
+          "name": "Jake Bauers",
+          "bats": "L",
+          "vs": {
+            "pa": 418,
+            "avg": ".266",
+            "ops": ".863"
+          }
+        },
+        {
+          "n": 3,
+          "id": 592885,
+          "name": "Christian Yelich",
+          "bats": "L",
+          "vs": {
+            "pa": 370,
+            "avg": ".244",
+            "ops": ".722"
+          }
+        },
+        {
+          "n": 4,
+          "id": 661388,
+          "name": "William Contreras",
+          "bats": "R",
+          "vs": {
+            "pa": 457,
+            "avg": ".270",
+            "ops": ".757"
+          }
+        },
+        {
+          "n": 5,
+          "id": 668930,
+          "name": "Brice Turang",
+          "bats": "L",
+          "vs": {
+            "pa": 478,
+            "avg": ".291",
+            "ops": ".901"
+          }
+        },
+        {
+          "n": 6,
+          "id": 686217,
+          "name": "Sal Frelick",
+          "bats": "L",
+          "vs": {
+            "pa": 286,
+            "avg": ".239",
+            "ops": ".640"
+          }
+        },
+        {
+          "n": 7,
+          "id": 806198,
+          "name": "Cooper Pratt",
+          "bats": "R",
+          "vs": {
+            "pa": 196,
+            "avg": ".306",
+            "ops": ".768"
+          }
+        },
+        {
+          "n": 8,
+          "id": 669003,
+          "name": "Garrett Mitchell",
+          "bats": "L",
+          "vs": {
+            "pa": 402,
+            "avg": ".271",
+            "ops": ".802"
+          }
+        },
+        {
+          "n": 9,
+          "id": 666152,
+          "name": "David Hamilton",
+          "bats": "L",
+          "vs": {
+            "pa": 306,
+            "avg": ".250",
+            "ops": ".668"
+          }
+        }
+      ]
     }
   ],
   "testOnly": {
@@ -1121,6 +1343,12 @@ window.PREVIEW_DATA = {
           "ops": ".000"
         }
       }
+    },
+    "bullpenMissing": {
+      "description": "人工假設 MIL 10/27 的 DL Hall 用球未取得；其餘沿用固定歷史資料。不得當成真實缺漏。",
+      "side": "away",
+      "date": "2026-10-27",
+      "pitcherId": 669084
     }
   }
 };
