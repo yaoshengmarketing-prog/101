@@ -108,7 +108,7 @@
       return `<li><div><b>${esc(x.twDate)}</b><span>${type(x.gameType)}・符合方：${match}</span></div><strong>${score}</strong><small>${late}</small><a href="../../live/game.html?pk=${x.pk}">既有單場頁 ↗</a></li>`;
     };
     const counts=`例行賽 ${h.byType?.R??0}、季後賽 ${h.byType?.post??0}${h.byType?.unknown?`、其他 ${h.byType.unknown}`:""}`;
-    return `<div class="history-list"><p>符合條件共 ${h.n} 場（${counts}）；本賽前快照保留最近 ${h.listed} 場明細（上限 10 場）。</p><ol>${h.games.map(caseRow).join("")}</ol><p><b>查證註記：</b>僅納入同規則、同門檻且賽後完整的案例，不換算勝率。${h.listed<h.n?" 未逐筆列出的案例已計入上方總數；不以後來資料補寫舊快照。":""}規則版本 ${esc(h.rules)}；849799 賽前情境凍結於 ${twTime(D.history.frozenAt)}。日期為台灣賽事日；比分與第 7 局起得分是本場賽前清單已保存的案例結果，沒有改寫案例各自的賽前快照。「既有單場頁」連到目前 /live/，不是案例當時的賽前版本。</p></div>`;
+    return `<div class="history-list"><p>符合條件共 ${h.n} 場（${counts}）；本賽前快照保留最近 ${h.listed} 場明細${h.listed<10?"（最多 10 場）":""}。</p><ol>${h.games.map(caseRow).join("")}</ol><p><b>查證註記：</b>僅納入同規則、同門檻且賽後完整的案例，不換算勝率。${h.listed<h.n?"未逐筆列出的案例已計入上方總數；不以後來資料補寫舊快照。":""}規則版本 ${esc(h.rules)}；849799 賽前情境凍結於 ${twTime(D.history.frozenAt)}。日期為台灣賽事日；比分與第 7 局起得分是本場賽前清單已保存的案例結果，沒有改寫案例各自的賽前快照。「既有單場頁」連到目前 /live/，不是案例當時的賽前版本。</p></div>`;
   }
   function contextSection(){
     if(test&&legit!=="bp_missing")return `<section class="context-block"><div class="section-head"><h2>值得一起看的條件</h2><span>固定規則產生的事實提示</span></div><div class="empty-copy inset">此測試狀態未用真實輸入重算情境卡，因此不顯示條件判斷。</div></section>`;
