@@ -45,19 +45,19 @@
 
 ## 跨季資料接入離線試跑（獨立分支，未部署）
 
-此段只適用於 `mlb/2027-cross-season-trial` 分支。Pages 目前由 `main` 根目錄發布；本分支沒有自動發布，以下入口請在本機靜態伺服器開啟，或由 GitHub 讀取程式輸出：
+此段只適用於 `mlb/2027-cross-season-trial` 分支。Pages 目前由 `main` 根目錄發布；本分支沒有自動發布。可下載 [固定離線預覽包](./mlb-cross-season-offline.zip)，解壓縮後直接開啟 `offline-start.html`；以下入口也可在本機靜態伺服器開啟，或由 GitHub 讀取程式輸出：
 
 - [試跑賽事入口](./index.html?trial=opening)、[開幕零樣本](./game.html?trial=opening)
 - [春訓銜接](./game.html?trial=transition)、[例行賽休兵日](./game.html?trial=r_off_day)、[部分取數失敗](./game.html?trial=partial_failure)
 - [既有 2026 春訓完賽回查](./game.html?trial=spring)
 - [程式產出的固定測試檔](./trial-data.js)；重建：`node scripts/cross-season-trial.mjs --write`
 
-以上 2027 賽程、球員、登板是**人工測試輸入**；`cross-season-trial.mjs` 呼叫現有的 `build-live`、`bullpen`、`ctx`、`roster` 邏輯，輸出 `trial-data.js`。頁面只有 `?trial=` 時才讀該檔，原固定 2026 閱讀模式保持原樣。春訓 832077 取既存 `spring-fixture.js`，性質為完賽後回查。
+以上 2027 賽程、球員、登板是**人工測試輸入**；`cross-season-trial.mjs` 呼叫現有的 `build-live`、`bullpen`、`ctx`、`roster` 邏輯，輸出 `trial-data.js`。`?trial=opening` 與 `?trial=transition` 現由原新版 `app.js` 的首頁、投手、九棒、條件與近期用量區塊直接讀取程式輸出；休兵日、部分失敗、春訓回查仍由診斷用的 `trial-reader.js` 顯示。未帶 `?trial=` 的固定 2026 閱讀模式保持原樣。春訓 832077 取既存 `spring-fixture.js`，性質為完賽後回查。
 
 | 開季缺口 | 這次試跑的結果 | 仍待真實來源驗證 |
 | --- | --- | --- |
 | 賽季／賽別／完整度 | 遊戲年取 `officialDate`；牛棚逐場保留 S／R、每日日狀態與缺筆；未知賽別不歸季後賽 | 2027 實際賽程、異動與來源時機 |
-| 本季統計 | team hitting/pitching、先發、打者要求該場賽季的 R；回應分項再核對 R 與 season；無紀錄、未取得、有效 0、舊值狀態分開 | 2027 開幕 API 實際空回應型態；上季參考如何取入獨立欄位 |
+| 本季統計 | team hitting/pitching、先發、打者要求該場賽季的 R；回應分項再核對 R 與 season；只回 S／其他範圍標「當季例行賽資料未確認」，不標無紀錄；有效 0 保留 | 2027 開幕 API 實際空回應型態；上季參考如何取入獨立欄位 |
 | 近期登板／情境 | S 登板保留日期、賽別、投手、局數、球數；跨 S／R 的兩條牛棚情境暫不判定；R 視窗休兵日可判定，部分失敗不判定 | 正式 R 視窗含補賽、延賽的來源完整性 |
 | 開幕名單 | 上一場 S 僅列打線參考，不作增減基準；本場名單照列，沒有基準不報增減 0 | 2027 官方名單公布時機與合理基準是否存在 |
 
@@ -66,3 +66,7 @@
 另以程式實際使用的 people hydrate 形式核對：[2026 R](https://statsapi.mlb.com/api/v1/people?personIds=694819&hydrate=stats(group%3D%5Bpitching%5D,type%3D%5Bseason%5D,season%3D2026,gameType%3DR)) 回 `gameType=R`、ERA 1.80／174.2 局；[2026 S](https://statsapi.mlb.com/api/v1/people?personIds=694819&hydrate=stats(group%3D%5Bpitching%5D,type%3D%5Bseason%5D,season%3D2026,gameType%3DS)) 回 `gameType=S`、ERA 5.40／11.2 局。試跑也餵入混有 S／R 分項的人工回應，確認輸出只採 R，少樣本 OPS／ERA／WHIP 附打席或局數，有效 `.000` 不變成缺值。
 
 舊 `live/data/games/849799.json` 在試跑前後均只讀取，SHA-256 記在 `trial-data.js`；本分支不寫 `live/data`、不回算舊情境，也沒有 workflow 或 Pages 設定修改。
+
+統計狀態補正：指定 R 但人員或團隊回應只有 S／其他賽季時，標 `scope_unconfirmed`，只表示未取得可確認的當季 R 成績；正確 R 查詢的空分項才在本次試跑標 `no_record`。人工少樣本案例驗證 `.000` 與 3 打席仍保留。賽別標籤依既有 roster 對照：F＝外卡賽、W＝世界大賽；試跑有直接檢查兩個標籤。
+
+離線包包含 `index.html`、`game.html`、`app.js`、`trial-reader.js`、`trial-data.js`、原固定 2026 與春訓檔、`style.css` 及本說明。它供本機閱讀，不是公開部署。程式輸出與頁面 DOM 內容檢查通過；受目前本機瀏覽器連線限制，**桌機／手機畫面及點擊操作尚未實際驗證**，須在可用瀏覽器開啟離線包後補走讀。

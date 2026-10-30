@@ -66,8 +66,11 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   }
   const REC = ["rec", "pct", "home", "road", "l10", "streak", "rs", "ra", "gp"];
   const sameSeason = s => !s.season || String(s.season) === season;
-  const ops = Object.fromEntries((hit?.stats?.[0]?.splits || []).filter(sameSeason).map(s => [s.team.id, s.stat.ops]));
-  const era = Object.fromEntries((pit?.stats?.[0]?.splits || []).filter(sameSeason).map(s => [s.team.id, s.stat.era]));
+  const teamScope = s => sameSeason(s) && (!s.gameType || s.gameType === "R"); // team API may omit gameType; explicit request above is R
+  const hitRows = hit?.stats?.[0]?.splits || [], pitRows = pit?.stats?.[0]?.splits || [];
+  const ops = Object.fromEntries(hitRows.filter(teamScope).map(s => [s.team.id, s.stat.ops]));
+  const era = Object.fromEntries(pitRows.filter(teamScope).map(s => [s.team.id, s.stat.era]));
+  const wrongScope = (rows, id) => rows.some(s => s.team?.id === id && !teamScope(s));
 
   // 多隊分列時取不分隊合計列；只有一列就用那列；多隊分列但缺合計＝null（不把其中一隊當全季、不平均）
   const tot = rows => rows.length === 1 ? rows[0] : rows.find(x => !x.team) || null;
@@ -78,9 +81,9 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
     const r = await soft("pitchers", fetchJson(`${API}/people?personIds=${spIds.join(",")}&hydrate=stats(group=[pitching],type=[season],season=${season},gameType=R)`));
     peopleOk = !!r;
     for (const p of r?.people || []) {
-      const sp = (p.stats?.[0]?.splits || []).filter(x => sameSeason(x) && x.gameType === "R"), s = tot(sp)?.stat;
+      const raw = p.stats?.[0]?.splits || [], sp = raw.filter(x => sameSeason(x) && x.gameType === "R"), s = tot(sp)?.stat;
       ppl[p.id] = { hand: p.pitchHand?.code || null, s: s ? { wl: `${s.wins}-${s.losses}`, era: s.era, ip: s.inningsPitched, gs: s.gamesStarted, whip: s.whip, so: s.strikeOuts, bb: s.baseOnBalls } : null,
-        statStatus: s ? "value" : sp.length ? "unavailable" : "no_record", ...(sp.length > 1 && !s ? { sNote: "multi" } : {}) };
+        statStatus: s ? "value" : sp.length ? "unavailable" : raw.length ? "scope_unconfirmed" : "no_record", ...(sp.length > 1 && !s ? { sNote: "multi" } : {}) };
     }
   }
 
@@ -104,8 +107,8 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   const bat = {}, batIds = [...new Set(pks.flatMap(pk => ["away", "home"].flatMap(s => Object.values(box[pk]?.teams?.[s]?.players || {}).filter(p => p.battingOrder && +p.battingOrder % 100 === 0).map(p => p.person?.id).concat(box[pk]?.teams?.[s]?.battingOrder || []))).filter(Boolean))];
   for (let i = 0; i < batIds.length; i += 100) {
     const r = await soft("batters", fetchJson(`${API}/people?personIds=${batIds.slice(i, i + 100).join(",")}&hydrate=stats(group=[hitting],type=[season],season=${season},gameType=R)`));
-    for (const p of r?.people || []) { const splits = (p.stats?.[0]?.splits || []).filter(x => sameSeason(x) && x.gameType === "R"), s = tot(splits)?.stat;
-      bat[p.id] = s ? { avg: s.avg ?? null, ops: s.ops ?? null, pa: s.plateAppearances ?? null, statStatus: "value" } : { statStatus: splits.length ? "unavailable" : "no_record" }; }
+    for (const p of r?.people || []) { const raw = p.stats?.[0]?.splits || [], splits = raw.filter(x => sameSeason(x) && x.gameType === "R"), s = tot(splits)?.stat;
+      bat[p.id] = s ? { avg: s.avg ?? null, ops: s.ops ?? null, pa: s.plateAppearances ?? null, statStatus: "value" } : { statStatus: splits.length ? "unavailable" : raw.length ? "scope_unconfirmed" : "no_record" }; }
   }
 
   // 天氣：MLB 官方賽前天氣（schedule 的 weather，通常開賽前幾小時才有）。沒有就是 null＝尚未公布，不補預報
@@ -171,8 +174,8 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
         // 戰績／團隊打擊／團隊投球
         const team = { ...(rec[id] || {}), ops: ops[id] ?? null, era: era[id] ?? null, statsScope,
           statStatus: { rec: rec[id] ? (rec[id].gp === 0 ? "no_record" : "value") : "unavailable",
-            ops: rec[id]?.gp === 0 ? "no_record" : ops[id] != null ? "value" : "unavailable",
-            era: rec[id]?.gp === 0 ? "no_record" : era[id] != null ? "value" : "unavailable" } };
+            ops: wrongScope(hitRows,id) && ops[id] == null ? "scope_unconfirmed" : rec[id]?.gp === 0 ? "no_record" : ops[id] != null ? "value" : "unavailable",
+            era: wrongScope(pitRows,id) && era[id] == null ? "scope_unconfirmed" : rec[id]?.gp === 0 ? "no_record" : era[id] != null ? "value" : "unavailable" } };
         if (!st) { const has = oldStatsSame && REC.some(k => o?.[k] != null); if (has) for (const k of REC) team[k] = o[k]; fail("rec", "standings", has); team.statStatus.rec = has ? "stale" : "unavailable"; }
         if (!hit) { team.ops = oldStatsSame ? o?.ops ?? null : null; fail("ops", "team hitting", team.ops != null); team.statStatus.ops = team.ops != null ? "stale" : "unavailable"; }
         if (!pit) { team.era = oldStatsSame ? o?.era ?? null : null; fail("era", "team pitching", team.era != null); team.statStatus.era = team.era != null ? "stale" : "unavailable"; }

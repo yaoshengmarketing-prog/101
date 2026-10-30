@@ -76,10 +76,15 @@ const scopedFetch = async url => {
 const small = (await build({ fetchJson: scopedFetch, now: new Date(nowISO) })).games[target.pk];
 ok("2027 R 分項：少樣本 OPS／ERA／WHIP 與分母同存；S-only 不填入 R；有效 0 保留",
   small.away.sp.s.era === "4.50" && small.away.sp.s.whip === "1.25" && small.away.sp.s.ip === "4.0"
-  && small.home.sp.s === null && small.home.sp.statStatus === "no_record"
+  && small.home.sp.s === null && small.home.sp.statStatus === "scope_unconfirmed"
   && small.away.lineup.slots[0].ops === ".500" && small.away.lineup.slots[0].pa === 4
-  && small.away.lineup.slots[1].ops === null && small.away.lineup.slots[1].statStatus === "no_record"
+  && small.away.lineup.slots[1].ops === null && small.away.lineup.slots[1].statStatus === "scope_unconfirmed"
   && small.away.lineup.slots[2].ops === ".000" && small.away.lineup.slots[2].pa === 3);
+const wrongTeam = (await build({ fetchJson: async url => url.includes("/teams/stats?") && url.includes("group=hitting")
+  ? { stats: [{ splits: [{ season: "2027", gameType: "S", team: { id: 113 }, stat: { ops: ".999" } }] }] }
+  : scopedFetch(url), now: new Date(nowISO) })).games[target.pk];
+ok("團隊回應只有 S 時，R OPS 不採用且標範圍未確認", wrongTeam.away.ops === null
+  && wrongTeam.away.statStatus.ops === "scope_unconfirmed");
 
 const makeCase = async (id, game, priors, failPk = null) => {
   const f = async url => {
@@ -97,7 +102,16 @@ const makeCase = async (id, game, priors, failPk = null) => {
     bullpen: { status: b.status, scope: b.scope, window: b.window, summary: b.summary, gamesMissing: b.gamesMissing },
     context: { bp_load: c.checks.find(x => x.id === "bp_load"), bp_streak: c.checks.find(x => x.id === "bp_streak") } };
 };
+const openingUsage = await makeCase("opening", target, [priorS]);
 const transitionTarget = { ...target, pk: 9902702, gamePk: 9902702, officialDate: "2027-03-27", gameDate: "2027-03-27T23:10:00Z" };
+const transitionFetch = async url => {
+  if (url.includes("/schedule?")) return { dates: splitDates([priorS, priorR, transitionTarget]) };
+  const pk = Number(url.match(/\/game\/(\d+)\/boxscore/)?.[1]); if (pk) return mkBox(pk);
+  return liveFetch(url);
+};
+const transitionGame = (await build({ fetchJson: transitionFetch, now: new Date("2027-03-28T00:10:00Z") })).games[transitionTarget.pk];
+ok("春訓銜接單場也由 build-live 產出，不借開幕場展示欄位", transitionGame.pk === transitionTarget.pk
+  && transitionGame.usDate === "2027-03-27" && transitionGame.away.lineup.slots.length === 9);
 const transition = await makeCase("transition", transitionTarget, [priorS, priorR]);
 ok("前三完整美國賽程日含 S 與確認休兵：近期登板保留 S、兩條情境暫不判定",
   transition.bullpen.window.full.join(",") === "2027-03-24,2027-03-25,2027-03-26"
@@ -126,29 +140,58 @@ ok("2026 舊單場仍可讀，未納入試跑輸出路徑", JSON.parse(fs.readFi
 const result = { meta: { title: "MLB 跨季接入離線試跑", status: "獨立分支人工測試，未部署", simulatedClock: nowISO, sourceCheckDate: "2026-10-30",
   warning: "2027 賽程、球員、登板均為人工測試輸入；整理、判定與輸出走實際程式。2026 春訓是完賽後回查，不能證明當時賽前取得。2027 來源時機未驗證。",
   old2026GameSha256: oldSha256 },
-  opening: { game: opening, roster: { basis: null, status: "no_applicable_basis", listed: opening.away.roster, in: noBasis.in, out: noBasis.out },
+  opening: { game: opening, bullpen: openingUsage.bullpen, context: openingUsage.context,
+    roster: { basis: null, status: "no_applicable_basis", listed: opening.away.roster, in: noBasis.in, out: noBasis.out },
     smallStats: { sampleType: "人工少樣本測試", pitcherR: small.away.sp, pitcherSOnly: small.home.sp,
       hitterR: small.away.lineup.slots.slice(0, 3), teamR: { ops: small.away.ops, era: small.away.era, gp: small.away.gp } } },
-  cases: { transition, r_off_day: rWindow, partial_failure: partial },
+  cases: { transition: { ...transition, liveGame: transitionGame }, r_off_day: rWindow, partial_failure: partial },
   historicalSpring: { meta: spring.meta, game: spring.game, pitchers: spring.pitchers } };
 const reader = fs.readFileSync(path.join(root, "preview/mlb-next/trial-reader.js"), "utf8");
-const trialMarkup = (page, key) => {
+const trialMarkup = (page, key, data = result) => {
   const app = { innerHTML: "", textContent: "" }, els = { ".mast-id": {}, ".brand": {}, ".site-foot": {} };
-  vm.runInNewContext(reader, { window: { MLB_CROSS_SEASON_TRIAL: result },
+  vm.runInNewContext(reader, { window: { MLB_CROSS_SEASON_TRIAL: data },
     document: { body: { dataset: { page } }, getElementById: () => app, querySelector: k => els[k] },
     location: { search: "?trial=" + key }, URLSearchParams, encodeURIComponent });
   return app.innerHTML;
 };
-ok("既有預覽殼能讀取固定程式輸出並產生各案例內容",
-  trialMarkup("home","opening").includes("跨季資料接入試跑")
-  && trialMarkup("game","opening").includes("官方九棒")
-  && trialMarkup("game","transition").includes("春訓銜接")
-  && trialMarkup("game","r_off_day").includes("確認無賽程")
+const core = fs.readFileSync(path.join(root, "preview/mlb-next/app.js"), "utf8");
+const coreMarkup = (page, key) => {
+  const app = { innerHTML: "" }, els = { ".mast-id": {}, ".brand": {}, ".site-foot": {} };
+  vm.runInNewContext(core, { window: { MLB_CROSS_SEASON_TRIAL: result },
+    document: { body: { dataset: { page } }, getElementById: () => app, querySelector: k => els[k] },
+    location: { search: "?trial=" + key }, URLSearchParams, encodeURIComponent });
+  return app.innerHTML;
+};
+const historicalWindow = {};
+vm.runInNewContext(fs.readFileSync(path.join(root,"preview/mlb-next/fixture.js"),"utf8"), { window: historicalWindow });
+const historicalMarkup = (page, search) => {
+  const app = { innerHTML: "" };
+  vm.runInNewContext(core, { window: historicalWindow,
+    document: { body: { dataset: { page } }, getElementById: () => app },
+    location: { search }, URLSearchParams, encodeURIComponent });
+  return app.innerHTML;
+};
+ok("原固定 2026 首頁、賽前與賽後仍由原 app.js 正常產出",
+  historicalMarkup("home","").includes("849799")
+  && historicalMarkup("game","?mode=pre").includes("本場打線")
+  && historicalMarkup("game","?mode=post").includes("逐局比分"));
+ok("原新版 app.js 直接讀程式輸出：首頁、投手、九棒、近期用量與狀態",
+  coreMarkup("home","opening").includes("開幕零樣本")
+  && coreMarkup("game","opening").includes("測試打者 A1")
+  && coreMarkup("game","opening").includes("近期實際登板與用量")
+  && coreMarkup("game","transition").includes("2027-03-27")
+  && coreMarkup("game","transition").includes("暫不判定"));
+ok("其餘診斷案例仍由 trial-reader 顯示",
+  trialMarkup("game","r_off_day").includes("確認無賽程")
   && trialMarkup("game","partial_failure").includes("球數未取得")
   && trialMarkup("game","spring").includes("完賽後回查"));
+const labels = structuredClone(result), usage = labels.cases.r_off_day.bullpen.summary.away.recentUsage;
+usage[0].gameType = "F"; usage[1].gameType = "W";
+ok("trial-reader 賽別 F＝外卡賽、W＝世界大賽", trialMarkup("game","r_off_day",labels).includes("外卡賽")
+  && trialMarkup("game","r_off_day",labels).includes("世界大賽"));
 if (process.argv.includes("--write")) {
   const dest = path.join(root, "preview/mlb-next/trial-data.js");
   fs.writeFileSync(dest, "/* Generated by scripts/cross-season-trial.mjs --write; branch-only test artifact. */\nwindow.MLB_CROSS_SEASON_TRIAL = " + JSON.stringify(result, null, 2) + ";\n");
   console.log("WROTE " + dest);
 }
-console.log("PASS 11/11 integrated checks");
+console.log("PASS 16/16 integrated checks");

@@ -633,6 +633,263 @@ window.MLB_CROSS_SEASON_TRIAL = {
       },
       "lineup": "official"
     },
+    "bullpen": {
+      "status": "ok",
+      "scope": {
+        "season": "2027",
+        "gameType": "R",
+        "hasSpringInFullWindow": true,
+        "hasUnknownTypeInFullWindow": false
+      },
+      "window": {
+        "full": [
+          "2027-03-23",
+          "2027-03-24",
+          "2027-03-25"
+        ],
+        "today": "2027-03-26"
+      },
+      "summary": {
+        "away": {
+          "name": "Cincinnati Reds",
+          "days": [
+            {
+              "d": "2027-03-23",
+              "st": "off",
+              "complete": false,
+              "games": [],
+              "gamesExpected": 0,
+              "gamesMissing": 0,
+              "rpApps": 0,
+              "rpPitchers": 0,
+              "rpPitches": null,
+              "rpAppsNoCount": 0
+            },
+            {
+              "d": "2027-03-24",
+              "st": "played",
+              "complete": true,
+              "games": [
+                {
+                  "pk": 9902698,
+                  "season": "2027",
+                  "gameType": "S",
+                  "status": "Final",
+                  "opp": "釀酒人",
+                  "data": "full"
+                }
+              ],
+              "gamesExpected": 1,
+              "gamesMissing": 0,
+              "rpApps": 1,
+              "rpPitchers": 1,
+              "rpPitches": 77,
+              "rpAppsNoCount": 0
+            },
+            {
+              "d": "2027-03-25",
+              "st": "off",
+              "complete": false,
+              "games": [],
+              "gamesExpected": 0,
+              "gamesMissing": 0,
+              "rpApps": 0,
+              "rpPitchers": 0,
+              "rpPitches": null,
+              "rpAppsNoCount": 0
+            },
+            {
+              "d": "2027-03-26",
+              "st": "off",
+              "complete": false,
+              "games": [],
+              "gamesExpected": 0,
+              "gamesMissing": 0,
+              "rpApps": 0,
+              "rpPitchers": 0,
+              "rpPitches": null,
+              "rpAppsNoCount": 0
+            }
+          ],
+          "pitchers": [
+            {
+              "id": 991091,
+              "name": "測試投手 A2",
+              "days": {
+                "2027-03-24": {
+                  "pitches": 77,
+                  "apps": 1,
+                  "noCount": 0,
+                  "gameNumbers": [
+                    null
+                  ]
+                }
+              },
+              "streak": 0,
+              "streakAtEdge": false,
+              "streakUncertain": false,
+              "last": "2027-03-24",
+              "total": 77
+            }
+          ],
+          "recentUsage": [
+            {
+              "pk": 9902698,
+              "day": "2027-03-24",
+              "season": "2027",
+              "gameType": "S",
+              "id": 991090,
+              "name": "測試投手 A1",
+              "ip": "3.0",
+              "pitches": 49,
+              "completeness": "full"
+            },
+            {
+              "pk": 9902698,
+              "day": "2027-03-24",
+              "season": "2027",
+              "gameType": "S",
+              "id": 991091,
+              "name": "測試投手 A2",
+              "ip": "1.0",
+              "pitches": 77,
+              "completeness": "full"
+            }
+          ]
+        },
+        "home": {
+          "name": "Milwaukee Brewers",
+          "days": [
+            {
+              "d": "2027-03-23",
+              "st": "off",
+              "complete": false,
+              "games": [],
+              "gamesExpected": 0,
+              "gamesMissing": 0,
+              "rpApps": 0,
+              "rpPitchers": 0,
+              "rpPitches": null,
+              "rpAppsNoCount": 0
+            },
+            {
+              "d": "2027-03-24",
+              "st": "played",
+              "complete": true,
+              "games": [
+                {
+                  "pk": 9902698,
+                  "season": "2027",
+                  "gameType": "S",
+                  "status": "Final",
+                  "opp": "紅人",
+                  "data": "full"
+                }
+              ],
+              "gamesExpected": 1,
+              "gamesMissing": 0,
+              "rpApps": 1,
+              "rpPitchers": 1,
+              "rpPitches": 8,
+              "rpAppsNoCount": 0
+            },
+            {
+              "d": "2027-03-25",
+              "st": "off",
+              "complete": false,
+              "games": [],
+              "gamesExpected": 0,
+              "gamesMissing": 0,
+              "rpApps": 0,
+              "rpPitchers": 0,
+              "rpPitches": null,
+              "rpAppsNoCount": 0
+            },
+            {
+              "d": "2027-03-26",
+              "st": "off",
+              "complete": false,
+              "games": [],
+              "gamesExpected": 0,
+              "gamesMissing": 0,
+              "rpApps": 0,
+              "rpPitchers": 0,
+              "rpPitches": null,
+              "rpAppsNoCount": 0
+            }
+          ],
+          "pitchers": [
+            {
+              "id": 992091,
+              "name": "測試投手 B2",
+              "days": {
+                "2027-03-24": {
+                  "pitches": 8,
+                  "apps": 1,
+                  "noCount": 0,
+                  "gameNumbers": [
+                    null
+                  ]
+                }
+              },
+              "streak": 0,
+              "streakAtEdge": false,
+              "streakUncertain": false,
+              "last": "2027-03-24",
+              "total": 8
+            }
+          ],
+          "recentUsage": [
+            {
+              "pk": 9902698,
+              "day": "2027-03-24",
+              "season": "2027",
+              "gameType": "S",
+              "id": 992090,
+              "name": "測試投手 B1",
+              "ip": "3.0",
+              "pitches": 49,
+              "completeness": "full"
+            },
+            {
+              "pk": 9902698,
+              "day": "2027-03-24",
+              "season": "2027",
+              "gameType": "S",
+              "id": 992091,
+              "name": "測試投手 B2",
+              "ip": "1.0",
+              "pitches": 8,
+              "completeness": "full"
+            }
+          ]
+        }
+      },
+      "gamesMissing": 0
+    },
+    "context": {
+      "bp_load": {
+        "id": "bp_load",
+        "title": "前三日牛棚用球數差距",
+        "threshold": "前三個完整日牛棚合計，兩隊相差 ≥ 80 球",
+        "th": {
+          "diff": 80
+        },
+        "state": "na",
+        "why": "跨春訓／例行賽過渡視窗：暫不判定；春訓登板僅供近期實際用量閱讀"
+      },
+      "bp_streak": {
+        "id": "bp_streak",
+        "title": "中繼連續登板",
+        "threshold": "一方有 ≥ 2 位中繼連續 2 天以上登板（到本場之前）",
+        "th": {
+          "pitchers": 2,
+          "days": 2
+        },
+        "state": "na",
+        "why": "跨春訓／例行賽過渡視窗：暫不判定；春訓登板僅供近期實際用量閱讀"
+      }
+    },
     "roster": {
       "basis": null,
       "status": "no_applicable_basis",
@@ -720,7 +977,7 @@ window.MLB_CROSS_SEASON_TRIAL = {
         "name": "測試先發 B",
         "hand": "R",
         "s": null,
-        "statStatus": "no_record",
+        "statStatus": "scope_unconfirmed",
         "statsScope": {
           "season": "2027",
           "gameType": "R"
@@ -746,7 +1003,7 @@ window.MLB_CROSS_SEASON_TRIAL = {
           "avg": null,
           "ops": null,
           "pa": null,
-          "statStatus": "no_record"
+          "statStatus": "scope_unconfirmed"
         },
         {
           "n": 3,
@@ -1110,6 +1367,630 @@ window.MLB_CROSS_SEASON_TRIAL = {
           "state": "na",
           "why": "跨春訓／例行賽過渡視窗：暫不判定；春訓登板僅供近期實際用量閱讀"
         }
+      },
+      "liveGame": {
+        "pk": 9902702,
+        "season": "2027",
+        "statsScope": {
+          "season": "2027",
+          "gameType": "R"
+        },
+        "twDate": "2027-03-28",
+        "usDate": "2027-03-27",
+        "startUTC": "2027-03-27T23:10:00Z",
+        "tbd": false,
+        "twTime": "07:10",
+        "localTime": "18:10 CDT",
+        "tz": "America/Chicago",
+        "venue": "人工測試球場",
+        "status": {
+          "code": "pre",
+          "text": "已排定",
+          "raw": "Scheduled",
+          "reason": null
+        },
+        "dh": null,
+        "rescheduledFrom": null,
+        "rescheduleDate": null,
+        "inning": null,
+        "inningHalf": null,
+        "gameType": "R",
+        "series": null,
+        "firstSeen": "2027-03-28T00:10:00.000Z",
+        "updatedAt": "2027-03-28T00:10:00.000Z",
+        "errors": [],
+        "weather": null,
+        "away": {
+          "id": 113,
+          "ab": "CIN",
+          "name": "紅人",
+          "en": "Cincinnati Reds",
+          "score": null,
+          "sp": {
+            "id": 990001,
+            "name": "測試先發 A",
+            "hand": "R",
+            "s": null,
+            "statStatus": "no_record",
+            "statsScope": {
+              "season": "2027",
+              "gameType": "R"
+            },
+            "firstSeen": "2027-03-28T00:10:00.000Z"
+          },
+          "lineup": {
+            "state": "official",
+            "firstSeen": "2027-03-28T00:10:00.000Z",
+            "lateAt": null,
+            "slots": [
+              {
+                "n": 1,
+                "id": 991001,
+                "name": "測試打者 A1",
+                "pos": "CF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 2,
+                "id": 991002,
+                "name": "測試打者 A2",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 3,
+                "id": 991003,
+                "name": "測試打者 A3",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 4,
+                "id": 991004,
+                "name": "測試打者 A4",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 5,
+                "id": 991005,
+                "name": "測試打者 A5",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 6,
+                "id": 991006,
+                "name": "測試打者 A6",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 7,
+                "id": 991007,
+                "name": "測試打者 A7",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 8,
+                "id": 991008,
+                "name": "測試打者 A8",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 9,
+                "id": 991009,
+                "name": "測試打者 A9",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              }
+            ],
+            "statsScope": {
+              "season": "2027",
+              "gameType": "R"
+            }
+          },
+          "roster": [
+            {
+              "id": 991001,
+              "name": "測試打者 A1",
+              "pos": "CF"
+            },
+            {
+              "id": 991002,
+              "name": "測試打者 A2",
+              "pos": "IF"
+            },
+            {
+              "id": 991003,
+              "name": "測試打者 A3",
+              "pos": "IF"
+            },
+            {
+              "id": 991004,
+              "name": "測試打者 A4",
+              "pos": "IF"
+            },
+            {
+              "id": 991005,
+              "name": "測試打者 A5",
+              "pos": "IF"
+            },
+            {
+              "id": 991006,
+              "name": "測試打者 A6",
+              "pos": "IF"
+            },
+            {
+              "id": 991007,
+              "name": "測試打者 A7",
+              "pos": "IF"
+            },
+            {
+              "id": 991008,
+              "name": "測試打者 A8",
+              "pos": "IF"
+            },
+            {
+              "id": 991009,
+              "name": "測試打者 A9",
+              "pos": "IF"
+            },
+            {
+              "id": 991090,
+              "name": "測試投手 A1",
+              "pos": null
+            },
+            {
+              "id": 991091,
+              "name": "測試投手 A2",
+              "pos": null
+            }
+          ],
+          "prev": {
+            "pk": 9902700,
+            "date": "2027-03-26",
+            "gameType": "R",
+            "ha": "客",
+            "opp": "釀酒人",
+            "score": "1-4",
+            "slots": [
+              {
+                "n": 1,
+                "id": 991001,
+                "name": "測試打者 A1",
+                "pos": "CF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 2,
+                "id": 991002,
+                "name": "測試打者 A2",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 3,
+                "id": 991003,
+                "name": "測試打者 A3",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 4,
+                "id": 991004,
+                "name": "測試打者 A4",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 5,
+                "id": 991005,
+                "name": "測試打者 A5",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 6,
+                "id": 991006,
+                "name": "測試打者 A6",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 7,
+                "id": 991007,
+                "name": "測試打者 A7",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 8,
+                "id": 991008,
+                "name": "測試打者 A8",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 9,
+                "id": 991009,
+                "name": "測試打者 A9",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              }
+            ]
+          },
+          "rec": "0-0",
+          "pct": ".000",
+          "home": null,
+          "road": null,
+          "l10": null,
+          "streak": null,
+          "gp": 0,
+          "ops": null,
+          "era": null,
+          "statsScope": {
+            "season": "2027",
+            "gameType": "R"
+          },
+          "statStatus": {
+            "rec": "no_record",
+            "ops": "no_record",
+            "era": "no_record"
+          }
+        },
+        "home": {
+          "id": 158,
+          "ab": "MIL",
+          "name": "釀酒人",
+          "en": "Milwaukee Brewers",
+          "score": null,
+          "sp": {
+            "id": 990002,
+            "name": "測試先發 B",
+            "hand": "R",
+            "s": null,
+            "statStatus": "no_record",
+            "statsScope": {
+              "season": "2027",
+              "gameType": "R"
+            },
+            "firstSeen": "2027-03-28T00:10:00.000Z"
+          },
+          "lineup": {
+            "state": "official",
+            "firstSeen": "2027-03-28T00:10:00.000Z",
+            "lateAt": null,
+            "slots": [
+              {
+                "n": 1,
+                "id": 992001,
+                "name": "測試打者 B1",
+                "pos": "CF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 2,
+                "id": 992002,
+                "name": "測試打者 B2",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 3,
+                "id": 992003,
+                "name": "測試打者 B3",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 4,
+                "id": 992004,
+                "name": "測試打者 B4",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 5,
+                "id": 992005,
+                "name": "測試打者 B5",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 6,
+                "id": 992006,
+                "name": "測試打者 B6",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 7,
+                "id": 992007,
+                "name": "測試打者 B7",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 8,
+                "id": 992008,
+                "name": "測試打者 B8",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 9,
+                "id": 992009,
+                "name": "測試打者 B9",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              }
+            ],
+            "statsScope": {
+              "season": "2027",
+              "gameType": "R"
+            }
+          },
+          "roster": [
+            {
+              "id": 992001,
+              "name": "測試打者 B1",
+              "pos": "CF"
+            },
+            {
+              "id": 992002,
+              "name": "測試打者 B2",
+              "pos": "IF"
+            },
+            {
+              "id": 992003,
+              "name": "測試打者 B3",
+              "pos": "IF"
+            },
+            {
+              "id": 992004,
+              "name": "測試打者 B4",
+              "pos": "IF"
+            },
+            {
+              "id": 992005,
+              "name": "測試打者 B5",
+              "pos": "IF"
+            },
+            {
+              "id": 992006,
+              "name": "測試打者 B6",
+              "pos": "IF"
+            },
+            {
+              "id": 992007,
+              "name": "測試打者 B7",
+              "pos": "IF"
+            },
+            {
+              "id": 992008,
+              "name": "測試打者 B8",
+              "pos": "IF"
+            },
+            {
+              "id": 992009,
+              "name": "測試打者 B9",
+              "pos": "IF"
+            },
+            {
+              "id": 992090,
+              "name": "測試投手 B1",
+              "pos": null
+            },
+            {
+              "id": 992091,
+              "name": "測試投手 B2",
+              "pos": null
+            }
+          ],
+          "prev": {
+            "pk": 9902700,
+            "date": "2027-03-26",
+            "gameType": "R",
+            "ha": "主",
+            "opp": "紅人",
+            "score": "4-1",
+            "slots": [
+              {
+                "n": 1,
+                "id": 992001,
+                "name": "測試打者 B1",
+                "pos": "CF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 2,
+                "id": 992002,
+                "name": "測試打者 B2",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 3,
+                "id": 992003,
+                "name": "測試打者 B3",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 4,
+                "id": 992004,
+                "name": "測試打者 B4",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 5,
+                "id": 992005,
+                "name": "測試打者 B5",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 6,
+                "id": 992006,
+                "name": "測試打者 B6",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 7,
+                "id": 992007,
+                "name": "測試打者 B7",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 8,
+                "id": 992008,
+                "name": "測試打者 B8",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              },
+              {
+                "n": 9,
+                "id": 992009,
+                "name": "測試打者 B9",
+                "pos": "IF",
+                "avg": null,
+                "ops": null,
+                "pa": null,
+                "statStatus": "no_record"
+              }
+            ]
+          },
+          "rec": "0-0",
+          "pct": ".000",
+          "home": null,
+          "road": null,
+          "l10": null,
+          "streak": null,
+          "gp": 0,
+          "ops": null,
+          "era": null,
+          "statsScope": {
+            "season": "2027",
+            "gameType": "R"
+          },
+          "statStatus": {
+            "rec": "no_record",
+            "ops": "no_record",
+            "era": "no_record"
+          }
+        },
+        "lineup": "official"
       }
     },
     "r_off_day": {

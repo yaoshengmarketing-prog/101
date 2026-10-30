@@ -3,11 +3,12 @@
   "use strict";
   const qs = new URLSearchParams(location.search);
   if (!qs.has("trial")) return;
+  if (["opening","transition"].includes(qs.get("trial"))) return; // core app.js renders these two program-output cases
   const D = window.MLB_CROSS_SEASON_TRIAL, root = document.getElementById("app");
   const key = qs.get("trial") || "opening";
   const esc = x => String(x ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const gt = x => ({"R":"例行賽","S":"春訓","F":"世界大賽","D":"分區系列賽","L":"聯盟冠軍賽","W":"外卡系列賽"}[x] || "賽別未確認");
-  const readState = x => x === "no_record" ? "本季尚無紀錄" : x === "stale" ? "舊值（見取得時間）" : x === "value" ? "已取得" : "未取得";
+  const gt = x => ({"R":"例行賽","S":"春訓","F":"外卡賽","D":"分區賽","L":"聯盟冠軍賽","W":"世界大賽"}[x] || "賽別未確認");
+  const readState = x => x === "no_record" ? "本季尚無紀錄" : x === "scope_unconfirmed" ? "當季例行賽資料未確認" : x === "stale" ? "舊值（見取得時間）" : x === "value" ? "已取得" : "未取得";
   const link = (id, text) => `<a href="game.html?trial=${encodeURIComponent(id)}">${esc(text)} <span aria-hidden="true">↗</span></a>`;
   if (!D || !root) { if (root) root.textContent = "試跑資料未取得。"; return; }
   document.querySelector(".mast-id").textContent = "MLB / 跨季離線試跑";
@@ -52,7 +53,7 @@
     body += section("先發與本季成績",`<div class="trial-columns">${["away","home"].map(side=>{const t=opening[side],p=t.sp;return `<div><h3>${side==="away"?"紅人":"釀酒人"} · ${esc(p.name)}</h3><p>2027 例行賽 ERA／WHIP：${readState(p.statStatus)}</p><p>球隊戰績：${esc(t.rec)}（已確認出賽 ${t.gp} 場）</p><p>團隊 OPS／ERA：${readState(t.statStatus.ops)}／${readState(t.statStatus.era)}</p></div>`}).join("")}</div><p>上季參考維持獨立；本試跑未載入，不填入本季欄位。春訓成績不混入例行賽。</p>`);
     body += section("本場名單與打線",`<div class="trial-columns">${lineup("away","紅人")}${lineup("home","釀酒人")}</div><p>上一場打線是春訓參考（${esc(opening.away.prev.date)}，${gt(opening.away.prev.gameType)}）；名單增減沒有合理的同季同賽別基準，因此暫不比較。已取得本場名單 ${D.opening.roster.listed.length} 人，不報增減 0。</p>`);
     const S=D.opening.smallStats;
-    body += section("少樣本與有效 0：另一組人工來源回應",`<details><summary>展開 2027 R 的少樣本變體（與上方零樣本輸入分開）</summary><p>測試先發 A：ERA ${esc(S.pitcherR.s.era)}、WHIP ${esc(S.pitcherR.s.whip)}／${esc(S.pitcherR.s.ip)} 局。測試先發 B 只有 S 資料，R 仍顯示本季尚無紀錄。</p><p>${esc(S.hitterR[0].name)}：OPS ${esc(S.hitterR[0].ops)}／${S.hitterR[0].pa} 打席；${esc(S.hitterR[1].name)} 只有 S 資料，R 尚無紀錄；${esc(S.hitterR[2].name)}：OPS ${esc(S.hitterR[2].ops)}／${S.hitterR[2].pa} 打席，這是有分母的有效 0。</p><p>團隊 OPS ${esc(S.teamR.ops)}、ERA ${esc(S.teamR.era)}／已賽 ${S.teamR.gp} 場。所有數值均為人工測試，沒有混用春訓。</p></details>`);
+    body += section("少樣本與有效 0：另一組人工來源回應",`<details><summary>展開 2027 R 的少樣本變體（與上方零樣本輸入分開）</summary><p>測試先發 A：ERA ${esc(S.pitcherR.s.era)}、WHIP ${esc(S.pitcherR.s.whip)}／${esc(S.pitcherR.s.ip)} 局。測試先發 B 只有 S 回應，R 為「${readState(S.pitcherSOnly.statStatus)}」，不能稱尚無紀錄。</p><p>${esc(S.hitterR[0].name)}：OPS ${esc(S.hitterR[0].ops)}／${S.hitterR[0].pa} 打席；${esc(S.hitterR[1].name)} 只有 S 回應，R 為「${readState(S.hitterR[1].statStatus)}」；${esc(S.hitterR[2].name)}：OPS ${esc(S.hitterR[2].ops)}／${S.hitterR[2].pa} 打席，這是有分母的有效 0。</p><p>團隊 OPS ${esc(S.teamR.ops)}、ERA ${esc(S.teamR.era)}／已賽 ${S.teamR.gp} 場。所有數值均為人工測試，沒有混用春訓。</p></details>`);
   } else {
     const B=c.bullpen;
     body += section("前三個完整美國賽程日與本日", `<p>視窗：${B.window.full.map(esc).join("、")}；本日 ${esc(B.window.today)} 另列。資料狀態：${esc(B.status)}。</p>` +
