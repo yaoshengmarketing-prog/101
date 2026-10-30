@@ -27,7 +27,7 @@ for (const id of [game.target.away.id, game.target.home.id]) {
   for (const g of team.recent14) {
     assert.ok(Date.parse(g.kickoffUTC) >= start14);
     assert.ok(Date.parse(g.kickoffUTC) < Date.parse(game.target.kickoffUTC));
-    assert.ok(['eng.1', 'uefa.europa', 'eng.league_cup'].includes(g.league));
+    assert.ok(['eng.1', 'uefa.champions', 'uefa.europa', 'uefa.europa.conf', 'eng.fa', 'eng.league_cup'].includes(g.league));
     usageRows++;
   }
   assert.equal(team.pairs.length, team.recent14.length);
