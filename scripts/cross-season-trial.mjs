@@ -123,7 +123,7 @@ ok("既存 2026 春訓資料僅作完賽後回查", spring.game.pk === 832077 &&
 const oldPath = path.join(root, "live/data/games/849799.json");
 const oldSha256 = crypto.createHash("sha256").update(fs.readFileSync(oldPath)).digest("hex");
 ok("2026 舊單場仍可讀，未納入試跑輸出路徑", JSON.parse(fs.readFileSync(oldPath)).pk === 849799);
-const result = { meta: { title: "MLB 跨季接入離線試跑", status: "獨立分支人工測試，未部署", producedAt: nowISO,
+const result = { meta: { title: "MLB 跨季接入離線試跑", status: "獨立分支人工測試，未部署", simulatedClock: nowISO, sourceCheckDate: "2026-10-30",
   warning: "2027 賽程、球員、登板均為人工測試輸入；整理、判定與輸出走實際程式。2026 春訓是完賽後回查，不能證明當時賽前取得。2027 來源時機未驗證。",
   old2026GameSha256: oldSha256 },
   opening: { game: opening, roster: { basis: null, status: "no_applicable_basis", listed: opening.away.roster, in: noBasis.in, out: noBasis.out },

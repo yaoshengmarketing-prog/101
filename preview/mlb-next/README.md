@@ -63,4 +63,6 @@
 
 **必要來源核對（2026-10-30，MLB Stats API 一次性查詢）：** [Misiorowski 投手本季未指定賽別](https://statsapi.mlb.com/api/v1/people/694819/stats?stats=season&group=pitching&season=2026) 回 `gameType=R`、30 場、174.2 局、ERA 1.80；明指定 `gameType=R` 相同，`gameType=S` 為 3 場、11.2 局、ERA 5.40。[釀酒人團隊打擊](https://statsapi.mlb.com/api/v1/teams/158/stats?stats=season&group=hitting&season=2026) 未指定與 R 均為 162 場、OPS .744，S 為 30 場、OPS .791。團隊投球未指定與 R 均為 162 場、ERA 3.51、1446.2 局，S 為 30 場、ERA 4.83、261.0 局。團隊回應有 season、未必有 gameType，故查詢本身要明指定 R；這只驗證 2026 回應，不證明 2027 賽前可用。
 
+另以程式實際使用的 people hydrate 形式核對：[2026 R](https://statsapi.mlb.com/api/v1/people?personIds=694819&hydrate=stats(group%3D%5Bpitching%5D,type%3D%5Bseason%5D,season%3D2026,gameType%3DR)) 回 `gameType=R`、ERA 1.80／174.2 局；[2026 S](https://statsapi.mlb.com/api/v1/people?personIds=694819&hydrate=stats(group%3D%5Bpitching%5D,type%3D%5Bseason%5D,season%3D2026,gameType%3DS)) 回 `gameType=S`、ERA 5.40／11.2 局。試跑也餵入混有 S／R 分項的人工回應，確認輸出只採 R，少樣本 OPS／ERA／WHIP 附打席或局數，有效 `.000` 不變成缺值。
+
 舊 `live/data/games/849799.json` 在試跑前後均只讀取，SHA-256 記在 `trial-data.js`；本分支不寫 `live/data`、不回算舊情境，也沒有 workflow 或 Pages 設定修改。

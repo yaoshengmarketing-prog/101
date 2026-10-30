@@ -3,7 +3,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
   "meta": {
     "title": "MLB 跨季接入離線試跑",
     "status": "獨立分支人工測試，未部署",
-    "producedAt": "2027-03-27T00:10:00Z",
+    "simulatedClock": "2027-03-27T00:10:00Z",
+    "sourceCheckDate": "2026-10-30",
     "warning": "2027 賽程、球員、登板均為人工測試輸入；整理、判定與輸出走實際程式。2026 春訓是完賽後回查，不能證明當時賽前取得。2027 來源時機未驗證。",
     "old2026GameSha256": "963670a6a6ea52b940e8cb177ddbed4c0a9d62df93aa56126711de51bfb4161a"
   },
