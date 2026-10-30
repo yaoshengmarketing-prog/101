@@ -72,7 +72,8 @@ function pairPeople(t, pair) {
     const pairIndex = p.games.findIndex(g => g.key === pair.to);
     const laterStarter = pairIndex >= 0 && p.games.slice(pairIndex + 1).some(g => g.role === 'starter');
     const score = (a && b && a !== b ? 4 : 0) + (a === 'sub_on' || b === 'sub_on' ? 2 : 0)
-      + (laterStarter && (a === 'sub_on' || b === 'sub_on' || a === 'bench_unused' || b === 'bench_unused') ? 5 : 0) + variety;
+      + (laterStarter && (a === 'sub_on' || b === 'sub_on' || a === 'bench_unused' || b === 'bench_unused') ? 5 : 0)
+      + (a === 'sub_on' && b === 'sub_on' && laterStarter ? 12 : 0) + variety;
     return { p, score };
   }).filter(x => x.score > 1).sort((a, b) => b.score - a.score || a.p.name.localeCompare(b.p.name));
   return ranked.slice(0, 2).map(({ p }) => `<button type="button" data-person="${esc(t.team.id)}-${esc(p.id)}">查看 ${esc(p.name)} 逐場</button>`).join('');
