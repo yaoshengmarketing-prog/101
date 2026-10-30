@@ -8,6 +8,7 @@
   const D=window.PREVIEW_DATA, root=document.getElementById("app");
   const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const dateLabel=s=>`${Number(s.slice(5,7))} 月 ${Number(s.slice(8,10))} 日`;
+  const twDateLabel=s=>s?`${s.slice(0,4)}/${Number(s.slice(5,7))}/${Number(s.slice(8,10))}`:"日期未取得";
   const state=qs.get("state")||"official", mode=qs.get("mode")==="post"?"post":"pre";
   const legit=["official","projection","partial","new","small","official_empty","bp_missing"].includes(state)?state:"official";
   const test=legit!=="official";
@@ -28,7 +29,7 @@
         <section class="page-title"><div><p class="overline">MLB / 跨季離線試跑</p><h1>從賽事進入研究</h1><p>以下兩場為人工輸入，資料由本分支實際處理程式產出。</p></div></section>
         <div class="test-notice"><b>固定離線試跑</b><span>${esc(T.meta.warning)}</span></div>
         <section class="list-heading"><h2>2027 例行賽・人工案例</h2><span>賽季與賽別取自程式輸出</span></section>
-        ${cases.map(([key,x,label])=>`<article class="game-row"><div class="game-time"><strong>${esc(x.twTime||"未定")}</strong><span>${esc(x.usDate)}・例行賽</span></div><div class="game-clubs"><div><b>${esc(x.away.ab)}</b><strong>${esc(x.away.name)}</strong></div><div><b>${esc(x.home.ab)}</b><strong>${esc(x.home.name)}</strong></div></div><div class="game-essential"><span>${esc(label)}</span><p>${esc(x.away.sp?.name??"先發未取得")}／${esc(x.home.sp?.name??"先發未取得")}</p><small>本場打線：${x.lineup==="official"?"官方九棒已取得":"未完整取得"}</small></div><div class="game-action"><a class="action-link" href="game.html?trial=${key}">看單場研究 <span aria-hidden="true">↗</span></a></div></article>`).join("")}
+        ${cases.map(([key,x,label])=>`<article class="game-row"><div class="game-time"><strong>${esc(x.twTime||"未定")}</strong><span>${esc(twDateLabel(x.twDate))} 台灣時間</span><small>美國賽程日 ${esc(x.usDate)}</small></div><div class="game-clubs"><div><b>${esc(x.away.ab)}</b><strong>${esc(x.away.name)}</strong></div><div><b>${esc(x.home.ab)}</b><strong>${esc(x.home.name)}</strong></div></div><div class="game-essential"><span>${esc(label)}</span><p>${esc(x.away.sp?.name??"先發未取得")}／${esc(x.home.sp?.name??"先發未取得")}</p><small>本場打線：${x.lineup==="official"?"官方九棒已取得":"未完整取得"}</small></div><div class="game-action"><a class="action-link" href="game.html?trial=${key}">看單場研究 <span aria-hidden="true">↗</span></a></div></article>`).join("")}
         <p class="page-note">2026 春訓固定回查與其他診斷案例見 <a href="index.html?trial=r_off_day">試跑閱讀器</a>；不把 2027 人工輸入當成真實賽程。</p>`;
       return;
     }
@@ -251,7 +252,7 @@
         <nav class="crumb"><a href="index.html?trial=opening">賽事入口</a><span>／</span><span>gamePk ${g.pk}・人工測試</span></nav>
         <div class="mode-nav" aria-label="閱讀模式"><a class="active" aria-current="page" href="game.html?trial=${trialKey}">賽前研究</a><span>賽後結果未取得</span></div>
         <div class="test-notice"><b>人工來源輸入・實際程式輸出</b><span>${esc(T.meta.warning)}</span></div>
-        <section class="match-hero"><div class="match-meta"><span>${esc(g.season)} ${trialType(g.gameType)}・${trialKey==="opening"?"開幕零樣本":"春訓銜接"}</span><span>美國賽程日 ${esc(g.usDate)}／台灣 ${esc(g.twDate)} ${esc(g.twTime)}・${esc(g.venue)}</span></div>${heroTeams(false)}<p class="hero-caption">先核對比賽、先發與官方九棒，再看條件及近期實際用量。賽後資料在此人工案例未取得。</p></section>
+        <section class="match-hero"><div class="match-meta"><span>${esc(g.season)} ${trialType(g.gameType)}・${trialKey==="opening"?"開幕零樣本":"春訓銜接"}</span><span>${esc(twDateLabel(g.twDate))} ${esc(g.twTime)} 台灣時間・${esc(g.venue)}</span></div>${heroTeams(false)}<p class="hero-caption">美國賽程日 ${esc(g.usDate)}。先核對比賽、先發與官方九棒，再看條件及近期實際用量。賽後資料在此人工案例未取得。</p></section>
         ${preBody()}
         <div class="end-note"><b>資料與限制</b><p>本頁核心區塊直接讀取本分支 build-live、bullpen、ctx 的固定試跑輸出；2027 賽程、球員與登板是人工測試輸入，不能當真實 2027 來源證據。2026 賽前快照與正式資料沒有改寫。</p></div>`;
       return;
