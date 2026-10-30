@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-10-30T07:26:02.944Z",
+  "target": "Crystal Palace @ Tottenham Hotspur",
+  "targetId": "401878761",
+  "targetKickoffUTC": "2026-10-31T17:30Z",
+  "overviewGames": 6,
+  "teams": [
+    {
+      "name": "Tottenham Hotspur",
+      "leagueFive": 5,
+      "recent14": 2,
+      "players": 21,
+      "pairsWithContinuation": 1,
+      "pairs": 2
+    },
+    {
+      "name": "Crystal Palace",
+      "leagueFive": 5,
+      "recent14": 4,
+      "players": 29,
+      "pairsWithContinuation": 3,
+      "pairs": 4
+    }
+  ],
+  "lottery": {
+    "status": "not_acquired",
+    "httpStatus": 403,
+    "checkedAt": "2026-10-30T07:26:05.539Z"
+  },
+  "sourceErrors": 0
+}

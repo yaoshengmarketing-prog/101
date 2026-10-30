@@ -1,0 +1,38 @@
+name: football-data
+# 足球獨立更新：目前僅手動觸發；正式頻率待分時實測與站長決定。
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: football-data
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: 取數並組合英超總覽與單場頁
+        run: node football/scripts/build-football.mjs --out .football-build/data
+      - name: 足球資料 QA
+        run: node football/scripts/qa-football.mjs .football-build/data
+      - name: 發布足球資料（僅足球路徑）
+        run: |
+          mkdir -p football/data
+          cp .football-build/data/*.json football/data/
+          git add football/data/
+          if git diff --cached --quiet; then
+            echo "足球資料沒有變動"
+            exit 0
+          fi
+          git config user.name "football-data-bot"
+          git config user.email "football-data-bot@users.noreply.github.com"
+          git commit -m "football: refresh current Premier League data"
+          git pull --rebase origin main
+          git push origin HEAD:main
