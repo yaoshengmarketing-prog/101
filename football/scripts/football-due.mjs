@@ -4,7 +4,6 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const BASE = '7 10,22 * * *';
-const VERIFY = '57 15 30 10 *';
 const API = 'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard';
 const ymd = d => d.toISOString().slice(0, 10).replaceAll('-', '');
 const minutesUntil = (kickoff, at) => (Date.parse(kickoff) - at.getTime()) / 60000;
@@ -17,10 +16,8 @@ export function dueWindow(kickoff, at) {
 
 async function main() {
   const schedule = process.env.FOOTBALL_SCHEDULE || '';
-  const proof = schedule === '5,35 * * * *' && Date.now() >= Date.parse('2026-10-30T16:00:00Z')
-    && Date.now() < Date.parse('2026-10-30T16:30:00Z');
-  let build = true, reason = proof || schedule === VERIFY ? '一次性自然排程驗證' : schedule ? '每日固定更新' : 'push／手動更新';
-  if (schedule && schedule !== BASE && schedule !== VERIFY && !proof) {
+  let build = true, reason = schedule ? '每日固定更新' : 'push／手動更新';
+  if (schedule && schedule !== BASE) {
     const now = new Date();
     const days = [ymd(now), ymd(new Date(now.getTime() + 86400000))];
     const boards = await Promise.all(days.map(async day => {
