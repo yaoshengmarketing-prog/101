@@ -54,7 +54,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p .football-publish
-          run_id=$(gh api -X GET "repos/$GITHUB_REPOSITORY/actions/workflows/football-data.yml/runs?per_page=20" --jq '[.workflow_runs[] | select(.status=="completed")][0].id')
+          # 賽前時窗檢查可能成功略過且沒有 artifact；依實際快照 artifact 選最新一次。
+          run_id=$(gh api -X GET "repos/$GITHUB_REPOSITORY/actions/artifacts?name=football-current&per_page=30" --jq '[.artifacts[] | select(.name=="football-current" and .expired==false and .workflow_run.head_branch=="main")] | max_by(.created_at).workflow_run.id')
           if [ -z "$run_id" ] || [ "$run_id" = null ] || ! gh run download "$run_id" --repo "$GITHUB_REPOSITORY" --name football-current --dir .football-publish; then
             echo '{"status":"failed","reason":"足球短期快照本次未取得","generatedAt":null,"expiresAt":null}' > .football-publish/status.json
           fi
