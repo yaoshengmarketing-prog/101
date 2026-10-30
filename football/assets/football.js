@@ -3,28 +3,32 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;
 const fmt = iso => iso ? new Intl.DateTimeFormat('zh-TW', { timeZone: 'Asia/Taipei', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(iso)) : '時間未取得';
 const day = iso => iso ? new Intl.DateTimeFormat('zh-TW', { timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(iso)) : '日期未取得';
 const gap = minutes => Number.isFinite(minutes) ? `${Math.floor(minutes / 60)} 小時${minutes % 60 ? ` ${minutes % 60} 分` : ''}` : '未取得';
-const roleLabel = { starter: '先發', sub_on: '替補上場', bench_unused: '列替補未上', not_listed: '未列來源名單', not_acquired: '本次未取得' };
+const roleLabel = { starter: '先發', sub_on: '替補上場', bench_unused: '列替補未上', not_listed: '本次來源名單未列', not_acquired: '本次未取得' };
 const teamName = name => ({ 'Tottenham Hotspur': '熱刺', 'Crystal Palace': '水晶宮', 'Brighton & Hove Albion': '布萊頓', 'Newcastle United': '紐卡索', 'Coventry City': '考文垂', 'Chelsea': '切爾西', 'Fulham': '富勒姆', Besiktas: '貝西克塔斯' }[name] || name);
 const sides = g => `${teamName(g.away.name)} @ ${teamName(g.home.name)}`;
 const ownScore = g => g.goalsFor === null ? '比分未取得' : `${g.goalsFor}–${g.goalsAgainst}`;
 const gameLabel = g => `${g.side === 'home' ? '主' : '客'}對${teamName(g.opponent.name)}`;
 const getJson = async file => { const r = await fetch(`./data/${file}?t=${Date.now()}`, { cache: 'no-store' }); if (!r.ok) throw new Error(`${file} HTTP ${r.status}`); return r.json(); };
+const expired = status => !Number.isFinite(Date.parse(status?.expiresAt)) || Date.now() > Date.parse(status.expiresAt);
+const phaseLabel = { pre: '賽前', live: '比賽進行中', final: '已完賽', postponed: '延期／取消' };
 
 async function renderOverview() {
   const node = $('#overview');
   try {
-    const o = await getJson('overview.json');
+    const [status, o] = await Promise.all([getJson('status.json'), getJson('overview.json')]);
+    if (expired(status) || status.status === 'failed') {
+      node.innerHTML = `<div class="empty">足球資料${expired(status) ? '已逾期' : '本次更新失敗'}，暫停顯示賽程。上次取得：${esc(fmt(status.generatedAt))}（台灣）。</div>`;
+      return;
+    }
     const dateGroups = o.dates.map(date => {
       const games = o.games.filter(g => g.twDate === date);
       return `<section class="day-group"><h2>${esc(date)}（台灣）</h2>${games.length ? games.map(g => {
-        const selected = g.key === o.target;
-        const content = `<span class="meta">${esc(fmt(g.kickoffUTC))} · 預定開球</span><b>${esc(sides(g))}</b><span class="visit">${selected ? '查看完整單場頁 →' : '本包尚未產生這場的單場資料'}</span>`;
-        return selected ? `<a class="overview-card featured" href="game.html">${content}</a>` : `<div class="overview-card disabled">${content}</div>`;
+        const content = `<span class="meta">${esc(fmt(g.kickoffUTC))} · ${esc(phaseLabel[g.phase] || '狀態未取得')}</span><b>${esc(sides(g))}</b><span class="visit">${g.dataStatus === 'ready' ? '查看固定單場頁 →' : '這場資料本次未取得'}</span>`;
+        return g.dataStatus === 'ready' ? `<a class="overview-card featured" href="game.html?id=${esc(g.id)}">${content}</a>` : `<div class="overview-card disabled">${content}</div>`;
       }).join('') : '<div class="empty">這一天沒有已知英超賽程。</div>'}</section>`;
     }).join('');
-    node.innerHTML = `<p class="meta">本次建置：${esc(fmt(o.generatedAt))}（台灣） · 範圍：英超</p>${dateGroups}
-      <section class="day-group"><h2>本包完整單場頁</h2><a class="overview-card featured" href="game.html"><span class="meta">${esc(fmt(o.targetGame.kickoffUTC))}（台灣）</span><b>${esc(sides(o.targetGame))}</b><span class="visit">開啟已取數的單場頁 →</span></a></section>
-      <p class="notice">其他總覽場次目前只有賽程，單場資料尚未建置；頁面沒有用舊樣本填補。</p>`;
+    node.innerHTML = `<p class="meta">本次取得：${esc(fmt(o.generatedAt))}（台灣） · ${o.games.filter(g => g.dataStatus === 'ready').length}/${o.games.length} 場有單場資料</p>
+      ${status.status === 'partial' ? '<p class="notice">部分來源本次未取得；各場缺漏請看單場頁。</p>' : ''}${dateGroups}`;
   } catch (e) { node.innerHTML = `<div class="empty">賽程資料載入失敗：${esc(e.message)}</div>`; }
 }
 
@@ -49,11 +53,11 @@ function openContext(key, opener) {
   $('#close-context').focus();
 }
 
-function resultBlock(t) {
+function resultBlock(t, snapshotThreshold = null) {
   return `<div class="team-block"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.leagueFive.length}/5 場</h3>
     ${t.leagueFive.length ? t.leagueFive.map(g => `<article class="result">
       <div class="result-top"><small>${esc(fmt(g.kickoffUTC))} · ${esc(gameLabel(g))}</small><span class="total">${g.totalGoals === null ? '總進球未取得' : `${g.totalGoals} 球`}</span></div>
-      <div class="result-bottom"><span class="score">${esc(ownScore(g))}</span><button class="text-button" type="button" data-context="${esc(g.key)}">比賽背景 ↗</button></div>
+      <div class="result-bottom"><span class="score">${esc(ownScore(g))}</span>${snapshotThreshold !== null && g.totalGoals !== null ? `<span class="tiny">對照本場快照 ${snapshotThreshold}：${g.totalGoals > snapshotThreshold ? '大' : g.totalGoals < snapshotThreshold ? '小' : '恰等門檻'}</span>` : ''}<button class="text-button" type="button" data-context="${esc(g.key)}">比賽背景 ↗</button></div>
     </article>`).join('') : '<p class="empty">英超逐場紀錄本次未取得。</p>'}</div>`;
 }
 
@@ -108,31 +112,65 @@ function personBlock(t) {
       }).join('')}</div></details>`).join('')}</div>`;
 }
 
+function lineupBlock(d) {
+  const target = d.target, detail = d.details[target.key];
+  if (d.lineupStatus === 'fetch_failed') return `<p class="notice">本場名單本次取得失敗；查詢 ${esc(fmt(d.lineupCheckedAt))}（台灣）。以下只看近期用人。</p>`;
+  if (d.lineupStatus === 'unannounced') return `<p class="status">本場來源尚無正式名單；查詢 ${esc(fmt(d.lineupCheckedAt))}（台灣）。以下只看近期用人。</p>`;
+  return `<section class="section"><h2>本場名單與近期用人</h2><p class="section-sub">${d.lineupStatus === 'source_listed' ? '兩隊已列出 11 名先發' : '來源只提供部分名單'}；替補名單完整性尚未核實。查詢 ${esc(fmt(d.lineupCheckedAt))}（台灣）。</p>
+    ${[target.away, target.home].map(team => {
+      const roster = detail.rosters?.[team.id] || [];
+      const starts = roster.filter(p => p.role === 'starter');
+      const bench = roster.filter(p => p.role !== 'starter');
+      const pair = d.teamData[team.id]?.pairs?.at(-1);
+      return `<details class="expander"><summary class="action">${esc(teamName(team.name))} · 先發 ${starts.length}/11 人</summary><div class="expander-body">
+        <p>${starts.length ? starts.map(p => esc(p.name)).join('、') : '先發名單本次未取得'}</p>
+        <p class="tiny">來源列出替補 ${bench.length} 人；不能由 11 名先發推定替補名單完整。</p>
+        ${bench.length ? `<p class="tiny">${bench.map(p => esc(p.name)).join('、')}</p>` : ''}
+        <p class="facts">${pair?.continuation === null || pair?.continuation === undefined ? '與前場先發延續：本次不能判定' : `與前場沿用 ${pair.continuation}/11 名先發`}</p>
+      </div></details>`;
+    }).join('')}</section>`;
+}
+
 async function renderGame() {
   const node = $('#game');
   try {
-    const d = await getJson('game.json'); pageData = d;
+    const id = new URLSearchParams(location.search).get('id') || '401878761';
+    if (!/^\d+$/.test(id)) throw new Error('賽事 ID 格式不正確');
+    const [status, d] = await Promise.all([getJson('status.json'), getJson(`games/${id}.json`)]);
+    if (d.target.id !== id) throw new Error('賽事 ID 與資料不符，已停止顯示');
+    if (expired(status) || expired(d) || status.status === 'failed') {
+      node.innerHTML = `<div class="empty">賽事 ${esc(id)} 的足球資料${expired(status) || expired(d) ? '已逾期' : '本次更新失敗'}，暫停顯示。上次取得：${esc(fmt(d.generatedAt))}（台灣）。</div>`;
+      return;
+    }
+    pageData = d;
     const target = d.target, away = d.teamData[target.away.id], home = d.teamData[target.home.id];
     const odds = d.lottery;
-    const market = odds.markets ? `<div class="panel"><div class="market-grid"><div><div class="market-label">總進球</div><div class="market-number">${esc(odds.markets.total || '未取得')}</div></div><div><div class="market-label">不讓分</div><div class="market-number">${esc(odds.markets.normal || '未取得')}</div></div></div></div>`
-      : `<div class="panel missing"><strong>台彩盤口：本次未取得</strong><p class="meta">${esc(odds.reason)}<br>查詢：${esc(fmt(odds.checkedAt))}（台灣）。不顯示舊樣本賠率。</p><a class="source-link" href="${esc(odds.source)}" target="_blank" rel="noopener noreferrer">查看台彩官方賽事表 ↗</a></div>`;
-    node.innerHTML = `<div class="sample">當季資料試作 · 本次取數 ${esc(fmt(d.generatedAt))}（台灣） · 非即時</div>
-      <p class="match-meta">英超 · 賽前資料</p><h1>${esc(sides(target))}</h1>
+    const totalMarket = odds.status === 'snapshot' ? odds.markets.find(m => m.play === '大小' && Number.isFinite(Number(m.threshold))) : null;
+    const threshold = totalMarket ? Number(totalMarket.threshold) : null;
+    const market = odds.status === 'snapshot' ? `<div class="panel"><strong>官方賠率快照 · 賽事編號 ${esc(odds.lotteryEventId)}</strong>
+      <p class="meta">本站取得：${esc(fmt(odds.capturedAt))}（台灣）；非即時報價，最新賠率請看台彩。</p>
+      ${odds.markets.map(m => `<div class="market-grid"><div><div class="market-label">${esc(m.play)}${m.threshold === null || m.threshold === undefined ? '' : ` · 門檻 ${esc(m.threshold)}`}</div><div class="market-number">${m.odds.map(o => `${esc(o.choice)} ${esc(o.price)}`).join('　')}</div></div></div>`).join('')}
+      <a class="source-link" href="${esc(odds.sourcePage)}" target="_blank" rel="noopener noreferrer">前往台彩查看最新賠率 ↗</a></div>`
+      : `<div class="panel missing"><strong>台彩官方賠率快照：本場未取得</strong><p class="meta">${esc(odds.reason)}不顯示舊樣本賠率。</p><a class="source-link" href="${esc(odds.source)}" target="_blank" rel="noopener noreferrer">前往台彩查看最新賠率 ↗</a></div>`;
+    node.innerHTML = `<div class="sample">當季資料試行 · 本次取數 ${esc(fmt(d.generatedAt))}（台灣） · 非即時 · 賽事 ID ${esc(id)}</div>
+      <p class="match-meta">英超 · ${esc(phaseLabel[target.phase] || '狀態未取得')} · 賽前研究資料</p><h1>${esc(sides(target))}</h1>
       <p class="match-time">預定開球 ${esc(day(target.kickoffUTC))} ${esc(fmt(target.kickoffUTC).slice(-5))}（台灣）</p>
-      <p class="status">本場正式名單：取數時尚未公布；以下為近期實際用人。</p>
-      <section class="section"><h2>台灣運彩盤口</h2>${market}</section>
+      ${target.score ? `<p class="status">目前來源比分：${esc(scoreAt(target.score, target))}</p>` : ''}
+      ${target.phase === 'pre' ? '' : '<p class="tiny">本頁保留賽前研究脈絡；賽事狀態會更新，並非即時戰況頁。</p>'}
+      ${lineupBlock(d)}
+      <section class="section"><h2>台灣運彩官方賠率快照</h2>${market}</section>
       <section class="section"><h2>兩隊英超近況</h2><div class="number-grid">
-        ${[away, home].map(t => `<div class="number-card"><small>${esc(teamName(t.team.name))} · ${t.goals.games}/5 場</small><b>${t.goals.for} 進 ${t.goals.against} 失</b></div>`).join('')}</div>
+        ${[away, home].map(t => `<div class="number-card"><small>${esc(teamName(t.team.name))} · ${t.goals.games}/${t.goals.requested} 場比分完整</small><b>${t.goals.for === null ? '進失球本次未能完整合計' : `${t.goals.for} 進 ${t.goals.against} 失`}</b></div>`).join('')}</div>
         <p class="compare-note">分母是各隊開球前最近取得的英超比賽；不是勝率或本場預測。</p></section>
-      <section class="section"><h2>逐場紀錄 · 英超</h2><p class="section-sub">兩隊分開列，比分為本隊–對手；總進球由程式相加。盤口未取得時不標大／小。</p>
-        ${resultBlock(away)}${resultBlock(home)}<p class="tiny">xG 本次未取得；每列「比賽背景」與下方球員紀錄連到同一場事件。</p></section>
+      <section class="section"><h2>逐場紀錄 · 英超</h2><p class="section-sub">兩隊分開列，比分為本隊–對手；總進球由程式相加。${threshold === null ? '本場無大小快照門檻，不標大／小。' : `以下以本場快照 ${threshold} 球門檻對照歷史總進球，非各場當時盤口結果。`}</p>
+        ${resultBlock(away, threshold)}${resultBlock(home, threshold)}<p class="tiny">xG 本次未取得；每列「比賽背景」與下方球員紀錄連到同一場事件。</p></section>
       <section class="section"><h2>近期用人 · 近 14 日跨賽事</h2><p class="section-sub">已查英超、歐冠、歐聯、歐協、足總盃與聯賽盃；只列取得的已完賽。替補是當場狀態。</p>
         ${[away, home].map((t, i) => `<div class="usage-card${i ? ' alt' : ''}"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.recent14.length} 場</h3><p>${esc(summarizeUsage(t))}</p></div>`).join('')}
         <details class="expander" id="pairs"><summary class="action">查看相鄰場次與開球間隔 <span>⌄</span></summary><div class="expander-body">${pairBlock(away, d)}${pairBlock(home, d)}</div></details>
         <details class="expander" id="people"><summary class="action">直接查看球員逐場紀錄 <span>⌄</span></summary><div class="expander-body">${personBlock(away)}${personBlock(home)}</div></details>
       </section>
-      <section class="section"><h2>來源、時間與缺漏</h2><p class="meta">歷史資料查詢：${esc(fmt(d.generatedAt))}（台灣）；台彩查詢：${esc(fmt(odds.checkedAt))}（台灣）。本次來源錯誤 ${d.errors.length} 筆。</p>
-        <ul class="source-list"><li><a href="https://www.premierleague.com/en/news/4675097/all-380-fixtures-for-season-2026-27" target="_blank" rel="noopener noreferrer">英超官方賽程</a>（核對目標場）</li><li><a href="${esc(target.source)}" target="_blank" rel="noopener noreferrer">ESPN 目標賽事</a>（本次自動資料）</li><li><a href="${esc(odds.source)}" target="_blank" rel="noopener noreferrer">台彩官方賽事表</a>（本次請求受阻）</li></ul>
+      <section class="section"><h2>來源、時間與缺漏</h2><p class="meta">賽事與歷史資料查詢：${esc(fmt(d.generatedAt))}（台灣）；本場名單查詢：${esc(fmt(d.lineupCheckedAt))}（台灣）；台彩${odds.status === 'snapshot' ? `快照取得：${esc(fmt(odds.capturedAt))}（台灣）` : '快照未取得'}。本次來源錯誤 ${d.errors.length} 筆。</p>
+        <ul class="source-list"><li><a href="https://www.premierleague.com/en/news/4675097/all-380-fixtures-for-season-2026-27" target="_blank" rel="noopener noreferrer">英超官方賽程</a>（目標場核對）</li><li><a href="${esc(target.source)}" target="_blank" rel="noopener noreferrer">ESPN 目標賽事</a>（本次自動資料）</li><li><a href="${esc(odds.source)}" target="_blank" rel="noopener noreferrer">台彩官方入口</a>（最新賠率由讀者查看）</li></ul>
         <p class="notice">${d.limitations.map(esc).join(' ')}來源失敗時本次欄位留空並標查詢時間，不沿用上次結果。</p></section>`;
     node.addEventListener('click', event => {
       const context = event.target.closest('[data-context]');
@@ -145,7 +183,10 @@ async function renderGame() {
     });
     $('#close-context').addEventListener('click', () => $('#context').close());
     $('#context').addEventListener('close', () => lastOpener?.focus({ preventScroll: true }));
-  } catch (e) { node.innerHTML = `<div class="empty">單場資料載入失敗：${esc(e.message)}</div>`; }
+  } catch (e) {
+    const id = new URLSearchParams(location.search).get('id') || '401878761';
+    node.innerHTML = `<div class="empty">賽事 ${esc(id)} 的資料本次未取得或已超出保存期：${esc(e.message)}。<a href="./">返回英超總覽</a></div>`;
+  }
 }
 
 if ($('#game')) renderGame(); else if ($('#overview')) renderOverview();

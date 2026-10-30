@@ -1,0 +1,27 @@
+{
+  "401878761": {
+    "eventId": "401878761",
+    "matchedHomeId": "367",
+    "matchedAwayId": "384",
+    "kickoffUTC": "2026-10-31T17:30:00.000Z",
+    "lotteryEventId": "1019",
+    "officialTeams": {
+      "home": "托特納姆熱刺",
+      "away": "水晶宮"
+    },
+    "capturedAt": "2026-10-30T08:42:25.000Z",
+    "source": "https://www-talo-ssb-pr.sportslottery.com.tw/daily-coupons",
+    "sourcePage": "https://www-talo-ssb-pr.sportslottery.com.tw/daily-coupons",
+    "markets": [
+      {
+        "play": "不讓分",
+        "threshold": null,
+        "odds": [
+          { "choice": "主勝", "price": 1.45 },
+          { "choice": "和局", "price": 3.65 },
+          { "choice": "客勝", "price": 4.40 }
+        ]
+      }
+    ]
+  }
+}
