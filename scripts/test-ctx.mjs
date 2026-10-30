@@ -6,7 +6,7 @@ import { relLabel, pickForecast, wanted } from "./forecast.mjs";
 let total = 0; const fails = []; const check = (n, c) => { total++; console.log((c ? "PASS " : "FAIL ") + n); if (!c) fails.push(n); };
 const team = (o = {}) => ({ id: 1, name: "甲", rec: "80-70", l10: "5-5", streak: "W1", home: "40-35", road: "40-35", rs: 700, ra: 700, gp: 150, ops: ".720",
   sp: { name: "P", s: { whip: "1.10", era: "3.50", ip: "150.0", gs: 25 } }, ...o });
-const game = (o = {}) => ({ pk: 1, usDate: "2026-09-25", venue: "V", startUTC: "2026-09-25T23:05:00Z", twTime: "07:05", tbd: false, dh: null, status: { code: "pre" }, updatedAt: "t",
+const game = (o = {}) => ({ pk: 1, usDate: "2026-09-25", gameType: "R", venue: "V", startUTC: "2026-09-25T23:05:00Z", twTime: "07:05", tbd: false, dh: null, status: { code: "pre" }, updatedAt: "t",
   away: team({ id: 1, name: "甲" }), home: team({ id: 2, name: "乙" }), ...o });
 const day = (st, p, extra = {}) => ({ st, complete: st === "played", rpPitches: st === "played" ? p : null, rpAppsNoCount: 0, ...extra });
 const bp = (a, h, pa = [], ph = []) => ({ status: "ok", fetchedAt: "t", summary: { away: { days: a, pitchers: pa }, home: { days: h, pitchers: ph } } });
@@ -200,3 +200,4 @@ check("預報對象：賽前、時間已定、48 小時內", wanted({ status: { 
   check("整場條件：不指定一隊（teams null），記兩隊比分與第 7 局起得分", gp.n === 1 && gp.games[0].teams === null && gp.games[0].score.home.lateRuns === 3 && gp.byType.post === 1); }
 console.log(`\n${fails.length ? "FAIL" : "PASS"}：${total - fails.length}/${total}`);
 process.exit(fails.length ? 1 : 0);
+

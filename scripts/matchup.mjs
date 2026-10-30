@@ -117,7 +117,7 @@ export function notesOf({ pitcher, splits, recent, lineup }) {
   const s = recent.starts, last = s.at(-1);
   let recentNote = null;
   const apps = recent.totalApps ?? null, gs = recent.totalStarts ?? s.length;
-  if (apps === 0) recentNote = `MLB 官方資料查不到 ${P} 本季（例行賽＋季後賽）的大聯盟登板紀錄，本站沒有他的投球紀錄可列。`;
+  if (apps === 0) recentNote = `所查本季例行賽＋季後賽 gameLog 沒有 ${P} 的登板紀錄；春訓登板另看近期實際用量，不能由此推定沒有登板。`;
   else if (s.length < 3) recentNote = apps != null
     ? `本季（例行賽＋季後賽）登板 ${apps} 次、先發 ${gs} 次${apps > gs ? `，${gs ? `其餘 ${apps - gs} 次` : "全部"}是後援` : ""}；上方對左右打分項只算例行賽的登板。`
     : `本季（例行賽＋季後賽）只有 ${s.length} 次先發紀錄。`;
@@ -190,7 +190,7 @@ export async function buildMatchup(g, nowISO, fetchJson = getJson) {
       else { const m = projId[bs]?.[x.name] || { id: null, why: "nomatch" }; x.id = m.id;
         Object.assign(x, m.id ? { ...batVs(people[m.id], vsCode), season: batSeason(people[m.id]) } : { vs: null, why: m.why }); }
     }
-    pairs.push({ pitcherSide: ps, battingSide: bs, basis, pitcher, vsCode, splits, splitScope: `${season} 例行賽`, recent, lineup, eff: lineup ? effective(lineup.comp, sp.hand) : null, focus: lineup ? focusOf(lineup.comp, sp.hand) : null, ...notesOf({ pitcher, splits, recent, lineup }) });
+    pairs.push({ pitcherSide: ps, battingSide: bs, basis, pitcher, vsCode, splits, splitScope: `${season} 例行賽`, recentScope: { season, gameTypes: ["R","F","D","L","W"], kind: "最近先發，不含春訓所有登板" }, recent, lineup, eff: lineup ? effective(lineup.comp, sp.hand) : null, focus: lineup ? focusOf(lineup.comp, sp.hand) : null, ...notesOf({ pitcher, splits, recent, lineup }) });
   }
   return { rules: MU_RULES, pk: g.pk, fetchedAt: nowISO, pairs };
 }
@@ -213,3 +213,4 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   fs.appendFileSync(`${OUT}/report.md`, `\n## 先發 × 對方打線（${MU_RULES}，試作）\n\n${lines.map(l => "- " + l).join("\n")}\n`);
   console.log("對位卡：" + lines.join("｜"));
 }
+

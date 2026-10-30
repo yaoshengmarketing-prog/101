@@ -35,7 +35,7 @@ export async function collectBullpen({ gamePk, fetchJson, nowISO }) {
   if (!tg) throw new Error("找不到 gamePk " + gamePk);
   const D = tg.officialDate, full = [addDays(D, -3), addDays(D, -2), addDays(D, -1)];
   const out = { rules: RULES_VERSION, fetchedAt: nowISO,
-    target: { pk: tg.gamePk, officialDate: D, startUTC: tg.gameDate, status: tg.status.detailedState,
+    target: { pk: tg.gamePk, officialDate: D, season: D.slice(0, 4), gameType: tg.gameType ?? null, startUTC: tg.gameDate, status: tg.status.detailedState,
               dh: tg.doubleHeader, gameNumber: tg.gameNumber, venue: tg.venue && tg.venue.name },
     window: { full, today: D }, teams: {}, sources };
   for (const side of ["away", "home"]) {
@@ -49,7 +49,7 @@ export async function collectBullpen({ gamePk, fetchJson, nowISO }) {
     const games = [];
     for (const { g, listed } of prior) {
       const st = g.status.detailedState, my = g.teams.away.team.id === team.id ? "away" : "home";
-      const rec = { pk: g.gamePk, day: listed, officialDate: g.officialDate, startUTC: g.gameDate, status: st,
+      const rec = { pk: g.gamePk, day: listed, officialDate: g.officialDate, season: String(g.officialDate).slice(0, 4), gameType: g.gameType ?? null, startUTC: g.gameDate, status: st,
                     gameNumber: g.gameNumber, opp: ((o) => TEAM_ZH[o.id] || o.name)(g.teams[my === "away" ? "home" : "away"].team), pitchers: null, partial: false };
       if (FINAL.has(st) || LIVE.has(st)) {
         try { const bx = await get(`/api/v1/game/${g.gamePk}/boxscore`); rec.pitchers = extract(bx.teams[my]); rec.partial = !FINAL.has(st); }
@@ -91,7 +91,7 @@ export function summarize(raw) {
       const rp = got.flatMap((g) => g.pitchers.filter((p) => p.role === "RP"));
       const known = rp.filter((p) => p.pitches !== null);
       return { d, st, complete: st === "played",
-        games: gs.map((g) => ({ pk: g.pk, status: g.status, gameNumber: g.gameNumber, opp: g.opp,
+        games: gs.map((g) => ({ pk: g.pk, season: g.season ?? null, gameType: g.gameType ?? null, status: g.status, gameNumber: g.gameNumber, opp: g.opp,
           data: g.pitchers ? (g.partial ? "partial" : "full") : (FINAL.has(g.status) || LIVE.has(g.status)) ? "missing" : "n/a" })),
         gamesExpected: exp.length, gamesMissing: missing.length,
         rpApps: rp.length, rpPitchers: new Set(rp.map((p) => p.id)).size,
@@ -116,7 +116,13 @@ export function summarize(raw) {
       return { ...p, streak, streakAtEdge: atEdge, streakUncertain: uncertain, last,
                total: Object.values(p.days).reduce((a, e) => a + e.pitches, 0) };
     }).sort((a, b) => b.streak - a.streak || b.last.localeCompare(a.last) || b.total - a.total);
-    res[side] = { name: t.name, days: dayInfo, pitchers };
+    // Reading layer: every actual appearance, including the first pitcher. Position in boxscore is not a fixed bullpen role.
+    const recentUsage = t.games.flatMap(g => (g.pitchers || []).map(p => ({
+      pk: g.pk, day: g.day, season: g.season ?? null, gameType: g.gameType ?? null,
+      id: p.id, name: p.name, ip: p.ip, pitches: p.pitches,
+      completeness: g.partial ? "partial" : "full"
+    }))).sort((a, b) => a.day.localeCompare(b.day) || a.pk - b.pk);
+    res[side] = { name: t.name, days: dayInfo, pitchers, recentUsage };
   }
   return res;
 }
@@ -135,7 +141,11 @@ export async function buildBullpen({ games, fetchJson, nowISO }) {
       const days = ["away", "home"].flatMap((k) => s[k].days);
       const missing = days.reduce((a, d) => a + d.gamesMissing, 0);
       const status = days.some((d) => ["incomplete", "error"].includes(d.st)) ? "incomplete" : "ok";
-      files[g.pk] = { rules: RULES_VERSION, fetchedAt: nowISO, status, target: raw.target, window: raw.window, summary: s,
+      const prior = ["away", "home"].flatMap(k => raw.teams[k].games.filter(x => raw.window.full.includes(x.day)));
+      const scope = { season: raw.target.season, gameType: raw.target.gameType,
+        hasSpringInFullWindow: prior.some(x => x.gameType === "S"),
+        hasUnknownTypeInFullWindow: prior.some(x => !x.gameType) };
+      files[g.pk] = { rules: RULES_VERSION, fetchedAt: nowISO, status, target: raw.target, window: raw.window, scope, summary: s,
                       sources: raw.sources, gamesMissing: missing };
       index[g.pk] = { status, gamesMissing: missing };
     } catch (e) {
@@ -181,3 +191,4 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     Object.entries(index).filter(([, v]) => v.status !== "ok" || v.retryFailedSince).map(([pk, v]) => `- ${pk}：${v.status}${v.error ? "（" + v.error + "）" : v.retryFailedSince ? `（自 ${v.retryFailedSince} 起重抓失敗，保留上一版有效資料）` : `（未取得 ${v.gamesMissing} 場）`}`).join("\n") + "\n");
   console.log(`牛棚：完整 ${idx.counts.ok}／部分 ${idx.counts.incomplete}／失敗 ${idx.counts.failed}／共 ${idx.counts.total}`);
 }
+

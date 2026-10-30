@@ -54,7 +54,7 @@ t("先發不到 3 次：寫登板與先發次數（例行賽＋季後賽），�
   assert.equal(notesOf({ pitcher: { name: "AJ Blubaugh", hand: "R" }, splits: TOLLE, recent: bl, lineup: lu(NYY) }).recentNote, "本季（例行賽＋季後賽）登板 64 次、先發 0 次，全部是後援；上方對左右打分項只算例行賽的登板。");
   const two = recentStarts([log("2026-09-02", 1, "3.0", 50, 0), log("2026-09-10", 0, "1.0", 12, 0), log("2026-09-20", 1, "2.0", 33, 0)]);
   assert.equal(notesOf({ pitcher: { name: "H" }, splits: TOLLE, recent: two, lineup: lu(NYY) }).recentNote, "本季（例行賽＋季後賽）登板 3 次、先發 2 次，其餘 1 次是後援；上方對左右打分項只算例行賽的登板。");
-  assert.equal(notesOf({ pitcher: { name: "New Guy" }, splits: { vl: null, vr: null }, recent: recentStarts([]), lineup: lu(NYY) }).recentNote, "MLB 官方資料查不到 New Guy 本季（例行賽＋季後賽）的大聯盟登板紀錄，本站沒有他的投球紀錄可列。");
+  assert.equal(notesOf({ pitcher: { name: "New Guy" }, splits: { vl: null, vr: null }, recent: recentStarts([]), lineup: lu(NYY) }).recentNote, "所查本季例行賽＋季後賽 gameLog 沒有 New Guy 的登板紀錄；春訓登板另看近期實際用量，不能由此推定沒有登板。");
   assert.doesNotMatch(notesOf({ pitcher: { name: "AJ" }, splits: TOLLE, recent: bl, lineup: lu(NYY) }).recentNote, /角色|限球|局數/); });
 t("左右開弓：面對右投算左打席、面對左投算右打席；慣用手未知不計；5 對 4 兩邊都看（紅襪預估 L3 R4 S2 對 Schlittler 右投）", () => {
   const BOS = ["L", "S", "L", "R", "R", "R", "L", "R", "S"].map((bats, i) => ({ n: i + 1, bats })), c = composition(BOS);
@@ -155,3 +155,4 @@ await (async () => { const urls = [];
   assert.equal(m2.pairs[0].vsCode, null); assert.ok(m2.pairs[0].lineup.slots.every(x => !("vs" in x)));
   n++; console.log("ok 打者端：官方用 id、預估用 40 人名單唯一全名（不唯一、對不到記原因）、手別決定 vl／vr、慣用手未知不算"); })();
 console.log(`${n}/${n} 通過`);
+

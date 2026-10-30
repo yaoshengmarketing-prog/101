@@ -1,5 +1,6 @@
 (function previewApp(){
   "use strict";
+  if(new URLSearchParams(location.search).has("trial")) return;
   const D=window.PREVIEW_DATA, root=document.getElementById("app");
   const qs=new URLSearchParams(location.search);
   const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));

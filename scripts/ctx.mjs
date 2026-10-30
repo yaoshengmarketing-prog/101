@@ -72,6 +72,8 @@ export const CHECKS = [
   { id: "bp_load", title: "前三日牛棚用球數差距", threshold: `前三個完整日牛棚合計，兩隊相差 ≥ ${TH.bp_load.diff} 球`, inputs: ["bullpen"],
     run(g, b) {
       if (!bpOk(b)) return na("本場牛棚資料沒有取得");
+      if (g.gameType === "R" && b.scope?.hasSpringInFullWindow) return na("跨春訓／例行賽過渡視窗：暫不判定；春訓登板僅供近期實際用量閱讀");
+      if (g.gameType === "R" && b.scope?.hasUnknownTypeInFullWindow) return na("前三日賽別未取得：暫不判定");
       const t = s => { const full = b.summary[s].days.slice(0, 3);
         const bad = full.filter(d => !(d.complete || ["off", "ppd"].includes(d.st)) || d.rpAppsNoCount || (d.st === "played" && !fin(d.rpPitches)));
         return bad.length ? { bad } : { sum: full.reduce((a, d) => a + (d.st === "played" ? d.rpPitches : 0), 0), full }; };
@@ -93,6 +95,8 @@ export const CHECKS = [
   { id: "bp_streak", title: "中繼連續登板", threshold: `一方有 ≥ ${TH.bp_streak.pitchers} 位中繼連續 ${TH.bp_streak.days} 天以上登板（到本場之前）`, inputs: ["bullpen"],
     run(g, b) {
       if (!bpOk(b)) return na("本場牛棚資料沒有取得");
+      if (g.gameType === "R" && b.scope?.hasSpringInFullWindow) return na("跨春訓／例行賽過渡視窗：暫不判定；春訓登板僅供近期實際用量閱讀");
+      if (g.gameType === "R" && b.scope?.hasUnknownTypeInFullWindow) return na("前三日賽別未取得：暫不判定");
       // 已確認的連投人數只會少算不會多算：成立可以直接認定；「未達」必須資料齊全才能說
       const side = s => { const t = b.summary[s];
         const who = t.pitchers.filter(p => p.streak >= TH.bp_streak.days);
@@ -175,7 +179,7 @@ export function staleOf(inputs, g, b) {
   return out;
 }
 
-export const ident = g => ({ pk: g.pk, usDate: g.usDate, twDate: g.twDate, startUTC: g.startUTC, dh: g.dh ?? null, venue: g.venue, gameType: g.gameType ?? null,
+export const ident = g => ({ pk: g.pk, season: g.season ?? g.usDate?.slice(0, 4) ?? null, usDate: g.usDate, twDate: g.twDate, startUTC: g.startUTC, dh: g.dh ?? null, venue: g.venue, gameType: g.gameType ?? null,
   away: { id: g.away.id, ab: g.away.ab }, home: { id: g.home.id, ab: g.home.ab } });
 
 // ===== 歷史相似情境紀錄（站長 10-18 核准 A）=====
@@ -210,6 +214,7 @@ export function similarOf(rec, pool) {
     const ex = { late: 0, rules: 0, th: 0, incomplete: 0, undetermined: 0 }, rows = [];
     for (const r of pool) {
       if (!r?.game || r.game.pk === rec.game.pk || !(r.game.startUTC < rec.game.startUTC)) continue;
+      if (GT_OF(r) === "S") continue; // 春訓回查不是例行賽的歷史情境樣本
       const c = r.checks?.find(x => x.id === id); if (c?.state !== "hit") continue;
       if ((r.sample || "late") !== "pregame") { ex.late++; continue; }
       if (r.rules !== RULES) { ex.rules++; continue; }
@@ -223,7 +228,8 @@ export function similarOf(rec, pool) {
         lateFrom: P.late?.fromInning ?? 7 });
     }
     rows.sort((a, b) => b.startUTC.localeCompare(a.startUTC) || b.pk - a.pk);
-    const n = rows.length, byType = { R: rows.filter(x => x.gameType === "R").length, post: rows.filter(x => x.gameType && x.gameType !== "R").length, unknown: rows.filter(x => !x.gameType).length };
+    const n = rows.length, byType = { R: rows.filter(x => x.gameType === "R").length, post: rows.filter(x => ["F","D","L","W"].includes(x.gameType)).length,
+      S: rows.filter(x => x.gameType === "S").length, other: rows.filter(x => x.gameType && !["R","S","F","D","L","W"].includes(x.gameType)).length, unknown: rows.filter(x => !x.gameType).length };
     out[id] = { rules: RULES, th: TH[id] ?? null, n, byType, level: n === 0 ? "none" : n < SIM_GROW ? "growing" : "has", matchedNow: matchedOf(rec.checks.find(x => x.id === id)), excluded: ex, games: rows.slice(0, SIM_MAX) };
   }
   return out;
@@ -231,18 +237,20 @@ export function similarOf(rec, pool) {
 
 // 純函式：單場 → 情境紀錄
 export function compute(g, b, all, nowISO) {
-  const checks = CHECKS.map(c => { let r; try { r = c.run(g, b, all); } catch (e) { r = na(`計算錯誤：${e.message}`); }
+  const supported = ["R","F","D","L","W"].includes(g.gameType);
+  const checks = CHECKS.map(c => { let r; try { r = supported ? c.run(g, b, all) : na("本場賽別尚未適用既有情境：暫不判定"); } catch (e) { r = na(`計算錯誤：${e.message}`); }
     const stale = r.state === "na" ? [] : staleOf(c.inputs, g, b);
     return { id: c.id, title: c.title, threshold: c.threshold, th: TH[c.id] || null, ...r, ...(stale.length ? { stale } : {}) }; });
   // updatedAt／fetchedAt 是 data-changed.mjs 忽略的時間戳：只有結果變了才算資料變動
-  return { rules: RULES, maxCards: MAXCARDS, updatedAt: nowISO, phase: g.status.code, sample: g.status.code === "pre" ? "pregame" : "late",
+  return { rules: RULES, maxCards: MAXCARDS, updatedAt: nowISO, phase: g.status.code, sample: !supported ? "not_applicable" : g.status.code === "pre" ? "pregame" : "late",
     game: ident(g),
     weather: g.weather ?? null, // 計算當下的 MLB 官方天氣（null＝當時尚未公布）；凍結後就是最後一次賽前看到的
     forecast: g.forecast ?? null, // 計算當下的模型預報（scripts/forecast.mjs；不是官方）
     inputs: { game: { updatedAt: g.updatedAt }, bullpen: b ? { fetchedAt: b.fetchedAt, status: b.status } : null },
     hits: checks.filter(c => c.state === "hit").map(c => c.id), checks,
     // 牛棚背景（不論有沒有成卡都算，單場頁牛棚表上方顯示）；partial＝前三日有資料不完整，文字已寫明是已取得部分小計
-    bp: bpOk(b) ? Object.fromEntries(["away", "home"].map(s => [s, bpDetail({ ...b.summary[s], name: g[s].name }, b.summary[s].days.slice(0, 3))])) : null };
+    bp: bpOk(b) && !b?.scope?.hasSpringInFullWindow && !b?.scope?.hasUnknownTypeInFullWindow
+      ? Object.fromEntries(["away", "home"].map(s => [s, bpDetail({ ...b.summary[s], name: g[s].name }, b.summary[s].days.slice(0, 3))])) : null };
 }
 
 // 賽前才算；開賽後（或延賽、取消）沿用最後一次賽前的結果，第一次凍結時記下凍結時間與距「表定」開賽幾分鐘（game.startUTC 是 MLB 表定時間，不是實際第一球）
@@ -277,3 +285,4 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   fs.appendFileSync(`${OUT}/report.md`, `\n## 情境卡（${RULES}）\n\n${line}\n`);
   console.log("情境卡：" + line);
 }
+

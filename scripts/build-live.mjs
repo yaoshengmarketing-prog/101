@@ -25,7 +25,7 @@ function statusOf(g) {
 
 // prevGame(pk)：上一版已公開的 games/<pk>.json（沒有就 null）。某項抓取失敗時沿用它並標示原取得時間，不用空值蓋掉。
 export async function build({ fetchJson, now = new Date(), state = { games: {} }, prevGame = () => null }) {
-  const today = twDate(now.toISOString()), tomorrow = addDays(today, 1), nowISO = now.toISOString(), season = today.slice(0, 4);
+  const today = twDate(now.toISOString()), tomorrow = addDays(today, 1), nowISO = now.toISOString();
   const events = [], errors = [];
   const ev = (pk, type, detail) => events.push({ at: nowISO, pk, type, ...detail });
   const errBy = {}; // 抓取失敗的項目 → 錯誤訊息
@@ -43,6 +43,11 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
     if (!prev || (statusOf(prev).code === "ppd" && statusOf(g).code !== "ppd")) byPk.set(g.gamePk, g);
   }
   const games = [...byPk.values()].sort((a, b) => a.gameDate.localeCompare(b.gameDate) || a.gamePk - b.gamePk);
+  // The statistics belong to the scheduled game's US season, never the year in which this script happens to run.
+  const gameSeasons = [...new Set(games.map(g => String(g.officialDate).slice(0, 4)))];
+  if (gameSeasons.length > 1) throw new Error("同輪含不同賽季；不可共用一份本季統計");
+  const season = gameSeasons[0] || today.slice(0, 4);
+  const statsScope = { season, gameType: "R" };
   // 明天之後 7 天（台灣日期）的正式賽程場數；延期、取消不算。只說「有沒有近期賽事」，不推論賽季是否結束
   const upFrom = addDays(tomorrow, 1), upTo = addDays(tomorrow, 7);
   const ahead = [...new Map(all.filter(g => { const d = twDate(g.gameDate); return d >= upFrom && d <= upTo && !["ppd", "cxl"].includes(statusOf(g).code); }).map(g => [g.gamePk, g])).values()];
@@ -52,16 +57,17 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   // 2) 戰績、團隊打擊／投球（選配；失敗記錯誤，欄位顯示尚未取得）
   const [st, hit, pit] = await Promise.all([
     soft("standings", fetchJson(`${API}/standings?leagueId=103,104&season=${season}&standingsTypes=regularSeason`)),
-    soft("team hitting", fetchJson(`${API}/teams/stats?season=${season}&group=hitting&stats=season&sportIds=1`)),
-    soft("team pitching", fetchJson(`${API}/teams/stats?season=${season}&group=pitching&stats=season&sportIds=1`))]);
+    soft("team hitting", fetchJson(`${API}/teams/stats?season=${season}&group=hitting&stats=season&sportIds=1&gameType=R`)),
+    soft("team pitching", fetchJson(`${API}/teams/stats?season=${season}&group=pitching&stats=season&sportIds=1&gameType=R`))]);
   const rec = {};
   for (const r of st?.records || []) for (const t of r.teamRecords) {
     const sp = Object.fromEntries((t.records?.splitRecords || []).map(x => [x.type, `${x.wins}-${x.losses}`]));
     rec[t.team.id] = { rec: `${t.wins}-${t.losses}`, pct: t.winningPercentage, home: sp.home || null, road: sp.away || null, l10: sp.lastTen || null, streak: t.streak?.streakCode || null, rs: t.runsScored, ra: t.runsAllowed, gp: t.gamesPlayed };
   }
   const REC = ["rec", "pct", "home", "road", "l10", "streak", "rs", "ra", "gp"];
-  const ops = Object.fromEntries((hit?.stats?.[0]?.splits || []).map(s => [s.team.id, s.stat.ops]));
-  const era = Object.fromEntries((pit?.stats?.[0]?.splits || []).map(s => [s.team.id, s.stat.era]));
+  const sameSeason = s => !s.season || String(s.season) === season;
+  const ops = Object.fromEntries((hit?.stats?.[0]?.splits || []).filter(sameSeason).map(s => [s.team.id, s.stat.ops]));
+  const era = Object.fromEntries((pit?.stats?.[0]?.splits || []).filter(sameSeason).map(s => [s.team.id, s.stat.era]));
 
   // 多隊分列時取不分隊合計列；只有一列就用那列；多隊分列但缺合計＝null（不把其中一隊當全季、不平均）
   const tot = rows => rows.length === 1 ? rows[0] : rows.find(x => !x.team) || null;
@@ -69,11 +75,12 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   const spIds = [...new Set(games.flatMap(g => ["away", "home"].map(s => g.teams[s].probablePitcher?.id).filter(Boolean)))];
   const ppl = {}; let peopleOk = true;
   if (spIds.length) {
-    const r = await soft("pitchers", fetchJson(`${API}/people?personIds=${spIds.join(",")}&hydrate=stats(group=[pitching],type=[season],season=${season})`));
+    const r = await soft("pitchers", fetchJson(`${API}/people?personIds=${spIds.join(",")}&hydrate=stats(group=[pitching],type=[season],season=${season},gameType=R)`));
     peopleOk = !!r;
     for (const p of r?.people || []) {
-      const sp = p.stats?.[0]?.splits || [], s = tot(sp)?.stat;
-      ppl[p.id] = { hand: p.pitchHand?.code || null, s: s ? { wl: `${s.wins}-${s.losses}`, era: s.era, ip: s.inningsPitched, gs: s.gamesStarted, whip: s.whip, so: s.strikeOuts, bb: s.baseOnBalls } : null, ...(sp.length > 1 && !s ? { sNote: "multi" } : {}) };
+      const sp = (p.stats?.[0]?.splits || []).filter(x => sameSeason(x) && x.gameType === "R"), s = tot(sp)?.stat;
+      ppl[p.id] = { hand: p.pitchHand?.code || null, s: s ? { wl: `${s.wins}-${s.losses}`, era: s.era, ip: s.inningsPitched, gs: s.gamesStarted, whip: s.whip, so: s.strikeOuts, bb: s.baseOnBalls } : null,
+        statStatus: s ? "value" : sp.length ? "unavailable" : "no_record", ...(sp.length > 1 && !s ? { sNote: "multi" } : {}) };
     }
   }
 
@@ -90,14 +97,15 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
     if (!st.length && t.battingOrder?.length) st = t.battingOrder.map(id => t.players["ID" + id] || { person: { id } });
     if (!st.length) return null;
     return st.map((p, i) => { const b = bat[p.person?.id] || {};
-      return { n: i + 1, id: p.person?.id, name: p.person?.fullName || String(p.person?.id), pos: p.allPositions?.[0]?.abbreviation || p.position?.abbreviation || null, avg: b.avg ?? null, ops: b.ops ?? null }; });
+      return { n: i + 1, id: p.person?.id, name: p.person?.fullName || String(p.person?.id), pos: p.allPositions?.[0]?.abbreviation || p.position?.abbreviation || null, avg: b.avg ?? null, ops: b.ops ?? null, pa: b.pa ?? null, statStatus: b.statStatus || "unavailable" }; });
   };
-  // 打線 AVG／OPS：另查 people 的 2026 例行賽成績（被交易者取不分隊合計）。boxscore 的 seasonStats 在季後賽會變成季後賽累計（開賽前可能全是 .000），不能當「本季」
+  // 打線 AVG／OPS：另查 people 的該場賽季例行賽成績（被交易者取不分隊合計）。boxscore 的 seasonStats 在季後賽會變成季後賽累計（開賽前可能全是 .000），不能當「本季」
   //   查不到就是 null（顯示 —），不回頭用 boxscore 的數字
   const bat = {}, batIds = [...new Set(pks.flatMap(pk => ["away", "home"].flatMap(s => Object.values(box[pk]?.teams?.[s]?.players || {}).filter(p => p.battingOrder && +p.battingOrder % 100 === 0).map(p => p.person?.id).concat(box[pk]?.teams?.[s]?.battingOrder || []))).filter(Boolean))];
   for (let i = 0; i < batIds.length; i += 100) {
     const r = await soft("batters", fetchJson(`${API}/people?personIds=${batIds.slice(i, i + 100).join(",")}&hydrate=stats(group=[hitting],type=[season],season=${season},gameType=R)`));
-    for (const p of r?.people || []) { const s = tot(p.stats?.[0]?.splits || [])?.stat; if (s) bat[p.id] = { avg: s.avg ?? null, ops: s.ops ?? null }; }
+    for (const p of r?.people || []) { const splits = (p.stats?.[0]?.splits || []).filter(x => sameSeason(x) && x.gameType === "R"), s = tot(splits)?.stat;
+      bat[p.id] = s ? { avg: s.avg ?? null, ops: s.ops ?? null, pa: s.plateAppearances ?? null, statStatus: "value" } : { statStatus: splits.length ? "unavailable" : "no_record" }; }
   }
 
   // 天氣：MLB 官方賽前天氣（schedule 的 weather，通常開賽前幾小時才有）。沒有就是 null＝尚未公布，不補預報
@@ -116,8 +124,10 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
   const out = {};
   for (const g of games) {
     const pk = g.gamePk, S = (state.games[pk] ||= { firstSeen: nowISO, sp: {}, lu: {}, late: {} }), P0 = prevGame(pk);
+    const oldStatsSame = P0 && (P0.statsScope?.season || String(P0.usDate || "").slice(0, 4)) === season
+      && (!P0.statsScope || P0.statsScope.gameType === "R");
     const status = statusOf(g), tz = g.venue?.timeZone?.id || null, tbd = !!g.status?.startTimeTBD;
-    const base = { pk, twDate: twDate(g.gameDate), usDate: g.officialDate, startUTC: g.gameDate, tbd, twTime: tbd ? null : twTime(g.gameDate), localTime: tbd || !tz ? null : localTime(g.gameDate, tz), tz,
+    const base = { pk, season: String(g.officialDate).slice(0, 4), statsScope, twDate: twDate(g.gameDate), usDate: g.officialDate, startUTC: g.gameDate, tbd, twTime: tbd ? null : twTime(g.gameDate), localTime: tbd || !tz ? null : localTime(g.gameDate, tz), tz,
       venue: g.venue?.name || null, status, dh: g.doubleHeader && g.doubleHeader !== "N" ? `G${g.gameNumber}` : null,
       rescheduledFrom: g.rescheduledFrom || null, rescheduleDate: g.rescheduleDate || null, inning: g.linescore?.currentInningOrdinal || null, inningHalf: g.linescore?.inningHalf || null,
       gameType: g.gameType || null, series: g.seriesDescription ? { desc: g.seriesDescription, n: g.seriesGameNumber ?? null, of: g.gamesInSeries ?? null } : null, // 名單狀態的比較基準依賽事型態選（scripts/roster.mjs）
@@ -135,7 +145,7 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
         if ((S.sp[s]?.id || null) !== (P?.id || null)) { if (S.sp[s] || P) ev(pk, "sp", { side: s, from: S.sp[s]?.name || null, to: P?.fullName || null }); S.sp[s] = P ? { id: P.id, name: P.fullName, at: nowISO } : null; }
         // 先發投手成績（people API）
         let pp = P ? ppl[P.id] : null;
-        if (P && !peopleOk) { const same = o?.sp?.id === P.id; pp = same ? { hand: o.sp.hand, s: o.sp.s } : null; fail("sp", "pitchers", same); }
+        if (P && !peopleOk) { const same = oldStatsSame && o?.sp?.id === P.id; pp = same ? { hand: o.sp.hand, s: o.sp.s, statStatus: o.sp.statStatus } : null; fail("sp", "pitchers", same); }
         // 本場打線（boxscore）
         let lineup;
         if (box[pk] === null) {
@@ -159,17 +169,20 @@ export async function build({ fetchJson, now = new Date(), state = { games: {} }
           : Object.values(box[pk]?.teams?.[s]?.players || {}).map(p => ({ id: p.person?.id, name: p.person?.fullName || String(p.person?.id), pos: p.position?.abbreviation || null })).filter(p => p.id);
         if (!roster?.length) roster = null;
         // 戰績／團隊打擊／團隊投球
-        const team = { ...(rec[id] || {}), ops: ops[id] || null, era: era[id] || null };
-        if (!st) { const has = REC.some(k => o?.[k] != null); if (has) for (const k of REC) team[k] = o[k]; fail("rec", "standings", has); }
-        if (!hit) { team.ops = o?.ops ?? null; fail("ops", "team hitting", team.ops != null); }
-        if (!pit) { team.era = o?.era ?? null; fail("era", "team pitching", team.era != null); }
+        const team = { ...(rec[id] || {}), ops: ops[id] ?? null, era: era[id] ?? null, statsScope,
+          statStatus: { rec: rec[id] ? (rec[id].gp === 0 ? "no_record" : "value") : "unavailable",
+            ops: rec[id]?.gp === 0 ? "no_record" : ops[id] != null ? "value" : "unavailable",
+            era: rec[id]?.gp === 0 ? "no_record" : era[id] != null ? "value" : "unavailable" } };
+        if (!st) { const has = oldStatsSame && REC.some(k => o?.[k] != null); if (has) for (const k of REC) team[k] = o[k]; fail("rec", "standings", has); team.statStatus.rec = has ? "stale" : "unavailable"; }
+        if (!hit) { team.ops = oldStatsSame ? o?.ops ?? null : null; fail("ops", "team hitting", team.ops != null); team.statStatus.ops = team.ops != null ? "stale" : "unavailable"; }
+        if (!pit) { team.era = oldStatsSame ? o?.era ?? null : null; fail("era", "team pitching", team.era != null); team.statStatus.era = team.era != null ? "stale" : "unavailable"; }
         // 上一場打線（參考）
         const pg = prevMap[`${pk}:${s}`], ps = pg && (pg.teams.away.team.id === id ? "away" : "home"), os = ps === "home" ? "away" : "home";
         let prevSlots = pg ? slotsOf(box[pg.gamePk], ps) : null;
         if (pg && box[pg.gamePk] === null) { const same = o?.prev?.pk === pg.gamePk && o.prev.slots; prevSlots = same ? o.prev.slots : null; fail("prev", `boxscore ${pg.gamePk}`, !!same); }
         return { ...minimal(s), ...team,
-          sp: P ? { id: P.id, name: P.fullName, hand: pp?.hand || null, s: pp?.s || null, ...(pp?.sNote ? { sNote: pp.sNote } : {}), firstSeen: S.sp[s]?.at || null } : null,
-          lineup, roster,
+          sp: P ? { id: P.id, name: P.fullName, hand: pp?.hand || null, s: pp?.s || null, statStatus: pp?.statStatus || "unavailable", statsScope, ...(pp?.sNote ? { sNote: pp.sNote } : {}), firstSeen: S.sp[s]?.at || null } : null,
+          lineup: { ...lineup, statsScope }, roster,
           prev: pg ? { pk: pg.gamePk, date: pg.officialDate, gameType: pg.gameType || null, ha: ps === "home" ? "主" : "客", opp: TEAM_ZH[pg.teams[os].team.id] || pg.teams[os].team.name, score: `${pg.teams[ps].score}-${pg.teams[os].score}`, slots: prevSlots } : null,
           ...(Object.keys(failed).length ? { failed } : {}) };
       };
@@ -247,3 +260,4 @@ if (typeof process !== "undefined" && process.argv[1] && import.meta.url.endsWit
     console.error(e); process.exit(1);
   }
 }
+

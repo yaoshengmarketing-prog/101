@@ -41,4 +41,26 @@
 
 沿用 b034105 的既有首頁及單場閱讀內容；首頁另列「春訓」分區，連至 `spring.html`。固定場為 2026-03-24 美國賽程日 CIN @ MIL（gamePk 832077，`gameType=S`）。`spring-fixture.js` 只保存此示例需要的賽程、原先發九棒、逐局及逐投手實際使用，並記錄本次回查時間與 MLB schedule／boxscore 查詢網址。這是**完賽後回查的歷史資料**，不是當時賽前快照；先發或原九棒的賽前公布／取得時間沒有被證明，2027 來源也未驗證。
 
-春訓情境卡與名單增減標「暫不判定」，不寫未達門檻。春訓投手按球員列局數及用球，不依出場順序推定固定牛棚角色；已取得登板可作近期實際用量閱讀紀錄，但是否進入例行賽牛棚差距／連投情境，仍待另訂範圍。正式 `/live/`、正式資料、排程及統計門檻未變。
+春訓情境卡與名單增減標「暫不判定」，不寫未達門檻。春訓投手按球員列局數及用球，不依出場順序推定固定牛棚角色；已取得登板可作近期實際用量閱讀紀錄。依 D41，跨春訓／例行賽視窗的例行賽牛棚差距與連投情境暫不判定。正式 `/live/`、正式資料、排程及統計門檻未變。
+
+## 跨季資料接入離線試跑（獨立分支，未部署）
+
+此段只適用於 `mlb/2027-cross-season-trial` 分支。Pages 目前由 `main` 根目錄發布；本分支沒有自動發布，以下入口請在本機靜態伺服器開啟，或由 GitHub 讀取程式輸出：
+
+- [試跑賽事入口](./index.html?trial=opening)、[開幕零樣本](./game.html?trial=opening)
+- [春訓銜接](./game.html?trial=transition)、[例行賽休兵日](./game.html?trial=r_off_day)、[部分取數失敗](./game.html?trial=partial_failure)
+- [既有 2026 春訓完賽回查](./game.html?trial=spring)
+- [程式產出的固定測試檔](./trial-data.js)；重建：`node scripts/cross-season-trial.mjs --write`
+
+以上 2027 賽程、球員、登板是**人工測試輸入**；`cross-season-trial.mjs` 呼叫現有的 `build-live`、`bullpen`、`ctx`、`roster` 邏輯，輸出 `trial-data.js`。頁面只有 `?trial=` 時才讀該檔，原固定 2026 閱讀模式保持原樣。春訓 832077 取既存 `spring-fixture.js`，性質為完賽後回查。
+
+| 開季缺口 | 這次試跑的結果 | 仍待真實來源驗證 |
+| --- | --- | --- |
+| 賽季／賽別／完整度 | 遊戲年取 `officialDate`；牛棚逐場保留 S／R、每日日狀態與缺筆；未知賽別不歸季後賽 | 2027 實際賽程、異動與來源時機 |
+| 本季統計 | team hitting/pitching、先發、打者要求該場賽季的 R；回應分項再核對 R 與 season；無紀錄、未取得、有效 0、舊值狀態分開 | 2027 開幕 API 實際空回應型態；上季參考如何取入獨立欄位 |
+| 近期登板／情境 | S 登板保留日期、賽別、投手、局數、球數；跨 S／R 的兩條牛棚情境暫不判定；R 視窗休兵日可判定，部分失敗不判定 | 正式 R 視窗含補賽、延賽的來源完整性 |
+| 開幕名單 | 上一場 S 僅列打線參考，不作增減基準；本場名單照列，沒有基準不報增減 0 | 2027 官方名單公布時機與合理基準是否存在 |
+
+**必要來源核對（2026-10-30，MLB Stats API 一次性查詢）：** [Misiorowski 投手本季未指定賽別](https://statsapi.mlb.com/api/v1/people/694819/stats?stats=season&group=pitching&season=2026) 回 `gameType=R`、30 場、174.2 局、ERA 1.80；明指定 `gameType=R` 相同，`gameType=S` 為 3 場、11.2 局、ERA 5.40。[釀酒人團隊打擊](https://statsapi.mlb.com/api/v1/teams/158/stats?stats=season&group=hitting&season=2026) 未指定與 R 均為 162 場、OPS .744，S 為 30 場、OPS .791。團隊投球未指定與 R 均為 162 場、ERA 3.51、1446.2 局，S 為 30 場、ERA 4.83、261.0 局。團隊回應有 season、未必有 gameType，故查詢本身要明指定 R；這只驗證 2026 回應，不證明 2027 賽前可用。
+
+舊 `live/data/games/849799.json` 在試跑前後均只讀取，SHA-256 記在 `trial-data.js`；本分支不寫 `live/data`、不回算舊情境，也沒有 workflow 或 Pages 設定修改。

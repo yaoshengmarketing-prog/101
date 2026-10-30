@@ -19,10 +19,10 @@ function api({ fail = [], lineup = true, sp = { away: SP2, home: SP1 }, wx, mult
     if (url.includes("/schedule")) return { dates: [{ games: [game(PREV, "2026-09-23T23:05:00Z", "Final"), game(PK, "2026-09-24T23:05:00Z", "Preview", sp, wx)] }] };
     if (url.includes("/standings")) { no("standings"); return { records: [{ teamRecords: [T1, T2].map((t, i) => ({ team: t, wins: 90 - i, losses: 70 + i, winningPercentage: ".560", records: { splitRecords: [] }, streak: { streakCode: "W2" }, runsScored: 700, runsAllowed: 600, gamesPlayed: 160 })) }] }; }
     // 打者 people（例行賽成績）：和 boxscore 的 seasonStats 不同，用來確認打線 AVG／OPS 取自 people
-    if (url.includes("/people") && url.includes("group=[hitting]")) { no("bat"); return { people: url.match(/personIds=([\d,]+)/)[1].split(",").map(id => ({ id: +id, stats: [{ splits: multi ? [{ team: T1, stat: { avg: ".300", ops: ".900" } }, { team: T2, stat: { avg: ".200", ops: ".600" } }] : [{ stat: { avg: ".281", ops: ".812" } }] }] })) }; }
+    if (url.includes("/people") && url.includes("group=[hitting]")) { no("bat"); return { people: url.match(/personIds=([\d,]+)/)[1].split(",").map(id => ({ id: +id, stats: [{ splits: multi ? [{ season: "2026", gameType: "R", team: T1, stat: { avg: ".300", ops: ".900" } }, { season: "2026", gameType: "R", team: T2, stat: { avg: ".200", ops: ".600" } }] : [{ season: "2026", gameType: "R", stat: { avg: ".281", ops: ".812" } }] }] })) }; }
     if (url.includes("group=hitting")) { no("hitting"); return { stats: [{ splits: [T1, T2].map(t => ({ team: t, stat: { ops: ".750" } })) }] }; }
     if (url.includes("group=pitching")) { no("pitching"); return { stats: [{ splits: [T1, T2].map(t => ({ team: t, stat: { era: "3.80" } })) }] }; }
-    if (url.includes("/people")) { no("people"); return { people: [SP1, SP2, SP3].map(p => ({ id: p.id, pitchHand: { code: "R" }, stats: [{ splits: multi ? [{ team: T1, stat: { wins: 5, losses: 2, era: "2.10" } }, { team: T2, stat: { wins: 5, losses: 3, era: "4.10" } }] : [{ stat: { wins: 10, losses: 5, era: "3.10", inningsPitched: "150.0", gamesStarted: 28, whip: "1.10", strikeOuts: 170, baseOnBalls: 40 } }] }] })) }; }
+    if (url.includes("/people")) { no("people"); return { people: [SP1, SP2, SP3].map(p => ({ id: p.id, pitchHand: { code: "R" }, stats: [{ splits: multi ? [{ season: "2026", gameType: "R", team: T1, stat: { wins: 5, losses: 2, era: "2.10" } }, { season: "2026", gameType: "R", team: T2, stat: { wins: 5, losses: 3, era: "4.10" } }] : [{ season: "2026", gameType: "R", stat: { wins: 10, losses: 5, era: "3.10", inningsPitched: "150.0", gamesStarted: 28, whip: "1.10", strikeOuts: 170, baseOnBalls: 40 } }] }] })) }; }
     if (url.includes(`/game/${PK}/boxscore`)) { no("box"); return box(lineup); }
     if (url.includes(`/game/${PREV}/boxscore`)) { no("prevbox"); return box(true); }
     throw new Error("unexpected " + url);
@@ -102,3 +102,4 @@ check("H 屋頂關閉、0 mph：風速記 0，不是 null", H3.games[PK].weather
   check("I 最近完賽最多 n 場", recentFinals(Array.from({ length: 15 }, (_, i) => g(100 + i, `2026-10-${String(i + 1).padStart(2, "0")}T00:00:00Z`, "final", 1, 0)), 10).length === 10); }
 console.log(`\n${fails.length ? "FAIL" : "PASS"}：${total - fails.length}/${total}`);
 process.exit(fails.length ? 1 : 0);
+

@@ -45,8 +45,12 @@ export const unexplained = desc => /roster status changed/i.test(desc || "");
 // 比較基準：依賽事型態與上一場決定（只用 build-live 已有的欄位，不另外查賽程）
 export function basisOf(g, side) {
   const p = g[side]?.prev; if (!p?.date) return null;
-  const T = g.gameType || "R", P = p.gameType || "R", post = T !== "R";
-  if (!post) return { date: p.date, kind: "prevGame", label: `上一場（${md(p.date)} ${p.ha}場對${p.opp}）比賽日的現役名單` };
+  const T = g.gameType, P = p.gameType, post = ["F", "D", "L", "W"].includes(T);
+  if (T === "R") {
+    if (P !== "R" || p.date.slice(0, 4) !== g.usDate.slice(0, 4)) return null;
+    return { date: p.date, kind: "prevGame", label: `上一場（${md(p.date)} ${p.ha}場對${p.opp}）比賽日的現役名單` };
+  }
+  if (!post) return null; // 春訓及未知賽別沒有獲准使用既有增減基準
   if ((g.series?.n ?? 1) > 1) return { date: p.date, kind: "series", label: `本系列第 ${g.series.n - 1} 戰（${md(p.date)}）比賽日的現役名單` };
   if (P === "R") return { date: p.date, kind: "regEnd", label: `例行賽最後一場（${md(p.date)}）比賽日的現役名單` };
   return { date: p.date, kind: "prevRound", label: `上一輪${GT_ZH[P] || "系列"}最後一戰（${md(p.date)}）比賽日的現役名單` };
@@ -139,7 +143,8 @@ export async function buildRosterStatus(g, ctx, nowISO, prev = null) {
     if (!m40.length) throw new Error(`${t.ab} 40Man 名單為空`);
     if (basis && !basisRows.length) throw new Error(`${t.ab} ${basis.date} 現役名單為空`);
     const C = classify({ listed, basis: basisRows, m40, tx, basisDate: basis?.date || null, today });
-    sides[s] = { team: t.id, ab: t.ab, basis, listedN: listed.length, basisN: basisRows ? basisRows.length : null, ...C };
+    sides[s] = { team: t.id, ab: t.ab, basis, basisStatus: basis ? "comparable" : "no_applicable_basis",
+      listedN: listed.length, listed: basis ? null : listed, basisN: basisRows ? basisRows.length : null, ...C };
     sigs.push(JSON.stringify([t.id, basis?.date, listed.map(x => x.id).sort(), basisRows?.map(x => x.id).sort(), m40.map(x => [x.id, x.status]).sort(), tx.map(x => [x.date, x.id, x.type, x.text])]));
   }
   const inputSig = sigs.join("|");
@@ -189,3 +194,4 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   fs.appendFileSync(`${OUT}/report.md`, `\n## 名單狀態（${RS_RULES}）\n\n${lines.map(l => "- " + l).join("\n")}\n`);
   console.log("名單狀態：" + lines.join("｜"));
 }
+
