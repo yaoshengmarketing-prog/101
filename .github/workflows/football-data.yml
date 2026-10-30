@@ -10,6 +10,9 @@ on:
       - football/index.html
       - football/game.html
       - football/official-odds-snapshots.json
+  schedule:
+    # 試行：台灣 06:00、18:00 各重建一次；18 小時後畫面自動標逾期。
+    - cron: '0 10,22 * * *'
   workflow_dispatch:
     inputs:
       event_id:
@@ -23,7 +26,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: football-pages
+  group: site-pages-deploy
   cancel-in-progress: false
 jobs:
   build:

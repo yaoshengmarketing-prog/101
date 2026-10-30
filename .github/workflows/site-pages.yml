@@ -1,0 +1,86 @@
+name: site-pages
+# 保留原有 MLB 更新與一般網站提交的 Pages 發布，不修改 live-data 本身。
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - football/**
+      - .github/workflows/football-data.yml
+      - live/data/**
+      - data/**
+      - research/daily-production/auto/**
+  workflow_run:
+    workflows: [live-data]
+    types: [completed]
+permissions:
+  contents: read
+  actions: read
+  pages: write
+  id-token: write
+concurrency:
+  group: site-pages-deploy
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - name: 只在一般提交或 MLB 公開資料有變化時發布
+        id: changed
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          if [ "$EVENT_NAME" = push ]; then echo 'publish=true' >> "$GITHUB_OUTPUT"; exit 0; fi
+          if ! curl -fsSL --max-time 15 "https://yaoshengmarketing-prog.github.io/101/live/data/status.json?check=$RUN_ID" -o .public-live-status; then
+            echo 'publish=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if cmp -s live/data/status.json .public-live-status; then
+            echo 'publish=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'publish=true' >> "$GITHUB_OUTPUT"
+          fi
+      - name: 取得最新足球短期快照
+        if: steps.changed.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .football-publish
+          run_id=$(gh api -X GET "repos/$GITHUB_REPOSITORY/actions/workflows/football-data.yml/runs?per_page=20" --jq '[.workflow_runs[] | select(.status=="completed")][0].id')
+          if [ -z "$run_id" ] || [ "$run_id" = null ] || ! gh run download "$run_id" --repo "$GITHUB_REPOSITORY" --name football-current --dir .football-publish; then
+            echo '{"status":"failed","reason":"足球短期快照本次未取得","generatedAt":null,"expiresAt":null}' > .football-publish/status.json
+          fi
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = '.football-publish/status.json';
+          const status = JSON.parse(fs.readFileSync(path, 'utf8'));
+          if (!Number.isFinite(Date.parse(status.expiresAt)) || Date.now() > Date.parse(status.expiresAt)) {
+            fs.rmSync('.football-publish', { recursive: true, force: true });
+            fs.mkdirSync('.football-publish');
+            fs.writeFileSync(path, JSON.stringify({ status: 'failed', reason: '足球快照已逾期，等待下次獨立更新', generatedAt: status.generatedAt || null, expiresAt: status.expiresAt || null }) + '\n');
+          }
+          NODE
+      - name: 組合既有全站與當前足球快照
+        if: steps.changed.outputs.publish == 'true'
+        run: |
+          mkdir -p .site
+          tar --exclude='./.git' --exclude='./.github' --exclude='./.site' --exclude='./.football-publish' --exclude='./football/data' -cf - . | tar -xf - -C .site
+          mkdir -p .site/football/data
+          cp -a .football-publish/. .site/football/data/
+          touch .site/.nojekyll
+      - if: steps.changed.outputs.publish == 'true'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .site
+          retention-days: 2
+      - name: 部署現有全站
+        id: deployment
+        if: steps.changed.outputs.publish == 'true'
+        uses: actions/deploy-pages@v4
