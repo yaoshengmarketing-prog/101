@@ -18,7 +18,7 @@ async function renderOverview() {
       const games = o.games.filter(g => g.twDate === date);
       return `<section class="day-group"><h2>${esc(date)}（台灣）</h2>${games.length ? games.map(g => {
         const selected = g.key === o.target;
-        const content = `<span class="meta">${esc(fmt(g.kickoffUTC))} · ${esc(g.status)}</span><b>${esc(sides(g))}</b><span class="visit">${selected ? '查看完整單場頁 →' : '本包尚未產生這場的單場資料'}</span>`;
+        const content = `<span class="meta">${esc(fmt(g.kickoffUTC))} · 預定開球</span><b>${esc(sides(g))}</b><span class="visit">${selected ? '查看完整單場頁 →' : '本包尚未產生這場的單場資料'}</span>`;
         return selected ? `<a class="overview-card featured" href="game.html">${content}</a>` : `<div class="overview-card disabled">${content}</div>`;
       }).join('') : '<div class="empty">這一天沒有已知英超賽程。</div>'}</section>`;
     }).join('');
