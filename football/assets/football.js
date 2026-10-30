@@ -42,7 +42,7 @@ function openContext(key, opener) {
     return `<li><span class="minute">${esc(e.minute || '時間未取得')} · ${label}</span><div>${sub}</div><div class="event-score">${e.type === 'goal' ? '事件後' : '事件當時'}：${esc(scoreAt(when, g))}</div></li>`;
   }).join('') : '<li>這場的事件本次未取得。</li>';
   $('#context-body').innerHTML = `<p class="eyebrow">${esc(g.leagueLabel)} · ${esc(fmt(g.kickoffUTC))}（台灣）</p>
-    <h2>${esc(sides(g))}</h2><p class="score">${g.score ? `${g.score.away}–${g.score.home}` : '比分未取得'}</p>
+    <h2>${esc(sides(g))}</h2><p class="score">${g.score ? esc(scoreAt(g.score, g)) : '比分未取得'}</p>
     <p class="tiny">僅列來源提供的進球、換人與紅牌；這不是完整個人事件統計，也不把比分變化歸因於換人。</p>
     <ol class="timeline">${items}</ol><a class="source-link" href="${esc(context?.source || g.source)}" target="_blank" rel="noopener noreferrer">查看原始比賽資料 ↗</a>`;
   $('#context').showModal();
@@ -69,7 +69,10 @@ function pairPeople(t, pair) {
     const a = p.games.find(g => g.key === pair.from)?.role;
     const b = p.games.find(g => g.key === pair.to)?.role;
     const variety = new Set(p.games.map(g => g.role)).size;
-    const score = (a && b && a !== b ? 4 : 0) + (a === 'sub_on' || b === 'sub_on' ? 2 : 0) + variety;
+    const pairIndex = p.games.findIndex(g => g.key === pair.to);
+    const laterStarter = pairIndex >= 0 && p.games.slice(pairIndex + 1).some(g => g.role === 'starter');
+    const score = (a && b && a !== b ? 4 : 0) + (a === 'sub_on' || b === 'sub_on' ? 2 : 0)
+      + (laterStarter && (a === 'sub_on' || b === 'sub_on' || a === 'bench_unused' || b === 'bench_unused') ? 5 : 0) + variety;
     return { p, score };
   }).filter(x => x.score > 1).sort((a, b) => b.score - a.score || a.p.name.localeCompare(b.p.name));
   return ranked.slice(0, 2).map(({ p }) => `<button type="button" data-person="${esc(t.team.id)}-${esc(p.id)}">查看 ${esc(p.name)} 逐場</button>`).join('');
@@ -97,7 +100,7 @@ function personBlock(t) {
     ${t.players.map(p => `<details class="person-card" id="person-${esc(t.team.id)}-${esc(p.id)}"><summary>${esc(p.name)}　<span class="tiny">${p.games.filter(g => g.role === 'starter').length}/${t.recent14.length} 場先發</span></summary>
       <div class="person-rows">${p.games.map(rec => {
         const g = t.recent14.find(x => x.key === rec.key);
-        const extra = [rec.goals ? `${rec.goals} 球` : '', rec.assists ? `${rec.assists} 助攻` : ''].filter(Boolean).join(' · ');
+        const extra = [rec.subOnMinute ? `${rec.subOnMinute} 換上` : '', rec.subOffMinute ? `${rec.subOffMinute} 換下` : '', rec.goals ? `${rec.goals} 球` : '', rec.assists ? `${rec.assists} 助攻` : ''].filter(Boolean).join(' · ');
         return `<div class="person-row"><strong>${esc(fmt(g.kickoffUTC))} · ${esc(g.leagueLabel)} · ${esc(gameLabel(g))}</strong>
           <span class="role">${esc(roleLabel[rec.role] || rec.role)}${extra ? ` · ${esc(extra)}` : ''}</span>
           <button class="text-button" type="button" data-context="${esc(rec.key)}">這場背景 ↗</button></div>`;
@@ -122,7 +125,7 @@ async function renderGame() {
         <p class="compare-note">分母是各隊開球前最近取得的英超比賽；不是勝率或本場預測。</p></section>
       <section class="section"><h2>逐場紀錄 · 英超</h2><p class="section-sub">兩隊分開列，比分為本隊–對手；總進球由程式相加。盤口未取得時不標大／小。</p>
         ${resultBlock(away)}${resultBlock(home)}<p class="tiny">xG 本次未取得；每列「比賽背景」與下方球員紀錄連到同一場事件。</p></section>
-      <section class="section"><h2>近期用人 · 近 14 日跨賽事</h2><p class="section-sub">只看已完成的英超、歐聯、英格蘭聯賽盃。替補是當場狀態。</p>
+      <section class="section"><h2>近期用人 · 近 14 日跨賽事</h2><p class="section-sub">已查英超、歐冠、歐聯、歐協、足總盃與聯賽盃；只列取得的已完賽。替補是當場狀態。</p>
         ${[away, home].map((t, i) => `<div class="usage-card${i ? ' alt' : ''}"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.recent14.length} 場</h3><p>${esc(summarizeUsage(t))}</p></div>`).join('')}
         <details class="expander" id="pairs"><summary class="action">查看相鄰場次與開球間隔 <span>⌄</span></summary><div class="expander-body">${pairBlock(away, d)}${pairBlock(home, d)}</div></details>
         <details class="expander" id="people"><summary class="action">直接查看球員逐場紀錄 <span>⌄</span></summary><div class="expander-body">${personBlock(away)}${personBlock(home)}</div></details>

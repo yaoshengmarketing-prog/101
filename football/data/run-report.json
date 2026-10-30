@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T07:26:02.944Z",
+  "generatedAt": "2026-10-30T07:34:06.878Z",
   "target": "Crystal Palace @ Tottenham Hotspur",
   "targetId": "401878761",
   "targetKickoffUTC": "2026-10-31T17:30Z",
@@ -25,7 +25,7 @@
   "lottery": {
     "status": "not_acquired",
     "httpStatus": 403,
-    "checkedAt": "2026-10-30T07:26:05.539Z"
+    "checkedAt": "2026-10-30T07:34:10.826Z"
   },
   "sourceErrors": 0
 }

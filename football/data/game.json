@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T07:26:02.944Z",
+  "generatedAt": "2026-10-30T07:34:06.878Z",
   "target": {
     "id": "401878761",
     "key": "eng.1:401878761",
@@ -22,7 +22,7 @@
   },
   "lottery": {
     "status": "not_acquired",
-    "checkedAt": "2026-10-30T07:26:05.539Z",
+    "checkedAt": "2026-10-30T07:34:10.826Z",
     "source": "https://www-talo-ssb-pr.sportslottery.com.tw/daily-coupons",
     "httpStatus": 403,
     "reason": "官方網站對此伺服器請求回 HTTP 403；本次未取得盤口。",
@@ -260,19 +260,37 @@
         {
           "label": "Tottenham Hotspur 英超賽程",
           "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/367/schedule?season=2026",
-          "checkedAt": "2026-10-30T07:26:04.183Z",
+          "checkedAt": "2026-10-30T07:34:08.867Z",
+          "status": "ok"
+        },
+        {
+          "label": "Tottenham Hotspur 歐冠賽程",
+          "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/teams/367/schedule?season=2026",
+          "checkedAt": "2026-10-30T07:34:09.106Z",
           "status": "ok"
         },
         {
           "label": "Tottenham Hotspur 歐聯賽程",
           "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/teams/367/schedule?season=2026",
-          "checkedAt": "2026-10-30T07:26:04.383Z",
+          "checkedAt": "2026-10-30T07:34:09.351Z",
+          "status": "ok"
+        },
+        {
+          "label": "Tottenham Hotspur 歐協賽程",
+          "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa.conf/teams/367/schedule?season=2026",
+          "checkedAt": "2026-10-30T07:34:09.549Z",
+          "status": "ok"
+        },
+        {
+          "label": "Tottenham Hotspur 足總盃賽程",
+          "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.fa/teams/367/schedule?season=2026",
+          "checkedAt": "2026-10-30T07:34:09.778Z",
           "status": "ok"
         },
         {
           "label": "Tottenham Hotspur 聯賽盃賽程",
           "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.league_cup/teams/367/schedule?season=2026",
-          "checkedAt": "2026-10-30T07:26:04.562Z",
+          "checkedAt": "2026-10-30T07:34:09.983Z",
           "status": "ok"
         }
       ],
@@ -300,12 +318,16 @@
             {
               "key": "eng.1:401879257",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "69'",
               "goals": 0,
               "assists": 1
             },
             {
               "key": "eng.1:401878767",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "65'",
               "goals": 0,
               "assists": 0
             }
@@ -318,12 +340,16 @@
             {
               "key": "eng.1:401879257",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -336,12 +362,16 @@
             {
               "key": "eng.1:401879257",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -354,12 +384,16 @@
             {
               "key": "eng.1:401879257",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "69'",
               "goals": 1,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "51'",
               "goals": 0,
               "assists": 0
             }
@@ -372,12 +406,16 @@
             {
               "key": "eng.1:401879257",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -390,12 +428,16 @@
             {
               "key": "eng.1:401879257",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -408,12 +450,16 @@
             {
               "key": "eng.1:401879257",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "87'",
               "goals": 0,
               "assists": 1
             },
             {
               "key": "eng.1:401878767",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "89'",
               "goals": 0,
               "assists": 0
             }
@@ -426,12 +472,16 @@
             {
               "key": "eng.1:401879257",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "87'",
               "goals": 1,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "65'",
               "goals": 0,
               "assists": 0
             }
@@ -444,12 +494,16 @@
             {
               "key": "eng.1:401879257",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -462,12 +516,16 @@
             {
               "key": "eng.1:401879257",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 1
             },
             {
               "key": "eng.1:401878767",
               "role": "sub_on",
+              "subOnMinute": "65'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -480,12 +538,16 @@
             {
               "key": "eng.1:401879257",
               "role": "sub_on",
+              "subOnMinute": "71'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -498,12 +560,16 @@
             {
               "key": "eng.1:401879257",
               "role": "sub_on",
+              "subOnMinute": "87'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "89'",
               "goals": 1,
               "assists": 0
             }
@@ -516,12 +582,16 @@
             {
               "key": "eng.1:401879257",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "71'",
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             }
@@ -534,12 +604,16 @@
             {
               "key": "eng.1:401879257",
               "role": "sub_on",
+              "subOnMinute": "69'",
+              "subOffMinute": null,
               "goals": 1,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "sub_on",
+              "subOnMinute": "89'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -552,12 +626,16 @@
             {
               "key": "eng.1:401879257",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -570,12 +648,16 @@
             {
               "key": "eng.1:401879257",
               "role": "sub_on",
+              "subOnMinute": "69'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "sub_on",
+              "subOnMinute": "51'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -588,12 +670,16 @@
             {
               "key": "eng.1:401879257",
               "role": "sub_on",
+              "subOnMinute": "87'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "sub_on",
+              "subOnMinute": "89'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -606,12 +692,16 @@
             {
               "key": "eng.1:401879257",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -624,12 +714,16 @@
             {
               "key": "eng.1:401879257",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -642,12 +736,16 @@
             {
               "key": "eng.1:401879257",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401878767",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -660,12 +758,16 @@
             {
               "key": "eng.1:401879257",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.1:401878767",
               "role": "sub_on",
+              "subOnMinute": "65'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -970,19 +1072,37 @@
         {
           "label": "Crystal Palace 英超賽程",
           "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/384/schedule?season=2026",
-          "checkedAt": "2026-10-30T07:26:03.605Z",
+          "checkedAt": "2026-10-30T07:34:07.648Z",
+          "status": "ok"
+        },
+        {
+          "label": "Crystal Palace 歐冠賽程",
+          "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/teams/384/schedule?season=2026",
+          "checkedAt": "2026-10-30T07:34:07.872Z",
           "status": "ok"
         },
         {
           "label": "Crystal Palace 歐聯賽程",
           "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/teams/384/schedule?season=2026",
-          "checkedAt": "2026-10-30T07:26:03.802Z",
+          "checkedAt": "2026-10-30T07:34:08.063Z",
+          "status": "ok"
+        },
+        {
+          "label": "Crystal Palace 歐協賽程",
+          "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa.conf/teams/384/schedule?season=2026",
+          "checkedAt": "2026-10-30T07:34:08.253Z",
+          "status": "ok"
+        },
+        {
+          "label": "Crystal Palace 足總盃賽程",
+          "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.fa/teams/384/schedule?season=2026",
+          "checkedAt": "2026-10-30T07:34:08.443Z",
           "status": "ok"
         },
         {
           "label": "Crystal Palace 聯賽盃賽程",
           "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.league_cup/teams/384/schedule?season=2026",
-          "checkedAt": "2026-10-30T07:26:03.989Z",
+          "checkedAt": "2026-10-30T07:34:08.639Z",
           "status": "ok"
         }
       ],
@@ -1024,24 +1144,32 @@
             {
               "key": "eng.1:401879261",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1054,24 +1182,32 @@
             {
               "key": "eng.1:401879261",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "sub_on",
+              "subOnMinute": "61'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1084,24 +1220,32 @@
             {
               "key": "eng.1:401879261",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 1
             },
             {
               "key": "eng.1:401879254",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1114,24 +1258,32 @@
             {
               "key": "eng.1:401879261",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "81'",
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "sub_on",
+              "subOnMinute": "77'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1144,24 +1296,32 @@
             {
               "key": "eng.1:401879261",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             }
@@ -1174,24 +1334,32 @@
             {
               "key": "eng.1:401879261",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "sub_on",
+              "subOnMinute": "61'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1204,24 +1372,32 @@
             {
               "key": "eng.1:401879261",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1234,24 +1410,32 @@
             {
               "key": "eng.1:401879261",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "61'",
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "72'",
               "goals": 1,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "sub_on",
+              "subOnMinute": "77'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1264,24 +1448,32 @@
             {
               "key": "eng.1:401879261",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "uefa.europa:401915553",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1294,24 +1486,32 @@
             {
               "key": "eng.1:401879261",
               "role": "sub_on",
+              "subOnMinute": "45'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "61'",
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "63'",
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "sub_on",
+              "subOnMinute": "71'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1324,24 +1524,32 @@
             {
               "key": "eng.1:401879261",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "53'",
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1354,24 +1562,32 @@
             {
               "key": "eng.1:401879261",
               "role": "sub_on",
+              "subOnMinute": "61'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "61'",
               "goals": 1,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "62'",
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             }
@@ -1384,24 +1600,32 @@
             {
               "key": "eng.1:401879261",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "uefa.europa:401915553",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "61'",
               "goals": 0,
               "assists": 0
             }
@@ -1414,24 +1638,32 @@
             {
               "key": "eng.1:401879261",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "uefa.europa:401915553",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.1:401879254",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "61'",
               "goals": 0,
               "assists": 0
             }
@@ -1444,24 +1676,32 @@
             {
               "key": "eng.1:401879261",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "sub_on",
+              "subOnMinute": "72'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "sub_on",
+              "subOnMinute": "63'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "77'",
               "goals": 0,
               "assists": 0
             }
@@ -1474,24 +1714,32 @@
             {
               "key": "eng.1:401879261",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "uefa.europa:401915553",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.1:401879254",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1504,24 +1752,32 @@
             {
               "key": "eng.1:401879261",
               "role": "sub_on",
+              "subOnMinute": "61'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "sub_on",
+              "subOnMinute": "85'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "sub_on",
+              "subOnMinute": "62'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "71'",
               "goals": 1,
               "assists": 0
             }
@@ -1534,24 +1790,32 @@
             {
               "key": "eng.1:401879261",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "uefa.europa:401915553",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.1:401879254",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "77'",
               "goals": 0,
               "assists": 0
             }
@@ -1564,24 +1828,32 @@
             {
               "key": "eng.1:401879261",
               "role": "sub_on",
+              "subOnMinute": "53'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.1:401879254",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1594,24 +1866,32 @@
             {
               "key": "eng.1:401879261",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "61'",
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "sub_on",
+              "subOnMinute": "61'",
+              "subOffMinute": "85'",
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             }
@@ -1624,24 +1904,32 @@
             {
               "key": "eng.1:401879261",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 1
             }
@@ -1654,24 +1942,32 @@
             {
               "key": "eng.1:401879261",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": "45'",
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.1:401879254",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             }
@@ -1684,24 +1980,32 @@
             {
               "key": "eng.1:401879261",
               "role": "sub_on",
+              "subOnMinute": "81'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "starter",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -1714,24 +2018,32 @@
             {
               "key": "eng.1:401879261",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "uefa.europa:401915553",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             }
@@ -1744,24 +2056,32 @@
             {
               "key": "eng.1:401879261",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "uefa.europa:401915553",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             }
@@ -1774,24 +2094,32 @@
             {
               "key": "eng.1:401879261",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "sub_on",
+              "subOnMinute": "61'",
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             }
@@ -1804,24 +2132,32 @@
             {
               "key": "eng.1:401879261",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "uefa.europa:401915553",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             }
@@ -1834,24 +2170,32 @@
             {
               "key": "eng.1:401879261",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "uefa.europa:401915553",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.1:401879254",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             }
@@ -1864,24 +2208,32 @@
             {
               "key": "eng.1:401879261",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "uefa.europa:401915553",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.1:401879254",
               "role": "not_listed",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": null,
               "assists": null
             },
             {
               "key": "eng.league_cup:401921841",
               "role": "bench_unused",
+              "subOnMinute": null,
+              "subOffMinute": null,
               "goals": 0,
               "assists": 0
             }
@@ -2194,497 +2546,6 @@
     }
   },
   "details": {
-    "eng.1:401879254": {
-      "status": "acquired",
-      "rosters": {
-        "361": [
-          {
-            "id": "319267",
-            "name": "Lukás Hornícek",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "198138",
-            "name": "Dan Burn",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "179233",
-            "name": "Fabian Schär",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "106139",
-            "name": "Lewis Hall",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "308979",
-            "name": "Amar Dedic",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 1
-          },
-          {
-            "id": "259517",
-            "name": "Joe Willock",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "202232",
-            "name": "Joelinton",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "323986",
-            "name": "Nico González",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "319431",
-            "name": "William Osula",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 1,
-            "assists": 0
-          },
-          {
-            "id": "243386",
-            "name": "Harvey Barnes",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 1,
-            "assists": 0
-          },
-          {
-            "id": "172836",
-            "name": "Jacob Murphy",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 1
-          },
-          {
-            "id": "224077",
-            "name": "Yoane Wissa",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "296622",
-            "name": "Anthony Elanga",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "274633",
-            "name": "Sven Botman",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "161715",
-            "name": "Nick Pope",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "359108",
-            "name": "Bazoumana Touré",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "303444",
-            "name": "Malick Thiaw",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "396630",
-            "name": "Aladji Bamba",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "286090",
-            "name": "Jacob Ramsey",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "384372",
-            "name": "Sean Steur",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          }
-        ],
-        "384": [
-          {
-            "id": "195738",
-            "name": "Walter Benítez",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "231718",
-            "name": "Axel Disasi",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "386252",
-            "name": "Jaydee Canvot",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "272585",
-            "name": "Chris Richards",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "219362",
-            "name": "Daichi Kamada",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "333419",
-            "name": "Adam Wharton",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "300853",
-            "name": "Tyrick Mitchell",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "332648",
-            "name": "Anan Khalaili",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "241187",
-            "name": "Jean-Philippe Mateta",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "297370",
-            "name": "Yéremy Pino",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "273495",
-            "name": "Dwight McNeil",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "276546",
-            "name": "Óscar Mingueza",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "315668",
-            "name": "Darío Osorio",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "266628",
-            "name": "Cheick Doucouré",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "225426",
-            "name": "Ben Chilwell",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "168421",
-            "name": "Will Hughes",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "288924",
-            "name": "Evann Guessand",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "205981",
-            "name": "Remi Matthews",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "197399",
-            "name": "Jefferson Lerma",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "259486",
-            "name": "Eddie Nketiah",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          }
-        ]
-      },
-      "completeRosters": {
-        "361": true,
-        "384": true
-      },
-      "events": [
-        {
-          "index": 5,
-          "type": "goal",
-          "minute": "47'",
-          "text": "Goal! Crystal Palace 0, Newcastle United 1. William Osula (Newcastle United) left footed shot from very close range to the bottom right corner. Assisted by Jacob Murphy with a cross.",
-          "team": "Newcastle United",
-          "scoreAfter": {
-            "home": 0,
-            "away": 1
-          }
-        },
-        {
-          "index": 8,
-          "type": "goal",
-          "minute": "58'",
-          "text": "Goal! Crystal Palace 0, Newcastle United 2. Harvey Barnes (Newcastle United) right footed shot from the centre of the box to the centre of the goal. Assisted by Amar Dedic.",
-          "team": "Newcastle United",
-          "scoreAfter": {
-            "home": 0,
-            "away": 2
-          }
-        },
-        {
-          "index": 11,
-          "type": "substitution",
-          "minute": "62'",
-          "text": "Substitution, Crystal Palace. Eddie Nketiah replaces Jean-Philippe Mateta.",
-          "team": "Crystal Palace",
-          "in": {
-            "id": "259486",
-            "name": "Eddie Nketiah"
-          },
-          "out": {
-            "id": "241187",
-            "name": "Jean-Philippe Mateta"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 2
-          }
-        },
-        {
-          "index": 12,
-          "type": "substitution",
-          "minute": "63'",
-          "text": "Substitution, Crystal Palace. Darío Osorio replaces Dwight McNeil.",
-          "team": "Crystal Palace",
-          "in": {
-            "id": "315668",
-            "name": "Darío Osorio"
-          },
-          "out": {
-            "id": "273495",
-            "name": "Dwight McNeil"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 2
-          }
-        },
-        {
-          "index": 18,
-          "type": "substitution",
-          "minute": "77'",
-          "text": "Substitution, Newcastle United. Yoane Wissa replaces William Osula.",
-          "team": "Newcastle United",
-          "in": {
-            "id": "224077",
-            "name": "Yoane Wissa"
-          },
-          "out": {
-            "id": "319431",
-            "name": "William Osula"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 2
-          }
-        },
-        {
-          "index": 19,
-          "type": "substitution",
-          "minute": "77'",
-          "text": "Substitution, Newcastle United. Jacob Ramsey replaces Joe Willock.",
-          "team": "Newcastle United",
-          "in": {
-            "id": "286090",
-            "name": "Jacob Ramsey"
-          },
-          "out": {
-            "id": "259517",
-            "name": "Joe Willock"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 2
-          }
-        },
-        {
-          "index": 20,
-          "type": "substitution",
-          "minute": "77'",
-          "text": "Substitution, Newcastle United. Anthony Elanga replaces Harvey Barnes.",
-          "team": "Newcastle United",
-          "in": {
-            "id": "296622",
-            "name": "Anthony Elanga"
-          },
-          "out": {
-            "id": "243386",
-            "name": "Harvey Barnes"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 2
-          }
-        },
-        {
-          "index": 23,
-          "type": "substitution",
-          "minute": "85'",
-          "text": "Substitution, Newcastle United. Sean Steur replaces Joelinton.",
-          "team": "Newcastle United",
-          "in": {
-            "id": "384372",
-            "name": "Sean Steur"
-          },
-          "out": {
-            "id": "202232",
-            "name": "Joelinton"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 2
-          }
-        },
-        {
-          "index": 25,
-          "type": "substitution",
-          "minute": "90'+5'",
-          "text": "Substitution, Newcastle United. Malick Thiaw replaces Amar Dedic.",
-          "team": "Newcastle United",
-          "in": {
-            "id": "303444",
-            "name": "Malick Thiaw"
-          },
-          "out": {
-            "id": "308979",
-            "name": "Amar Dedic"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 2
-          }
-        }
-      ],
-      "source": "https://www.espn.com/soccer/match/_/gameId/401879254"
-    },
     "eng.1:401879266": {
       "status": "acquired",
       "rosters": {
@@ -3216,6 +3077,497 @@
         }
       ],
       "source": "https://www.espn.com/soccer/match/_/gameId/401879266"
+    },
+    "eng.1:401879254": {
+      "status": "acquired",
+      "rosters": {
+        "361": [
+          {
+            "id": "319267",
+            "name": "Lukás Hornícek",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "198138",
+            "name": "Dan Burn",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "179233",
+            "name": "Fabian Schär",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "106139",
+            "name": "Lewis Hall",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "308979",
+            "name": "Amar Dedic",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 1
+          },
+          {
+            "id": "259517",
+            "name": "Joe Willock",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "202232",
+            "name": "Joelinton",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "323986",
+            "name": "Nico González",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "319431",
+            "name": "William Osula",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 1,
+            "assists": 0
+          },
+          {
+            "id": "243386",
+            "name": "Harvey Barnes",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 1,
+            "assists": 0
+          },
+          {
+            "id": "172836",
+            "name": "Jacob Murphy",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 1
+          },
+          {
+            "id": "224077",
+            "name": "Yoane Wissa",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "296622",
+            "name": "Anthony Elanga",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "274633",
+            "name": "Sven Botman",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "161715",
+            "name": "Nick Pope",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "359108",
+            "name": "Bazoumana Touré",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "303444",
+            "name": "Malick Thiaw",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "396630",
+            "name": "Aladji Bamba",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "286090",
+            "name": "Jacob Ramsey",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "384372",
+            "name": "Sean Steur",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          }
+        ],
+        "384": [
+          {
+            "id": "195738",
+            "name": "Walter Benítez",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "231718",
+            "name": "Axel Disasi",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "386252",
+            "name": "Jaydee Canvot",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "272585",
+            "name": "Chris Richards",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "219362",
+            "name": "Daichi Kamada",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "333419",
+            "name": "Adam Wharton",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "300853",
+            "name": "Tyrick Mitchell",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "332648",
+            "name": "Anan Khalaili",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "241187",
+            "name": "Jean-Philippe Mateta",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "297370",
+            "name": "Yéremy Pino",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "273495",
+            "name": "Dwight McNeil",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "276546",
+            "name": "Óscar Mingueza",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "315668",
+            "name": "Darío Osorio",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "266628",
+            "name": "Cheick Doucouré",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "225426",
+            "name": "Ben Chilwell",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "168421",
+            "name": "Will Hughes",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "288924",
+            "name": "Evann Guessand",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "205981",
+            "name": "Remi Matthews",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "197399",
+            "name": "Jefferson Lerma",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "259486",
+            "name": "Eddie Nketiah",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          }
+        ]
+      },
+      "completeRosters": {
+        "361": true,
+        "384": true
+      },
+      "events": [
+        {
+          "index": 5,
+          "type": "goal",
+          "minute": "47'",
+          "text": "Goal! Crystal Palace 0, Newcastle United 1. William Osula (Newcastle United) left footed shot from very close range to the bottom right corner. Assisted by Jacob Murphy with a cross.",
+          "team": "Newcastle United",
+          "scoreAfter": {
+            "home": 0,
+            "away": 1
+          }
+        },
+        {
+          "index": 8,
+          "type": "goal",
+          "minute": "58'",
+          "text": "Goal! Crystal Palace 0, Newcastle United 2. Harvey Barnes (Newcastle United) right footed shot from the centre of the box to the centre of the goal. Assisted by Amar Dedic.",
+          "team": "Newcastle United",
+          "scoreAfter": {
+            "home": 0,
+            "away": 2
+          }
+        },
+        {
+          "index": 11,
+          "type": "substitution",
+          "minute": "62'",
+          "text": "Substitution, Crystal Palace. Eddie Nketiah replaces Jean-Philippe Mateta.",
+          "team": "Crystal Palace",
+          "in": {
+            "id": "259486",
+            "name": "Eddie Nketiah"
+          },
+          "out": {
+            "id": "241187",
+            "name": "Jean-Philippe Mateta"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 2
+          }
+        },
+        {
+          "index": 12,
+          "type": "substitution",
+          "minute": "63'",
+          "text": "Substitution, Crystal Palace. Darío Osorio replaces Dwight McNeil.",
+          "team": "Crystal Palace",
+          "in": {
+            "id": "315668",
+            "name": "Darío Osorio"
+          },
+          "out": {
+            "id": "273495",
+            "name": "Dwight McNeil"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 2
+          }
+        },
+        {
+          "index": 18,
+          "type": "substitution",
+          "minute": "77'",
+          "text": "Substitution, Newcastle United. Yoane Wissa replaces William Osula.",
+          "team": "Newcastle United",
+          "in": {
+            "id": "224077",
+            "name": "Yoane Wissa"
+          },
+          "out": {
+            "id": "319431",
+            "name": "William Osula"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 2
+          }
+        },
+        {
+          "index": 19,
+          "type": "substitution",
+          "minute": "77'",
+          "text": "Substitution, Newcastle United. Jacob Ramsey replaces Joe Willock.",
+          "team": "Newcastle United",
+          "in": {
+            "id": "286090",
+            "name": "Jacob Ramsey"
+          },
+          "out": {
+            "id": "259517",
+            "name": "Joe Willock"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 2
+          }
+        },
+        {
+          "index": 20,
+          "type": "substitution",
+          "minute": "77'",
+          "text": "Substitution, Newcastle United. Anthony Elanga replaces Harvey Barnes.",
+          "team": "Newcastle United",
+          "in": {
+            "id": "296622",
+            "name": "Anthony Elanga"
+          },
+          "out": {
+            "id": "243386",
+            "name": "Harvey Barnes"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 2
+          }
+        },
+        {
+          "index": 23,
+          "type": "substitution",
+          "minute": "85'",
+          "text": "Substitution, Newcastle United. Sean Steur replaces Joelinton.",
+          "team": "Newcastle United",
+          "in": {
+            "id": "384372",
+            "name": "Sean Steur"
+          },
+          "out": {
+            "id": "202232",
+            "name": "Joelinton"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 2
+          }
+        },
+        {
+          "index": 25,
+          "type": "substitution",
+          "minute": "90'+5'",
+          "text": "Substitution, Newcastle United. Malick Thiaw replaces Amar Dedic.",
+          "team": "Newcastle United",
+          "in": {
+            "id": "303444",
+            "name": "Malick Thiaw"
+          },
+          "out": {
+            "id": "308979",
+            "name": "Amar Dedic"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 2
+          }
+        }
+      ],
+      "source": "https://www.espn.com/soccer/match/_/gameId/401879254"
     },
     "eng.1:401879273": {
       "status": "acquired",
@@ -4804,1119 +5156,6 @@
       ],
       "source": "https://www.espn.com/soccer/match/_/gameId/401921841"
     },
-    "eng.1:401878767": {
-      "status": "acquired",
-      "rosters": {
-        "363": [
-          {
-            "id": "332343",
-            "name": "Mike Penders",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "265918",
-            "name": "Maxence Lacroix",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "296410",
-            "name": "Levi Colwill",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "368317",
-            "name": "Josh Acheampong",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "127262",
-            "name": "Jordan Henderson",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "289877",
-            "name": "Moisés Caicedo",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "353951",
-            "name": "Jorrel Hato",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "256115",
-            "name": "Pedro Neto",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "265653",
-            "name": "Morgan Rogers",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "376274",
-            "name": "Geovany Quenda",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "296395",
-            "name": "Cole Palmer",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "300049",
-            "name": "Teddy Sharman-Lowe",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "308947",
-            "name": "Malo Gusto",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "270190",
-            "name": "Wesley Fofana",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "376481",
-            "name": "Estêvão",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "362486",
-            "name": "Marco Palestra",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "320760",
-            "name": "Valentín Barco",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "308217",
-            "name": "Romeo Lavia",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "115271",
-            "name": "Danny Welbeck",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "399562",
-            "name": "Mahdi Nicoll-Jazuli",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          }
-        ],
-        "367": [
-          {
-            "id": "324393",
-            "name": "Antonín Kinsky",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "296512",
-            "name": "Micky van de Ven",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "282583",
-            "name": "Jan Paul van Hecke",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "104943",
-            "name": "Andy Robertson",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "328050",
-            "name": "Archie Gray",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "194450",
-            "name": "James Maddison",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "261047",
-            "name": "Sandro Tonali",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "346820",
-            "name": "Mateus Fernandes",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "303745",
-            "name": "Omar Marmoush",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "325042",
-            "name": "Mathys Tel",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 1,
-            "assists": 0
-          },
-          {
-            "id": "266599",
-            "name": "Mohammed Kudus",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "372016",
-            "name": "Callum Olusesi",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "272695",
-            "name": "Dejan Kulusevski",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "266696",
-            "name": "Conor Gallagher",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "126703",
-            "name": "Martin Dúbravka",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "233945",
-            "name": "Marcos Senesi",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "6327",
-            "name": "Ben Davies",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "268533",
-            "name": "Pedro Porro",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "395939",
-            "name": "Luca Williams-Barnett",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "194115",
-            "name": "Dominic Solanke",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          }
-        ]
-      },
-      "completeRosters": {
-        "363": true,
-        "367": true
-      },
-      "events": [
-        {
-          "index": 7,
-          "type": "substitution",
-          "minute": "51'",
-          "text": "Substitution, Tottenham Hotspur. Conor Gallagher replaces James Maddison because of an injury.",
-          "team": "Tottenham Hotspur",
-          "in": {
-            "id": "266696",
-            "name": "Conor Gallagher"
-          },
-          "out": {
-            "id": "194450",
-            "name": "James Maddison"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 0
-          }
-        },
-        {
-          "index": 8,
-          "type": "substitution",
-          "minute": "65'",
-          "text": "Substitution, Chelsea. Marco Palestra replaces Jorrel Hato.",
-          "team": "Chelsea",
-          "in": {
-            "id": "362486",
-            "name": "Marco Palestra"
-          },
-          "out": {
-            "id": "353951",
-            "name": "Jorrel Hato"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 0
-          }
-        },
-        {
-          "index": 9,
-          "type": "substitution",
-          "minute": "65'",
-          "text": "Substitution, Tottenham Hotspur. Dominic Solanke replaces Omar Marmoush.",
-          "team": "Tottenham Hotspur",
-          "in": {
-            "id": "194115",
-            "name": "Dominic Solanke"
-          },
-          "out": {
-            "id": "303745",
-            "name": "Omar Marmoush"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 0
-          }
-        },
-        {
-          "index": 10,
-          "type": "substitution",
-          "minute": "65'",
-          "text": "Substitution, Tottenham Hotspur. Pedro Porro replaces Andy Robertson.",
-          "team": "Tottenham Hotspur",
-          "in": {
-            "id": "268533",
-            "name": "Pedro Porro"
-          },
-          "out": {
-            "id": "104943",
-            "name": "Andy Robertson"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 0
-          }
-        },
-        {
-          "index": 15,
-          "type": "substitution",
-          "minute": "72'",
-          "text": "Substitution, Chelsea. Estêvão replaces Geovany Quenda.",
-          "team": "Chelsea",
-          "in": {
-            "id": "376481",
-            "name": "Estêvão"
-          },
-          "out": {
-            "id": "376274",
-            "name": "Geovany Quenda"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 0
-          }
-        },
-        {
-          "index": 16,
-          "type": "goal",
-          "minute": "77'",
-          "text": "Own Goal by Mike Penders, Chelsea. Chelsea 0, Tottenham Hotspur 1.",
-          "team": "Tottenham Hotspur",
-          "scoreAfter": {
-            "home": 0,
-            "away": 1
-          }
-        },
-        {
-          "index": 18,
-          "type": "red_card",
-          "minute": "80'",
-          "text": "Second yellow card to Cole Palmer (Chelsea) for a bad foul.",
-          "team": "Chelsea",
-          "scoreAt": {
-            "home": 0,
-            "away": 1
-          }
-        },
-        {
-          "index": 19,
-          "type": "goal",
-          "minute": "87'",
-          "text": "Goal! Chelsea 0, Tottenham Hotspur 2. Mathys Tel (Tottenham Hotspur) right footed shot from outside the box to the bottom left corner.",
-          "team": "Tottenham Hotspur",
-          "scoreAfter": {
-            "home": 0,
-            "away": 2
-          }
-        },
-        {
-          "index": 20,
-          "type": "substitution",
-          "minute": "88'",
-          "text": "Substitution, Chelsea. Danny Welbeck replaces Pedro Neto.",
-          "team": "Chelsea",
-          "in": {
-            "id": "115271",
-            "name": "Danny Welbeck"
-          },
-          "out": {
-            "id": "256115",
-            "name": "Pedro Neto"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 2
-          }
-        },
-        {
-          "index": 21,
-          "type": "substitution",
-          "minute": "89'",
-          "text": "Substitution, Tottenham Hotspur. Ben Davies replaces Mathys Tel.",
-          "team": "Tottenham Hotspur",
-          "in": {
-            "id": "6327",
-            "name": "Ben Davies"
-          },
-          "out": {
-            "id": "325042",
-            "name": "Mathys Tel"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 2
-          }
-        },
-        {
-          "index": 22,
-          "type": "substitution",
-          "minute": "89'",
-          "text": "Substitution, Tottenham Hotspur. Dejan Kulusevski replaces Mohammed Kudus.",
-          "team": "Tottenham Hotspur",
-          "in": {
-            "id": "272695",
-            "name": "Dejan Kulusevski"
-          },
-          "out": {
-            "id": "266599",
-            "name": "Mohammed Kudus"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 2
-          }
-        }
-      ],
-      "source": "https://www.espn.com/soccer/match/_/gameId/401878767"
-    },
-    "eng.1:401879281": {
-      "status": "acquired",
-      "rosters": {
-        "373": [
-          {
-            "id": "246244",
-            "name": "Kjell Scherpen",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "291174",
-            "name": "Jacob Greaves",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "230963",
-            "name": "Issa Diop",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "283086",
-            "name": "Leif Davis",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 1,
-            "assists": 1
-          },
-          {
-            "id": "243440",
-            "name": "Dara O'Shea",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "20975",
-            "name": "Julio Enciso",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "228393",
-            "name": "Exequiel Palacios",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "222300",
-            "name": "Sasa Lukic",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "322654",
-            "name": "Emersonn",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 1,
-            "assists": 1
-          },
-          {
-            "id": "269343",
-            "name": "Jack Clarke",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "318680",
-            "name": "Fatawu Issahaku",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "295370",
-            "name": "Jaden Philogene",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "336794",
-            "name": "Abdoul Ouattara",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "256607",
-            "name": "Florentino",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "301554",
-            "name": "Marcelino Núñez",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "261598",
-            "name": "Zian Flemming",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 1,
-            "assists": 0
-          },
-          {
-            "id": "168746",
-            "name": "Christian Walton",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "181092",
-            "name": "Chuba Akpom",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "286347",
-            "name": "Daizen Maeda",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "243648",
-            "name": "Cedric Kipre",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          }
-        ],
-        "384": [
-          {
-            "id": "195738",
-            "name": "Walter Benítez",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "231718",
-            "name": "Axel Disasi",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "388605",
-            "name": "Honest Ahanor",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "272585",
-            "name": "Chris Richards",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "333419",
-            "name": "Adam Wharton",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "282230",
-            "name": "Quinten Timber",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "300853",
-            "name": "Tyrick Mitchell",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "332648",
-            "name": "Anan Khalaili",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 1,
-            "assists": 0
-          },
-          {
-            "id": "252747",
-            "name": "Jørgen Strand Larsen",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 1,
-            "assists": 0
-          },
-          {
-            "id": "297370",
-            "name": "Yéremy Pino",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "219362",
-            "name": "Daichi Kamada",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 2
-          },
-          {
-            "id": "374519",
-            "name": "Zavier Gozo",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "205981",
-            "name": "Remi Matthews",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "266628",
-            "name": "Cheick Doucouré",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "238004",
-            "name": "Takehiro Tomiyasu",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "197399",
-            "name": "Jefferson Lerma",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "273495",
-            "name": "Dwight McNeil",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "276546",
-            "name": "Óscar Mingueza",
-            "role": "bench_unused",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "168421",
-            "name": "Will Hughes",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "225426",
-            "name": "Ben Chilwell",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          }
-        ]
-      },
-      "completeRosters": {
-        "373": true,
-        "384": true
-      },
-      "events": [
-        {
-          "index": 1,
-          "type": "goal",
-          "minute": "14'",
-          "text": "Goal! Crystal Palace 1, Ipswich Town 0. Anan Khalaili (Crystal Palace) right footed shot from the right side of the box to the bottom left corner. Assisted by Daichi Kamada.",
-          "team": "Crystal Palace",
-          "scoreAfter": {
-            "home": 1,
-            "away": 0
-          }
-        },
-        {
-          "index": 6,
-          "type": "goal",
-          "minute": "23'",
-          "text": "Goal! Crystal Palace 1, Ipswich Town 1. Emersonn (Ipswich Town) header from the centre of the box to the top left corner. Assisted by Leif Davis with a cross.",
-          "team": "Ipswich Town",
-          "scoreAfter": {
-            "home": 1,
-            "away": 1
-          }
-        },
-        {
-          "index": 7,
-          "type": "red_card",
-          "minute": "34'",
-          "text": "Axel Disasi (Crystal Palace) is shown the red card.",
-          "team": "Crystal Palace",
-          "scoreAt": {
-            "home": 1,
-            "away": 1
-          }
-        },
-        {
-          "index": 10,
-          "type": "substitution",
-          "minute": "37'",
-          "text": "Substitution, Crystal Palace. Takehiro Tomiyasu replaces Yéremy Pino.",
-          "team": "Crystal Palace",
-          "in": {
-            "id": "238004",
-            "name": "Takehiro Tomiyasu"
-          },
-          "out": {
-            "id": "297370",
-            "name": "Yéremy Pino"
-          },
-          "scoreAt": {
-            "home": 1,
-            "away": 1
-          }
-        },
-        {
-          "index": 12,
-          "type": "goal",
-          "minute": "45'",
-          "text": "Goal! Crystal Palace 1, Ipswich Town 2. Leif Davis (Ipswich Town) header from very close range to the bottom right corner. Assisted by Emersonn.",
-          "team": "Ipswich Town",
-          "scoreAfter": {
-            "home": 1,
-            "away": 2
-          }
-        },
-        {
-          "index": 18,
-          "type": "substitution",
-          "minute": "62'",
-          "text": "Substitution, Ipswich Town. Jaden Philogene replaces Abdul Fatawu.",
-          "team": "Ipswich Town",
-          "in": {
-            "id": "295370",
-            "name": "Jaden Philogene"
-          },
-          "out": {
-            "id": "318680",
-            "name": "Fatawu Issahaku"
-          },
-          "scoreAt": {
-            "home": 1,
-            "away": 2
-          }
-        },
-        {
-          "index": 19,
-          "type": "substitution",
-          "minute": "63'",
-          "text": "Substitution, Ipswich Town. Daizen Maeda replaces Jack Clarke.",
-          "team": "Ipswich Town",
-          "in": {
-            "id": "286347",
-            "name": "Daizen Maeda"
-          },
-          "out": {
-            "id": "269343",
-            "name": "Jack Clarke"
-          },
-          "scoreAt": {
-            "home": 1,
-            "away": 2
-          }
-        },
-        {
-          "index": 22,
-          "type": "substitution",
-          "minute": "63'",
-          "text": "Substitution, Ipswich Town. Zian Flemming replaces Emersonn because of an injury.",
-          "team": "Ipswich Town",
-          "in": {
-            "id": "261598",
-            "name": "Zian Flemming"
-          },
-          "out": {
-            "id": "322654",
-            "name": "Emersonn"
-          },
-          "scoreAt": {
-            "home": 1,
-            "away": 2
-          }
-        },
-        {
-          "index": 24,
-          "type": "goal",
-          "minute": "75'",
-          "text": "Goal! Crystal Palace 2, Ipswich Town 2. Jørgen Strand Larsen (Crystal Palace) right footed shot from the right side of the box to the bottom left corner. Assisted by Daichi Kamada.",
-          "team": "Crystal Palace",
-          "scoreAfter": {
-            "home": 2,
-            "away": 2
-          }
-        },
-        {
-          "index": 25,
-          "type": "substitution",
-          "minute": "77'",
-          "text": "Substitution, Ipswich Town. Florentino replaces Sasa Lukic.",
-          "team": "Ipswich Town",
-          "in": {
-            "id": "256607",
-            "name": "Florentino"
-          },
-          "out": {
-            "id": "222300",
-            "name": "Sasa Lukic"
-          },
-          "scoreAt": {
-            "home": 2,
-            "away": 2
-          }
-        },
-        {
-          "index": 26,
-          "type": "substitution",
-          "minute": "77'",
-          "text": "Substitution, Crystal Palace. Will Hughes replaces Adam Wharton.",
-          "team": "Crystal Palace",
-          "in": {
-            "id": "168421",
-            "name": "Will Hughes"
-          },
-          "out": {
-            "id": "333419",
-            "name": "Adam Wharton"
-          },
-          "scoreAt": {
-            "home": 2,
-            "away": 2
-          }
-        },
-        {
-          "index": 27,
-          "type": "substitution",
-          "minute": "77'",
-          "text": "Substitution, Crystal Palace. Ben Chilwell replaces Tyrick Mitchell.",
-          "team": "Crystal Palace",
-          "in": {
-            "id": "225426",
-            "name": "Ben Chilwell"
-          },
-          "out": {
-            "id": "300853",
-            "name": "Tyrick Mitchell"
-          },
-          "scoreAt": {
-            "home": 2,
-            "away": 2
-          }
-        },
-        {
-          "index": 28,
-          "type": "substitution",
-          "minute": "84'",
-          "text": "Substitution, Crystal Palace. Jefferson Lerma replaces Daichi Kamada.",
-          "team": "Crystal Palace",
-          "in": {
-            "id": "197399",
-            "name": "Jefferson Lerma"
-          },
-          "out": {
-            "id": "219362",
-            "name": "Daichi Kamada"
-          },
-          "scoreAt": {
-            "home": 2,
-            "away": 2
-          }
-        },
-        {
-          "index": 29,
-          "type": "substitution",
-          "minute": "84'",
-          "text": "Substitution, Crystal Palace. Zavier Gozo replaces Jørgen Strand Larsen.",
-          "team": "Crystal Palace",
-          "in": {
-            "id": "374519",
-            "name": "Zavier Gozo"
-          },
-          "out": {
-            "id": "252747",
-            "name": "Jørgen Strand Larsen"
-          },
-          "scoreAt": {
-            "home": 2,
-            "away": 2
-          }
-        },
-        {
-          "index": 30,
-          "type": "substitution",
-          "minute": "88'",
-          "text": "Substitution, Ipswich Town. Abdoul Ouattara replaces Jacob Greaves.",
-          "team": "Ipswich Town",
-          "in": {
-            "id": "336794",
-            "name": "Abdoul Ouattara"
-          },
-          "out": {
-            "id": "291174",
-            "name": "Jacob Greaves"
-          },
-          "scoreAt": {
-            "home": 2,
-            "away": 2
-          }
-        },
-        {
-          "index": 31,
-          "type": "goal",
-          "minute": "90'",
-          "text": "Goal! Crystal Palace 2, Ipswich Town 3. Zian Flemming (Ipswich Town) right footed shot from very close range to the bottom left corner.",
-          "team": "Ipswich Town",
-          "scoreAfter": {
-            "home": 2,
-            "away": 3
-          }
-        }
-      ],
-      "source": "https://www.espn.com/soccer/match/_/gameId/401879281"
-    },
     "uefa.europa:401915553": {
       "status": "acquired",
       "rosters": {
@@ -6527,165 +5766,757 @@
       ],
       "source": "https://www.espn.com/soccer/match/_/gameId/401915553"
     },
-    "eng.1:401878773": {
+    "eng.1:401879281": {
       "status": "acquired",
       "rosters": {
-        "360": [
+        "373": [
           {
-            "id": "301425",
-            "name": "Senne Lammens",
+            "id": "246244",
+            "name": "Kjell Scherpen",
             "role": "starter",
             "subbedOut": false,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "233937",
-            "name": "Lisandro Martínez",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "157073",
-            "name": "Harry Maguire",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "167127",
-            "name": "Luke Shaw",
+            "id": "291174",
+            "name": "Jacob Greaves",
             "role": "starter",
             "subbedOut": true,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "340206",
-            "name": "Leny Yoro",
-            "role": "starter",
-            "subbedOut": true,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "124091",
-            "name": "Bruno Fernandes",
+            "id": "230963",
+            "name": "Issa Diop",
             "role": "starter",
             "subbedOut": false,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "328466",
-            "name": "Kobbie Mainoo",
+            "id": "283086",
+            "name": "Leif Davis",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 1,
+            "assists": 1
+          },
+          {
+            "id": "243440",
+            "name": "Dara O'Shea",
             "role": "starter",
             "subbedOut": false,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "193297",
-            "name": "Youri Tielemans",
+            "id": "20975",
+            "name": "Julio Enciso",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "228393",
+            "name": "Exequiel Palacios",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "222300",
+            "name": "Sasa Lukic",
             "role": "starter",
             "subbedOut": true,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "271170",
-            "name": "Bryan Mbeumo",
+            "id": "322654",
+            "name": "Emersonn",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 1,
+            "assists": 1
+          },
+          {
+            "id": "269343",
+            "name": "Jack Clarke",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "318680",
+            "name": "Fatawu Issahaku",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "295370",
+            "name": "Jaden Philogene",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "336794",
+            "name": "Abdoul Ouattara",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "256607",
+            "name": "Florentino",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "301554",
+            "name": "Marcelino Núñez",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "261598",
+            "name": "Zian Flemming",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 1,
+            "assists": 0
+          },
+          {
+            "id": "168746",
+            "name": "Christian Walton",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "181092",
+            "name": "Chuba Akpom",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "286347",
+            "name": "Daizen Maeda",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "243648",
+            "name": "Cedric Kipre",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          }
+        ],
+        "384": [
+          {
+            "id": "195738",
+            "name": "Walter Benítez",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "231718",
+            "name": "Axel Disasi",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "388605",
+            "name": "Honest Ahanor",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "272585",
+            "name": "Chris Richards",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "333419",
+            "name": "Adam Wharton",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "282230",
+            "name": "Quinten Timber",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "300853",
+            "name": "Tyrick Mitchell",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "332648",
+            "name": "Anan Khalaili",
             "role": "starter",
             "subbedOut": false,
             "goals": 1,
             "assists": 0
           },
           {
-            "id": "259902",
-            "name": "Matheus Cunha",
+            "id": "252747",
+            "name": "Jørgen Strand Larsen",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 1,
+            "assists": 0
+          },
+          {
+            "id": "297370",
+            "name": "Yéremy Pino",
             "role": "starter",
             "subbedOut": true,
             "goals": 0,
-            "assists": 1
+            "assists": 0
           },
           {
-            "id": "291630",
-            "name": "Amad Diallo",
+            "id": "219362",
+            "name": "Daichi Kamada",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 2
+          },
+          {
+            "id": "374519",
+            "name": "Zavier Gozo",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "205981",
+            "name": "Remi Matthews",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "266628",
+            "name": "Cheick Doucouré",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "238004",
+            "name": "Takehiro Tomiyasu",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "197399",
+            "name": "Jefferson Lerma",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "273495",
+            "name": "Dwight McNeil",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "276546",
+            "name": "Óscar Mingueza",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "168421",
+            "name": "Will Hughes",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "225426",
+            "name": "Ben Chilwell",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          }
+        ]
+      },
+      "completeRosters": {
+        "373": true,
+        "384": true
+      },
+      "events": [
+        {
+          "index": 1,
+          "type": "goal",
+          "minute": "14'",
+          "text": "Goal! Crystal Palace 1, Ipswich Town 0. Anan Khalaili (Crystal Palace) right footed shot from the right side of the box to the bottom left corner. Assisted by Daichi Kamada.",
+          "team": "Crystal Palace",
+          "scoreAfter": {
+            "home": 1,
+            "away": 0
+          }
+        },
+        {
+          "index": 6,
+          "type": "goal",
+          "minute": "23'",
+          "text": "Goal! Crystal Palace 1, Ipswich Town 1. Emersonn (Ipswich Town) header from the centre of the box to the top left corner. Assisted by Leif Davis with a cross.",
+          "team": "Ipswich Town",
+          "scoreAfter": {
+            "home": 1,
+            "away": 1
+          }
+        },
+        {
+          "index": 7,
+          "type": "red_card",
+          "minute": "34'",
+          "text": "Axel Disasi (Crystal Palace) is shown the red card.",
+          "team": "Crystal Palace",
+          "scoreAt": {
+            "home": 1,
+            "away": 1
+          }
+        },
+        {
+          "index": 10,
+          "type": "substitution",
+          "minute": "37'",
+          "text": "Substitution, Crystal Palace. Takehiro Tomiyasu replaces Yéremy Pino.",
+          "team": "Crystal Palace",
+          "in": {
+            "id": "238004",
+            "name": "Takehiro Tomiyasu"
+          },
+          "out": {
+            "id": "297370",
+            "name": "Yéremy Pino"
+          },
+          "scoreAt": {
+            "home": 1,
+            "away": 1
+          }
+        },
+        {
+          "index": 12,
+          "type": "goal",
+          "minute": "45'",
+          "text": "Goal! Crystal Palace 1, Ipswich Town 2. Leif Davis (Ipswich Town) header from very close range to the bottom right corner. Assisted by Emersonn.",
+          "team": "Ipswich Town",
+          "scoreAfter": {
+            "home": 1,
+            "away": 2
+          }
+        },
+        {
+          "index": 18,
+          "type": "substitution",
+          "minute": "62'",
+          "text": "Substitution, Ipswich Town. Jaden Philogene replaces Abdul Fatawu.",
+          "team": "Ipswich Town",
+          "in": {
+            "id": "295370",
+            "name": "Jaden Philogene"
+          },
+          "out": {
+            "id": "318680",
+            "name": "Fatawu Issahaku"
+          },
+          "scoreAt": {
+            "home": 1,
+            "away": 2
+          }
+        },
+        {
+          "index": 19,
+          "type": "substitution",
+          "minute": "63'",
+          "text": "Substitution, Ipswich Town. Daizen Maeda replaces Jack Clarke.",
+          "team": "Ipswich Town",
+          "in": {
+            "id": "286347",
+            "name": "Daizen Maeda"
+          },
+          "out": {
+            "id": "269343",
+            "name": "Jack Clarke"
+          },
+          "scoreAt": {
+            "home": 1,
+            "away": 2
+          }
+        },
+        {
+          "index": 22,
+          "type": "substitution",
+          "minute": "63'",
+          "text": "Substitution, Ipswich Town. Zian Flemming replaces Emersonn because of an injury.",
+          "team": "Ipswich Town",
+          "in": {
+            "id": "261598",
+            "name": "Zian Flemming"
+          },
+          "out": {
+            "id": "322654",
+            "name": "Emersonn"
+          },
+          "scoreAt": {
+            "home": 1,
+            "away": 2
+          }
+        },
+        {
+          "index": 24,
+          "type": "goal",
+          "minute": "75'",
+          "text": "Goal! Crystal Palace 2, Ipswich Town 2. Jørgen Strand Larsen (Crystal Palace) right footed shot from the right side of the box to the bottom left corner. Assisted by Daichi Kamada.",
+          "team": "Crystal Palace",
+          "scoreAfter": {
+            "home": 2,
+            "away": 2
+          }
+        },
+        {
+          "index": 25,
+          "type": "substitution",
+          "minute": "77'",
+          "text": "Substitution, Ipswich Town. Florentino replaces Sasa Lukic.",
+          "team": "Ipswich Town",
+          "in": {
+            "id": "256607",
+            "name": "Florentino"
+          },
+          "out": {
+            "id": "222300",
+            "name": "Sasa Lukic"
+          },
+          "scoreAt": {
+            "home": 2,
+            "away": 2
+          }
+        },
+        {
+          "index": 26,
+          "type": "substitution",
+          "minute": "77'",
+          "text": "Substitution, Crystal Palace. Will Hughes replaces Adam Wharton.",
+          "team": "Crystal Palace",
+          "in": {
+            "id": "168421",
+            "name": "Will Hughes"
+          },
+          "out": {
+            "id": "333419",
+            "name": "Adam Wharton"
+          },
+          "scoreAt": {
+            "home": 2,
+            "away": 2
+          }
+        },
+        {
+          "index": 27,
+          "type": "substitution",
+          "minute": "77'",
+          "text": "Substitution, Crystal Palace. Ben Chilwell replaces Tyrick Mitchell.",
+          "team": "Crystal Palace",
+          "in": {
+            "id": "225426",
+            "name": "Ben Chilwell"
+          },
+          "out": {
+            "id": "300853",
+            "name": "Tyrick Mitchell"
+          },
+          "scoreAt": {
+            "home": 2,
+            "away": 2
+          }
+        },
+        {
+          "index": 28,
+          "type": "substitution",
+          "minute": "84'",
+          "text": "Substitution, Crystal Palace. Jefferson Lerma replaces Daichi Kamada.",
+          "team": "Crystal Palace",
+          "in": {
+            "id": "197399",
+            "name": "Jefferson Lerma"
+          },
+          "out": {
+            "id": "219362",
+            "name": "Daichi Kamada"
+          },
+          "scoreAt": {
+            "home": 2,
+            "away": 2
+          }
+        },
+        {
+          "index": 29,
+          "type": "substitution",
+          "minute": "84'",
+          "text": "Substitution, Crystal Palace. Zavier Gozo replaces Jørgen Strand Larsen.",
+          "team": "Crystal Palace",
+          "in": {
+            "id": "374519",
+            "name": "Zavier Gozo"
+          },
+          "out": {
+            "id": "252747",
+            "name": "Jørgen Strand Larsen"
+          },
+          "scoreAt": {
+            "home": 2,
+            "away": 2
+          }
+        },
+        {
+          "index": 30,
+          "type": "substitution",
+          "minute": "88'",
+          "text": "Substitution, Ipswich Town. Abdoul Ouattara replaces Jacob Greaves.",
+          "team": "Ipswich Town",
+          "in": {
+            "id": "336794",
+            "name": "Abdoul Ouattara"
+          },
+          "out": {
+            "id": "291174",
+            "name": "Jacob Greaves"
+          },
+          "scoreAt": {
+            "home": 2,
+            "away": 2
+          }
+        },
+        {
+          "index": 31,
+          "type": "goal",
+          "minute": "90'",
+          "text": "Goal! Crystal Palace 2, Ipswich Town 3. Zian Flemming (Ipswich Town) right footed shot from very close range to the bottom left corner.",
+          "team": "Ipswich Town",
+          "scoreAfter": {
+            "home": 2,
+            "away": 3
+          }
+        }
+      ],
+      "source": "https://www.espn.com/soccer/match/_/gameId/401879281"
+    },
+    "eng.1:401878767": {
+      "status": "acquired",
+      "rosters": {
+        "363": [
+          {
+            "id": "332343",
+            "name": "Mike Penders",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "265918",
+            "name": "Maxence Lacroix",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "296410",
+            "name": "Levi Colwill",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "368317",
+            "name": "Josh Acheampong",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "127262",
+            "name": "Jordan Henderson",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "289877",
+            "name": "Moisés Caicedo",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "353951",
+            "name": "Jorrel Hato",
             "role": "starter",
             "subbedOut": true,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "356044",
-            "name": "Ayden Heaven",
-            "role": "sub_on",
+            "id": "256115",
+            "name": "Pedro Neto",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "265653",
+            "name": "Morgan Rogers",
+            "role": "starter",
             "subbedOut": false,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "231167",
-            "name": "Mason Mount",
+            "id": "376274",
+            "name": "Geovany Quenda",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "296395",
+            "name": "Cole Palmer",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "300049",
+            "name": "Teddy Sharman-Lowe",
             "role": "bench_unused",
             "subbedOut": false,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "230945",
-            "name": "Marcus Rashford",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "338814",
-            "name": "Carlos Baleba",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "276327",
-            "name": "Joshua Zirkzee",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "238902",
-            "name": "Diogo Dalot",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "130877",
-            "name": "Karl Darlow",
+            "id": "308947",
+            "name": "Malo Gusto",
             "role": "bench_unused",
             "subbedOut": false,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "358180",
-            "name": "Shea Lacey",
+            "id": "270190",
+            "name": "Wesley Fofana",
             "role": "bench_unused",
             "subbedOut": false,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "314858",
-            "name": "Andrey Santos",
+            "id": "376481",
+            "name": "Estêvão",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "362486",
+            "name": "Marco Palestra",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "320760",
+            "name": "Valentín Barco",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "308217",
+            "name": "Romeo Lavia",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "115271",
+            "name": "Danny Welbeck",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "399562",
+            "name": "Mahdi Nicoll-Jazuli",
             "role": "bench_unused",
             "subbedOut": false,
             "goals": 0,
@@ -6702,10 +6533,10 @@
             "assists": 0
           },
           {
-            "id": "233945",
-            "name": "Marcos Senesi",
+            "id": "296512",
+            "name": "Micky van de Ven",
             "role": "starter",
-            "subbedOut": true,
+            "subbedOut": false,
             "goals": 0,
             "assists": 0
           },
@@ -6718,8 +6549,8 @@
             "assists": 0
           },
           {
-            "id": "290076",
-            "name": "Destiny Udogie",
+            "id": "104943",
+            "name": "Andy Robertson",
             "role": "starter",
             "subbedOut": true,
             "goals": 0,
@@ -6734,8 +6565,8 @@
             "assists": 0
           },
           {
-            "id": "266696",
-            "name": "Conor Gallagher",
+            "id": "194450",
+            "name": "James Maddison",
             "role": "starter",
             "subbedOut": true,
             "goals": 0,
@@ -6747,30 +6578,30 @@
             "role": "starter",
             "subbedOut": false,
             "goals": 0,
-            "assists": 1
+            "assists": 0
           },
           {
-            "id": "356379",
-            "name": "Lucas Bergvall",
+            "id": "346820",
+            "name": "Mateus Fernandes",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "303745",
+            "name": "Omar Marmoush",
             "role": "starter",
             "subbedOut": true,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "194115",
-            "name": "Dominic Solanke",
+            "id": "325042",
+            "name": "Mathys Tel",
             "role": "starter",
-            "subbedOut": false,
+            "subbedOut": true,
             "goals": 1,
-            "assists": 0
-          },
-          {
-            "id": "304470",
-            "name": "Sávio",
-            "role": "starter",
-            "subbedOut": false,
-            "goals": 0,
             "assists": 0
           },
           {
@@ -6782,33 +6613,25 @@
             "assists": 0
           },
           {
-            "id": "6327",
-            "name": "Ben Davies",
+            "id": "372016",
+            "name": "Callum Olusesi",
             "role": "bench_unused",
             "subbedOut": false,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "194450",
-            "name": "James Maddison",
+            "id": "272695",
+            "name": "Dejan Kulusevski",
             "role": "sub_on",
             "subbedOut": false,
             "goals": 0,
             "assists": 0
           },
           {
-            "id": "296512",
-            "name": "Micky van de Ven",
+            "id": "266696",
+            "name": "Conor Gallagher",
             "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "231198",
-            "name": "Tosin Adarabioyo",
-            "role": "bench_unused",
             "subbedOut": false,
             "goals": 0,
             "assists": 0
@@ -6822,33 +6645,41 @@
             "assists": 0
           },
           {
-            "id": "303745",
-            "name": "Omar Marmoush",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "215772",
-            "name": "Rodrigo Bentancur",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "346820",
-            "name": "Mateus Fernandes",
-            "role": "sub_on",
-            "subbedOut": false,
-            "goals": 0,
-            "assists": 0
-          },
-          {
-            "id": "325042",
-            "name": "Mathys Tel",
+            "id": "233945",
+            "name": "Marcos Senesi",
             "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "6327",
+            "name": "Ben Davies",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "268533",
+            "name": "Pedro Porro",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "395939",
+            "name": "Luca Williams-Barnett",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "194115",
+            "name": "Dominic Solanke",
+            "role": "sub_on",
             "subbedOut": false,
             "goals": 0,
             "assists": 0
@@ -6856,80 +6687,23 @@
         ]
       },
       "completeRosters": {
-        "360": true,
+        "363": true,
         "367": true
       },
       "events": [
         {
-          "index": 4,
-          "type": "substitution",
-          "minute": "59'",
-          "text": "Substitution, Manchester United. Joshua Zirkzee replaces Amad Diallo.",
-          "team": "Manchester United",
-          "in": {
-            "id": "276327",
-            "name": "Joshua Zirkzee"
-          },
-          "out": {
-            "id": "291630",
-            "name": "Amad Diallo"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 0
-          }
-        },
-        {
-          "index": 5,
-          "type": "substitution",
-          "minute": "59'",
-          "text": "Substitution, Manchester United. Diogo Dalot replaces Leny Yoro.",
-          "team": "Manchester United",
-          "in": {
-            "id": "238902",
-            "name": "Diogo Dalot"
-          },
-          "out": {
-            "id": "340206",
-            "name": "Leny Yoro"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 0
-          }
-        },
-        {
-          "index": 6,
-          "type": "substitution",
-          "minute": "59'",
-          "text": "Substitution, Manchester United. Carlos Baleba replaces Youri Tielemans.",
-          "team": "Manchester United",
-          "in": {
-            "id": "338814",
-            "name": "Carlos Baleba"
-          },
-          "out": {
-            "id": "193297",
-            "name": "Youri Tielemans"
-          },
-          "scoreAt": {
-            "home": 0,
-            "away": 0
-          }
-        },
-        {
           "index": 7,
           "type": "substitution",
-          "minute": "66'",
-          "text": "Substitution, Tottenham Hotspur. Rodrigo Bentancur replaces Lucas Bergvall.",
+          "minute": "51'",
+          "text": "Substitution, Tottenham Hotspur. Conor Gallagher replaces James Maddison because of an injury.",
           "team": "Tottenham Hotspur",
           "in": {
-            "id": "215772",
-            "name": "Rodrigo Bentancur"
+            "id": "266696",
+            "name": "Conor Gallagher"
           },
           "out": {
-            "id": "356379",
-            "name": "Lucas Bergvall"
+            "id": "194450",
+            "name": "James Maddison"
           },
           "scoreAt": {
             "home": 0,
@@ -6939,16 +6713,16 @@
         {
           "index": 8,
           "type": "substitution",
-          "minute": "66'",
-          "text": "Substitution, Tottenham Hotspur. Omar Marmoush replaces Mohammed Kudus.",
-          "team": "Tottenham Hotspur",
+          "minute": "65'",
+          "text": "Substitution, Chelsea. Marco Palestra replaces Jorrel Hato.",
+          "team": "Chelsea",
           "in": {
-            "id": "303745",
-            "name": "Omar Marmoush"
+            "id": "362486",
+            "name": "Marco Palestra"
           },
           "out": {
-            "id": "266599",
-            "name": "Mohammed Kudus"
+            "id": "353951",
+            "name": "Jorrel Hato"
           },
           "scoreAt": {
             "home": 0,
@@ -6957,134 +6731,153 @@
         },
         {
           "index": 9,
-          "type": "goal",
-          "minute": "73'",
-          "text": "Goal! Manchester United 1, Tottenham Hotspur 0. Bryan Mbeumo (Manchester United) left footed shot from the left side of the box to the bottom right corner. Assisted by Matheus Cunha.",
-          "team": "Manchester United",
-          "scoreAfter": {
-            "home": 1,
+          "type": "substitution",
+          "minute": "65'",
+          "text": "Substitution, Tottenham Hotspur. Dominic Solanke replaces Omar Marmoush.",
+          "team": "Tottenham Hotspur",
+          "in": {
+            "id": "194115",
+            "name": "Dominic Solanke"
+          },
+          "out": {
+            "id": "303745",
+            "name": "Omar Marmoush"
+          },
+          "scoreAt": {
+            "home": 0,
             "away": 0
           }
         },
         {
           "index": 10,
           "type": "substitution",
-          "minute": "74'",
-          "text": "Substitution, Tottenham Hotspur. James Maddison replaces Conor Gallagher.",
+          "minute": "65'",
+          "text": "Substitution, Tottenham Hotspur. Pedro Porro replaces Andy Robertson.",
           "team": "Tottenham Hotspur",
           "in": {
-            "id": "194450",
-            "name": "James Maddison"
+            "id": "268533",
+            "name": "Pedro Porro"
           },
           "out": {
-            "id": "266696",
-            "name": "Conor Gallagher"
+            "id": "104943",
+            "name": "Andy Robertson"
           },
           "scoreAt": {
-            "home": 1,
+            "home": 0,
             "away": 0
           }
         },
         {
-          "index": 11,
+          "index": 15,
           "type": "substitution",
-          "minute": "74'",
-          "text": "Substitution, Tottenham Hotspur. Micky van de Ven replaces Destiny Udogie.",
-          "team": "Tottenham Hotspur",
+          "minute": "72'",
+          "text": "Substitution, Chelsea. Estêvão replaces Geovany Quenda.",
+          "team": "Chelsea",
           "in": {
-            "id": "296512",
-            "name": "Micky van de Ven"
+            "id": "376481",
+            "name": "Estêvão"
           },
           "out": {
-            "id": "290076",
-            "name": "Destiny Udogie"
+            "id": "376274",
+            "name": "Geovany Quenda"
           },
           "scoreAt": {
-            "home": 1,
+            "home": 0,
             "away": 0
           }
         },
         {
-          "index": 12,
-          "type": "red_card",
-          "minute": "78'",
-          "text": "Rodrigo Bentancur (Tottenham Hotspur) is shown the red card for violent conduct.",
+          "index": 16,
+          "type": "goal",
+          "minute": "77'",
+          "text": "Own Goal by Mike Penders, Chelsea. Chelsea 0, Tottenham Hotspur 1.",
           "team": "Tottenham Hotspur",
-          "scoreAt": {
-            "home": 1,
-            "away": 0
-          }
-        },
-        {
-          "index": 17,
-          "type": "substitution",
-          "minute": "89'",
-          "text": "Substitution, Tottenham Hotspur. Mateus Fernandes replaces Marcos Senesi.",
-          "team": "Tottenham Hotspur",
-          "in": {
-            "id": "346820",
-            "name": "Mateus Fernandes"
-          },
-          "out": {
-            "id": "233945",
-            "name": "Marcos Senesi"
-          },
-          "scoreAt": {
-            "home": 1,
-            "away": 0
+          "scoreAfter": {
+            "home": 0,
+            "away": 1
           }
         },
         {
           "index": 18,
-          "type": "goal",
-          "minute": "90'+2'",
-          "text": "Goal! Manchester United 1, Tottenham Hotspur 1. Dominic Solanke (Tottenham Hotspur) header from the centre of the box to the bottom right corner. Assisted by Sandro Tonali with a cross.",
-          "team": "Tottenham Hotspur",
-          "scoreAfter": {
-            "home": 1,
+          "type": "red_card",
+          "minute": "80'",
+          "text": "Second yellow card to Cole Palmer (Chelsea) for a bad foul.",
+          "team": "Chelsea",
+          "scoreAt": {
+            "home": 0,
             "away": 1
           }
         },
         {
           "index": 19,
-          "type": "substitution",
-          "minute": "90'+5'",
-          "text": "Substitution, Manchester United. Marcus Rashford replaces Matheus Cunha.",
-          "team": "Manchester United",
-          "in": {
-            "id": "230945",
-            "name": "Marcus Rashford"
-          },
-          "out": {
-            "id": "259902",
-            "name": "Matheus Cunha"
-          },
-          "scoreAt": {
-            "home": 1,
-            "away": 1
+          "type": "goal",
+          "minute": "87'",
+          "text": "Goal! Chelsea 0, Tottenham Hotspur 2. Mathys Tel (Tottenham Hotspur) right footed shot from outside the box to the bottom left corner.",
+          "team": "Tottenham Hotspur",
+          "scoreAfter": {
+            "home": 0,
+            "away": 2
           }
         },
         {
           "index": 20,
           "type": "substitution",
-          "minute": "90'+5'",
-          "text": "Substitution, Manchester United. Ayden Heaven replaces Luke Shaw.",
-          "team": "Manchester United",
+          "minute": "88'",
+          "text": "Substitution, Chelsea. Danny Welbeck replaces Pedro Neto.",
+          "team": "Chelsea",
           "in": {
-            "id": "356044",
-            "name": "Ayden Heaven"
+            "id": "115271",
+            "name": "Danny Welbeck"
           },
           "out": {
-            "id": "167127",
-            "name": "Luke Shaw"
+            "id": "256115",
+            "name": "Pedro Neto"
           },
           "scoreAt": {
-            "home": 1,
-            "away": 1
+            "home": 0,
+            "away": 2
+          }
+        },
+        {
+          "index": 21,
+          "type": "substitution",
+          "minute": "89'",
+          "text": "Substitution, Tottenham Hotspur. Ben Davies replaces Mathys Tel.",
+          "team": "Tottenham Hotspur",
+          "in": {
+            "id": "6327",
+            "name": "Ben Davies"
+          },
+          "out": {
+            "id": "325042",
+            "name": "Mathys Tel"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 2
+          }
+        },
+        {
+          "index": 22,
+          "type": "substitution",
+          "minute": "89'",
+          "text": "Substitution, Tottenham Hotspur. Dejan Kulusevski replaces Mohammed Kudus.",
+          "team": "Tottenham Hotspur",
+          "in": {
+            "id": "272695",
+            "name": "Dejan Kulusevski"
+          },
+          "out": {
+            "id": "266599",
+            "name": "Mohammed Kudus"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 2
           }
         }
       ],
-      "source": "https://www.espn.com/soccer/match/_/gameId/401878773"
+      "source": "https://www.espn.com/soccer/match/_/gameId/401878767"
     },
     "eng.1:401879269": {
       "status": "acquired",
@@ -7666,6 +7459,565 @@
         }
       ],
       "source": "https://www.espn.com/soccer/match/_/gameId/401879269"
+    },
+    "eng.1:401878773": {
+      "status": "acquired",
+      "rosters": {
+        "360": [
+          {
+            "id": "301425",
+            "name": "Senne Lammens",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "233937",
+            "name": "Lisandro Martínez",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "157073",
+            "name": "Harry Maguire",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "167127",
+            "name": "Luke Shaw",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "340206",
+            "name": "Leny Yoro",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "124091",
+            "name": "Bruno Fernandes",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "328466",
+            "name": "Kobbie Mainoo",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "193297",
+            "name": "Youri Tielemans",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "271170",
+            "name": "Bryan Mbeumo",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 1,
+            "assists": 0
+          },
+          {
+            "id": "259902",
+            "name": "Matheus Cunha",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 1
+          },
+          {
+            "id": "291630",
+            "name": "Amad Diallo",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "356044",
+            "name": "Ayden Heaven",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "231167",
+            "name": "Mason Mount",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "230945",
+            "name": "Marcus Rashford",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "338814",
+            "name": "Carlos Baleba",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "276327",
+            "name": "Joshua Zirkzee",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "238902",
+            "name": "Diogo Dalot",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "130877",
+            "name": "Karl Darlow",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "358180",
+            "name": "Shea Lacey",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "314858",
+            "name": "Andrey Santos",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          }
+        ],
+        "367": [
+          {
+            "id": "324393",
+            "name": "Antonín Kinsky",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "233945",
+            "name": "Marcos Senesi",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "282583",
+            "name": "Jan Paul van Hecke",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "290076",
+            "name": "Destiny Udogie",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "328050",
+            "name": "Archie Gray",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "266696",
+            "name": "Conor Gallagher",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "261047",
+            "name": "Sandro Tonali",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 1
+          },
+          {
+            "id": "356379",
+            "name": "Lucas Bergvall",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "194115",
+            "name": "Dominic Solanke",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 1,
+            "assists": 0
+          },
+          {
+            "id": "304470",
+            "name": "Sávio",
+            "role": "starter",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "266599",
+            "name": "Mohammed Kudus",
+            "role": "starter",
+            "subbedOut": true,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "6327",
+            "name": "Ben Davies",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "194450",
+            "name": "James Maddison",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "296512",
+            "name": "Micky van de Ven",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "231198",
+            "name": "Tosin Adarabioyo",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "126703",
+            "name": "Martin Dúbravka",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "303745",
+            "name": "Omar Marmoush",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "215772",
+            "name": "Rodrigo Bentancur",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "346820",
+            "name": "Mateus Fernandes",
+            "role": "sub_on",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          },
+          {
+            "id": "325042",
+            "name": "Mathys Tel",
+            "role": "bench_unused",
+            "subbedOut": false,
+            "goals": 0,
+            "assists": 0
+          }
+        ]
+      },
+      "completeRosters": {
+        "360": true,
+        "367": true
+      },
+      "events": [
+        {
+          "index": 4,
+          "type": "substitution",
+          "minute": "59'",
+          "text": "Substitution, Manchester United. Joshua Zirkzee replaces Amad Diallo.",
+          "team": "Manchester United",
+          "in": {
+            "id": "276327",
+            "name": "Joshua Zirkzee"
+          },
+          "out": {
+            "id": "291630",
+            "name": "Amad Diallo"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 0
+          }
+        },
+        {
+          "index": 5,
+          "type": "substitution",
+          "minute": "59'",
+          "text": "Substitution, Manchester United. Diogo Dalot replaces Leny Yoro.",
+          "team": "Manchester United",
+          "in": {
+            "id": "238902",
+            "name": "Diogo Dalot"
+          },
+          "out": {
+            "id": "340206",
+            "name": "Leny Yoro"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 0
+          }
+        },
+        {
+          "index": 6,
+          "type": "substitution",
+          "minute": "59'",
+          "text": "Substitution, Manchester United. Carlos Baleba replaces Youri Tielemans.",
+          "team": "Manchester United",
+          "in": {
+            "id": "338814",
+            "name": "Carlos Baleba"
+          },
+          "out": {
+            "id": "193297",
+            "name": "Youri Tielemans"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 0
+          }
+        },
+        {
+          "index": 7,
+          "type": "substitution",
+          "minute": "66'",
+          "text": "Substitution, Tottenham Hotspur. Rodrigo Bentancur replaces Lucas Bergvall.",
+          "team": "Tottenham Hotspur",
+          "in": {
+            "id": "215772",
+            "name": "Rodrigo Bentancur"
+          },
+          "out": {
+            "id": "356379",
+            "name": "Lucas Bergvall"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 0
+          }
+        },
+        {
+          "index": 8,
+          "type": "substitution",
+          "minute": "66'",
+          "text": "Substitution, Tottenham Hotspur. Omar Marmoush replaces Mohammed Kudus.",
+          "team": "Tottenham Hotspur",
+          "in": {
+            "id": "303745",
+            "name": "Omar Marmoush"
+          },
+          "out": {
+            "id": "266599",
+            "name": "Mohammed Kudus"
+          },
+          "scoreAt": {
+            "home": 0,
+            "away": 0
+          }
+        },
+        {
+          "index": 9,
+          "type": "goal",
+          "minute": "73'",
+          "text": "Goal! Manchester United 1, Tottenham Hotspur 0. Bryan Mbeumo (Manchester United) left footed shot from the left side of the box to the bottom right corner. Assisted by Matheus Cunha.",
+          "team": "Manchester United",
+          "scoreAfter": {
+            "home": 1,
+            "away": 0
+          }
+        },
+        {
+          "index": 10,
+          "type": "substitution",
+          "minute": "74'",
+          "text": "Substitution, Tottenham Hotspur. James Maddison replaces Conor Gallagher.",
+          "team": "Tottenham Hotspur",
+          "in": {
+            "id": "194450",
+            "name": "James Maddison"
+          },
+          "out": {
+            "id": "266696",
+            "name": "Conor Gallagher"
+          },
+          "scoreAt": {
+            "home": 1,
+            "away": 0
+          }
+        },
+        {
+          "index": 11,
+          "type": "substitution",
+          "minute": "74'",
+          "text": "Substitution, Tottenham Hotspur. Micky van de Ven replaces Destiny Udogie.",
+          "team": "Tottenham Hotspur",
+          "in": {
+            "id": "296512",
+            "name": "Micky van de Ven"
+          },
+          "out": {
+            "id": "290076",
+            "name": "Destiny Udogie"
+          },
+          "scoreAt": {
+            "home": 1,
+            "away": 0
+          }
+        },
+        {
+          "index": 12,
+          "type": "red_card",
+          "minute": "78'",
+          "text": "Rodrigo Bentancur (Tottenham Hotspur) is shown the red card for violent conduct.",
+          "team": "Tottenham Hotspur",
+          "scoreAt": {
+            "home": 1,
+            "away": 0
+          }
+        },
+        {
+          "index": 17,
+          "type": "substitution",
+          "minute": "89'",
+          "text": "Substitution, Tottenham Hotspur. Mateus Fernandes replaces Marcos Senesi.",
+          "team": "Tottenham Hotspur",
+          "in": {
+            "id": "346820",
+            "name": "Mateus Fernandes"
+          },
+          "out": {
+            "id": "233945",
+            "name": "Marcos Senesi"
+          },
+          "scoreAt": {
+            "home": 1,
+            "away": 0
+          }
+        },
+        {
+          "index": 18,
+          "type": "goal",
+          "minute": "90'+2'",
+          "text": "Goal! Manchester United 1, Tottenham Hotspur 1. Dominic Solanke (Tottenham Hotspur) header from the centre of the box to the bottom right corner. Assisted by Sandro Tonali with a cross.",
+          "team": "Tottenham Hotspur",
+          "scoreAfter": {
+            "home": 1,
+            "away": 1
+          }
+        },
+        {
+          "index": 19,
+          "type": "substitution",
+          "minute": "90'+5'",
+          "text": "Substitution, Manchester United. Marcus Rashford replaces Matheus Cunha.",
+          "team": "Manchester United",
+          "in": {
+            "id": "230945",
+            "name": "Marcus Rashford"
+          },
+          "out": {
+            "id": "259902",
+            "name": "Matheus Cunha"
+          },
+          "scoreAt": {
+            "home": 1,
+            "away": 1
+          }
+        },
+        {
+          "index": 20,
+          "type": "substitution",
+          "minute": "90'+5'",
+          "text": "Substitution, Manchester United. Ayden Heaven replaces Luke Shaw.",
+          "team": "Manchester United",
+          "in": {
+            "id": "356044",
+            "name": "Ayden Heaven"
+          },
+          "out": {
+            "id": "167127",
+            "name": "Luke Shaw"
+          },
+          "scoreAt": {
+            "home": 1,
+            "away": 1
+          }
+        }
+      ],
+      "source": "https://www.espn.com/soccer/match/_/gameId/401878773"
     },
     "eng.1:401879277": {
       "status": "acquired",
@@ -8735,184 +9087,220 @@
   "errors": [],
   "sourceChecks": [
     {
-      "label": "英超賽程 20261106",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261106",
-      "checkedAt": "2026-10-30T07:26:02.993Z",
-      "status": "ok"
-    },
-    {
-      "label": "英超賽程 20261101",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261101",
-      "checkedAt": "2026-10-30T07:26:02.990Z",
-      "status": "ok"
-    },
-    {
-      "label": "英超賽程 20261104",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261104",
-      "checkedAt": "2026-10-30T07:26:02.992Z",
-      "status": "ok"
-    },
-    {
-      "label": "英超賽程 20261108",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261108",
-      "checkedAt": "2026-10-30T07:26:02.994Z",
+      "label": "英超賽程 20261030",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261030",
+      "checkedAt": "2026-10-30T07:34:06.919Z",
       "status": "ok"
     },
     {
       "label": "英超賽程 20261031",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261031",
-      "checkedAt": "2026-10-30T07:26:02.988Z",
+      "checkedAt": "2026-10-30T07:34:06.920Z",
       "status": "ok"
     },
     {
-      "label": "英超賽程 20261030",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261030",
-      "checkedAt": "2026-10-30T07:26:02.988Z",
-      "status": "ok"
-    },
-    {
-      "label": "英超賽程 20261103",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261103",
-      "checkedAt": "2026-10-30T07:26:02.991Z",
-      "status": "ok"
-    },
-    {
-      "label": "英超賽程 20261102",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261102",
-      "checkedAt": "2026-10-30T07:26:02.991Z",
-      "status": "ok"
-    },
-    {
-      "label": "英超賽程 20261105",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261105",
-      "checkedAt": "2026-10-30T07:26:02.992Z",
+      "label": "英超賽程 20261101",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261101",
+      "checkedAt": "2026-10-30T07:34:06.921Z",
       "status": "ok"
     },
     {
       "label": "英超賽程 20261107",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261107",
-      "checkedAt": "2026-10-30T07:26:02.994Z",
+      "checkedAt": "2026-10-30T07:34:06.924Z",
+      "status": "ok"
+    },
+    {
+      "label": "英超賽程 20261106",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261106",
+      "checkedAt": "2026-10-30T07:34:06.924Z",
+      "status": "ok"
+    },
+    {
+      "label": "英超賽程 20261104",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261104",
+      "checkedAt": "2026-10-30T07:34:06.922Z",
+      "status": "ok"
+    },
+    {
+      "label": "英超賽程 20261103",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261103",
+      "checkedAt": "2026-10-30T07:34:06.922Z",
       "status": "ok"
     },
     {
       "label": "英超賽程 20261029",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261029",
-      "checkedAt": "2026-10-30T07:26:02.945Z",
+      "checkedAt": "2026-10-30T07:34:06.879Z",
+      "status": "ok"
+    },
+    {
+      "label": "英超賽程 20261102",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261102",
+      "checkedAt": "2026-10-30T07:34:06.921Z",
+      "status": "ok"
+    },
+    {
+      "label": "英超賽程 20261108",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261108",
+      "checkedAt": "2026-10-30T07:34:06.925Z",
+      "status": "ok"
+    },
+    {
+      "label": "英超賽程 20261105",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20261105",
+      "checkedAt": "2026-10-30T07:34:06.923Z",
       "status": "ok"
     },
     {
       "label": "Crystal Palace 英超賽程",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/384/schedule?season=2026",
-      "checkedAt": "2026-10-30T07:26:03.605Z",
+      "checkedAt": "2026-10-30T07:34:07.648Z",
+      "status": "ok"
+    },
+    {
+      "label": "Crystal Palace 歐冠賽程",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/teams/384/schedule?season=2026",
+      "checkedAt": "2026-10-30T07:34:07.872Z",
       "status": "ok"
     },
     {
       "label": "Crystal Palace 歐聯賽程",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/teams/384/schedule?season=2026",
-      "checkedAt": "2026-10-30T07:26:03.802Z",
+      "checkedAt": "2026-10-30T07:34:08.063Z",
+      "status": "ok"
+    },
+    {
+      "label": "Crystal Palace 歐協賽程",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa.conf/teams/384/schedule?season=2026",
+      "checkedAt": "2026-10-30T07:34:08.253Z",
+      "status": "ok"
+    },
+    {
+      "label": "Crystal Palace 足總盃賽程",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.fa/teams/384/schedule?season=2026",
+      "checkedAt": "2026-10-30T07:34:08.443Z",
       "status": "ok"
     },
     {
       "label": "Crystal Palace 聯賽盃賽程",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.league_cup/teams/384/schedule?season=2026",
-      "checkedAt": "2026-10-30T07:26:03.989Z",
+      "checkedAt": "2026-10-30T07:34:08.639Z",
       "status": "ok"
     },
     {
       "label": "Tottenham Hotspur 英超賽程",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/367/schedule?season=2026",
-      "checkedAt": "2026-10-30T07:26:04.183Z",
+      "checkedAt": "2026-10-30T07:34:08.867Z",
+      "status": "ok"
+    },
+    {
+      "label": "Tottenham Hotspur 歐冠賽程",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/teams/367/schedule?season=2026",
+      "checkedAt": "2026-10-30T07:34:09.106Z",
       "status": "ok"
     },
     {
       "label": "Tottenham Hotspur 歐聯賽程",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/teams/367/schedule?season=2026",
-      "checkedAt": "2026-10-30T07:26:04.383Z",
+      "checkedAt": "2026-10-30T07:34:09.351Z",
+      "status": "ok"
+    },
+    {
+      "label": "Tottenham Hotspur 歐協賽程",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa.conf/teams/367/schedule?season=2026",
+      "checkedAt": "2026-10-30T07:34:09.549Z",
+      "status": "ok"
+    },
+    {
+      "label": "Tottenham Hotspur 足總盃賽程",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.fa/teams/367/schedule?season=2026",
+      "checkedAt": "2026-10-30T07:34:09.778Z",
       "status": "ok"
     },
     {
       "label": "Tottenham Hotspur 聯賽盃賽程",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.league_cup/teams/367/schedule?season=2026",
-      "checkedAt": "2026-10-30T07:26:04.562Z",
-      "status": "ok"
-    },
-    {
-      "label": "英超 401879254 名單與事件",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879254",
-      "checkedAt": "2026-10-30T07:26:04.752Z",
+      "checkedAt": "2026-10-30T07:34:09.983Z",
       "status": "ok"
     },
     {
       "label": "英超 401879266 名單與事件",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879266",
-      "checkedAt": "2026-10-30T07:26:04.752Z",
+      "checkedAt": "2026-10-30T07:34:10.195Z",
+      "status": "ok"
+    },
+    {
+      "label": "英超 401879254 名單與事件",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879254",
+      "checkedAt": "2026-10-30T07:34:10.194Z",
       "status": "ok"
     },
     {
       "label": "英超 401879273 名單與事件",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879273",
-      "checkedAt": "2026-10-30T07:26:04.752Z",
+      "checkedAt": "2026-10-30T07:34:10.195Z",
       "status": "ok"
     },
     {
       "label": "英超 401879261 名單與事件",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879261",
-      "checkedAt": "2026-10-30T07:26:04.752Z",
+      "checkedAt": "2026-10-30T07:34:10.195Z",
       "status": "ok"
     },
     {
       "label": "聯賽盃 401921841 名單與事件",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.league_cup/summary?event=401921841",
-      "checkedAt": "2026-10-30T07:26:05.086Z",
-      "status": "ok"
-    },
-    {
-      "label": "英超 401878767 名單與事件",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401878767",
-      "checkedAt": "2026-10-30T07:26:05.086Z",
-      "status": "ok"
-    },
-    {
-      "label": "英超 401879281 名單與事件",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879281",
-      "checkedAt": "2026-10-30T07:26:05.086Z",
+      "checkedAt": "2026-10-30T07:34:10.398Z",
       "status": "ok"
     },
     {
       "label": "歐聯 401915553 名單與事件",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401915553",
-      "checkedAt": "2026-10-30T07:26:05.086Z",
+      "checkedAt": "2026-10-30T07:34:10.398Z",
       "status": "ok"
     },
     {
-      "label": "英超 401878773 名單與事件",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401878773",
-      "checkedAt": "2026-10-30T07:26:05.332Z",
+      "label": "英超 401879281 名單與事件",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879281",
+      "checkedAt": "2026-10-30T07:34:10.398Z",
+      "status": "ok"
+    },
+    {
+      "label": "英超 401878767 名單與事件",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401878767",
+      "checkedAt": "2026-10-30T07:34:10.398Z",
       "status": "ok"
     },
     {
       "label": "英超 401879269 名單與事件",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879269",
-      "checkedAt": "2026-10-30T07:26:05.332Z",
+      "checkedAt": "2026-10-30T07:34:10.622Z",
+      "status": "ok"
+    },
+    {
+      "label": "英超 401878773 名單與事件",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401878773",
+      "checkedAt": "2026-10-30T07:34:10.622Z",
       "status": "ok"
     },
     {
       "label": "英超 401879277 名單與事件",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879277",
-      "checkedAt": "2026-10-30T07:26:05.332Z",
+      "checkedAt": "2026-10-30T07:34:10.622Z",
       "status": "ok"
     },
     {
       "label": "英超 401879257 名單與事件",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879257",
-      "checkedAt": "2026-10-30T07:26:05.332Z",
+      "checkedAt": "2026-10-30T07:34:10.622Z",
       "status": "ok"
     }
   ],
   "limitations": [
     "ESPN 網頁資料端點未提供公開穩定性承諾；此為研究試作。",
     "xG 本次未取得。",
-    "14 日跨賽事僅涵蓋英超、歐聯與英格蘭聯賽盃。",
+    "14 日跨賽事已查英超、歐冠、歐聯、歐協、足總盃與聯賽盃；其他賽事未涵蓋。",
     "本場正式名單公布前只顯示近期用人，不推測先發。"
   ]
 }

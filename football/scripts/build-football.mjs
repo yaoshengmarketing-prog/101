@@ -7,7 +7,10 @@ const API = 'https://site.api.espn.com/apis/site/v2/sports/soccer';
 const LOTTERY = 'https://www-talo-ssb-pr.sportslottery.com.tw/daily-coupons';
 const LEAGUES = [
   { id: 'eng.1', label: '英超' },
+  { id: 'uefa.champions', label: '歐冠' },
   { id: 'uefa.europa', label: '歐聯' },
+  { id: 'uefa.europa.conf', label: '歐協' },
+  { id: 'eng.fa', label: '足總盃' },
   { id: 'eng.league_cup', label: '聯賽盃' },
 ];
 const TZ = 'Asia/Taipei';
@@ -156,8 +159,11 @@ function makePlayers(games, teamId, details) {
     games: ordered.map(g => {
       const detail = details[g.key];
       const p = detail?.rosters?.[teamId]?.find(p => p.id === id);
+      const onEvent = detail?.events?.find(e => e.type === 'substitution' && e.in?.id === id);
+      const offEvent = detail?.events?.find(e => e.type === 'substitution' && e.out?.id === id);
       return { key: g.key,
         role: p?.role || (detail?.completeRosters?.[teamId] ? 'not_listed' : 'not_acquired'),
+        subOnMinute: onEvent?.minute || null, subOffMinute: offEvent?.minute || null,
         goals: p?.goals ?? null, assists: p?.assists ?? null };
     }),
   })).sort((a, b) => {
@@ -246,7 +252,7 @@ async function main() {
   const lottery = await inspectLottery();
   const detail = { generatedAt, target, lottery, teamData,
     games, details, errors, sourceChecks,
-    limitations: ['ESPN 網頁資料端點未提供公開穩定性承諾；此為研究試作。', 'xG 本次未取得。', '14 日跨賽事僅涵蓋英超、歐聯與英格蘭聯賽盃。', '本場正式名單公布前只顯示近期用人，不推測先發。'] };
+    limitations: ['ESPN 網頁資料端點未提供公開穩定性承諾；此為研究試作。', 'xG 本次未取得。', '14 日跨賽事已查英超、歐冠、歐聯、歐協、足總盃與聯賽盃；其他賽事未涵蓋。', '本場正式名單公布前只顯示近期用人，不推測先發。'] };
   await fs.mkdir(outDir, { recursive: true });
   await fs.writeFile(path.join(outDir, 'overview.json'), JSON.stringify(overview, null, 2) + '\n');
   await fs.writeFile(path.join(outDir, 'game.json'), JSON.stringify(detail, null, 2) + '\n');
