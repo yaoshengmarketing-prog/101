@@ -12,6 +12,7 @@ on:
   workflow_run:
     workflows: [live-data]
     types: [completed]
+  workflow_dispatch:
 permissions:
   contents: read
   actions: read
@@ -37,7 +38,7 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if [ "$EVENT_NAME" = push ]; then echo 'publish=true' >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [ "$EVENT_NAME" != workflow_run ]; then echo 'publish=true' >> "$GITHUB_OUTPUT"; exit 0; fi
           if ! curl -fsSL --max-time 15 "https://yaoshengmarketing-prog.github.io/101/live/data/status.json?check=$RUN_ID" -o .public-live-status; then
             echo 'publish=true' >> "$GITHUB_OUTPUT"
             exit 0
