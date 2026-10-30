@@ -1,31 +1,34 @@
-# 足球當季取數試作（英超）
+# 足球當季資料頁試行（英超）
 
-2026-10-30。研究試作；尚非正式採用或自動排程上線。與 `/live/` MLB 路徑分開。
+2026-10-30 更新。足球總覽、各場固定 ID 單場頁、獨立取數與 Pages 部署已可運作；正式產品採用及長期穩定供應仍待驗證。與 `/live/` 棒球流程分開。
 
-## 開啟
+## 開啟與重跑
 
-- 每日英超總覽：`/101/football/`
-- 本包單場頁：`/101/football/game.html`
-- 原始碼固定版本以交付 commit 為準。GitHub Pages 可直接開；GitHub 檔案檢視頁只顯示原始碼。
-
-## 重跑
-
-在 `101` repo 根目錄使用 Node 24（無 npm 依賴）：
+- [每日英超總覽](https://yaoshengmarketing-prog.github.io/101/football/)
+- 單場固定網址：`/101/football/game.html?id={ESPN event ID}`。每次重建依比賽 ID 產出各場 JSON，網址不會被下一場覆寫。
+- 在 `101` 根目錄使用 Node 24（無 npm 套件依賴）：
 
 ```sh
-node football/scripts/build-football.mjs --event 401878761 --out football/data
-node football/scripts/qa-football.mjs football/data
+node --test football/scripts/test-football.mjs football/scripts/test-football-page.mjs
+node football/scripts/build-football.mjs --event 401878761 --out .football-build/data
+node football/scripts/qa-football.mjs .football-build/data
 ```
 
-不指定 `--event` 時，從未來賽程選最近尚未開球的英超場次。`football-data.yml` 是獨立的 `workflow_dispatch`，目前沒有 schedule；不調用棒球流程。每次從來源重新組合，來源失敗的欄位寫「本次未取得」與查詢時間，不載入舊版 JSON。
+不指定 `--event` 時，重建台灣昨天至後天的已知英超場次；空窗時列下一個賽事日。指定 `--event` 用於明確驗證目標場。單場頁先讀 `status.json`；更新失敗或逾期時不再讀已移除的場次 JSON。
+
+## 自動更新與發布
+
+`.github/workflows/football-data.yml` 在 push、手動觸發及自然排程運作。固定更新時點為台灣約 06:07、18:07；另每半小時做輕量賽程檢查，僅在開球前約 90 或 30 分鐘重建。GitHub 的 schedule 可延遲或漏觸發，因此仍須觀察自然排程紀錄，不能以手動成功代替。賽前加跑會重新查正式名單及賽事狀態，但不重抓台彩賠率。
+
+每次完整重建從 ESPN 取得當季賽程、兩隊近五場英超及近 14 日跨賽事用人，產出各場資料；主工作流的兩天 artifact 供 Pages 部署與短期查核。部署直接以 GitHub Pages Actions 發布整站，保留原有棒球頁面；例行足球 JSON 不提交 Git，也不建立長期球賽資料庫。下次發布覆蓋前次足球快照。成功快照 18 小時後由頁面標逾期；失敗時只發布 `status.json`，不回退舊值。
 
 ## 資料邊界
 
-- 賽程、英超近五場，以及近 14 日英超／歐冠／歐聯／歐協／足總盃／聯賽盃名單與事件：本次由 ESPN 公開賽事資料端點取得。其中歐冠、歐協與足總盃的兩隊賽程查詢回應零場。這個端點沒有公開的穩定性承諾；正式營運前仍須確認長期供應與使用條件。
-- 台彩：官方網站在本次伺服器讀取回 HTTP 403。頁面不顯示 10/30 早先樣本賠率，也不把 403 解釋成未開盤。另有 JBot 文件化 Token API 可作候選，但本包未取得 Token、未實測，也沒有訂閱。
-- xG、未涵蓋賽事、未取得的事件與球員統計保持缺值。角色依每場名單判定；只有在來源完整名單時才標「未列名單」。
-- `.football-build/` 是工作流程的暫存目錄，單次 job 結束即消失（最多 12 分鐘）。`football/data/` 是目前頁面讀取的一份物化 JSON，下一次成功建置整份覆蓋；Git commit 歷史仍會保留舊版本，因此正式高頻更新前要改成有明確保留期的部署方式。沒有累積查詢用的長期球賽資料庫。
+- ESPN 來源涵蓋英超、歐冠、歐聯、歐協、足總盃與聯賽盃已取得的賽程、名單與事件。這些公開端點沒有穩定供應承諾。缺比分不合計總進球；來源列出 11 名先發不代表替補名單完整。
+- 本場正式名單分為尚無、已列出、部分列出、本次查詢失敗。先發延續只在相鄰兩場都有 11 名先發時計算。
+- 台彩採人工核對後的一次性**官方賠率快照**。只有賽事 ID、主客隊、開球時間、台彩賽事編號、玩法／門檻／賠率及取得時間通過配對檢查才呈現；未取得留空並提供[台彩官方入口](https://www-talo-ssb-pr.sportslottery.com.tw/daily-coupons)。不追蹤賠率變動、不把舊樣本套入新場次。
+- xG、未涵蓋賽事與缺少的球員統計維持缺值。台彩大小快照門檻對照歷史比分時，明示並非各場當時盤口。
 
-## 這包驗證到哪裡
+## 驗證狀態
 
-詳見研究 repo 的本次紀錄。已在不同時間兩次以上本機實抓、通過資料 QA；GitHub Pages 線上頁已實際點過比分背景、相鄰場次、Osorio 逐場與返回。實體手機及 GitHub Actions 的足球取數 workflow 尚未試跑，不以本機測試冒充。
+`site-pages` run 41036738596 已於台灣 2026-10-30 17:53 由 `live-data` 觸發，足球 artifact 下載、全站組合及 Pages 部署成功。足球 workflow 曾由 push／手動觸發並部署；**自然 schedule 觸發及賽前正式名單出現仍須以實際 run 與公開頁驗證**。失敗與逾期的狀態優先讀取邏輯及台灣日期邊界已有自動測試；實體手機尚未試看。

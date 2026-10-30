@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalEvent, compactSummary, pairForTeam, deriveLineupStatus, oddsForTarget } from './build-football.mjs';
+import { normalEvent, compactSummary, pairForTeam, deriveLineupStatus, oddsForTarget, scoreboardDays } from './build-football.mjs';
 
 const target = { id: '401878761', home: { id: '367', name: 'Tottenham Hotspur' },
   away: { id: '384', name: 'Crystal Palace' }, kickoffUTC: '2026-10-31T17:30Z' };
@@ -46,4 +46,10 @@ test('台彩快照配對不符時不呈現賠率', () => {
   assert.equal(oddsForTarget(target, { [target.id]: snapshot }).status, 'snapshot');
   assert.equal(oddsForTarget(target, { [target.id]: { ...snapshot, matchedHomeId: '384' } }).status, 'match_failed');
   assert.equal(oddsForTarget(target, {}).markets, null);
+});
+
+test('台灣 11/2 晚間查詢涵蓋 11/1 凌晨所屬的 UTC 10/31', () => {
+  const days = scoreboardDays(new Date('2026-11-02T15:00:00Z'));
+  assert.equal(days[0], '20261031');
+  assert.ok(days.includes('20261101'));
 });

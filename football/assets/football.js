@@ -15,11 +15,12 @@ const phaseLabel = { pre: '賽前', live: '比賽進行中', final: '已完賽',
 async function renderOverview() {
   const node = $('#overview');
   try {
-    const [status, o] = await Promise.all([getJson('status.json'), getJson('overview.json')]);
-    if (expired(status) || status.status === 'failed') {
-      node.innerHTML = `<div class="empty">足球資料${expired(status) ? '已逾期' : '本次更新失敗'}，暫停顯示賽程。上次取得：${esc(fmt(status.generatedAt))}（台灣）。</div>`;
+    const status = await getJson('status.json');
+    if (status.status === 'failed' || expired(status)) {
+      node.innerHTML = `<div class="empty">足球資料${status.status === 'failed' ? '本次更新失敗' : '已逾期'}，暫停顯示賽程。本次狀態時間：${esc(fmt(status.generatedAt))}（台灣）。</div>`;
       return;
     }
+    const o = await getJson('overview.json');
     const dateGroups = o.dates.map(date => {
       const games = o.games.filter(g => g.twDate === date);
       return `<section class="day-group"><h2>${esc(date)}（台灣）</h2>${games.length ? games.map(g => {
@@ -136,10 +137,15 @@ async function renderGame() {
   try {
     const id = new URLSearchParams(location.search).get('id') || '401878761';
     if (!/^\d+$/.test(id)) throw new Error('賽事 ID 格式不正確');
-    const [status, d] = await Promise.all([getJson('status.json'), getJson(`games/${id}.json`)]);
+    const status = await getJson('status.json');
+    if (status.status === 'failed' || expired(status)) {
+      node.innerHTML = `<div class="empty">賽事 ${esc(id)} 的足球資料${status.status === 'failed' ? '本次更新失敗' : '已逾期'}，暫停顯示。本次狀態時間：${esc(fmt(status.generatedAt))}（台灣）。<a href="./">返回英超總覽</a></div>`;
+      return;
+    }
+    const d = await getJson(`games/${id}.json`);
     if (d.target.id !== id) throw new Error('賽事 ID 與資料不符，已停止顯示');
-    if (expired(status) || expired(d) || status.status === 'failed') {
-      node.innerHTML = `<div class="empty">賽事 ${esc(id)} 的足球資料${expired(status) || expired(d) ? '已逾期' : '本次更新失敗'}，暫停顯示。上次取得：${esc(fmt(d.generatedAt))}（台灣）。</div>`;
+    if (expired(d)) {
+      node.innerHTML = `<div class="empty">賽事 ${esc(id)} 的足球資料已逾期，暫停顯示。上次取得：${esc(fmt(d.generatedAt))}（台灣）。<a href="./">返回英超總覽</a></div>`;
       return;
     }
     pageData = d;
@@ -189,4 +195,7 @@ async function renderGame() {
   }
 }
 
-if ($('#game')) renderGame(); else if ($('#overview')) renderOverview();
+export { renderOverview, renderGame };
+if (typeof document !== 'undefined') {
+  if ($('#game')) renderGame(); else if ($('#overview')) renderOverview();
+}

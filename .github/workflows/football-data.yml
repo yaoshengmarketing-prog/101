@@ -11,8 +11,12 @@ on:
       - football/game.html
       - football/official-odds-snapshots.json
   schedule:
-    # 試行：台灣 06:00、18:00 各重建一次；18 小時後畫面自動標逾期。
-    - cron: '0 10,22 * * *'
+    # 台灣約 06:07、18:07 重建；避開 GitHub 整點排程尖峰。
+    - cron: '7 10,22 * * *'
+    # 賽前時窗檢查；只有開球前約 90／30 分鐘才重建，台彩快照不重抓。
+    - cron: '5,35 * * * *'
+    # 2026-10-30 首次自然排程驗證；成功後移除此一次性時點。
+    - cron: '57 15 30 10 *'
   workflow_dispatch:
     inputs:
       event_id:
@@ -32,14 +36,23 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    outputs:
+      should_deploy: ${{ steps.due.outputs.build }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 24
+      - name: 判斷固定更新或賽前 90／30 分鐘時窗
+        id: due
+        env:
+          FOOTBALL_SCHEDULE: ${{ github.event.schedule }}
+        run: node football/scripts/football-due.mjs
       - name: 足球缺資料與配對測試
-        run: node --test football/scripts/test-football.mjs
+        if: steps.due.outputs.build == 'true'
+        run: node --test football/scripts/test-football.mjs football/scripts/test-football-page.mjs
       - name: 取數並組合各場英超資料
+        if: steps.due.outputs.build == 'true'
         env:
           EVENT_ID: ${{ inputs.event_id }}
           ODDS_SNAPSHOT_JSON: ${{ inputs.odds_snapshot_json }}
@@ -53,6 +66,7 @@ jobs:
           fi
           node football/scripts/build-football.mjs "${args[@]}"
       - name: 足球各場資料 QA
+        if: steps.due.outputs.build == 'true'
         run: node football/scripts/qa-football.mjs .football-build/data
       - name: 更新失敗時發布明確狀態
         if: failure()
@@ -62,7 +76,7 @@ jobs:
           rm -f .football-build/data/overview.json .football-build/data/run-report.json
           rm -rf .football-build/data/games
       - name: 保留本次短期快照供部署與查核
-        if: always()
+        if: always() && (steps.due.outputs.build == 'true' || failure())
         uses: actions/upload-artifact@v4
         with:
           name: football-current
@@ -71,7 +85,7 @@ jobs:
           if-no-files-found: error
   deploy:
     needs: build
-    if: always()
+    if: always() && (needs.build.outputs.should_deploy == 'true' || needs.build.result == 'failure')
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:

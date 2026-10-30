@@ -30,6 +30,11 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const plusDays = (date, days) => new Date(date.getTime() + days * 86400000);
 const ymdUTC = date => date.toISOString().slice(0, 10).replaceAll('-', '');
 const twDay = iso => new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(iso));
+// 台灣「昨天」從前一日 16:00 UTC 開始；不能用 UTC 昨天作查詢起點。
+const scoreboardDays = at => {
+  const taiwanMidnightUTC = Date.parse(`${twDay(at)}T00:00:00+08:00`);
+  return Array.from({ length: 12 }, (_, i) => ymdUTC(plusDays(new Date(taiwanMidnightUTC - 86400000), i)));
+};
 const seasonOf = iso => { const d = new Date(iso); return d.getUTCMonth() >= 6 ? d.getUTCFullYear() : d.getUTCFullYear() - 1; };
 const gameKey = (league, id) => `${league}:${id}`;
 
@@ -238,8 +243,8 @@ function deriveLineupStatus(target, detail) {
 }
 
 async function main() {
-  // 跨 UTC 多查一天；總覽顯示台灣昨天至後天，涵蓋開賽與賽後狀態。
-  const boardDays = Array.from({ length: 11 }, (_, i) => ymdUTC(plusDays(now, i - 1)));
+  // 查詢起點對齊台灣昨天零時，並保留未來賽程供指定 event 驗證。
+  const boardDays = scoreboardDays(now);
   const boards = await Promise.all(boardDays.map(d => getJson(`${API}/eng.1/scoreboard?dates=${d}`, `英超賽程 ${d}`, true)));
   const fixtures = [...new Map(boards.flatMap(b => b.events || []).map(e => [String(e.id), normalEvent(e, 'eng.1')]).filter(([, e]) => e)).values()]
     .sort((a, b) => a.kickoffUTC.localeCompare(b.kickoffUTC));
@@ -333,7 +338,7 @@ async function main() {
   console.log(JSON.stringify(report));
 }
 
-export { normalEvent, compactSummary, pairForTeam, oddsForTarget, deriveLineupStatus };
+export { normalEvent, compactSummary, pairForTeam, oddsForTarget, deriveLineupStatus, scoreboardDays };
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   main().catch(e => { console.error(`build-football failed: ${String(e?.stack || e)}`); process.exitCode = 1; });
 }
