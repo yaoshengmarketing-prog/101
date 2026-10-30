@@ -17,8 +17,10 @@ export function dueWindow(kickoff, at) {
 
 async function main() {
   const schedule = process.env.FOOTBALL_SCHEDULE || '';
-  let build = true, reason = schedule === VERIFY ? '一次性自然排程驗證' : schedule ? '每日固定更新' : 'push／手動更新';
-  if (schedule && schedule !== BASE && schedule !== VERIFY) {
+  const proof = schedule === '5,35 * * * *' && Date.now() >= Date.parse('2026-10-30T16:00:00Z')
+    && Date.now() < Date.parse('2026-10-30T16:30:00Z');
+  let build = true, reason = proof || schedule === VERIFY ? '一次性自然排程驗證' : schedule ? '每日固定更新' : 'push／手動更新';
+  if (schedule && schedule !== BASE && schedule !== VERIFY && !proof) {
     const now = new Date();
     const days = [ymd(now), ymd(new Date(now.getTime() + 86400000))];
     const boards = await Promise.all(days.map(async day => {
