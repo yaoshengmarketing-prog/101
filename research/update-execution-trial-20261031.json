@@ -818,7 +818,7 @@
         "stats": "s3",
         "post": null
       },
-      "sourceStatsState": "available",
+      "sourceStatsState": "unchanged",
       "planBefore": [
         {
           "module": "賽程",
