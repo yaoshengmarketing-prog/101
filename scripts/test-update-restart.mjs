@@ -13,7 +13,7 @@ const by=(s,key)=>s.rounds.find(r=>r.key===key);
 const effective=s=>({
   done:{sources:s.ledger.sources,bullpen:s.ledger.bullpen,matchupBuiltFor:s.ledger.matchupBuiltFor,
     contextDoneFor:s.ledger.contextDoneFor,post:s.ledger.post},
-  output:{buildState:s.buildState,game:s.game,bullpen:s.bullpen,context:s.context,matchup:s.matchup,post:s.post}
+  output:{buildState:s.buildState,game:s.game,bullpen:s.bullpen,context:s.context,matchup:s.matchup,post:s.post,pregame:s.pregame}
 });
 
 const base=await runTrial();
@@ -53,7 +53,7 @@ async function restart(variant,stopAfter,baseline){
     assert.equal(checkpoint.ledger.sources.stats.parts.sp.version,"s4");
     assert.equal(checkpoint.ledger.sources.stats.parts.sp.state,"failed");
     assert.equal(checkpoint.ledger.sources.stats.parts.ops.usedVersion,"s4");
-    assert.equal(checkpoint.ledger.sources.stats.parts.sp.lastGoodAt,"2027-04-20T22:25:00Z");
+    assert.equal(checkpoint.ledger.sources.stats.parts.sp.lastGoodAt,"2027-04-20T22:30:00Z");
     assert.equal(checkpoint.game.away.failed.sp.fetchedAt,"2027-04-20T22:30:00.000Z");
     assert.equal(checkpoint.game.home.failed.sp.fetchedAt,"2027-04-20T22:30:00.000Z");
   }
