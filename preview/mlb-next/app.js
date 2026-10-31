@@ -3,7 +3,8 @@
   const qs=new URLSearchParams(location.search);
   const trialKey=qs.get("trial");
   const T=window.MLB_CROSS_SEASON_TRIAL;
-  const F=window.MLB_SAME_GAME_TRIAL, flow=trialKey==="same-game"&&!!F;
+  const F=trialKey==="resume"?window.MLB_UPDATE_RESUME_TRIAL:window.MLB_SAME_GAME_TRIAL;
+  const flow=["same-game","resume"].includes(trialKey)&&!!F, resumeFlow=flow&&trialKey==="resume";
   const missingMode=trialKey==="real-missing";
   const R=missingMode?window.MLB_REAL_GAMES_MISSING:window.MLB_REAL_GAMES;
   const realMode=["real","real-missing"].includes(trialKey)&&!!R;
@@ -53,10 +54,10 @@
     if(flow){
       const x=F.stages[0].game;
       root.innerHTML=`${base("設計預覽 / 賽事入口")}
-        <section class="page-title"><div><p class="overline">MLB / 同場連續試跑</p><h1>同一場，從賽前到賽後</h1><p>以下七個閱讀狀態共用人工 gamePk ${x.pk}，每輪承接前一輪保存結果。</p></div></section>
+        <section class="page-title"><div><p class="overline">MLB / ${resumeFlow?"保存後重啟交付試跑":"同場連續試跑"}</p><h1>${resumeFlow?"同一場，核對保存與回看":"同一場，從賽前到賽後"}</h1><p>以下 ${F.stages.length} 個閱讀狀態共用人工 gamePk ${x.pk}，每輪承接前一輪保存結果。</p></div></section>
         <div class="test-notice"><b>獨立人工試跑，非正式網站</b><span>${esc(F.meta.warning)}</span></div>
         <section class="list-heading"><h2>2027 例行賽・人工案例</h2><span>台灣時間；美國賽程日另列</span></section>
-        <article class="game-row"><div class="game-time"><strong>${esc(x.twTime)}</strong><span>${esc(twDateLabel(x.twDate))} 台灣時間</span><small>美國賽程日 ${esc(x.usDate)}</small></div><div class="game-clubs"><div><b>${esc(x.away.ab)}</b><strong>${esc(x.away.name)}</strong></div><div><b>${esc(x.home.ab)}</b><strong>${esc(x.home.name)}</strong></div></div><div class="game-essential"><span>同一 gamePk ${x.pk}</span><p>從官方打線未取得到完賽補齊</p><small>資料由 build-live、matchup、ctx、post 等處理</small></div><div class="game-action"><a class="action-link" href="game.html?trial=same-game&step=0">從第一步閱讀 <span aria-hidden="true">↗</span></a></div></article>`;
+        <article class="game-row"><div class="game-time"><strong>${esc(x.twTime)}</strong><span>${esc(twDateLabel(x.twDate))} 台灣時間</span><small>美國賽程日 ${esc(x.usDate)}</small></div><div class="game-clubs"><div><b>${esc(x.away.ab)}</b><strong>${esc(x.away.name)}</strong></div><div><b>${esc(x.home.ab)}</b><strong>${esc(x.home.name)}</strong></div></div><div class="game-essential"><span>同一 gamePk ${x.pk}</span><p>${resumeFlow?"投手局部失敗、重啟恢復、賽後回看":"從官方打線未取得到完賽補齊"}</p><small>資料由 build-live、matchup、ctx、post 等處理</small></div><div class="game-action"><a class="action-link" href="game.html?trial=${trialKey}&step=0">從第一步閱讀 <span aria-hidden="true">↗</span></a></div></article>`;
       return;
     }
     if(pipelineTrial){
@@ -94,7 +95,7 @@
   function pitcherRow(){
     if(pipelineTrial){
       const card=(team,side)=>{
-        const p=team.sp, s=p?.s, status=trialState(p?.statStatus), pair=researchPair(side);
+        const p=team.sp, s=p?.s, status=trialState(p?.statStatus), pair=researchPair(side), failed=team.failed?.sp;
         const split=(code,label)=>{const v=pair?.splits?.[code],st=pair?.splitStatus?.[code];
           return v?`${label}被打 OPS ${esc(v.ops)}（${esc(v.pa)} 打席）`:`${label}被打 OPS：${pair?trialState(st):"對位版本未確認"}`};
         const starts=pair?.recent?.starts||[];
@@ -106,6 +107,7 @@
           ?`<p class="last-season-line">上季參考｜${esc(prior()?.season??"上季")} 例行賽：${old?.status==="value"?`ERA ${esc(old.value.era)}、WHIP ${esc(old.value.whip)}，${esc(old.value.ip)} 局`:priorStatus(old?.status)}。非本季成績。</p><details class="last-season"><summary>展開上季完整資料</summary><p>${old?.status==="value"?`${esc(prior().season)} 例行賽：ERA ${esc(old.value.era)}、WHIP ${esc(old.value.whip)}、${esc(old.value.ip)} 局／${esc(old.value.gs??"?")} 場先發。`:priorStatus(old?.status)} 資料只作獨立參考，不參與本季情境。</p></details>`:"";
         return `<div class="pitcher"><span class="pitcher-label">${esc(team.ab)} 預計先發</span><strong>${esc(p?.name??"未取得")}</strong><span>${p?.hand==="R"?"右投":p?.hand==="L"?"左投":"慣用手未取得"}</span>
           ${s?`<div class="pitcher-metrics"><span>ERA <b>${esc(s.era??"?")}</b></span><span>WHIP <b>${esc(s.whip??"?")}</b></span><span>IP <b>${esc(s.ip??"?")}</b></span></div><small>${esc(g.season)} 例行賽・${esc(s.gs??"?")} 場先發；小樣本仍顯示數字與分母。</small>`:`<div class="sample-message"><b>${realMode?"賽前整體數值無可驗版本":status}</b><span>${realMode?"賽後更新的比賽檔有整體數值，但沒有可核的當時賽前版本；不借來填。":"ERA、WHIP、局數沒有可確認的當季 R 數字；不補 0。"}</span></div>`}
+          ${failed?`<p class="page-note" role="status">本輪先發成績取得失敗；沿用 ${esc(failed.fetchedAt??"時間未取得")} 的舊值。${esc(failed.error??"")}</p>`:""}
           ${previous}<details class="pitcher-research"><summary>對左右打與最近三次先發</summary><p>${split("vl","對左打")}；${split("vr","對右打")}。手別分項為 ${esc(g.season)} 例行賽。</p>${recent}</details></div>`;
       };
       return `<section class="primary-block"><div class="section-head"><h2>先發投手</h2><span>客隊在左・主隊在右</span></div><div class="pitcher-grid">${card(g.away,"away")}${card(g.home,"home")}</div></section>`;
@@ -381,18 +383,19 @@
     }
     if(flow){
       const post=!!flowStage.post, current=flowStage.game, old=flowStage.matchup;
-      const steps=F.stages.map((x,i)=>link(esc(x.label),`game.html?trial=same-game&step=${i}`,i===flowIndex)).join("");
+      const steps=F.stages.map((x,i)=>link(esc(x.label),`game.html?trial=${trialKey}&step=${i}`,i===flowIndex)).join("");
       const stale=flowStage.matchupStatus==="stale"
         ?`<div class="test-notice" role="status"><b>新對位重算失敗</b><span>目前先發／九棒已變；舊對位取得於 ${esc(old?.fetchedAt??"未取得")}，只保留追溯，不顯示為新版本的手別成績。錯誤：${esc(flowStage.matchupError??"來源未取得")}</span></div>`:"";
       root.innerHTML=`${base("設計預覽 / 單場研究")}
-        <nav class="crumb"><a href="index.html?trial=same-game">賽事入口</a><span>／</span><span>gamePk ${g.pk}・人工測試</span></nav>
+        <nav class="crumb"><a href="index.html?trial=${trialKey}">賽事入口</a><span>／</span><span>gamePk ${g.pk}・人工測試</span></nav>
         <nav class="state-controls flow-steps" aria-label="同場試跑階段"><span>試跑階段</span><div>${steps}</div></nav>
         <div class="mode-nav" aria-label="閱讀模式"><span class="${post?"":"active"}">賽前研究</span><span class="${post?"active":""}">賽後結果</span></div>
-        <div class="test-notice"><b>人工來源輸入・實際程式輸出</b><span>第 ${flowIndex+1}／${F.stages.length} 個保存狀態；本站取得時間 ${esc(flowStage.at)}。來源發布時刻未取得。此案例非真實賽程。</span></div>
+        <div class="test-notice"><b>人工來源輸入・實際程式輸出</b><span>第 ${flowIndex+1}／${F.stages.length} 個保存狀態；本站本輪檢查 ${esc(flowStage.at)}。來源發布時刻未取得。此案例非真實賽程。</span></div>
+        ${resumeFlow?`<div class="test-notice" role="status"><b>${esc(flowStage.sourceView.status)}</b><span>投手分項：來源取得 ${esc(flowStage.sourceView.parts.sp.receivedAt??"未取得")}；成功處理 ${esc(flowStage.sourceView.parts.sp.lastGoodAt??"未完成")}；本輪檢查 ${esc(flowStage.sourceView.parts.sp.checkedAt??flowStage.at)}。團隊 OPS ${esc(flowStage.sourceView.parts.ops.usedVersion??"未完成")}（成功處理 ${esc(flowStage.sourceView.parts.ops.lastGoodAt??"未完成")}）。官方九棒 ${esc(flowStage.sourceView.lineup.usedVersion??"未完成")}；對位 ${esc(flowStage.matchupStatus)}。${flowStage.sourceView.parts.sp.state==="failed"?"投手新版本尚未完成，舊值和時間見先發卡；其他成功欄位可讀。":""}</span></div>`:""}
         ${stale}
         <section class="match-hero"><div class="match-meta"><span>${esc(g.season)} ${trialType(g.gameType)}・${esc(flowStage.label)}；${post?(flowStage.post.complete?"資料已補齊":"賽後資料未齊"):current.status.code==="live"?"比賽進行中・賽前已凍結":"賽前更新"}</span><span>${esc(twDateLabel(g.twDate))} ${esc(g.twTime)} 台灣時間・${esc(g.venue)}</span></div>${heroTeams(post)}<p class="hero-caption">美國賽程日 ${esc(g.usDate)}。${post?"先看賽後結果，再展開最後成功保存的賽前研究。":current.status.code==="live"?"比賽已開始；下方為最後成功的賽前版本，不含本場賽後數字。":"比賽資料依本階段實際程式輸出顯示。"}</p></section>
         ${post?`${innings()}${pitchingPost()}<details class="pregame-archive"><summary><span>展開當時保存的賽前研究資料</span><small>最後成功版本 ${esc(flowStage.pregame?.context?.updatedAt??"未取得")}；賽後未改寫</small></summary>${preBody()}</details>`:preBody()}
-        <div class="end-note"><b>保存與範圍</b><p>人工 gamePk ${g.pk} 的七個狀態共用一筆研究紀錄；賽前情境凍結於 ${esc(flowStage.context.frozen?.at??"尚未開賽")}。賽前 SHA-256 ${esc(F.meta.frozenPregameSha256.slice(0,16))}…，賽後回看相同；賽後結果只進獨立 post 欄位。</p></div>`;
+        <div class="end-note"><b>保存與範圍</b><p>人工 gamePk ${g.pk} 的 ${F.stages.length} 個狀態共用一筆研究紀錄；賽前情境凍結於 ${esc(flowStage.context.frozen?.at??"尚未開賽")}。${resumeFlow?"賽前先發、九棒、成績、牛棚、對位及情境保存": "賽前"} SHA-256 ${esc((resumeFlow?flowStage.pregameSha256:F.meta.frozenPregameSha256).slice(0,16))}…；賽後結果只進獨立 post 欄位。</p></div>`;
       return;
     }
     if(pipelineTrial){
@@ -441,10 +444,12 @@
   }
   if(pipelineTrial){
     document.querySelector(".mast-id").textContent=realMode?"MLB / 2026 真實固定回放":"MLB / "+g.season+" 人工試跑";
-    document.querySelector(".brand").href=realMode?`index.html?trial=${realTrial}`:flow?"index.html?trial=same-game":"index.html?trial=opening";
+    document.querySelector(".brand").href=realMode?`index.html?trial=${realTrial}`:flow?`index.html?trial=${trialKey}`:"index.html?trial=opening";
     document.querySelector(".site-foot").innerHTML=realMode?'真實 2026 保存檔固定預覽；正式 /live/、資料與排程未變。<a href="README.md">資料與版本說明</a>':'獨立分支試跑，2027 為人工輸入；正式 /live/、資料與排程未變。<a href="README.md">資料與版本說明</a>';
   }
   if(document.body.dataset.page==="home")renderHome();else renderGame();
   keepReadingPlace();
 })();
+
+
 
