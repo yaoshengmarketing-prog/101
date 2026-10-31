@@ -55,11 +55,38 @@ function openContext(key, opener) {
 }
 
 function resultBlock(t, snapshotThreshold = null) {
+  const form = venueResults(t.leagueFive);
   return `<div class="team-block"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.leagueFive.length}/5 場</h3>
+    ${t.leagueFive.length ? `<div class="venue-form"><p class="venue-form-title">這 ${t.leagueFive.length} 場英超中的主客成績</p>
+      <p>${venueLine('主場', form.home)}</p><p>${venueLine('客場', form.away)}</p>
+      ${form.unknown ? `<p>另有 ${form.unknown} 場主客場本次未取得。</p>` : ''}</div>` : ''}
     ${t.leagueFive.length ? t.leagueFive.map(g => `<article class="result">
       <div class="result-top"><small>${esc(fmt(g.kickoffUTC))} · ${esc(gameLabel(g))}</small><span class="total">${g.totalGoals === null ? '總進球未取得' : `${g.totalGoals} 球`}</span></div>
       <div class="result-bottom"><span class="score">${esc(ownScore(g))}</span>${snapshotThreshold !== null && g.totalGoals !== null ? `<span class="tiny">對照本場快照 ${snapshotThreshold}：${g.totalGoals > snapshotThreshold ? '大' : g.totalGoals < snapshotThreshold ? '小' : '恰等門檻'}</span>` : ''}<button class="text-button" type="button" data-context="${esc(g.key)}">比賽背景 ↗</button></div>
     </article>`).join('') : '<p class="empty">英超逐場紀錄本次未取得。</p>'}</div>`;
+}
+
+export function venueResults(games) {
+  const blank = () => ({ games: 0, complete: 0, wins: 0, draws: 0, losses: 0 });
+  const form = { home: blank(), away: blank(), unknown: 0 };
+  for (const game of games) {
+    const bucket = game.side === 'home' ? form.home : game.side === 'away' ? form.away : null;
+    if (!bucket) { form.unknown++; continue; }
+    bucket.games++;
+    if (!Number.isFinite(game.goalsFor) || !Number.isFinite(game.goalsAgainst)) continue;
+    bucket.complete++;
+    if (game.goalsFor > game.goalsAgainst) bucket.wins++;
+    else if (game.goalsFor < game.goalsAgainst) bucket.losses++;
+    else bucket.draws++;
+  }
+  return form;
+}
+
+export function venueLine(label, tally) {
+  if (!tally.games) return `${label} 0 場：這批沒有${label}比賽`;
+  if (!tally.complete) return `${label} ${tally.games} 場：比分本次未取得`;
+  const coverage = tally.complete < tally.games ? `（比分完整 ${tally.complete}/${tally.games} 場）` : '';
+  return `${label} ${tally.games} 場${coverage}：${tally.wins} 勝、${tally.draws} 和、${tally.losses} 敗`;
 }
 
 function summarizeUsage(t) {

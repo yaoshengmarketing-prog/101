@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderOverview, renderGame } from '../assets/football.js';
+import { renderOverview, renderGame, venueResults, venueLine } from '../assets/football.js';
 import { dueWindow, decide } from './football-due.mjs';
 
 test('失敗與逾期狀態先行，總覽及單場不讀已移除 JSON', async () => {
@@ -53,4 +53,30 @@ test('輕量賽程檢查失敗只停止本次檢查，不觸發完整重建', as
   assert.equal(result.build, false);
   assert.equal(result.checkFailed, true);
   assert.match(result.reason, /HTTP 503/);
+});
+
+test('近五場依當場主客分組，缺比分不算和局並顯示完整分母', () => {
+  const games = [
+    { side: 'home', goalsFor: 3, goalsAgainst: 1 },
+    { side: 'home', goalsFor: 2, goalsAgainst: 3 },
+    { side: 'home', goalsFor: 0, goalsAgainst: 0 },
+    { side: 'away', goalsFor: 2, goalsAgainst: 0 },
+    { side: 'away', goalsFor: 1, goalsAgainst: 1 },
+  ];
+  const full = venueResults(games);
+  assert.equal(venueLine('主場', full.home), '主場 3 場：1 勝、1 和、1 敗');
+  assert.equal(venueLine('客場', full.away), '客場 2 場：1 勝、1 和、0 敗');
+
+  const partial = venueResults([
+    { side: 'home', goalsFor: null, goalsAgainst: null },
+    { side: 'home', goalsFor: 1, goalsAgainst: 0 },
+    { side: 'away', goalsFor: null, goalsAgainst: null },
+    { side: 'unknown', goalsFor: 0, goalsAgainst: 0 },
+  ]);
+  assert.equal(partial.home.games, 2);
+  assert.equal(partial.home.complete, 1);
+  assert.equal(partial.home.draws, 0);
+  assert.equal(venueLine('主場', partial.home), '主場 2 場（比分完整 1/2 場）：1 勝、0 和、0 敗');
+  assert.equal(venueLine('客場', partial.away), '客場 1 場：比分本次未取得');
+  assert.equal(partial.unknown, 1);
 });
