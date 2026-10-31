@@ -1,0 +1,1276 @@
+{
+  "meta": {
+    "gamePk": 9902750,
+    "kind": "人工來源離線串接",
+    "rules": "只在成功後提交處理版；模組呼叫不是 HTTP 次數",
+    "source": "same-game-fixture.mjs；既有 build-live／bullpen／matchup／ctx／post"
+  },
+  "rounds": [
+    {
+      "key": "no_lineup",
+      "at": "2027-04-20T15:00:00Z",
+      "sourceVersions": {
+        "schedule": "g1",
+        "lineup": null,
+        "stats": "s1",
+        "post": null
+      },
+      "sourceStatsState": "available",
+      "planBefore": [
+        {
+          "module": "賽程",
+          "action": "更新"
+        },
+        {
+          "module": "先發／官方九棒",
+          "action": "暫不查"
+        },
+        {
+          "module": "本季統計",
+          "action": "更新"
+        }
+      ],
+      "calls": [
+        "build-live.build",
+        "bullpen.buildBullpen",
+        "ctx.compute"
+      ],
+      "errors": [],
+      "before": {
+        "schedule": null,
+        "lineup": null,
+        "stats": null,
+        "bullpen": null,
+        "matchup": null,
+        "context": {},
+        "post": null
+      },
+      "after": {
+        "schedule": "g1",
+        "lineup": null,
+        "stats": "s1",
+        "bullpen": "u1",
+        "matchup": null,
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g1\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s1|990001:R|990002:R\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s1\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}"
+        },
+        "post": null
+      },
+      "contextRecomputed": [
+        "dh",
+        "bp_load",
+        "bp_streak",
+        "whip",
+        "l10",
+        "rpg",
+        "rapg",
+        "ops",
+        "home"
+      ],
+      "matchupState": "unavailable",
+      "matchupSuccessAt": null,
+      "contextSuccessAt": "2027-04-20T15:00:00Z",
+      "contextChecks": [
+        {
+          "id": "dh",
+          "state": "miss"
+        },
+        {
+          "id": "bp_load",
+          "state": "miss"
+        },
+        {
+          "id": "bp_streak",
+          "state": "miss"
+        },
+        {
+          "id": "whip",
+          "state": "miss"
+        },
+        {
+          "id": "l10",
+          "state": "na"
+        },
+        {
+          "id": "rpg",
+          "state": "na"
+        },
+        {
+          "id": "rapg",
+          "state": "na"
+        },
+        {
+          "id": "ops",
+          "state": "miss"
+        },
+        {
+          "id": "home",
+          "state": "na"
+        }
+      ],
+      "postComplete": null,
+      "contextEvidenceSha256": "d04afdba2b297808ebcf73804dd847861668a6eaf837ee482d9fb0fc2dc0c2c5",
+      "frozenAt": null
+    },
+    {
+      "key": "official",
+      "at": "2027-04-20T20:00:00Z",
+      "sourceVersions": {
+        "schedule": "g1",
+        "lineup": "l1",
+        "stats": "s1",
+        "post": null
+      },
+      "sourceStatsState": "unchanged",
+      "planBefore": [
+        {
+          "module": "賽程",
+          "action": "沿用"
+        },
+        {
+          "module": "先發／官方九棒",
+          "action": "更新"
+        },
+        {
+          "module": "本季統計",
+          "action": "沿用"
+        }
+      ],
+      "calls": [
+        "build-live.build",
+        "matchup.buildMatchup"
+      ],
+      "errors": [],
+      "before": {
+        "schedule": "g1",
+        "lineup": null,
+        "stats": "s1",
+        "bullpen": "u1",
+        "matchup": null,
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g1\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s1|990001:R|990002:R\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s1\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}"
+        },
+        "post": null
+      },
+      "after": {
+        "schedule": "g1",
+        "lineup": "l1",
+        "stats": "s1",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991001,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990002,\"spHand\":\"R\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s1\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g1\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s1|990001:R|990002:R\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s1\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}"
+        },
+        "post": null
+      },
+      "contextRecomputed": [],
+      "matchupState": "current",
+      "matchupSuccessAt": "2027-04-20T20:00:00Z",
+      "contextSuccessAt": "2027-04-20T15:00:00Z",
+      "contextChecks": [
+        {
+          "id": "dh",
+          "state": "miss"
+        },
+        {
+          "id": "bp_load",
+          "state": "miss"
+        },
+        {
+          "id": "bp_streak",
+          "state": "miss"
+        },
+        {
+          "id": "whip",
+          "state": "miss"
+        },
+        {
+          "id": "l10",
+          "state": "na"
+        },
+        {
+          "id": "rpg",
+          "state": "na"
+        },
+        {
+          "id": "rapg",
+          "state": "na"
+        },
+        {
+          "id": "ops",
+          "state": "miss"
+        },
+        {
+          "id": "home",
+          "state": "na"
+        }
+      ],
+      "postComplete": null,
+      "contextEvidenceSha256": "d04afdba2b297808ebcf73804dd847861668a6eaf837ee482d9fb0fc2dc0c2c5",
+      "frozenAt": null
+    },
+    {
+      "key": "recalc_failed",
+      "at": "2027-04-20T21:50:00Z",
+      "sourceVersions": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s1",
+        "post": null
+      },
+      "sourceStatsState": "unchanged",
+      "planBefore": [
+        {
+          "module": "賽程",
+          "action": "更新"
+        },
+        {
+          "module": "先發／官方九棒",
+          "action": "更新"
+        },
+        {
+          "module": "本季統計",
+          "action": "沿用"
+        }
+      ],
+      "calls": [
+        "build-live.build",
+        "matchup.buildMatchup",
+        "ctx.compute"
+      ],
+      "errors": [
+        "matchup.buildMatchup：人工模擬：新版本對位來源重算失敗"
+      ],
+      "before": {
+        "schedule": "g1",
+        "lineup": "l1",
+        "stats": "s1",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991001,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990002,\"spHand\":\"R\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s1\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g1\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s1|990001:R|990002:R\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s1\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}"
+        },
+        "post": null
+      },
+      "after": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s1",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991001,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990002,\"spHand\":\"R\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s1\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s1|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s1\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}"
+        },
+        "post": null
+      },
+      "contextRecomputed": [
+        "dh",
+        "whip"
+      ],
+      "matchupState": "stale",
+      "matchupSuccessAt": "2027-04-20T20:00:00Z",
+      "contextSuccessAt": "2027-04-20T21:50:00Z",
+      "contextChecks": [
+        {
+          "id": "dh",
+          "state": "miss"
+        },
+        {
+          "id": "bp_load",
+          "state": "miss"
+        },
+        {
+          "id": "bp_streak",
+          "state": "miss"
+        },
+        {
+          "id": "whip",
+          "state": "miss"
+        },
+        {
+          "id": "l10",
+          "state": "na"
+        },
+        {
+          "id": "rpg",
+          "state": "na"
+        },
+        {
+          "id": "rapg",
+          "state": "na"
+        },
+        {
+          "id": "ops",
+          "state": "miss"
+        },
+        {
+          "id": "home",
+          "state": "na"
+        }
+      ],
+      "postComplete": null,
+      "contextEvidenceSha256": "a23c71498eb3a931ecb857a9b1185afd7a9615358c3ae48bf745c2b81f6165c0",
+      "frozenAt": null
+    },
+    {
+      "key": "recalc_ok",
+      "at": "2027-04-20T22:10:00Z",
+      "sourceVersions": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s1",
+        "post": null
+      },
+      "sourceStatsState": "unchanged",
+      "planBefore": [
+        {
+          "module": "賽程",
+          "action": "沿用"
+        },
+        {
+          "module": "先發／官方九棒",
+          "action": "沿用"
+        },
+        {
+          "module": "本季統計",
+          "action": "沿用"
+        }
+      ],
+      "calls": [
+        "matchup.buildMatchup"
+      ],
+      "errors": [],
+      "before": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s1",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991001,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990002,\"spHand\":\"R\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s1\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s1|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s1\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}"
+        },
+        "post": null
+      },
+      "after": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s1",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s1\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s1|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s1\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}"
+        },
+        "post": null
+      },
+      "contextRecomputed": [],
+      "matchupState": "current",
+      "matchupSuccessAt": "2027-04-20T22:10:00Z",
+      "contextSuccessAt": "2027-04-20T21:50:00Z",
+      "contextChecks": [
+        {
+          "id": "dh",
+          "state": "miss"
+        },
+        {
+          "id": "bp_load",
+          "state": "miss"
+        },
+        {
+          "id": "bp_streak",
+          "state": "miss"
+        },
+        {
+          "id": "whip",
+          "state": "miss"
+        },
+        {
+          "id": "l10",
+          "state": "na"
+        },
+        {
+          "id": "rpg",
+          "state": "na"
+        },
+        {
+          "id": "rapg",
+          "state": "na"
+        },
+        {
+          "id": "ops",
+          "state": "miss"
+        },
+        {
+          "id": "home",
+          "state": "na"
+        }
+      ],
+      "postComplete": null,
+      "contextEvidenceSha256": "a23c71498eb3a931ecb857a9b1185afd7a9615358c3ae48bf745c2b81f6165c0",
+      "frozenAt": null
+    },
+    {
+      "key": "stat_update",
+      "at": "2027-04-20T22:15:00Z",
+      "sourceVersions": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s2",
+        "post": null
+      },
+      "sourceStatsState": "available",
+      "planBefore": [
+        {
+          "module": "賽程",
+          "action": "沿用"
+        },
+        {
+          "module": "先發／官方九棒",
+          "action": "沿用"
+        },
+        {
+          "module": "本季統計",
+          "action": "更新"
+        }
+      ],
+      "calls": [
+        "build-live.build",
+        "matchup.buildMatchup",
+        "ctx.compute"
+      ],
+      "errors": [],
+      "before": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s1",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s1\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s1|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s1\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s1\"}}"
+        },
+        "post": null
+      },
+      "after": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s2",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s2\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s2|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s2\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}"
+        },
+        "post": null
+      },
+      "contextRecomputed": [
+        "home",
+        "l10",
+        "ops",
+        "rapg",
+        "rpg",
+        "whip"
+      ],
+      "matchupState": "current",
+      "matchupSuccessAt": "2027-04-20T22:15:00Z",
+      "contextSuccessAt": "2027-04-20T22:15:00Z",
+      "contextChecks": [
+        {
+          "id": "dh",
+          "state": "miss"
+        },
+        {
+          "id": "bp_load",
+          "state": "miss"
+        },
+        {
+          "id": "bp_streak",
+          "state": "miss"
+        },
+        {
+          "id": "whip",
+          "state": "miss"
+        },
+        {
+          "id": "l10",
+          "state": "na"
+        },
+        {
+          "id": "rpg",
+          "state": "na"
+        },
+        {
+          "id": "rapg",
+          "state": "na"
+        },
+        {
+          "id": "ops",
+          "state": "hit"
+        },
+        {
+          "id": "home",
+          "state": "na"
+        }
+      ],
+      "postComplete": null,
+      "contextEvidenceSha256": "4a042191e67ef3823554fcabc543d06581c2f56ec225098d8f3833d966f5facc",
+      "frozenAt": null
+    },
+    {
+      "key": "same_version",
+      "at": "2027-04-20T22:20:00Z",
+      "sourceVersions": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s2",
+        "post": null
+      },
+      "sourceStatsState": "unchanged",
+      "planBefore": [
+        {
+          "module": "賽程",
+          "action": "沿用"
+        },
+        {
+          "module": "先發／官方九棒",
+          "action": "沿用"
+        },
+        {
+          "module": "本季統計",
+          "action": "沿用"
+        }
+      ],
+      "calls": [],
+      "errors": [],
+      "before": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s2",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s2\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s2|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s2\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}"
+        },
+        "post": null
+      },
+      "after": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s2",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s2\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s2|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s2\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}"
+        },
+        "post": null
+      },
+      "contextRecomputed": [],
+      "matchupState": "current",
+      "matchupSuccessAt": "2027-04-20T22:15:00Z",
+      "contextSuccessAt": "2027-04-20T22:15:00Z",
+      "contextChecks": [
+        {
+          "id": "dh",
+          "state": "miss"
+        },
+        {
+          "id": "bp_load",
+          "state": "miss"
+        },
+        {
+          "id": "bp_streak",
+          "state": "miss"
+        },
+        {
+          "id": "whip",
+          "state": "miss"
+        },
+        {
+          "id": "l10",
+          "state": "na"
+        },
+        {
+          "id": "rpg",
+          "state": "na"
+        },
+        {
+          "id": "rapg",
+          "state": "na"
+        },
+        {
+          "id": "ops",
+          "state": "hit"
+        },
+        {
+          "id": "home",
+          "state": "na"
+        }
+      ],
+      "postComplete": null,
+      "contextEvidenceSha256": "4a042191e67ef3823554fcabc543d06581c2f56ec225098d8f3833d966f5facc",
+      "frozenAt": null
+    },
+    {
+      "key": "stat_failed",
+      "at": "2027-04-20T22:25:00Z",
+      "sourceVersions": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s3",
+        "post": null
+      },
+      "sourceStatsState": "failed",
+      "planBefore": [
+        {
+          "module": "賽程",
+          "action": "沿用"
+        },
+        {
+          "module": "先發／官方九棒",
+          "action": "沿用"
+        },
+        {
+          "module": "本季統計",
+          "action": "更新"
+        }
+      ],
+      "calls": [
+        "build-live.build"
+      ],
+      "errors": [
+        "build-live.build：本季統計處理缺必要團隊 OPS；不提交 s3"
+      ],
+      "before": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s2",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s2\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s2|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s2\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}"
+        },
+        "post": null
+      },
+      "after": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s2",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s2\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s2|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s2\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}"
+        },
+        "post": null
+      },
+      "contextRecomputed": [],
+      "matchupState": "current",
+      "matchupSuccessAt": "2027-04-20T22:15:00Z",
+      "contextSuccessAt": "2027-04-20T22:15:00Z",
+      "contextChecks": [
+        {
+          "id": "dh",
+          "state": "miss"
+        },
+        {
+          "id": "bp_load",
+          "state": "miss"
+        },
+        {
+          "id": "bp_streak",
+          "state": "miss"
+        },
+        {
+          "id": "whip",
+          "state": "miss"
+        },
+        {
+          "id": "l10",
+          "state": "na"
+        },
+        {
+          "id": "rpg",
+          "state": "na"
+        },
+        {
+          "id": "rapg",
+          "state": "na"
+        },
+        {
+          "id": "ops",
+          "state": "hit"
+        },
+        {
+          "id": "home",
+          "state": "na"
+        }
+      ],
+      "postComplete": null,
+      "contextEvidenceSha256": "4a042191e67ef3823554fcabc543d06581c2f56ec225098d8f3833d966f5facc",
+      "frozenAt": null
+    },
+    {
+      "key": "stat_recovered",
+      "at": "2027-04-20T22:30:00Z",
+      "sourceVersions": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s3",
+        "post": null
+      },
+      "sourceStatsState": "available",
+      "planBefore": [
+        {
+          "module": "賽程",
+          "action": "沿用"
+        },
+        {
+          "module": "先發／官方九棒",
+          "action": "沿用"
+        },
+        {
+          "module": "本季統計",
+          "action": "更新"
+        }
+      ],
+      "calls": [
+        "build-live.build",
+        "matchup.buildMatchup",
+        "ctx.compute"
+      ],
+      "errors": [],
+      "before": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s2",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s2\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s2|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s2\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s2\"}}"
+        },
+        "post": null
+      },
+      "after": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s3",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s3\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s3|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s3\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}"
+        },
+        "post": null
+      },
+      "contextRecomputed": [
+        "whip",
+        "l10",
+        "rpg",
+        "rapg",
+        "ops",
+        "home"
+      ],
+      "matchupState": "current",
+      "matchupSuccessAt": "2027-04-20T22:30:00Z",
+      "contextSuccessAt": "2027-04-20T22:30:00Z",
+      "contextChecks": [
+        {
+          "id": "dh",
+          "state": "miss"
+        },
+        {
+          "id": "bp_load",
+          "state": "miss"
+        },
+        {
+          "id": "bp_streak",
+          "state": "miss"
+        },
+        {
+          "id": "whip",
+          "state": "miss"
+        },
+        {
+          "id": "l10",
+          "state": "na"
+        },
+        {
+          "id": "rpg",
+          "state": "na"
+        },
+        {
+          "id": "rapg",
+          "state": "na"
+        },
+        {
+          "id": "ops",
+          "state": "hit"
+        },
+        {
+          "id": "home",
+          "state": "na"
+        }
+      ],
+      "postComplete": null,
+      "contextEvidenceSha256": "ca6070a8573e2a537ff7bca62b81c54fd6b4378d4e0026ebe6ae2ea00c285413",
+      "frozenAt": null
+    },
+    {
+      "key": "live",
+      "at": "2027-04-20T23:35:00Z",
+      "sourceVersions": {
+        "schedule": "g3",
+        "lineup": "l2",
+        "stats": "s3",
+        "post": null
+      },
+      "sourceStatsState": "unchanged",
+      "planBefore": [
+        {
+          "module": "賽程",
+          "action": "更新"
+        },
+        {
+          "module": "先發／官方九棒",
+          "action": "沿用凍結版"
+        },
+        {
+          "module": "本季統計",
+          "action": "沿用凍結版"
+        }
+      ],
+      "calls": [
+        "build-live.build",
+        "ctx.decide（凍結／沿用）"
+      ],
+      "errors": [],
+      "before": {
+        "schedule": "g2",
+        "lineup": "l2",
+        "stats": "s3",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s3\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s3|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s3\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}"
+        },
+        "post": null
+      },
+      "after": {
+        "schedule": "g3",
+        "lineup": "l2",
+        "stats": "s3",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s3\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s3|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s3\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}"
+        },
+        "post": null
+      },
+      "contextRecomputed": [],
+      "matchupState": "current",
+      "matchupSuccessAt": "2027-04-20T22:30:00Z",
+      "contextSuccessAt": "2027-04-20T22:30:00Z",
+      "contextChecks": [
+        {
+          "id": "dh",
+          "state": "miss"
+        },
+        {
+          "id": "bp_load",
+          "state": "miss"
+        },
+        {
+          "id": "bp_streak",
+          "state": "miss"
+        },
+        {
+          "id": "whip",
+          "state": "miss"
+        },
+        {
+          "id": "l10",
+          "state": "na"
+        },
+        {
+          "id": "rpg",
+          "state": "na"
+        },
+        {
+          "id": "rapg",
+          "state": "na"
+        },
+        {
+          "id": "ops",
+          "state": "hit"
+        },
+        {
+          "id": "home",
+          "state": "na"
+        }
+      ],
+      "postComplete": null,
+      "contextEvidenceSha256": "ca6070a8573e2a537ff7bca62b81c54fd6b4378d4e0026ebe6ae2ea00c285413",
+      "frozenAt": "2027-04-20T23:35:00Z"
+    },
+    {
+      "key": "final_partial",
+      "at": "2027-04-21T03:10:00Z",
+      "sourceVersions": {
+        "schedule": "g4",
+        "lineup": "l2",
+        "stats": "s3",
+        "post": "p1"
+      },
+      "sourceStatsState": "unchanged",
+      "planBefore": [
+        {
+          "module": "賽程",
+          "action": "更新"
+        },
+        {
+          "module": "先發／官方九棒",
+          "action": "沿用凍結版"
+        },
+        {
+          "module": "本季統計",
+          "action": "沿用凍結版"
+        }
+      ],
+      "calls": [
+        "build-live.build",
+        "ctx.decide（凍結／沿用）",
+        "post.summarizePost"
+      ],
+      "errors": [],
+      "before": {
+        "schedule": "g3",
+        "lineup": "l2",
+        "stats": "s3",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s3\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s3|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s3\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}"
+        },
+        "post": null
+      },
+      "after": {
+        "schedule": "g4",
+        "lineup": "l2",
+        "stats": "s3",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s3\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s3|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s3\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}"
+        },
+        "post": "p1"
+      },
+      "contextRecomputed": [],
+      "matchupState": "current",
+      "matchupSuccessAt": "2027-04-20T22:30:00Z",
+      "contextSuccessAt": "2027-04-20T22:30:00Z",
+      "contextChecks": [
+        {
+          "id": "dh",
+          "state": "miss"
+        },
+        {
+          "id": "bp_load",
+          "state": "miss"
+        },
+        {
+          "id": "bp_streak",
+          "state": "miss"
+        },
+        {
+          "id": "whip",
+          "state": "miss"
+        },
+        {
+          "id": "l10",
+          "state": "na"
+        },
+        {
+          "id": "rpg",
+          "state": "na"
+        },
+        {
+          "id": "rapg",
+          "state": "na"
+        },
+        {
+          "id": "ops",
+          "state": "hit"
+        },
+        {
+          "id": "home",
+          "state": "na"
+        }
+      ],
+      "postComplete": false,
+      "contextEvidenceSha256": "ca6070a8573e2a537ff7bca62b81c54fd6b4378d4e0026ebe6ae2ea00c285413",
+      "frozenAt": "2027-04-20T23:35:00Z"
+    },
+    {
+      "key": "final_complete",
+      "at": "2027-04-21T03:35:00Z",
+      "sourceVersions": {
+        "schedule": "g5",
+        "lineup": "l2",
+        "stats": "s3",
+        "post": "p2"
+      },
+      "sourceStatsState": "unchanged",
+      "planBefore": [
+        {
+          "module": "賽程",
+          "action": "更新"
+        },
+        {
+          "module": "先發／官方九棒",
+          "action": "沿用凍結版"
+        },
+        {
+          "module": "本季統計",
+          "action": "沿用凍結版"
+        }
+      ],
+      "calls": [
+        "build-live.build",
+        "ctx.decide（凍結／沿用）",
+        "post.summarizePost"
+      ],
+      "errors": [],
+      "before": {
+        "schedule": "g4",
+        "lineup": "l2",
+        "stats": "s3",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s3\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s3|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s3\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}"
+        },
+        "post": "p1"
+      },
+      "after": {
+        "schedule": "g5",
+        "lineup": "l2",
+        "stats": "s3",
+        "bullpen": "u1",
+        "matchup": "{\"season\":\"2027\",\"gameType\":\"R\",\"away\":{\"sp\":990001,\"spHand\":\"R\",\"lineup\":\"official:991010,991002,991003,991004,991005,991006,991007,991008,991009\"},\"home\":{\"sp\":990003,\"spHand\":\"L\",\"lineup\":\"official:992001,992002,992003,992004,992005,992006,992007,992008,992009\"},\"stats\":{\"season\":2027,\"gameType\":\"R\",\"processedVersion\":\"s3\"}}",
+        "context": {
+          "dh": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"dh\",\"game\":\"9902750/2027/R/113/158\",\"schedule\":\"g2\",\"deps\":{}}",
+          "bp_load": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_load\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "bp_streak": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"bp_streak\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"bullpen\":\"u1\"}}",
+          "whip": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"whip\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"sp\":\"s3|990001:R|990003:L\"}}",
+          "l10": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"l10\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rpg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rpg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "rapg": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"rapg\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}",
+          "ops": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"ops\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"ops\":\"s3\"}}",
+          "home": "{\"rules\":\"ctx-rules v0.3\",\"id\":\"home\",\"game\":\"9902750/2027/R/113/158\",\"deps\":{\"rec\":\"s3\"}}"
+        },
+        "post": "p2"
+      },
+      "contextRecomputed": [],
+      "matchupState": "current",
+      "matchupSuccessAt": "2027-04-20T22:30:00Z",
+      "contextSuccessAt": "2027-04-20T22:30:00Z",
+      "contextChecks": [
+        {
+          "id": "dh",
+          "state": "miss"
+        },
+        {
+          "id": "bp_load",
+          "state": "miss"
+        },
+        {
+          "id": "bp_streak",
+          "state": "miss"
+        },
+        {
+          "id": "whip",
+          "state": "miss"
+        },
+        {
+          "id": "l10",
+          "state": "na"
+        },
+        {
+          "id": "rpg",
+          "state": "na"
+        },
+        {
+          "id": "rapg",
+          "state": "na"
+        },
+        {
+          "id": "ops",
+          "state": "hit"
+        },
+        {
+          "id": "home",
+          "state": "na"
+        }
+      ],
+      "postComplete": true,
+      "contextEvidenceSha256": "ca6070a8573e2a537ff7bca62b81c54fd6b4378d4e0026ebe6ae2ea00c285413",
+      "frozenAt": "2027-04-20T23:35:00Z"
+    }
+  ]
+}
+
