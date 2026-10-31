@@ -5,7 +5,7 @@ compatibility_date = "2026-09-01"
 
 # 台灣 21:00–11:45（UTC 13:00–03:45）每 15 分鐘
 [triggers]
-crons = ["*/15 0-3,13-23 * * *"]
+crons = ["*/15 0-3,13-23 * * *", "*/15 8-12 * * *"]
 
 [[d1_databases]]
 binding = "DB"

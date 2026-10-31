@@ -329,6 +329,7 @@ async function main() {
         pairsWithContinuation: t.pairs.filter(p => p.continuation !== null).length })) });
   }
   const status = { status: errors.length ? 'partial' : 'ok', generatedAt, expiresAt,
+    runId: process.env.GITHUB_RUN_ID || null,
     gameCount: gameReports.length, gameIds: gameReports.map(g => g.id), sourceChecks: sourceChecks.length,
     sourceErrors: errors, updateMode: 'current_snapshot', oddsMode: 'official_one_time_snapshot' };
   await fs.writeFile(path.join(outDir, 'overview.json'), JSON.stringify(overview) + '\n');

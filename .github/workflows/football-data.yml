@@ -1,4 +1,5 @@
 name: football-data
+run-name: football ${{ inputs.trigger_id || github.event_name }}
 # 足球每次重建為短期快照，直接部署 Pages，不把例行 JSON 寫進 Git。
 on:
   push:
@@ -25,6 +26,10 @@ on:
         description: 人工核對後的一次性台彩官方快照 JSON（以 ESPN event ID 為鍵）
         required: false
         type: string
+      trigger_id:
+        description: 外部足球定時器的排定時間與目標場識別
+        required: false
+        type: string
 permissions:
   contents: read
 concurrency:
@@ -43,6 +48,7 @@ jobs:
           node-version: 24
       - name: 判斷固定更新或賽前 90／30 分鐘時窗
         id: due
+        continue-on-error: ${{ github.event_name == 'schedule' && github.event.schedule == '5,35 * * * *' }}
         env:
           FOOTBALL_SCHEDULE: ${{ github.event.schedule }}
         run: node football/scripts/football-due.mjs

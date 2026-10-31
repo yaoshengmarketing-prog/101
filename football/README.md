@@ -20,6 +20,8 @@ node football/scripts/qa-football.mjs .football-build/data
 
 `.github/workflows/football-data.yml` 在 push、手動觸發及自然排程運作。固定更新時點為台灣約 06:07、18:07；另每半小時做輕量賽程檢查，僅在開球前約 90 或 30 分鐘重建。GitHub 的 schedule 可延遲或漏觸發，因此仍須觀察自然排程紀錄，不能以手動成功代替。賽前加跑會重新查正式名單及賽事狀態，但不重抓台彩賠率。
 
+賽前時效另由現有 Cloudflare 定時 Worker 的**足球獨立分支**試行：UTC 08:00–22:45 每 15 分鐘唯讀查英超賽程，到開球前約 90／30 分鐘才帶賽事 ID 派送本足球 workflow。排定／送出／GitHub run／公開頁證據分別記在 [足球觸發紀錄](https://live-data-trigger.yaosheng-marketing.workers.dev/football-log)；原棒球分支與原時段不變。GitHub 原生排程保留備援。輕量賽程檢查失敗只留 Actions 警告或 Cloudflare 紀錄，不撤下仍有效的公開快照、不延長原期限；完整重建失敗則照原規則只發布失敗 `status.json`。
+
 每次完整重建從 ESPN 取得當季賽程、兩隊近五場英超及近 14 日跨賽事用人，產出各場資料；主工作流的兩天 artifact 供 Pages 部署與短期查核。部署直接以 GitHub Pages Actions 發布整站，保留原有棒球頁面；例行足球 JSON 不提交 Git，也不建立長期球賽資料庫。下次發布覆蓋前次足球快照。成功快照 18 小時後由頁面標逾期；失敗時只發布 `status.json`，不回退舊值。
 
 ## 資料邊界

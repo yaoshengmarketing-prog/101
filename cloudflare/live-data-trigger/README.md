@@ -1,16 +1,23 @@
 # live-data-trigger（Cloudflare 外部觸發）
 
-目的：把賽前時段（台灣 21:00–11:45）的更新間隔從「GitHub 排程每 30 分鐘、而且常延遲」縮短到排定每 15 分鐘觸發一次。
-這個 Worker 只負責定時觸發。抓資料、檢查、寫回 GitHub 仍然全部由 101 的 GitHub Actions（`.github/workflows/live-data.yml`）處理。GitHub 原生排程照舊保留，當作備援。
+目的：把棒球賽前時段（台灣 21:00–11:45）的更新間隔從「GitHub 排程每 30 分鐘、而且常延遲」縮短到排定每 15 分鐘觸發一次；另加一條獨立足球分支檢查開球前 90／30 分鐘。
+這個 Worker 只負責定時觸發。棒球仍由 `.github/workflows/live-data.yml`，足球由 `.github/workflows/football-data.yml` 各自取數、QA 與發布。GitHub 原生排程保留為備援。
 
 | 項目 | 內容 |
 |---|---|
 | Worker | `live-data-trigger`（Cloudflare 帳號 Yaosheng.marketing@gmail.com's Account，帳號 ID `73304c8bf136dd0c432ae88c227c7a40`；該帳號是 Workers 付費方案） |
-| 排程 | `*/15 0-3,13-23 * * *`（UTC）＝台灣 21:00–11:45 每 15 分鐘，每天 60 次 |
+| 排程 | 原棒球 `*/15 0-3,13-23 * * *`（UTC）不變；新增 `*/15 8-12 * * *` 只補足球早場。足球在 UTC 08:00–22:45 的既有／新增時點檢查賽程。 |
 | 紀錄 | D1 資料庫 `live-data-trigger-log`，表 `triggers`（`schema.sql`），保留 30 天 |
 | 公開紀錄 | https://live-data-trigger.yaosheng-marketing.workers.dev/log（最近 200 筆，不含密鑰） |
 | 密鑰 | `GH_TOKEN`：站長自建，只存在 Cloudflare Secret |
 | 程式 | `worker.js`；設定紀錄在 `wrangler.toml`（實際部署透過 Cloudflare 儀表板 UI，見「設定與交接紀錄」） |
+
+## 足球賽前獨立觸發（2026-10-31 試行）
+
+- Worker 在足球時段向 ESPN 唯讀查當日及次日英超賽程；只有某場距離排定時點約 90 或 30 分鐘才派送 `football-data.yml`，帶入 `event_id` 和 `trigger_id`。GitHub run 名稱、D1 `football_triggers` 及公開 `status.json.runId` 可逐段對應。公開紀錄入口：`https://live-data-trigger.yaosheng-marketing.workers.dev/football-log`。
+- `football_triggers` 與棒球 `triggers` 分表，保留 30 天。它記錄排定／實際送出時間、GitHub HTTP／run ID／結果，以及 run ID 相符時公開頁資料時間與名單查詢狀態。ESPN 輕量檢查失敗只記 `check_failure`，不呼叫足球 workflow，不撤下有效快照，也不改其期限。
+- 原棒球 cron 觸發時，原棒球函式照常執行；新增 UTC 08:00–12:45 的 cron **只跑足球**。沒有新增密鑰或更動棒球 workflow。足球 GitHub 原生排程仍保留。台彩快照由足球 repo 讀取，不因外部加跑重新取得賠率。
+- 目標熱刺對水晶宮開球 UTC 10/31 17:30，預期外部時點 UTC 16:00／17:00（台灣 11/1 00:00／01:00）；真正觸發、名單及公開更新仍以當晚紀錄驗收。Cloudflare [Cron Trigger 文件](https://developers.cloudflare.com/workers/configuration/cron-triggers/)指出新 cron 可能需要最多 15 分鐘傳播。
 
 ## 怎麼對應 Cloudflare 觸發和 GitHub run
 

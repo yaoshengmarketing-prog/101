@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { renderOverview, renderGame } from '../assets/football.js';
-import { dueWindow } from './football-due.mjs';
+import { dueWindow, decide } from './football-due.mjs';
 
 test('失敗與逾期狀態先行，總覽及單場不讀已移除 JSON', async () => {
   const node = { innerHTML: '' };
@@ -45,4 +45,12 @@ test('開球前 90／30 分鐘判斷，非時窗跳過', () => {
   assert.equal(dueWindow(kickoff, new Date('2026-10-31T16:05:00Z')), '90');
   assert.equal(dueWindow(kickoff, new Date('2026-10-31T16:35:00Z')), null);
   assert.equal(dueWindow(kickoff, new Date('2026-10-31T17:05:00Z')), '30');
+});
+
+test('輕量賽程檢查失敗只停止本次檢查，不觸發完整重建', async () => {
+  const result = await decide({ schedule: '5,35 * * * *', now: new Date('2026-10-31T16:00:00Z'),
+    fetcher: async () => { throw new Error('HTTP 503'); } });
+  assert.equal(result.build, false);
+  assert.equal(result.checkFailed, true);
+  assert.match(result.reason, /HTTP 503/);
 });

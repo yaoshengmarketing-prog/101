@@ -14,14 +14,13 @@ export function dueWindow(kickoff, at) {
   return null;
 }
 
-async function main() {
-  const schedule = process.env.FOOTBALL_SCHEDULE || '';
+export async function decide({ schedule = '', now = new Date(), fetcher = fetch } = {}) {
   let build = true, reason = schedule ? '每日固定更新' : 'push／手動更新';
   if (schedule && schedule !== BASE) {
-    const now = new Date();
+    try {
     const days = [ymd(now), ymd(new Date(now.getTime() + 86400000))];
     const boards = await Promise.all(days.map(async day => {
-      const response = await fetch(`${API}?dates=${day}`, { signal: AbortSignal.timeout(12000) });
+      const response = await fetcher(`${API}?dates=${day}`, { signal: AbortSignal.timeout(12000) });
       if (!response.ok) throw new Error(`賽前排程查詢 ${day} HTTP ${response.status}`);
       return response.json();
     }));
@@ -29,10 +28,24 @@ async function main() {
       .map(event => ({ id: String(event.id), window: dueWindow(event.date, now) })).filter(event => event.window);
     build = due.length > 0;
     reason = build ? `賽前 ${due.map(event => `${event.id}:${event.window}分`).join(', ')}` : '目前無開球前 90／30 分鐘場次';
+    } catch (error) {
+      return { build: false, checkFailed: true, reason: `輕量賽程檢查失敗：${String(error?.message || error)}` };
+    }
   }
-  const line = `build=${build}\n`;
-  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, line);
-  console.log(JSON.stringify({ build, reason, checkedAt: new Date().toISOString(), schedule }));
+  return { build, checkFailed: false, reason };
+}
+
+async function main() {
+  const schedule = process.env.FOOTBALL_SCHEDULE || '';
+  const result = await decide({ schedule });
+  const checkedAt = new Date().toISOString();
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `build=${result.build}\ncheck_failed=${result.checkFailed}\n`);
+  if (result.checkFailed) {
+    console.log(`::warning::${result.reason}`);
+    if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+      `### 足球輕量賽程檢查失敗\n${checkedAt} UTC：${result.reason}。保留原公開快照與原期限；未執行完整重建。\n`);
+  }
+  console.log(JSON.stringify({ ...result, checkedAt, schedule }));
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
