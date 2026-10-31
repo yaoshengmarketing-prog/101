@@ -18,7 +18,7 @@ test('輕量賽程來源失敗只寫檢查紀錄，不派送完整建置', async
   assert.match(writes[0].values.at(-1), /ESPN timeout/);
 });
 
-test('到 90 分鐘時窗只派送目標場，並留下外部觸發與 run ID', async () => {
+test('到 90 分鐘時窗同時到期的賽事只派送一次，並留下各場 ID 與 run ID', async () => {
   const writes = [], calls = [], originalFetch = globalThis.fetch;
   const env = { GH_TOKEN: 'test-token', DB: { prepare: sql => ({ bind: (...values) => ({ run: async () => { writes.push({ sql, values }); return { meta: { changes: 1 } }; } }) }) } };
   globalThis.fetch = async (url, init) => {
@@ -29,6 +29,7 @@ test('到 90 分鐘時窗只派送目標場，並留下外部觸發與 run ID', 
     await checkFootball(env, Date.parse('2026-10-31T16:00:37Z'), async url => ({ ok: true,
       json: async () => ({ events: url.includes('20261031') ? [
         { id: '401878761', date: '2026-10-31T17:30:00Z' },
+        { id: 'second', date: '2026-10-31T17:30:00Z' },
         { id: 'other', date: '2026-10-31T20:00:00Z' },
       ] : [] }) }));
     assert.equal(calls.length, 1);
@@ -38,6 +39,7 @@ test('到 90 分鐘時窗只派送目標場，並留下外部觸發與 run ID', 
     assert.match(body.inputs.trigger_id, /2026-10-31T16:00Z 401878761 90/);
     assert.equal(writes.length, 3);
     assert.match(writes[0].sql, /check_ok/);
+    assert.deepEqual(JSON.parse(writes[1].values[3]), ['401878761', 'second']);
     assert.equal(writes[2].values[3], 12345);
   } finally { globalThis.fetch = originalFetch; }
 });

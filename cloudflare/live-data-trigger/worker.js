@@ -1,6 +1,6 @@
-// live-data-trigger：Cloudflare Worker（免費方案），只負責「定時按按鈕」和留紀錄。
-// 台灣 21:00–11:45 每 15 分鐘呼叫 GitHub workflow_dispatch，觸發 yaoshengmarketing-prog/101 的 live-data。
-// 抓資料、檢查、寫回 GitHub 仍全由 GitHub Actions 做；GitHub 原生排程照舊，兩者並存。
+// live-data-trigger：Cloudflare Worker，只負責定時檢查、派送 GitHub Actions 和留紀錄。
+// 原棒球時段每 15 分鐘派送 live-data；足球在獨立分支檢查開球前 90／30 分鐘。
+// 抓賽事資料、QA 與發布仍由各自 GitHub Actions 執行；GitHub 原生排程照舊。
 //
 // 紀錄（D1，binding DB，表 triggers，一次觸發一列）：
 //   id＝"cf <排定時間 UTC>"，也放進 run 名稱（live-data cf 2026-09-24T13:15Z），GitHub 那邊看得到是哪一次觸發
@@ -44,13 +44,14 @@ export async function checkFootball(env, scheduledTime, fetcher = fetch) {
   }
   await env.DB.prepare("INSERT OR IGNORE INTO football_triggers (id, kind, scheduled_at, checked_at) VALUES (?, 'check_ok', ?, ?)")
     .bind(`check cf ${at.slice(0, 16)}Z`, at, new Date().toISOString()).run();
-  for (const game of fixtures) {
-    const windowMinutes = footballDue(game.date, scheduledTime);
-    if (!windowMinutes) continue;
+  const due = fixtures.map(game => ({ game, windowMinutes: footballDue(game.date, scheduledTime) })).filter(item => item.windowMinutes);
+  if (due.length) {
+    // 一次完整重建涵蓋整個賽程；同時開球的多場只派送一次，避免 Actions 互相排隊。
+    const { game, windowMinutes } = due[0], matchIds = due.map(item => String(item.game.id));
     const id = `cf ${at.slice(0, 16)}Z ${game.id} ${windowMinutes}`;
-    const ins = await env.DB.prepare("INSERT OR IGNORE INTO football_triggers (id, kind, scheduled_at, match_id, kickoff_utc, window_minutes, checked_at) VALUES (?, 'dispatch', ?, ?, ?, ?, ?)")
-      .bind(id, at, String(game.id), game.date, windowMinutes, new Date().toISOString()).run();
-    if (!ins.meta.changes) continue;
+    const ins = await env.DB.prepare("INSERT OR IGNORE INTO football_triggers (id, kind, scheduled_at, match_id, match_ids, kickoff_utc, window_minutes, checked_at) VALUES (?, 'dispatch', ?, ?, ?, ?, ?, ?)")
+      .bind(id, at, String(game.id), JSON.stringify(matchIds), game.date, windowMinutes, new Date().toISOString()).run();
+    if (!ins.meta.changes) return;
     let http = null, error = null, runId = null;
     const sentAt = new Date().toISOString();
     try {
@@ -68,7 +69,7 @@ export async function checkFootball(env, scheduledTime, fetcher = fetch) {
 }
 
 async function resolveFootball(env) {
-  const { results } = await env.DB.prepare("SELECT id, match_id, run_id FROM football_triggers WHERE kind='dispatch' AND http BETWEEN 200 AND 299 AND (conclusion IS NULL OR (conclusion='success' AND public_generated_at IS NULL)) AND scheduled_at > ? LIMIT 20")
+  const { results } = await env.DB.prepare("SELECT id, match_id, match_ids, run_id FROM football_triggers WHERE kind='dispatch' AND http BETWEEN 200 AND 299 AND (conclusion IS NULL OR (conclusion='success' AND public_generated_at IS NULL)) AND scheduled_at > ? LIMIT 20")
     .bind(new Date(Date.now() - 86400000).toISOString()).all();
   if (!results.length) return;
   const response = await call(env, `/repos/${REPO}/actions/workflows/${FOOTBALL_WF}/runs?event=workflow_dispatch&per_page=100`);
@@ -82,7 +83,8 @@ async function resolveFootball(env) {
       const statusResponse = await fetch(`https://yaoshengmarketing-prog.github.io/101/football/data/status.json?cf=${run.id}`, { cache: "no-store" });
       if (statusResponse.ok) {
         const status = await statusResponse.json();
-        if (String(status.runId) === String(run.id) && status.gameIds?.includes(String(row.match_id))) {
+        const matchIds = JSON.parse(row.match_ids || JSON.stringify([String(row.match_id)]));
+        if (String(status.runId) === String(run.id) && matchIds.every(id => status.gameIds?.includes(id))) {
           publicGeneratedAt = status.generatedAt;
           const gameResponse = await fetch(`https://yaoshengmarketing-prog.github.io/101/football/data/games/${row.match_id}.json?cf=${run.id}`, { cache: "no-store" });
           if (gameResponse.ok) {

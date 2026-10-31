@@ -14,7 +14,7 @@
 
 ## 足球賽前獨立觸發（2026-10-31 試行）
 
-- Worker 在足球時段向 ESPN 唯讀查當日及次日英超賽程；只有某場距離排定時點約 90 或 30 分鐘才派送 `football-data.yml`，帶入 `event_id` 和 `trigger_id`。GitHub run 名稱、D1 `football_triggers` 及公開 `status.json.runId` 可逐段對應。公開紀錄入口：`https://live-data-trigger.yaosheng-marketing.workers.dev/football-log`。
+- Worker 在足球時段向 ESPN 唯讀查當日及次日英超賽程；只有某場距離排定時點約 90 或 30 分鐘才派送 `football-data.yml`，帶入 `event_id` 和 `trigger_id`。同一時點多場到期只派送一次完整重建，D1 的 `match_ids` 記下涵蓋場次。GitHub run 名稱、D1 `football_triggers` 及公開 `status.json.runId` 可逐段對應。公開紀錄入口：`https://live-data-trigger.yaosheng-marketing.workers.dev/football-log`。
 - `football_triggers` 與棒球 `triggers` 分表，保留 30 天。它記錄排定／實際送出時間、GitHub HTTP／run ID／結果，以及 run ID 相符時公開頁資料時間與名單查詢狀態。ESPN 輕量檢查失敗只記 `check_failure`，不呼叫足球 workflow，不撤下有效快照，也不改其期限。
 - 原棒球 cron 觸發時，原棒球函式照常執行；新增 UTC 08:00–12:45 的 cron **只跑足球**。沒有新增密鑰或更動棒球 workflow。足球 GitHub 原生排程仍保留。台彩快照由足球 repo 讀取，不因外部加跑重新取得賠率。
 - 目標熱刺對水晶宮開球 UTC 10/31 17:30，預期外部時點 UTC 16:00／17:00（台灣 11/1 00:00／01:00）；真正觸發、名單及公開更新仍以當晚紀錄驗收。Cloudflare [Cron Trigger 文件](https://developers.cloudflare.com/workers/configuration/cron-triggers/)指出新 cron 可能需要最多 15 分鐘傳播。
