@@ -10,6 +10,7 @@ import { buildBullpen } from "./bullpen.mjs";
 import { compute } from "./ctx.mjs";
 import { basisOf, classify } from "./roster.mjs";
 import { buildMatchup, buildPriorReference, matchupState } from "./matchup.mjs";
+import { batterBasis, batterBasisValid } from "./trial-batting.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url)), root = path.resolve(here, "..");
 const nowISO = "2027-03-27T00:10:00Z";
@@ -129,8 +130,8 @@ const smallFetch = async url => {
   if (url.includes("/teams/stats?")) return { stats: [{ splits: [113, 158].map(id => ({ season: "2027", gameType: "R", team: { id }, stat: url.includes("group=hitting") ? { ops: ".650" } : { era: "2.25" } })) }] };
   if (url.includes("/people?")) return { people: ids.filter(id => url.includes(String(id))).map(id => ({
     id, pitchHand: { code: "R" }, stats: [{ splits: [{ season: "2027", gameType: "R", stat: id < 991000
-      ? { wins: 1, losses: 0, era: "2.19", whip: "1.00", inningsPitched: "12.1", gamesStarted: 3 }
-      : { avg: id === 991003 ? ".000" : ".250", ops: id === 991003 ? ".000" : ".625", plateAppearances: id === 991003 ? 3 : 6 } }] }]
+      ? { wins: 1, losses: 0, era: "2.19", whip: "0.97", inningsPitched: "12.1", gamesStarted: 3 }
+      : batterBasis(id).total }] }]
   })) };
   const pk = Number(url.match(/\/game\/(\d+)\/boxscore/)?.[1]); if (pk) return mkBox(pk);
   throw new Error("未預期的少樣本人工來源 URL: " + url);
@@ -140,6 +141,12 @@ const smallUsage = await makeCase("small", smallTarget, [smallR12, smallR14]);
 ok("稍後的人工例行賽仍由 build-live 產生少樣本與完整官方九棒",
   smallGame.season === "2027" && smallGame.away.lineup.slots.length === 9
   && smallGame.away.lineup.slots[2].ops === ".000" && smallGame.away.lineup.slots[2].pa === 3);
+ok("正常少樣本的逐人總打席等於左右手分項打席；OPS 由事件數計算",
+  smallGame.away.lineup.slots.every(x => batterBasisValid(x.id)
+    && x.pa === batterBasis(x.id).vl.plateAppearances + batterBasis(x.id).vr.plateAppearances
+    && x.ops === batterBasis(x.id).total.ops)
+  && batterBasis(991001).total.ops === ".633" && batterBasis(991001).vl.ops === ".500"
+  && batterBasis(991001).vr.ops === ".733");
 const rTarget = { ...target, pk: 9902805, gamePk: 9902805, officialDate: "2027-04-05", gameDate: "2027-04-05T23:10:00Z" };
 const r2 = { ...priorR, pk: 9902802, gamePk: 9902802, officialDate: "2027-04-02", gameDate: "2027-04-02T23:10:00Z" };
 const r4 = { ...priorR, pk: 9902804, gamePk: 9902804, officialDate: "2027-04-04", gameDate: "2027-04-04T23:10:00Z" };
@@ -167,8 +174,7 @@ const researchFetch = mode => async url => {
         pitching && id === 990002 ? [] : [{ season: "2026", gameType: "R", stat: pitching
           ? { era: "3.45", whip: "1.20", inningsPitched: "120.0", gamesStarted: 25 }
           : { avg: ".245", ops: id === 991009 ? ".000" : ".710", plateAppearances: id === 991009 ? 2 : 110 } }] }] };
-      const active = mode === "small", vl = { plateAppearances: 4, avg: ".250", ops: ".450" },
-        vr = { plateAppearances: id === 991003 ? 3 : 6, avg: id === 991003 ? ".000" : ".250", ops: id === 991003 ? ".000" : ".625" };
+      const active = mode === "small", { vl, vr } = batterBasis(id);
       return { id, batSide: { code: id % 2 ? "L" : "R" }, stats: [{ type: { displayName: "statSplits" },
         splits: active ? [{ season: "2027", gameType: "R", split: { code: "vl" }, stat: vl },
           { season: "2027", gameType: "R", split: { code: "vr" }, stat: vr }] : [] }] };
@@ -178,8 +184,8 @@ const researchFetch = mode => async url => {
     stat: url.includes("group=hitting") ? { ops: ".710" } : { era: "3.80" } })) }] };
   const pitcherId = Number(url.match(/\/people\/(\d+)\/stats/)?.[1]);
   if (pitcherId && url.includes("stats=statSplits")) return { stats: [{ splits: mode === "small"
-    ? [{ season: "2027", gameType: "R", split: { code: "vl" }, stat: { battersFaced: 8, ops: ".500" } },
-      { season: "2027", gameType: "R", split: { code: "vr" }, stat: { battersFaced: 10, ops: ".750" } }] : [] }] };
+    ? [{ season: "2027", gameType: "R", split: { code: "vl" }, stat: { battersFaced: 20, ops: ".500" } },
+      { season: "2027", gameType: "R", split: { code: "vr" }, stat: { battersFaced: 25, ops: ".750" } }] : [] }] };
   if (pitcherId && url.includes("stats=gameLog")) return { stats: [{ splits: mode === "small"
     ? ["2027-04-04", "2027-04-09", "2027-04-14"].map((date, i) => ({
       season: "2027", gameType: "R", date, game: { gamePk: i === 2 ? smallR14.pk : 9902740 + i },
@@ -203,7 +209,7 @@ const changedLineup = { ...smallGame, away: { ...smallGame.away,
 const changedMatchup = await buildMatchup(changedPitcher, nowISO, researchFetch("small"));
 const changedLineupMatchup = await buildMatchup(changedLineup, nowISO, researchFetch("small"));
 ok("先發改左投、名單換人會重算手別、球員 ID 與數值", matchupState(changedPitcher, smallMatchup) === "stale"
-  && changedMatchup.pairs[1].vsCode === "vl" && changedMatchup.pairs[1].lineup.slots[0].vs.ops === ".450"
+  && changedMatchup.pairs[1].vsCode === "vl" && changedMatchup.pairs[1].lineup.slots[0].vs.ops === ".500"
   && matchupState(changedLineup, smallMatchup) === "stale"
   && changedLineupMatchup.pairs[1].lineup.slots[0].id === 991010);
 ok("重算失敗時舊對位仍判 stale，不回填舊數值", matchupState(changedPitcher, smallMatchup) === "stale"
@@ -267,7 +273,9 @@ ok("零樣本官方九棒與上季例行賽參考分開呈現，無上季資料�
   && openingHtml.includes("上季確定無紀錄") && openingHtml.includes("展開上季逐棒參考")
   && !openingHtml.includes("本季總 OPS .710"));
 ok("少樣本手別、有效零與最近三次先發逐筆進入原新版頁面",
-  smallHtml.includes("對左打被打 OPS .500（8 打席）")
+  smallHtml.includes("對左打被打 OPS .500（20 打席）")
+  && smallHtml.includes("本季總 OPS .633・10 打席")
+  && smallHtml.includes("對右投 OPS .733・6 打席")
   && smallHtml.includes("對右投 OPS .000・3 打席")
   && smallHtml.includes("2027-04-04") && smallHtml.includes("2027-04-09") && smallHtml.includes("2027-04-14")
   && smallHtml.includes("78 球／0 自責") && smallHtml.includes("12.1")

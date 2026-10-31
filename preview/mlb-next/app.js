@@ -3,7 +3,10 @@
   const qs=new URLSearchParams(location.search);
   const trialKey=qs.get("trial");
   const T=window.MLB_CROSS_SEASON_TRIAL;
-  const pipelineTrial=!!T&&["opening","transition","small"].includes(trialKey);
+  const F=window.MLB_SAME_GAME_TRIAL, flow=trialKey==="same-game"&&!!F;
+  const flowIndex=Math.max(0,Math.min(F?.stages?.length-1||0,Number(qs.get("step"))||0));
+  const flowStage=flow?F.stages[flowIndex]:null;
+  const pipelineTrial=flow||!!T&&["opening","transition","small"].includes(trialKey);
   if(trialKey&&!pipelineTrial)return; // other diagnostic cases remain in trial-reader.js
   const D=window.PREVIEW_DATA, root=document.getElementById("app");
   const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -16,17 +19,31 @@
   const fmtOut=o=>o==null?"—":`${Math.floor(o/3)}.${o%3}`;
   const base=(p)=>`<div class="source-ribbon"><span class="source-dot"></span><span>${p}／第一版閱讀草案已成形</span><strong>${pipelineTrial?"人工來源輸入・實際程式輸出":"固定歷史資料，不是即時頁面"}</strong></div>`;
   const link=(title,href,active)=>`<a href="${href}" class="${active?"active":""}" ${active?'aria-current="page"':""}>${title}</a>`;
-  const trialCase=pipelineTrial?(trialKey==="opening"?T.opening:T.cases[trialKey]):null;
+  const trialCase=flow?{...flowStage,
+    liveGame:flowStage.game.status.code==="pre"?flowStage.game:flowStage.pregame?.game||flowStage.game,
+    context:Object.fromEntries((flowStage.game.status.code==="pre"?flowStage.context:flowStage.pregame?.context||flowStage.context).checks.map(x=>[x.id,x])),
+    bullpen:flowStage.game.status.code==="pre"?flowStage.bullpen:flowStage.pregame?.bullpen||flowStage.bullpen,
+    priorReference:F.priorReference}
+    :pipelineTrial?(trialKey==="opening"?T.opening:T.cases[trialKey]):null;
   const g=pipelineTrial?(trialCase.liveGame||trialCase.game):D.game;
   const researchPair=side=>trialCase?.matchupStatus==="current"?trialCase.matchup?.pairs?.find(x=>x.pitcherSide===side):null;
   const prior=()=>trialCase?.priorReference;
   const priorStatus=s=>s==="no_record"?"上季確定無紀錄":s==="scope_unconfirmed"?"上季例行賽範圍未確認":"上季資料未取得";
   const heroTeams=(post)=>`<div class="match-header">
     <div class="club"><span class="club-code">${esc(g.away.ab)}</span><strong>${esc(g.away.name)}</strong><small>客隊</small></div>
-    <div class="versus">${post?`<span class="score">${D.post.final.away.runs}<i>:</i>${D.post.final.home.runs}</span><small>已結束</small>`:`<span class="at">對</span><small>賽前資料</small>`}</div>
+    <div class="versus">${post?`<span class="score">${(flowStage?.post||D.post).final.away.runs}<i>:</i>${(flowStage?.post||D.post).final.home.runs}</span><small>已結束</small>`:`<span class="at">對</span><small>賽前資料</small>`}</div>
     <div class="club home-club"><span class="club-code">${esc(g.home.ab)}</span><strong>${esc(g.home.name)}</strong><small>主隊</small></div>
   </div>`;
   function renderHome(){
+    if(flow){
+      const x=F.stages[0].game;
+      root.innerHTML=`${base("設計預覽 / 賽事入口")}
+        <section class="page-title"><div><p class="overline">MLB / 同場連續試跑</p><h1>同一場，從賽前到賽後</h1><p>以下七個閱讀狀態共用人工 gamePk ${x.pk}，每輪承接前一輪保存結果。</p></div></section>
+        <div class="test-notice"><b>獨立人工試跑，非正式網站</b><span>${esc(F.meta.warning)}</span></div>
+        <section class="list-heading"><h2>2027 例行賽・人工案例</h2><span>台灣時間；美國賽程日另列</span></section>
+        <article class="game-row"><div class="game-time"><strong>${esc(x.twTime)}</strong><span>${esc(twDateLabel(x.twDate))} 台灣時間</span><small>美國賽程日 ${esc(x.usDate)}</small></div><div class="game-clubs"><div><b>${esc(x.away.ab)}</b><strong>${esc(x.away.name)}</strong></div><div><b>${esc(x.home.ab)}</b><strong>${esc(x.home.name)}</strong></div></div><div class="game-essential"><span>同一 gamePk ${x.pk}</span><p>從官方打線未取得到完賽補齊</p><small>資料由 build-live、matchup、ctx、post 等處理</small></div><div class="game-action"><a class="action-link" href="game.html?trial=same-game&step=0">從第一步閱讀 <span aria-hidden="true">↗</span></a></div></article>`;
+      return;
+    }
     if(pipelineTrial){
       const cases=[["opening",T.opening.game,"開幕零樣本"],["transition",T.cases.transition.liveGame,"春訓銜接"],["small",T.cases.small.liveGame,"本季少樣本"]];
       root.innerHTML=`${base("設計預覽 / 賽事入口")}
@@ -266,13 +283,32 @@
     return `${comparison()}${pitcherRow()}<section class="primary-block"><div class="section-head"><h2>本場打線</h2><span>${pipelineTrial?"本場程式輸出・官方九棒":legit==="new"?"新季狀態示意":legit==="projection"?"一隊官方、一隊人工預估測試":legit==="partial"?"一隊官方、一隊未取得":legit==="small"?"人工少樣本示意":legit==="official_empty"?"人工官方九棒情境・本季無成績":"雙方 MLB 官方已確認"}</span></div><div class="lineup-grid">${lineupFor(g.away,"away")}${lineupFor(g.home,"home")}</div></section>${contextSection()}${bullpenSection()}${deepSection()}`;
   }
   function innings(){
-    return `<section class="primary-block"><div class="section-head"><h2>逐局比分</h2><span>MLB 官方賽後資料・完整</span></div><div class="inning-grid">${D.post.innings.map(i=>`<div class="inning"><b>${i.n} 局</b><span>${esc(g.away.ab)}　${i.away}</span><span>${esc(g.home.ab)}　${i.home}</span></div>`).join("")}</div></section>`;
+    const P=flowStage?.post||D.post, missing=(i,s)=>P.missing?.some(x=>x.n===i.n&&x.side===s), notPlayed=(i,s)=>P.notPlayed?.some(x=>x.n===i.n&&x.side===s);
+    const cell=(i,s)=>notPlayed(i,s)?"未打":missing(i,s)?"?":i[s]==null?"?":esc(i[s]);
+    return `<section class="primary-block"><div class="section-head"><h2>逐局比分</h2><span>${flowStage?(P.complete?"完賽・資料完整":"已完賽・資料未齊"):"MLB 官方賽後資料・完整"}</span></div><div class="inning-grid">${P.innings.map(i=>`<div class="inning"><b>${i.n} 局</b><span>${esc(g.away.ab)}　${cell(i,"away")}</span><span>${esc(g.home.ab)}　${cell(i,"home")}</span></div>`).join("")}</div>${flowStage?`<p class="page-note">0＝有效零分；未打＝已確認不需打該半局；?＝來源未取得。${P.incomplete?.length?" 尚缺："+esc(P.incomplete.join("、"))+"；下次可再補。":""}</p>`:""}</section>`;
   }
   function pitchingPost(){
-    const box=(s,t)=>{const p=D.post.pitching[s];return `<div class="result-pitch"><h3>${esc(t.ab)} ${esc(t.name)}</h3><div><span>先發 ${esc(p.sp.name)}</span><strong>${fmtOut(p.sp.outs)} 局 / ${p.sp.pitches} 球</strong></div><div><span>牛棚 ${p.rp.apps} 人次</span><strong>${fmtOut(p.rp.outs)} 局 / ${p.rp.pitches} 球</strong></div></div>`};
+    const P=flowStage?.post||D.post;
+    const box=(s,t)=>{const p=P.pitching?.[s];return `<div class="result-pitch"><h3>${esc(t.ab)} ${esc(t.name)}</h3><div><span>先發 ${esc(p?.sp?.name??"未取得")}</span><strong>${p?.sp?.outs==null?"?":fmtOut(p.sp.outs)} 局 / ${p?.sp?.pitches??"?"} 球</strong></div><div><span>牛棚 ${p?.rp?.apps??"?"} 人次</span><strong>${p?.rp?.outs==null?"?":fmtOut(p.rp.outs)} 局 / ${p?.rp?.pitches??"?"} 球</strong></div></div>`};
     return `<section class="primary-block"><div class="section-head"><h2>實際投手使用</h2><span>與賽前預計分開保存</span></div><div class="result-grid">${box("away",g.away)}${box("home",g.home)}</div></section>`;
   }
   function renderGame(){
+    if(flow){
+      const post=!!flowStage.post, current=flowStage.game, old=flowStage.matchup;
+      const steps=F.stages.map((x,i)=>link(esc(x.label),`game.html?trial=same-game&step=${i}`,i===flowIndex)).join("");
+      const stale=flowStage.matchupStatus==="stale"
+        ?`<div class="test-notice" role="status"><b>新對位重算失敗</b><span>目前先發／九棒已變；舊對位取得於 ${esc(old?.fetchedAt??"未取得")}，只保留追溯，不顯示為新版本的手別成績。錯誤：${esc(flowStage.matchupError??"來源未取得")}</span></div>`:"";
+      root.innerHTML=`${base("設計預覽 / 單場研究")}
+        <nav class="crumb"><a href="index.html?trial=same-game">賽事入口</a><span>／</span><span>gamePk ${g.pk}・人工測試</span></nav>
+        <nav class="state-controls flow-steps" aria-label="同場試跑階段"><span>試跑階段</span><div>${steps}</div></nav>
+        <div class="mode-nav" aria-label="閱讀模式"><span class="${post?"":"active"}">賽前研究</span><span class="${post?"active":""}">賽後結果</span></div>
+        <div class="test-notice"><b>人工來源輸入・實際程式輸出</b><span>第 ${flowIndex+1}／${F.stages.length} 個保存狀態；本站取得時間 ${esc(flowStage.at)}。來源發布時刻未取得。此案例非真實賽程。</span></div>
+        ${stale}
+        <section class="match-hero"><div class="match-meta"><span>${esc(g.season)} ${trialType(g.gameType)}・${esc(flowStage.label)}；${post?(flowStage.post.complete?"資料已補齊":"賽後資料未齊"):current.status.code==="live"?"比賽進行中・賽前已凍結":"賽前更新"}</span><span>${esc(twDateLabel(g.twDate))} ${esc(g.twTime)} 台灣時間・${esc(g.venue)}</span></div>${heroTeams(post)}<p class="hero-caption">美國賽程日 ${esc(g.usDate)}。${post?"先看賽後結果，再展開最後成功保存的賽前研究。":current.status.code==="live"?"比賽已開始；下方為最後成功的賽前版本，不含本場賽後數字。":"比賽資料依本階段實際程式輸出顯示。"}</p></section>
+        ${post?`${innings()}${pitchingPost()}<details class="pregame-archive"><summary><span>展開當時保存的賽前研究資料</span><small>最後成功版本 ${esc(flowStage.pregame?.context?.updatedAt??"未取得")}；賽後未改寫</small></summary>${preBody()}</details>`:preBody()}
+        <div class="end-note"><b>保存與範圍</b><p>人工 gamePk ${g.pk} 的七個狀態共用一筆研究紀錄；賽前情境凍結於 ${esc(flowStage.context.frozen?.at??"尚未開賽")}。賽前 SHA-256 ${esc(F.meta.frozenPregameSha256.slice(0,16))}…，賽後回看相同；賽後結果只進獨立 post 欄位。</p></div>`;
+      return;
+    }
     if(pipelineTrial){
       root.innerHTML=`${base("設計預覽 / 單場研究")}
         <nav class="crumb"><a href="index.html?trial=opening">賽事入口</a><span>／</span><span>gamePk ${g.pk}・人工測試</span></nav>
@@ -314,7 +350,7 @@
   }
   if(pipelineTrial){
     document.querySelector(".mast-id").textContent="MLB / "+g.season+" 人工試跑";
-    document.querySelector(".brand").href="index.html?trial=opening";
+    document.querySelector(".brand").href=flow?"index.html?trial=same-game":"index.html?trial=opening";
     document.querySelector(".site-foot").innerHTML='獨立分支試跑，2027 為人工輸入；正式 /live/、資料與排程未變。<a href="README.md">資料與版本說明</a>';
   }
   if(document.body.dataset.page==="home")renderHome();else renderGame();

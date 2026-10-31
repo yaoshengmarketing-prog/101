@@ -81,3 +81,12 @@
 - 新增人工 2027/4/15 美國賽程日的少樣本案例，3 次先發日期皆由人工 `gameLog` 輸入；開幕與春訓銜接案例維持。換先發手別、換九棒球員 ID 會重算；重算失敗的舊對位標過期並隱藏。
 
 這批新值由 `scripts/matchup.mjs`、`scripts/build-live.mjs` 與 `scripts/cross-season-trial.mjs` 處理後才進 `app.js`，不是前端手填。執行 `node scripts/test-matchup.mjs` 及 `node scripts/cross-season-trial.mjs --write` 可重建檢查。歷史 2026 固定資料仍為既有版本；人工球員與上季資料不可當作真實 2027 來源已確認。正式 `/live/`、資料與排程未改。
+
+## 同一 gamePk 的賽前至賽後連續試跑
+
+- [賽事入口](./index.html?trial=same-game) → [第一階段單場頁](./game.html?trial=same-game&step=0)。七個階段包含官方打線未取得、官方九棒、先發及九棒變動後重算失敗、重算恢復、比賽中凍結、完賽資料未齊、賽後補齊。階段切換僅供驗收。
+- 人工 2027/4/20 美國賽程日、gamePk 9902750；台灣開賽時間 2027/4/21 07:10。模擬時鐘依各階段前進，來源發布時間未知，只記本站取得時間。賽前回應沒有本場賽後數字。
+- `scripts/same-game-trial.mjs` 依序把前一輪 `build-live` state 與單場輸出交給下一輪，呼叫既有 `buildBullpen`、`compute/decide`、`buildMatchup`、`summarizePost`，產生 [固定試跑資料](./same-game-data.js)。同一場只佔一筆情境紀錄；開賽後用最後成功的賽前版本。賽後只新增／補齊 `post`。
+- `trial-batting.mjs` 是人工測試輸入的共同事件基礎；同球員當季 R 的總打席等於左右投分項之和，OPS 從安打、保送、壘打、打數與打席重新計算，不平均分項 OPS。正常少樣本 A1 現為整體 10 打席、對左 4、對右 6；刻意矛盾的資料不在正常案例。
+- `same-game-data.js` 的 `meta.frozenPregameSha256` 與 `afterPostPregameSha256` 相同；`oneGameRecord=1`。完賽未齊時 0 分、確定未打與 ? 未取得分開，下一輪補齊。首次看見時已開賽者另驗證為 `late`，不冒充賽前樣本。
+- 重建與檢查：`node scripts/cross-season-trial.mjs --write`、`node scripts/same-game-trial.mjs --write`、`node scripts/test-same-game-preview.mjs`。2027 仍全為人工輸入，尚未證明真實來源時機；正式資料、排程與規則未改。

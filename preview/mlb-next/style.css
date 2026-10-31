@@ -128,6 +128,12 @@ small,.site-foot{font-size:12px;color:var(--ink-soft)}
 
 /* Spring replay uses the existing cards and two-column layout. */
 .spring-section{margin-top:34px}.spring-section .game-row{margin-top:13px}.spring-section .page-note{margin:10px 0 0}
+
+/* Branch-only continuous trial stage selector. */
+.flow-steps{margin:12px 0 0}.flow-steps>div{display:flex;gap:5px;flex-wrap:wrap}
+.flow-steps a{font-size:12px;padding:6px 10px}
+.mode-nav span{display:inline-block;padding:9px 17px;border:1px solid var(--line);border-radius:5px;background:#fff;font-size:15px;font-weight:600;color:var(--ink-soft)}
+.mode-nav span.active{background:var(--ink);border-color:var(--ink);color:#fff}
 .spring-lineup li{grid-template-columns:23px minmax(0,1fr) 48px}.spring-lineup strong{white-space:normal;overflow:visible;text-overflow:clip}.spring-lineup em{text-align:right}
 .spring-rule-note{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);margin:30px 0 0;padding:15px 18px;color:var(--ink-soft);font-size:13px}.spring-rule-note b{color:var(--ink)}
 .spring-replay-notice{background:var(--blue-soft);border:1px solid var(--line);border-left:4px solid var(--blue);margin:16px 0;padding:12px 16px;display:flex;gap:7px 16px;flex-wrap:wrap;font-size:13px}.spring-replay-notice b{color:var(--ink)}.spring-replay-notice span{color:var(--ink-soft)}

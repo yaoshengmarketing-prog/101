@@ -3497,7 +3497,7 @@ window.MLB_CROSS_SEASON_TRIAL = {
               "era": "2.19",
               "ip": "12.1",
               "gs": 3,
-              "whip": "1.00"
+              "whip": "0.97"
             },
             "statStatus": "value",
             "statsScope": {
@@ -3516,9 +3516,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991001,
                 "name": "測試打者 A1",
                 "pos": "CF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3526,9 +3526,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991002,
                 "name": "測試打者 A2",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3546,9 +3546,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991004,
                 "name": "測試打者 A4",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3556,9 +3556,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991005,
                 "name": "測試打者 A5",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3566,9 +3566,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991006,
                 "name": "測試打者 A6",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3576,9 +3576,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991007,
                 "name": "測試打者 A7",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3586,9 +3586,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991008,
                 "name": "測試打者 A8",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3596,9 +3596,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991009,
                 "name": "測試打者 A9",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               }
             ],
@@ -3677,9 +3677,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991001,
                 "name": "測試打者 A1",
                 "pos": "CF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3687,9 +3687,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991002,
                 "name": "測試打者 A2",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3707,9 +3707,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991004,
                 "name": "測試打者 A4",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3717,9 +3717,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991005,
                 "name": "測試打者 A5",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3727,9 +3727,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991006,
                 "name": "測試打者 A6",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3737,9 +3737,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991007,
                 "name": "測試打者 A7",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3747,9 +3747,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991008,
                 "name": "測試打者 A8",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3757,9 +3757,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 991009,
                 "name": "測試打者 A9",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               }
             ]
@@ -3798,7 +3798,7 @@ window.MLB_CROSS_SEASON_TRIAL = {
               "era": "2.19",
               "ip": "12.1",
               "gs": 3,
-              "whip": "1.00"
+              "whip": "0.97"
             },
             "statStatus": "value",
             "statsScope": {
@@ -3817,9 +3817,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992001,
                 "name": "測試打者 B1",
                 "pos": "CF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3827,9 +3827,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992002,
                 "name": "測試打者 B2",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3837,9 +3837,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992003,
                 "name": "測試打者 B3",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3847,9 +3847,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992004,
                 "name": "測試打者 B4",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3857,9 +3857,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992005,
                 "name": "測試打者 B5",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3867,9 +3867,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992006,
                 "name": "測試打者 B6",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3877,9 +3877,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992007,
                 "name": "測試打者 B7",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3887,9 +3887,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992008,
                 "name": "測試打者 B8",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3897,9 +3897,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992009,
                 "name": "測試打者 B9",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               }
             ],
@@ -3978,9 +3978,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992001,
                 "name": "測試打者 B1",
                 "pos": "CF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3988,9 +3988,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992002,
                 "name": "測試打者 B2",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -3998,9 +3998,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992003,
                 "name": "測試打者 B3",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -4008,9 +4008,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992004,
                 "name": "測試打者 B4",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -4018,9 +4018,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992005,
                 "name": "測試打者 B5",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -4028,9 +4028,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992006,
                 "name": "測試打者 B6",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -4038,9 +4038,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992007,
                 "name": "測試打者 B7",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -4048,9 +4048,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992008,
                 "name": "測試打者 B8",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               },
               {
@@ -4058,9 +4058,9 @@ window.MLB_CROSS_SEASON_TRIAL = {
                 "id": 992009,
                 "name": "測試打者 B9",
                 "pos": "IF",
-                "avg": ".250",
-                "ops": ".625",
-                "pa": 6,
+                "avg": ".222",
+                "ops": ".633",
+                "pa": 10,
                 "statStatus": "value"
               }
             ]
@@ -4111,11 +4111,11 @@ window.MLB_CROSS_SEASON_TRIAL = {
             "splits": {
               "vl": {
                 "ops": ".500",
-                "pa": 8
+                "pa": 20
               },
               "vr": {
                 "ops": ".750",
-                "pa": 10
+                "pa": 25
               }
             },
             "splitStatus": {
@@ -4190,8 +4190,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "L",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4202,8 +4202,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "R",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4214,8 +4214,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "L",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4226,8 +4226,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "R",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4238,8 +4238,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "L",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4250,8 +4250,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "R",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4262,8 +4262,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "L",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4274,8 +4274,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "R",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4286,8 +4286,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "L",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 }
@@ -4317,7 +4317,7 @@ window.MLB_CROSS_SEASON_TRIAL = {
             },
             "focus": null,
             "obs": [
-              "釀酒人官方打線 9 人中左打 5、右打 4，兩邊人數接近，兩個分項都要看：測試先發 A 對左打被打 OPS .500（8 打席）、對右打 .750（10 打席）。"
+              "釀酒人官方打線 9 人中左打 5、右打 4，兩邊人數接近，兩個分項都要看：測試先發 A 對左打被打 OPS .500（20 打席）、對右打 .750（25 打席）。"
             ],
             "recentNote": null
           },
@@ -4341,11 +4341,11 @@ window.MLB_CROSS_SEASON_TRIAL = {
             "splits": {
               "vl": {
                 "ops": ".500",
-                "pa": 8
+                "pa": 20
               },
               "vr": {
                 "ops": ".750",
-                "pa": 10
+                "pa": 25
               }
             },
             "splitStatus": {
@@ -4420,8 +4420,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "L",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4432,8 +4432,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "R",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4456,8 +4456,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "R",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4468,8 +4468,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "L",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4480,8 +4480,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "R",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4492,8 +4492,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "L",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4504,8 +4504,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "R",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 },
@@ -4516,8 +4516,8 @@ window.MLB_CROSS_SEASON_TRIAL = {
                   "bats": "L",
                   "vs": {
                     "pa": 6,
-                    "avg": ".250",
-                    "ops": ".625"
+                    "avg": ".200",
+                    "ops": ".733"
                   },
                   "why": null
                 }
@@ -4547,7 +4547,7 @@ window.MLB_CROSS_SEASON_TRIAL = {
             },
             "focus": null,
             "obs": [
-              "紅人官方打線 9 人中左打 5、右打 4，兩邊人數接近，兩個分項都要看：測試先發 B 對左打被打 OPS .500（8 打席）、對右打 .750（10 打席）。"
+              "紅人官方打線 9 人中左打 5、右打 4，兩邊人數接近，兩個分項都要看：測試先發 B 對左打被打 OPS .500（20 打席）、對右打 .750（25 打席）。"
             ],
             "recentNote": null
           }

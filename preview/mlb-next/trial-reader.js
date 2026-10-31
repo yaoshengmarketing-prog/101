@@ -3,7 +3,7 @@
   "use strict";
   const qs = new URLSearchParams(location.search);
   if (!qs.has("trial")) return;
-  if (["opening","transition","small"].includes(qs.get("trial"))) return; // core app.js renders these program-output cases
+  if (["opening","transition","small","same-game"].includes(qs.get("trial"))) return; // core app.js renders these program-output cases
   const D = window.MLB_CROSS_SEASON_TRIAL, root = document.getElementById("app");
   const key = qs.get("trial") || "opening";
   const esc = x => String(x ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
