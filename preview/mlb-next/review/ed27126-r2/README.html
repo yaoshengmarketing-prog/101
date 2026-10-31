@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MLB 真實多場預覽｜版本與資料</title><link rel="stylesheet" href="style.css"></head>
+<body><div class="site-shell"><header class="mast"><a class="brand" href="index.html?trial=real"><span>運彩 101</span></a><div class="mast-right"><span class="draft-pill">獨立測試預覽</span><span class="mast-id">原始程式 ed27126</span></div></header><main>
+<div class="test-notice" role="note"><b>固定歷史預覽，非正式網站</b><span>真實 2026 比賽取自 101 commit e14032c。人工 2027 案例維持測試身分，未納入真實場次清單。</span></div>
+<nav class="crumb"><a href="index.html?trial=real">賽事入口</a><span>／</span><span>版本與資料說明</span></nav>
+<section class="list-heading"><h1>真實多場資料接入</h1><span>固定預覽 ed27126-r2</span></section>
+<p><a href="index.html?trial=real">兩場清單</a>・<a href="game.html?trial=real&amp;pk=849799&amp;mode=pre">849799 世界大賽</a>・<a href="game.html?trial=real&amp;pk=849844&amp;mode=pre">849844 外卡賽</a>。兩場共用同一頁面程式，依 gamePk 讀取已保存的 games、matchup、bullpen、ctx、roster。來源檔及 Git blob SHA 記在 <code>real-games-data.js</code>。</p>
+<p>849799 的賽前情境保存於 2026-10-28T23:30:42.547Z、對位於 23:30:41.192Z；849844 的賽前情境保存於 2026-10-01T23:45:42.528Z、對位於 23:45:42.100Z。兩場先發與九棒 ID 均與對位基準相同。</p>
+<p>賽後 post 分別取得於 2026-10-29T03:15:59.887Z 和 2026-10-02T03:15:49.337Z。比賽檔與逐人牛棚檔後來更新，不拿其中整體 OPS、ERA 或用量冒充當時賽前快照。849844 沒有保存相似案例逐筆清單，頁面保留缺口。</p>
+<p>人工 gamePk 9902750 已從來源輸入修正：九下未打，客隊投球共 8 局、主隊 9 局，並以半局出局數核對；此局數不當成其他比賽的通則。<a href="index.html?trial=same-game">另開人工同場試跑</a>。</p>
+<p>此目錄只發布靜態預覽；資料處理程式留在獨立分支。正式 <code>/live/</code>、資料、排程、網域與統計門檻未變。<a href="https://github.com/yaoshengmarketing-prog/101/commit/ed2712601f8dfb610b01136d1ff430ced8e83f1f">原始程式 commit</a>。</p>
+</main></div></body></html>
+
