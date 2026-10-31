@@ -36,7 +36,8 @@ test('到 90 分鐘時窗只派送目標場，並留下外部觸發與 run ID', 
     const body = JSON.parse(calls[0].init.body);
     assert.equal(body.inputs.event_id, '401878761');
     assert.match(body.inputs.trigger_id, /2026-10-31T16:00Z 401878761 90/);
-    assert.equal(writes.length, 2);
-    assert.equal(writes[1].values[3], 12345);
+    assert.equal(writes.length, 3);
+    assert.match(writes[0].sql, /check_ok/);
+    assert.equal(writes[2].values[3], 12345);
   } finally { globalThis.fetch = originalFetch; }
 });

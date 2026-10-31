@@ -42,6 +42,8 @@ export async function checkFootball(env, scheduledTime, fetcher = fetch) {
     console.log("football check 失敗：" + errText(e));
     return;
   }
+  await env.DB.prepare("INSERT OR IGNORE INTO football_triggers (id, kind, scheduled_at, checked_at) VALUES (?, 'check_ok', ?, ?)")
+    .bind(`check cf ${at.slice(0, 16)}Z`, at, new Date().toISOString()).run();
   for (const game of fixtures) {
     const windowMinutes = footballDue(game.date, scheduledTime);
     if (!windowMinutes) continue;
