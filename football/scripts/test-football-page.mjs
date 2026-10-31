@@ -81,23 +81,24 @@ test('近五場依當場主客分組，缺比分不算和局並顯示完整分�
   assert.equal(partial.unknown, 1);
 });
 
-test('射門候選按本隊–對手排序；原頁不顯示，缺值明示且保留比賽背景入口', () => {
+test('正式逐場射門按本隊–對手排序，缺值明示且保留比賽背景入口', () => {
   const g = { key: 'eng.1:401878767', side: 'away', kickoffUTC: '2026-10-24T16:30Z',
     opponent: { name: 'Chelsea' }, score: { home: 0, away: 2 },
     home: { id: 'chelsea', name: 'Chelsea' }, away: { id: 'spurs', name: 'Tottenham Hotspur' },
     goalsFor: 2, goalsAgainst: 0, totalGoals: 2, finished: true };
-  const detail = { status: 'acquired', events: [], teamShots: {
+  const detail = { status: 'acquired', events: [
+    { type: 'goal', scoreAfter: { home: 0, away: 1 } },
+    { type: 'goal', scoreAfter: { home: 0, away: 2 } },
+  ], teamShots: {
     home: { total: 7, onTarget: 4 }, away: { total: 15, onTarget: 4 } } };
   const t = { team: { id: 'spurs', name: 'Tottenham Hotspur' }, leagueFive: [g] };
   assert.equal(shotLine(g, detail), '全場射門 15–7｜射正 4–4');
   assert.equal(shotLine({ ...g, side: 'home' }, detail), '全場射門 7–15｜射正 4–4');
   assert.equal(shotLine(g, { teamShots: null }), '全場射門／射正本次未取得');
   assert.equal(shotLine(g, { teamShots: { home: { total: 7, onTarget: 4 } } }), '全場射門／射正本次未取得');
-  assert.doesNotMatch(resultBlock(t, { [g.key]: detail }), /全場射門/);
-  const preview = resultBlock(t, { [g.key]: detail }, null, true);
-  assert.match(preview, /全場射門 15–7｜射正 4–4/);
-  assert.match(preview, /比賽背景 ↗/);
-  assert.match(resultBlock(t, { [g.key]: { ...detail, teamShots: null } }, null, true), /全場射門／射正本次未取得/);
+  const row = resultBlock(t, { [g.key]: detail });
+  assert.match(row, /2–0[\s\S]*先進球，最後獲勝[\s\S]*全場射門 15–7｜射正 4–4[\s\S]*比賽背景 ↗/);
+  assert.match(resultBlock(t, { [g.key]: { ...detail, teamShots: null } }), /全場射門／射正本次未取得/);
 });
 
 test('近期用人從相鄰歷史場次產生白話句，通用選人規則涵蓋角色變化', () => {
