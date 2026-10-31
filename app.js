@@ -14,7 +14,9 @@ function renderHome() {
   const state = { day: "today", status: "all", sport: "MLB" };
   const sportsEl = $("#sports"), dayEl = $("#days"), statusEl = $("#status"), listEl = $("#games"), h1 = $("#dayTitle");
 
-  sportsEl.innerHTML = D.meta.sports.map(s => `<button aria-pressed="${s === state.sport}" data-s="${s}">${s}</button>`).join("");
+  sportsEl.innerHTML = D.meta.sports.map(s => s === "足球"
+    ? '<a href="./football/">足球</a>'
+    : `<button aria-pressed="${s === state.sport}" data-s="${s}">${s}</button>`).join("");
   dayEl.innerHTML = D.days.map(d => `<button aria-pressed="${d.key === state.day}" data-d="${d.key}">${d.label}</button>`).join("");
   statusEl.innerHTML = [["all", "全部"], ["pre", "賽前"], ["live", "進行中"], ["final", "已結束"]].map(([k, v]) => `<button aria-pressed="${k === state.status}" data-st="${k}">${v}</button>`).join("");
 
