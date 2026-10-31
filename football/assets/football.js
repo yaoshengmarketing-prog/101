@@ -89,11 +89,76 @@ export function venueLine(label, tally) {
   return `${label} ${tally.games} 場${coverage}：${tally.wins} 勝、${tally.draws} 和、${tally.losses} 敗`;
 }
 
-function summarizeUsage(t) {
-  const actual = t.pairs.filter(p => p.continuation !== null);
-  if (!actual.length) return '相鄰場次的先發延續本次未取得；展開可看已取得的場次。';
-  const selected = actual.slice(-2);
-  return selected.map(p => `開球隔 ${gap(p.kickoffGapMinutes)}、沿用 ${p.continuation}/11 名先發`).join('；') + '。';
+const shortGap = minutes => {
+  if (!Number.isFinite(minutes) || minutes < 0) return '間隔未取得';
+  const days = minutes / 1440;
+  if (days >= 2 && days < 3) return '相隔不到 3 天';
+  if (days >= 1) return `約隔 ${Math.max(1, Math.round(days))} 天`;
+  return `約隔 ${Math.round(minutes / 60)} 小時`;
+};
+
+const changeText = (kept, second = false) => kept === 11 ? '仍由同一批 11 人先發'
+  : `${second ? '更換' : '第二場更換'} ${11 - kept} 名先發`;
+
+function roleChange(t, games, historicalGames) {
+  const previous = games.at(-2), latest = games.at(-1);
+  if (!previous || !latest) return null;
+  const historicalKeys = new Set(historicalGames.map(game => game.key));
+  const candidates = (t.players || []).map(player => {
+    const records = games.map(game => player.games?.find(record => record.key === game.key));
+    if (records.at(-2)?.role !== 'sub_on' || records.at(-1)?.role !== 'starter') return null;
+    const roles = new Set((player.games || []).filter(record => historicalKeys.has(record.key))
+      .map(record => record.role).filter(role =>
+      role === 'starter' || role === 'sub_on' || role === 'bench_unused'));
+    const latestContribution = (records.at(-1)?.goals || 0) + (records.at(-1)?.assists || 0);
+    return { player, records, variety: roles.size, latestContribution };
+  }).filter(Boolean).sort((a, b) => b.variety - a.variety || b.latestContribution - a.latestContribution
+    || a.player.name.localeCompare(b.player.name, 'zh-TW'));
+  const selected = candidates[0];
+  if (!selected) return null;
+  const name = selected.player.name;
+  if (games.length === 3 && selected.records[0]?.role === 'sub_on') {
+    return `${name} 前兩場替補上場，${latest.leagueLabel}改先發。`;
+  }
+  return `${name} 從替補上場轉為先發。`;
+}
+
+export function summarizeUsage(t, target) {
+  const kickoff = Date.parse(target.kickoffUTC);
+  const games = (t.recent14 || []).filter(game => game.finished && Number.isFinite(Date.parse(game.kickoffUTC))
+    && Date.parse(game.kickoffUTC) >= kickoff - 14 * 86400000 && Date.parse(game.kickoffUTC) < kickoff)
+    .sort((a, b) => a.kickoffUTC.localeCompare(b.kickoffUTC));
+  if (!games.length) return '目標開球前近 14 日的已完賽俱樂部紀錄本次未取得。';
+  const windows = games.slice(1).map((to, index) => {
+    const from = games[index];
+    return { from, to, pair: (t.pairs || []).find(pair => pair.from === from.key && pair.to === to.key) };
+  }).slice(-2);
+  const complete = windows.filter(({ pair }) => Number.isInteger(pair?.continuation)
+    && pair.continuation >= 0 && pair.continuation <= 11);
+  const schedulesComplete = t.scheduleStatus?.length > 0
+    && t.scheduleStatus.every(schedule => schedule.status === 'acquired');
+  if (!complete.length) return `近 14 日已取得 ${games.length} 場跨賽事紀錄；先發資料未齊，展開可看已取得紀錄。`;
+
+  const connected = schedulesComplete && windows.length === 2 && complete.length === 2
+    && windows[0].to.key === windows[1].from.key;
+  const chosen = connected ? complete : [complete.at(-1)];
+  const first = chosen[0];
+  const intro = first.from.league === first.to.league
+    ? `兩場${first.from.leagueLabel}開球${shortGap(first.pair.kickoffGapMinutes)}`
+    : `${first.from.leagueLabel}接${first.to.leagueLabel}，兩場開球${shortGap(first.pair.kickoffGapMinutes)}`;
+  let summary = `${intro}，${changeText(first.pair.continuation)}`;
+  if (connected) {
+    const second = chosen[1];
+    summary += `；隨後${second.to.leagueLabel}${changeText(second.pair.continuation, true)}`;
+  } else if (complete.length < windows.length) {
+    summary += '；先發資料未齊，展開可看已取得紀錄';
+  } else if (!schedulesComplete) {
+    summary += '；部分賽事賽程未取得，無法確認完整相鄰順序';
+  }
+  summary += '。';
+  if (complete.length < windows.length || !schedulesComplete) return summary;
+  const selectedGames = connected ? [chosen[0].from, chosen[0].to, chosen[1].to] : [first.from, first.to];
+  return summary + (roleChange(t, selectedGames, games) || '');
 }
 
 function pairPeople(t, pair) {
@@ -198,7 +263,7 @@ async function renderGame() {
       <section class="section"><h2>逐場紀錄 · 英超</h2><p class="section-sub">兩隊分開列，比分為本隊–對手；總進球由程式相加。${threshold === null ? '本場無大小快照門檻，不標大／小。' : `以下以本場快照 ${threshold} 球門檻對照歷史總進球，非各場當時盤口結果。`}</p>
         ${resultBlock(away, threshold)}${resultBlock(home, threshold)}<p class="tiny">xG 本次未取得；每列「比賽背景」與下方球員紀錄連到同一場事件。</p></section>
       <section class="section"><h2>近期用人 · 近 14 日跨賽事</h2><p class="section-sub">已查英超、歐冠、歐聯、歐協、足總盃與聯賽盃；只列取得的已完賽。替補是當場狀態。</p>
-        ${[away, home].map((t, i) => `<div class="usage-card${i ? ' alt' : ''}"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.recent14.length} 場</h3><p>${esc(summarizeUsage(t))}</p></div>`).join('')}
+        ${[away, home].map((t, i) => `<div class="usage-card${i ? ' alt' : ''}"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.recent14.length} 場</h3><p>${esc(summarizeUsage(t, target))}</p></div>`).join('')}
         <details class="expander" id="pairs"><summary class="action">查看相鄰場次與開球間隔 <span>⌄</span></summary><div class="expander-body">${pairBlock(away, d)}${pairBlock(home, d)}</div></details>
         <details class="expander" id="people"><summary class="action">直接查看球員逐場紀錄 <span>⌄</span></summary><div class="expander-body">${personBlock(away)}${personBlock(home)}</div></details>
       </section>

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderOverview, renderGame, venueResults, venueLine } from '../assets/football.js';
+import { renderOverview, renderGame, venueResults, venueLine, summarizeUsage } from '../assets/football.js';
 import { dueWindow, decide } from './football-due.mjs';
 
 test('失敗與逾期狀態先行，總覽及單場不讀已移除 JSON', async () => {
@@ -79,4 +79,65 @@ test('近五場依當場主客分組，缺比分不算和局並顯示完整分�
   assert.equal(venueLine('主場', partial.home), '主場 2 場（比分完整 1/2 場）：1 勝、0 和、0 敗');
   assert.equal(venueLine('客場', partial.away), '客場 1 場：比分本次未取得');
   assert.equal(partial.unknown, 1);
+});
+
+test('近期用人從相鄰歷史場次產生白話句，通用選人規則涵蓋角色變化', () => {
+  const target = { key: 'eng.1:target', kickoffUTC: '2026-10-31T17:30:00Z' };
+  const europa = { key: 'europa:a', kickoffUTC: '2026-10-22T19:00:00Z', league: 'uefa.europa', leagueLabel: '歐聯', finished: true };
+  const league = { key: 'eng.1:b', kickoffUTC: '2026-10-25T14:00:00Z', league: 'eng.1', leagueLabel: '英超', finished: true };
+  const cup = { key: 'cup:c', kickoffUTC: '2026-10-28T19:45:00Z', league: 'eng.league_cup', leagueLabel: '聯賽盃', finished: true };
+  const earlier = { key: 'eng.1:earlier', kickoffUTC: '2026-10-18T13:00:00Z', league: 'eng.1', leagueLabel: '英超', finished: true };
+  const palace = { recent14: [earlier, europa, league, cup], scheduleStatus: [{ status: 'acquired' }],
+    pairs: [{ from: europa.key, to: league.key, kickoffGapMinutes: 4020, continuation: 11 },
+      { from: league.key, to: cup.key, kickoffGapMinutes: 4665, continuation: 1 }],
+    players: [
+      { name: 'Eddie Nketiah', games: [{ key: europa.key, role: 'sub_on' }, { key: league.key, role: 'sub_on' }, { key: cup.key, role: 'starter', goals: 1 }] },
+      { name: 'Darío Osorio', games: [{ key: earlier.key, role: 'bench_unused' }, { key: europa.key, role: 'sub_on' }, { key: league.key, role: 'sub_on' }, { key: cup.key, role: 'starter' }] },
+    ] };
+  // 規則先看已確認的角色種類，再看最後一場記錄的貢獻；不按球隊或球員 ID 指定。
+  const palaceText = summarizeUsage(palace, target);
+  assert.match(palaceText, /歐聯接英超，兩場開球相隔不到 3 天，仍由同一批 11 人先發；隨後聯賽盃更換 10 名先發/);
+  assert.match(palaceText, /Darío Osorio 前兩場替補上場，聯賽盃改先發/);
+  assert.equal((palaceText.match(/。/g) || []).length, 2);
+  palace.recent14.reverse();
+  assert.equal(summarizeUsage(palace, target), palaceText);
+
+  const spurs = { recent14: [{ ...europa, key: 'eng.1:first', league: 'eng.1', leagueLabel: '英超' },
+    { ...league, key: 'eng.1:second', kickoffUTC: '2026-10-24T16:30:00Z' }],
+  scheduleStatus: [{ status: 'acquired' }],
+  pairs: [{ from: 'eng.1:first', to: 'eng.1:second', kickoffGapMinutes: 7050, continuation: 9 }],
+  players: [
+    { name: 'Mateus Fernandes', games: [{ key: 'eng.1:first', role: 'sub_on' }, { key: 'eng.1:second', role: 'starter' }] },
+    { name: 'Mathys Tel', games: [{ key: 'eng.1:first', role: 'sub_on' }, { key: 'eng.1:second', role: 'starter', goals: 1 }] },
+  ] };
+  assert.equal(summarizeUsage(spurs, target), '兩場英超開球約隔 5 天，第二場更換 2 名先發。Mathys Tel 從替補上場轉為先發。');
+});
+
+test('中間名單缺漏不拼成連續三場，本場正式名單不混入歷史用人摘要', () => {
+  const target = { key: 'eng.1:target', kickoffUTC: '2026-10-31T17:30:00Z', lineupStatus: 'source_listed' };
+  const games = [
+    { key: 'a', kickoffUTC: '2026-10-22T19:00:00Z', league: 'uefa.europa', leagueLabel: '歐聯', finished: true },
+    { key: 'b', kickoffUTC: '2026-10-25T14:00:00Z', league: 'eng.1', leagueLabel: '英超', finished: true },
+    { key: 'c', kickoffUTC: '2026-10-28T19:45:00Z', league: 'eng.league_cup', leagueLabel: '聯賽盃', finished: true },
+  ];
+  const team = { recent14: games, scheduleStatus: [{ status: 'acquired' }], players: [],
+    pairs: [{ from: 'a', to: 'b', kickoffGapMinutes: 4020, continuation: null },
+      { from: 'b', to: 'c', kickoffGapMinutes: 4665, continuation: 1 }] };
+  const partial = summarizeUsage(team, target);
+  assert.match(partial, /英超接聯賽盃/);
+  assert.match(partial, /先發資料未齊，展開可看已取得紀錄/);
+  assert.doesNotMatch(partial, /隨後|連續|歐聯接英超/);
+
+  team.pairs[0].continuation = 11;
+  team.scheduleStatus[0].status = 'not_acquired';
+  const uncertain = summarizeUsage(team, target);
+  assert.match(uncertain, /部分賽事賽程未取得/);
+  assert.doesNotMatch(uncertain, /隨後|連續/);
+
+  team.scheduleStatus[0].status = 'acquired';
+  const before = summarizeUsage(team, target);
+  team.recent14.push({ ...target, league: 'eng.1', leagueLabel: '英超', finished: true });
+  team.pairs.push({ from: 'c', to: target.key, kickoffGapMinutes: 4185, continuation: 11 });
+  team.players.push({ name: '本場新先發', games: [{ key: 'c', role: 'sub_on' }, { key: target.key, role: 'starter' }] });
+  assert.equal(summarizeUsage(team, target), before);
 });
