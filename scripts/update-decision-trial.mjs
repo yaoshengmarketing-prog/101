@@ -1,6 +1,8 @@
 // 離線更新決策演練；只讀傳入狀態，不 fetch、不設 timer、不寫正式資料。
 // 政策數字是 §10 的可調試算值，不是正式排程或頁面更新保證。
 import { pathToFileURL } from "node:url";
+import { lineupSig, matchupState } from "./matchup.mjs";
+import { CHECKS, RULES as CTX_RULES } from "./ctx.mjs";
 
 export const TRIAL_POLICY = Object.freeze({
   farScheduleMinutes: 1440, entryScheduleMinutes: 240,
@@ -46,7 +48,10 @@ function sourceRow(game, module, source, now, interval) {
   if (module === "本季統計" && ["available", "unchanged"].includes(s.state) &&
       (String(s.season) !== String(game.season) || s.gameType !== "R"))
     return row(game, module, "待範圍核對", "取得的資料不是當季例行賽，不能標本季無紀錄或更新本季欄位", basis, "來源回傳可確認的當季 R 資料時");
-  if (s.state === "unchanged") return row(game, module, due(now, s.checkedAt, interval) ? "檢查來源" : "沿用", "已取得內容未變；相同版本不重建", basis, `版本改變或達試算間隔 ${interval} 分鐘時`);
+  if (s.state === "unchanged") {
+    if (s.version != null && s.version !== s.usedVersion) return row(game, module, "更新", "來源內容未變，但此版本尚未成功處理；前次安排不算完成", basis + `；已處理版=${s.usedVersion ?? "無"}`, "處理成功後保存版本；失敗則下輪續試");
+    return row(game, module, due(now, s.checkedAt, interval) ? "檢查來源" : "沿用", "已取得內容未變；相同版本不重建", basis, `版本改變或達試算間隔 ${interval} 分鐘時`);
+  }
   if (s.state === "available") {
     if (s.version !== s.usedVersion) return row(game, module, "更新", "已取得新版本", basis + `；已處理版=${s.usedVersion ?? "無"}`, "處理成功後保存版本；下次來源版本改變時");
     return row(game, module, due(now, s.checkedAt, interval) ? "檢查來源" : "沿用", "已處理同版內容", basis, `版本改變或達試算間隔 ${interval} 分鐘時`);
@@ -54,12 +59,27 @@ function sourceRow(game, module, source, now, interval) {
   return row(game, module, "待確認", "未知來源狀態，不能默認零值", basis, "來源狀態可判讀時");
 }
 
-export function matchupFingerprint(game) {
+export function matchupGame(game) {
+  if (game.matchupGame) return game.matchupGame;
   const x = game.matchupInput || {};
-  return JSON.stringify({ season: game.season, gameType: game.gameType,
-    awayStarter: x.awayStarter ?? null, homeStarter: x.homeStarter ?? null,
-    awayLineup: x.awayLineup ?? null, homeLineup: x.homeLineup ?? null,
-    stats: scopeKey(game.sources?.stats) });
+  const side = s => ({ sp: x[`${s}Starter`] ? { id:x[`${s}Starter`],hand:x[`${s}Hand`] ?? "R" } : null,
+    lineup: x[`${s}Lineup`]?.length ? { state:"official",slots:x[`${s}Lineup`].map((id,i)=>({id,n:i+1})) } : { state:"none" } });
+  return {pk:game.gamePk,season:game.season,usDate:game.officialDate,away:side("away"),home:side("home")};
+}
+
+export function matchupFingerprint(game) {
+  const m = matchupGame(game), stats = game.sources?.stats;
+  return JSON.stringify({ season:String(m.season || m.usDate?.slice(0,4)), gameType:game.gameType,
+    away:{sp:m.away.sp?.id ?? null,spHand:m.away.sp?.hand ?? null,lineup:lineupSig(m,"away")},
+    home:{sp:m.home.sp?.id ?? null,spHand:m.home.sp?.hand ?? null,lineup:lineupSig(m,"home")},
+    stats:{season:stats?.season ?? null,gameType:stats?.gameType ?? null,processedVersion:stats?.usedVersion ?? null} });
+}
+
+export function contextFingerprint(game, check) {
+  const v=game.contextVersions || {};
+  const deps=Object.fromEntries(check.inputs.map(k=>[k,v[k] ?? (k==="bullpen" ? game.bullpen?.usedVersion : game.sources?.stats?.usedVersion) ?? null]));
+  return JSON.stringify({rules:CTX_RULES,id:check.id,game:v.game ?? `${game.gamePk}/${game.season}/${game.gameType}`,
+    ...(check.id==="dh"?{schedule:v.schedule ?? game.scheduleVersion ?? null}:{}),deps});
 }
 
 function bullpenReadiness(game) {
@@ -87,7 +107,7 @@ export function planRound({ now, games, policy = TRIAL_POLICY, optionalRights = 
     else out.push(sourceRow(g, "賽程", s.schedule, now, scheduleInterval));
 
     if (["far", "unknown", "postponed"].includes(stage)) {
-      for (const m of ["先發／官方九棒", "本季統計", "投打對位", "牛棚", "情境", "名單", "預估", "模型天氣"])
+      for (const m of ["先發／官方九棒", "本季統計", "投打對位", "牛棚", ...CHECKS.map(c=>`情境/${c.id}`), "名單", "預估", "模型天氣"])
         out.push(row(g, m, "暫不查", stage === "postponed" ? "已改期，依新 startUTC 重算階段，不沿舊開賽時間" : "尚未進入該模組更新窗口", `階段=${stage}；目前 startUTC=${g.startUTC ?? "未取得"}`, "新開賽時間進入 T-48h 或賽程版本變動時"));
     } else if (["pre", "near"].includes(stage)) {
       const lineupInterval = stage === "near" ? policy.nearLineupMinutes : policy.preLineupMinutes;
@@ -99,24 +119,32 @@ export function planRound({ now, games, policy = TRIAL_POLICY, optionalRights = 
           ? row(g, m, "待使用條件", "第三方／模型天氣公開自動使用條件未確認，技術上可檢查也不安排來源工作", `來源狀態=${s[k]?.state ?? "未取得"}`, "授權、額度及更新方式確認後再評估")
           : sourceRow(g, m, s[k], now, interval));
 
-      const x = g.matchupInput || {}, stats = s.stats;
-      const ready = x.awayStarter && x.homeStarter && x.awayLineup?.length === 9 && x.homeLineup?.length === 9
-        && stats?.state === "available" && String(stats.season) === String(g.season) && stats.gameType === "R";
+      const m=matchupGame(g),stats=s.stats;
+      const ready = m.away.sp?.id && m.home.sp?.id && m.away.lineup?.slots?.length === 9 && m.home.lineup?.slots?.length === 9
+        && ["available","unchanged","failed"].includes(stats?.state) && stats?.usedVersion != null
+        && String(stats.season) === String(g.season) && stats.gameType === "R";
+      const upstreamPending = ["available","unchanged"].includes(stats?.state) && stats?.version !== stats?.usedVersion;
       const fingerprint = matchupFingerprint(g);
-      out.push(row(g, "投打對位", !ready ? "等待必要資料" : g.matchupBuiltFor === fingerprint ? "沿用" : "重算",
-        !ready ? "先發、九棒或當季 R 統計版本缺少；不沿用不適用舊對位" : g.matchupBuiltFor === fingerprint ? "名單／先發／統計三者同版，不重複工作" : "名單、先發或統計版本與已算對位不一致",
-        `輸入指紋=${fingerprint}；已算指紋=${g.matchupBuiltFor ?? "無"}`, "任一輸入版本變動且必要資料齊備時"));
+      const current=g.matchupBuiltFor===fingerprint && (!g.matchupSaved || matchupState(m,g.matchupSaved)==="current");
+      const action=!ready?"等待必要資料":upstreamPending?"等待上游處理":current?"沿用":"重算";
+      out.push(row(g,"投打對位",action,
+        !ready?"缺先發／九棒或可核的當季 R 已處理統計；舊對位若不適用不能冒充新對位":upstreamPending?"新統計來源版尚未成功處理；對位不可提前使用新版本":current?"既有 matchupState 的先發 ID、手別、打線簽章及統計處理版均相符":"依既有 matchupState 基準，先發 ID／手別、官方九棒或已處理統計版變動",
+        `輸入指紋=${fingerprint}；已算指紋=${g.matchupBuiltFor ?? "無"}；既有對位狀態=${g.matchupSaved?matchupState(m,g.matchupSaved):"無"}`, "上游成功且任何對位基準變動時"));
 
       const b = bullpenReadiness(g), bVersion = g.bullpen?.version;
       out.push(row(g, "牛棚", !b.ready ? "等待必要資料" : bVersion !== g.bullpen?.usedVersion ? "重算" : "沿用",
         !b.ready ? b.reason : bVersion !== g.bullpen?.usedVersion ? "前三個完整美國賽程日的逐投手用量已成新版；不依賴逐局或 post.complete" : "前三日用量版本相同；確認休兵日照實保留",
         `賽別=${g.gameType}；美國賽程日=${g.officialDate}；前三日=${(g.bullpen?.days||[]).map(d=>`${d.date}:${d.state}:${d.gameType}`).join(",")||"未取得"}；本日=${g.bullpen?.today ? `${g.bullpen.today.date}:${g.bullpen.today.state}` : "另列／無已知前場"}；用量版=${bVersion ?? "無"}`, "前場逐投手用量齊備或逐日狀態版本變動時"));
-      const contextVersion = `${g.scheduleVersion ?? "?"}|${bVersion ?? "?"}|${g.gameType}`;
-      out.push(row(g, "情境", !b.ready || b.spring ? "暫不判定" : g.contextBuiltFor === contextVersion ? "沿用" : "重算",
-        b.spring ? "跨春訓／例行賽視窗，S 登板只供閱讀，不參與 R 牛棚差距／連投門檻" : !b.ready ? b.reason : "依既有情境規則與完整輸入版判定；不改門檻",
-        `情境輸入版=${contextVersion}；已算版=${g.contextBuiltFor ?? "無"}`, "視窗全為適用賽別且逐日完整，或輸入版本改變時"));
+      for (const check of CHECKS) {
+        const isBp=check.inputs.includes("bullpen"), fp=contextFingerprint(g,check), done=g.contextDoneFor?.[check.id];
+        const waitingStats=!isBp && check.inputs.some(k=>["sp","rec","ops"].includes(k)) && upstreamPending;
+        const action=isBp && (!b.ready||b.spring)?"暫不判定":waitingStats?"等待上游處理":done===fp?"沿用":"重算";
+        out.push(row(g,`情境/${check.id}`,action,
+          isBp && b.spring?"僅此兩條牛棚情境跨 S／R 暫不判定；其他七條各按自身輸入處理":isBp&&!b.ready?b.reason:waitingStats?"本季統計來源版尚未處理完成，不使用新值":done===fp?"此條既有規則與相依輸入同版":"依 ctx.CHECKS 此條 inputs 重算；門檻不變",
+          `規則=${CTX_RULES}；inputs=${check.inputs.join(",")||"僅場次"}；輸入版=${fp}；已算版=${done??"無"}`, "此條相依輸入成功更新或範圍／完整度恢復時"));
+      }
     } else {
-      for (const m of ["先發／官方九棒", "本季統計", "投打對位", "牛棚", "情境", "名單", "預估", "模型天氣"])
+      for (const m of ["先發／官方九棒", "本季統計", "投打對位", "牛棚", ...CHECKS.map(c=>`情境/${c.id}`), "名單", "預估", "模型天氣"])
         out.push(row(g, m, "沿用凍結版", "已開賽，當場賽前研究不回算；其他未開賽場次獨立處理", `階段=${stage}`, "只在其他賽前場次以新資料版本重算"));
     }
 
@@ -152,16 +180,21 @@ export function demoCases() {
   const x = { ...pre, gamePk:930001, sources:{...pre.sources,stats:source("available","stat-3",now,{usedVersion:"stat-2"})} };
   const oldFingerprint = matchupFingerprint({...x,sources:{...x.sources,stats:source("available","stat-2",now,{usedVersion:"stat-2"})}});
   const changedStats = {...x, matchupBuiltFor:oldFingerprint};
-  const processed = {...changedStats, matchupBuiltFor:matchupFingerprint(changedStats),sources:{...changedStats.sources,stats:{...changedStats.sources.stats,usedVersion:"stat-3"}}};
+  const afterStats = {...changedStats,sources:{...changedStats.sources,stats:{...changedStats.sources.stats,usedVersion:"stat-3"}}};
+  const processed = {...afterStats,matchupBuiltFor:matchupFingerprint(afterStats)};
   const pending = { ...base(940001,"2027-04-19T12:00:00Z","final"), post:{complete:false,inningsComplete:true,pitchingComplete:false,checkedAt:"2027-04-20T15:00:00Z"} };
   const tomorrowNear = { ...base(940002,"2027-04-21T00:30:00Z"), officialDate:"2027-04-21" };
   const postponed = { ...base(940003,"2027-04-22T22:00:00Z","postponed"), priorStartUTC:"2027-04-20T22:00:00Z", scheduleVersion:"sch-moved", sources:{...base(3,"2027-04-22T22:00:00Z").sources,schedule:source("available","sch-moved",now,{usedVersion:"sch-1"})} };
+  const uncertain={...base(940004,"2027-04-20T21:00:00Z","postponed"),startUTC:null,officialDate:"2027-04-20"};
+  const resumed={...postponed,phase:"scheduled",sources:{...postponed.sources,schedule:source("unchanged","sch-moved","2027-04-22T18:30:00Z",{usedVersion:"sch-moved"}),lineup:source("unpublished",null,"2027-04-22T18:30:00Z")}};
   return [
     {name:"A 同日多階段",now,games:[pre,near,live,partial,complete]},
     {name:"B G1用量先齊、G2賽前",now,games:[g1,g2]},
     {name:"C 統計版本更新",now,games:[changedStats]},
+    {name:"C 統計處理成功，待重算對位",now,games:[afterStats]},
     {name:"C 同版重跑",now,games:[processed]},
-    {name:"D 今日無新賽、待補與改期",now,games:[pending,tomorrowNear,postponed]},
+    {name:"D 今日無新賽、待補與改期",now,games:[pending,tomorrowNear,postponed,uncertain]},
+    {name:"D 改期來源恢復並進入賽前",now:"2027-04-22T19:00:00Z",games:[resumed]},
   ];
 }
 
