@@ -142,7 +142,7 @@
       const t=g[side],p=t.projection,latest=p?.versions?.at(-1),first=p?.first;
       const official=p?.official||{at:t.lineup.firstSeen,slots:t.lineup.slots};
       if(!p)return `<p>本場預估模組未取得；MLB 官方九棒本站首次取得 ${esc(t.lineup.firstSeen)}。不拿別場或較晚數字補齊。</p><p><b>第三方確認</b>未取得；<b>臨場異動</b>${t.lineup.lateAt?esc(t.lineup.lateAt):"未記錄異動時間，不能推定絕無異動"}。</p>`;
-      const earlier=first&&latest&&(first.at!==latest.at||JSON.stringify(first.slots)!==JSON.stringify(latest.slots));
+      const earlier=first&&latest&&first.at!==latest.at;
       return `<p class="research-note"><b>預估｜${esc(p.source||"來源未取得")}</b>逐版記錄本站取得時間；最新版本 ${esc(latest?.status||latest?.statusKey||"狀態未取得")}，${twTime(latest?.at)}。最早取得 ${twTime(first?.at)} 只屬於最早版本，不能替換過的九棒背書。外層比賽檔更新較晚，不改寫內部逐版時間。</p>
         ${latest?compareProjection(latest,official):"<p>沒有可核時點的完整逐棒預估，無法逐棒比較。</p>"}
         ${earlier?`<details class="source-earlier"><summary>查看最早保存預估（${twTime(first.at)}）</summary>${compareProjection(first,official)}</details>`:""}
@@ -447,3 +447,4 @@
   if(document.body.dataset.page==="home")renderHome();else renderGame();
   keepReadingPlace();
 })();
+
