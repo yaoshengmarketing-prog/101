@@ -137,7 +137,11 @@ export function planRound({ now, games, policy = TRIAL_POLICY, optionalRights = 
         `賽別=${g.gameType}；美國賽程日=${g.officialDate}；前三日=${(g.bullpen?.days||[]).map(d=>`${d.date}:${d.state}:${d.gameType}`).join(",")||"未取得"}；本日=${g.bullpen?.today ? `${g.bullpen.today.date}:${g.bullpen.today.state}` : "另列／無已知前場"}；用量版=${bVersion ?? "無"}`, "前場逐投手用量齊備或逐日狀態版本變動時"));
       for (const check of CHECKS) {
         const isBp=check.inputs.includes("bullpen"), fp=contextFingerprint(g,check), done=g.contextDoneFor?.[check.id];
-        const waitingStats=!isBp && check.inputs.some(k=>["sp","rec","ops"].includes(k)) && upstreamPending;
+        const waitingStats=!isBp && check.inputs.some(k=>{
+          if(!["sp","rec","ops"].includes(k))return false;
+          const part=s.stats?.parts?.[k];
+          return part ? part.state==="failed" || part.version!==part.usedVersion : upstreamPending;
+        });
         const action=isBp && (!b.ready||b.spring)?"暫不判定":waitingStats?"等待上游處理":done===fp?"沿用":"重算";
         out.push(row(g,`情境/${check.id}`,action,
           isBp && b.spring?"僅此兩條牛棚情境跨 S／R 暫不判定；其他七條各按自身輸入處理":isBp&&!b.ready?b.reason:waitingStats?"本季統計來源版尚未處理完成，不使用新值":done===fp?"此條既有規則與相依輸入同版":"依 ctx.CHECKS 此條 inputs 重算；門檻不變",
