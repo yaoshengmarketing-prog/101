@@ -19,7 +19,7 @@ const events=[
   {key:"stat_update", step:steps[3], at:"2027-04-20T22:15:00Z", schedule:"g2", lineup:"l2", stats:"s2"},
   {key:"same_version", step:steps[3], at:"2027-04-20T22:20:00Z", schedule:"g2", lineup:"l2", stats:"s2"},
   {key:"stat_failed", step:steps[3], at:"2027-04-20T22:25:00Z", schedule:"g2", lineup:"l2", stats:"s3", failStats:true},
-  {key:"stat_recovered", step:steps[3], at:"2027-04-20T22:30:00Z", schedule:"g2", lineup:"l2", stats:"s3"},
+  {key:"stat_recovered", step:steps[3], at:"2027-04-20T22:30:00Z", schedule:"g2", lineup:"l2", stats:"s3", statsState:"unchanged"},
   {key:"live", step:steps[4], schedule:"g3", lineup:"l2", stats:"s3"},
   {key:"final_partial", step:steps[5], schedule:"g4", lineup:"l2", stats:"s3", post:"p1"},
   {key:"final_complete", step:steps[6], schedule:"g5", lineup:"l2", stats:"s3", post:"p2"},
@@ -68,7 +68,7 @@ export async function runTrial(){
     ledger.phase=phase;
     ledger.sources.schedule={...ledger.sources.schedule,state:e.schedule===ledger.sources.schedule.usedVersion?"unchanged":"available",version:e.schedule,checkedAt:at};
     ledger.sources.lineup={...ledger.sources.lineup,state:e.lineup?e.lineup===ledger.sources.lineup.usedVersion?"unchanged":"available":"unpublished",version:e.lineup,checkedAt:at};
-    ledger.sources.stats={...ledger.sources.stats,state:e.stats===ledger.sources.stats.usedVersion?"unchanged":"available",version:e.stats,checkedAt:at};
+    ledger.sources.stats={...ledger.sources.stats,state:e.statsState || (e.stats===ledger.sources.stats.usedVersion?"unchanged":"available"),version:e.stats,checkedAt:at};
     if(e.post)ledger.post={...ledger.post,sourceVersion:e.post};
     const calls=[],errors=[],fetchJson=inputSource(e);
     let plan=planRound({now:at,games:[ledger]});
@@ -151,6 +151,7 @@ export async function runTrial(){
   assert.deepEqual(by("same_version").calls,[]);
   assert.equal(by("stat_failed").after.stats,"s2");
   assert.equal(by("stat_recovered").after.stats,"s3");
+  assert.equal(by("stat_recovered").sourceStatsState,"unchanged");
   assert.ok(by("stat_recovered").calls.includes("matchup.buildMatchup"));
   assert.equal(by("final_partial").postComplete,false);
   assert.equal(by("final_complete").postComplete,true);
