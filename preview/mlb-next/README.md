@@ -104,7 +104,15 @@
 | 先發、官方九棒、投打對位 | 兩場均由 games 的首次取得時間與 matchup 的球員 ID／打線簽章核對；投手被打 OPS、最近三次先發及九棒手別 OPS／打席可讀 | games 檔較晚更新，整體 ERA/OPS/戰績缺可驗的賽前原值，故不補作當時成績 |
 | 情境與歷史案例 | 兩場 ctx 賽前 checks、門檻及範圍可讀；849799 的 similar 逐筆展開 | 849844 未保存 similar 清單；不據此推定符合 0 場 |
 | 牛棚 | ctx 賽前摘要可讀；bullpen 每日／逐人檔另標較晚更新時間 | 逐人檔無逐筆賽別，且不是可證的賽前逐人快照 |
-| 天氣、名單 | ctx 天氣與 roster 已保存的賽前比較基準可讀 | roster 的 people 是受檢查人物，不是完整名冊；逐棒第三方預估／確認快照和上一場逐棒賽前版本未接此共同讀取 |
+| 天氣、名單、預估與上一場 | ctx 天氣、roster 比較、games 內的逐版預估與上一場九棒由同一轉接器讀取 | roster 的 people 不是完整名冊；RotoGrinders 沒有逐棒快照，第三方確認未取得；上一場標歷史參考而非本場賽前快照 |
 
 - 人工 9902750 的 boxscore 輸入已修正：主隊 3：2 勝且九下未打，客隊投球改為 6＋2＝8 局、主隊 6＋3＝9 局。檢查以人工 linescore 各半局明列的出局數對照 boxscore 投手出局數，沒有把 8／9 局寫成所有比賽的通則。
 - 重建與必要檢查：`node scripts/real-multi-trial.mjs --write`、`node scripts/test-real-multi-preview.mjs`、`node scripts/same-game-trial.mjs --write`、`node scripts/test-same-game-preview.mjs`。正式 `/live/`、原始 2026 資料、排程、統計門檻及網域都未修改。
+
+### 共同讀取補齊與缺項降級
+
+- 共用 `style.css` 的右上角版本標籤及逐局比分「局／未打」改用 Noto Sans TC 等中文字型備援；沒有重畫卡片。
+- `real-multi-trial.mjs` 讀取每場 `games/{gamePk}.json` 的 `proj.{away,home}.first/versions/official`，逐版核對保存時間與九棒。849799 的最早與較晚預估各用自己的 `at`，不把最早 `firstSeen` 套到後來換過的名單；預估、第三方確認、MLB 官方、臨場異動分開。RotoGrinders 僅有人選／棒次彙總，沒有逐棒快照；來源發布時間與彙總獨立保存時間均未取得。
+- 上一場參考：849799 對應 849803（2026-10-27），849844 對應 849841（2026-09-30）。固定來源 `e14032c` 的上一場原檔 Git blob 分別為 `b0a2bfa95915130f47c041613ed0c75d03e0e7c0`、`7d59c29c9a7f2ea20baa117c49031071b091bd0b`；精簡核對檔在 `scripts/fixtures/real-2026/previous/`。兩隊各九棒的 ID、gamePk、日期、對手與比分核對後才顯示；本場 `prev` 區塊沒有獨立賽前保存時間，故標「上一場歷史參考，非本場當時賽前快照」，不連帶使用較晚整體 OPS。
+- 選配 `matchup`、`roster`、`bullpen` 缺檔時，各自區塊標缺，其餘 `games` 與賽前 `ctx` 內容仍可讀；必要 gamePk 或賽別矛盾直接拒絕。獨立測試複本移除 849844 的 `matchup`，由相同轉接器產出 `real-games-missing-data.js`，以 `?trial=real-missing&pk=849844` 檢查。正式固定檔未刪，也沒有把測試複本列成研究樣本。
+- 檢查：`node scripts/test-real-multi-preview.mjs` 與 `node scripts/test-real-multi-missing.mjs`。這仍是獨立預覽，不是正式來源更新或部署授權。

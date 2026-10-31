@@ -1,0 +1,133 @@
+{
+  "source": {
+    "commit": "e14032cd8e1d502d476310e46e57c29cadaddf32",
+    "path": "live/data/games/849841.json",
+    "blob": "7d59c29c9a7f2ea20baa117c49031071b091bd0b",
+    "at": "2026-10-01T15:45:27.081Z"
+  },
+  "pk": 849841,
+  "usDate": "2026-09-30",
+  "startUTC": "2026-09-30T18:00:00Z",
+  "away": {
+    "id": 143,
+    "name": "費城人",
+    "score": 4,
+    "slots": [
+      {
+        "n": 1,
+        "id": 607208,
+        "name": "Trea Turner",
+        "pos": "SS"
+      },
+      {
+        "n": 2,
+        "id": 656941,
+        "name": "Kyle Schwarber",
+        "pos": "DH"
+      },
+      {
+        "n": 3,
+        "id": 547180,
+        "name": "Bryce Harper",
+        "pos": "RF"
+      },
+      {
+        "n": 4,
+        "id": 664761,
+        "name": "Alec Bohm",
+        "pos": "1B"
+      },
+      {
+        "n": 5,
+        "id": 681082,
+        "name": "Bryson Stott",
+        "pos": "2B"
+      },
+      {
+        "n": 6,
+        "id": 669016,
+        "name": "Brandon Marsh",
+        "pos": "LF"
+      },
+      {
+        "n": 7,
+        "id": 624641,
+        "name": "Edmundo Sosa",
+        "pos": "3B"
+      },
+      {
+        "n": 8,
+        "id": 702222,
+        "name": "Justin Crawford",
+        "pos": "CF"
+      },
+      {
+        "n": 9,
+        "id": 592663,
+        "name": "J.T. Realmuto",
+        "pos": "C"
+      }
+    ]
+  },
+  "home": {
+    "id": 144,
+    "name": "勇士",
+    "score": 3,
+    "slots": [
+      {
+        "n": 1,
+        "id": 660670,
+        "name": "Ronald Acuña Jr.",
+        "pos": "RF"
+      },
+      {
+        "n": 2,
+        "id": 686948,
+        "name": "Drake Baldwin",
+        "pos": "DH"
+      },
+      {
+        "n": 3,
+        "id": 645277,
+        "name": "Ozzie Albies",
+        "pos": "2B"
+      },
+      {
+        "n": 4,
+        "id": 621566,
+        "name": "Matt Olson",
+        "pos": "1B"
+      },
+      {
+        "n": 5,
+        "id": 643289,
+        "name": "Mauricio Dubón",
+        "pos": "LF"
+      },
+      {
+        "n": 6,
+        "id": 663586,
+        "name": "Austin Riley",
+        "pos": "3B"
+      },
+      {
+        "n": 7,
+        "id": 671739,
+        "name": "Michael Harris II",
+        "pos": "CF"
+      },
+      {
+        "n": 8,
+        "id": 669221,
+        "name": "Sean Murphy",
+        "pos": "C"
+      },
+      {
+        "n": 9,
+        "id": 673490,
+        "name": "Ha-Seong Kim",
+        "pos": "SS"
+      }
+    ]
+  }
+}

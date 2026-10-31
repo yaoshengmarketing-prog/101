@@ -38,8 +38,15 @@ check("849799 有賽前相似案例，849844 缺清單照實說明",pages[849799
 check("兩場賽後比分、逐局、投手互不串場",pages[849799].post.includes("4<i>:</i>1")
   &&pages[849844].post.includes("2<i>:</i>6")&&pages[849799].post.includes("Jacob Misiorowski")
   &&pages[849844].post.includes("Aaron Nola")&&pages[849844].post.includes("未打"));
+check("預估逐版與官方對照，人選和棒次分列",Object.values(pages).every(x=>
+  x.pre.includes("RotoWire")&&x.pre.includes("人選差異")&&x.pre.includes("棒次差異")
+  &&x.pre.includes("第三方確認")&&x.pre.includes("沒有逐棒快照"))
+  &&pages[849799].pre.includes("查看最早保存預估"));
+check("上一場依各自 gamePk 顯示且明標歷史參考",pages[849799].pre.includes("gamePk 849803")
+  &&pages[849844].pre.includes("gamePk 849841")
+  &&Object.values(pages).every(x=>x.pre.includes("上一場歷史參考，非本場當時賽前快照")));
 check("賽後可展開賽前，且每場可回到共同清單",Object.values(pages).every(x=>
   x.post.includes("展開當時保存的賽前研究資料")&&x.post.includes("比賽總覽")
   &&x.post.includes('href="index.html?trial=real"')));
 check("不存在的 gamePk 不會借另一場內容",render("game","?trial=real&pk=123").includes("未收錄 gamePk 123"));
-console.log("PASS 10/10 real multi-game preview checks");
+console.log("PASS 12/12 real multi-game preview checks");
