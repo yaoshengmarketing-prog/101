@@ -49,10 +49,11 @@ const boxOf = (s, old=false) => {
       players["ID"+id]={person:{id,fullName:`測試打者 ${letter}${id===991010?"10":n}`},
         position:{abbreviation:n===1?"CF":"IF"},...(old||s.lineup?{battingOrder:String(n*100)}:{})};
     }
-    if(s.status==="Final"&&!old){
-      const ids=letter==="A"?[990001,990091]:[990003,990092];
+    if(old||s.status==="Final"){
+      const ids=old?(letter==="A"?[990011,990093]:[990012,990094]):letter==="A"?[990001,990091]:[990003,990092];
       for(const [i,id] of ids.entries()) players["ID"+id]={person:{id,fullName:`測試投手 ${letter}${i+1}`},
-        stats:{pitching:{inningsPitched:i?"3.0":"6.0",numberOfPitches:i?42:87,runs:i?1:letter==="A"?2:1,earnedRuns:i?1:letter==="A"?2:1}}};
+        stats:{pitching:{inningsPitched:i?"3.0":"6.0",numberOfPitches:old?(i?21:68):i?42:87,
+          runs:i?1:letter==="A"?2:1,earnedRuns:i?1:letter==="A"?2:1}}};
       return {players,pitchers:ids};
     }
     return {players,pitchers:[]};
@@ -123,6 +124,8 @@ for(const s of steps){
     pregame:frozenPregame,post:savedPost,events:R.events});
 }
 assert("官方打線從未取得變成雙方九棒",rows[0].game.lineup==="none"&&rows[1].game.away.lineup.slots.length===9&&rows[1].game.home.lineup.slots.length===9);
+assert("本場之前的實際登板來自上一場，與本場賽前資料分開",rows[0].bullpen.summary.away.recentUsage.some(x=>x.pk===prior.gamePk&&x.pitches===21)
+  &&rows[0].bullpen.summary.away.days[3].st==="off");
 assert("名單與左投變動後，重算失敗保留舊版時間但不能視為新對位",rows[2].game.home.sp.hand==="L"&&rows[2].game.away.lineup.slots[0].id===991010
   &&rows[2].matchupStatus==="stale"&&rows[2].matchupError&&rows[2].matchup.fetchedAt===rows[1].matchup.fetchedAt);
 assert("恢復後新對位對應左投與新球員",rows[3].matchupStatus==="current"&&rows[3].matchup.pairs[1].vsCode==="vl"
