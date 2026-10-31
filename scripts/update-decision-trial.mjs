@@ -11,6 +11,7 @@ export const TRIAL_POLICY = Object.freeze({
 
 const ms = value => value ? Date.parse(value) : NaN;
 const due = (now, checkedAt, minutes) => !Number.isFinite(ms(checkedAt)) || ms(now) - ms(checkedAt) >= minutes * 60000;
+const addDays = (date, offset) => new Date(ms(`${date}T12:00:00Z`) + offset*86400000).toISOString().slice(0,10);
 const row = (game, module, action, reason, basis, next) => ({ gamePk: game.gamePk, module, action, reason, basis, next });
 const scopeKey = x => [x?.season ?? "?", x?.gameType ?? "?", x?.version ?? "?"].join("/");
 
@@ -64,9 +65,14 @@ export function matchupFingerprint(game) {
 function bullpenReadiness(game) {
   const days = game.bullpen?.days || [];
   if (days.length !== 3) return { ready: false, reason: "未列齊前三個完整美國賽程日" };
+  if (days.some((d,i) => d.date !== addDays(game.officialDate,i-3)))
+    return { ready: false, reason: "前三日日期不符美國賽程日；本日用量必須另外列" };
   if (days.some(d => d.state === "missing" || d.state === "failed")) return { ready: false, reason: "逐日用量未取得或執行失敗，不能把部分小計當完整" };
   if (days.some(d => d.state === "played" && d.pitchingComplete !== true)) return { ready: false, reason: "已登板場次仍缺逐投手用量" };
   if (days.some(d => !["played", "confirmed_off"].includes(d.state))) return { ready: false, reason: "前三日有未確認狀態" };
+  const today = game.bullpen?.today;
+  if (today && (today.date !== game.officialDate || !["played", "confirmed_off"].includes(today.state) || (today.state === "played" && today.pitchingComplete !== true)))
+    return { ready: false, reason: "本日已知前場用量尚未完整；不把部分資料當完整" };
   return { ready: true, spring: game.gameType === "R" && days.some(d => d.gameType === "S") };
 }
 
@@ -94,7 +100,7 @@ export function planRound({ now, games, policy = TRIAL_POLICY, optionalRights = 
           : sourceRow(g, m, s[k], now, interval));
 
       const x = g.matchupInput || {}, stats = s.stats;
-      const ready = x.awayStarter && x.homeStarter && Array.isArray(x.awayLineup) && Array.isArray(x.homeLineup)
+      const ready = x.awayStarter && x.homeStarter && x.awayLineup?.length === 9 && x.homeLineup?.length === 9
         && stats?.state === "available" && String(stats.season) === String(g.season) && stats.gameType === "R";
       const fingerprint = matchupFingerprint(g);
       out.push(row(g, "投打對位", !ready ? "等待必要資料" : g.matchupBuiltFor === fingerprint ? "沿用" : "重算",
@@ -104,7 +110,7 @@ export function planRound({ now, games, policy = TRIAL_POLICY, optionalRights = 
       const b = bullpenReadiness(g), bVersion = g.bullpen?.version;
       out.push(row(g, "牛棚", !b.ready ? "等待必要資料" : bVersion !== g.bullpen?.usedVersion ? "重算" : "沿用",
         !b.ready ? b.reason : bVersion !== g.bullpen?.usedVersion ? "前三個完整美國賽程日的逐投手用量已成新版；不依賴逐局或 post.complete" : "前三日用量版本相同；確認休兵日照實保留",
-        `賽別=${g.gameType}；美國賽程日=${g.officialDate}；前三日=${(g.bullpen?.days||[]).map(d=>`${d.date}:${d.state}:${d.gameType}`).join(",")||"未取得"}；用量版=${bVersion ?? "無"}`, "前場逐投手用量齊備或逐日狀態版本變動時"));
+        `賽別=${g.gameType}；美國賽程日=${g.officialDate}；前三日=${(g.bullpen?.days||[]).map(d=>`${d.date}:${d.state}:${d.gameType}`).join(",")||"未取得"}；本日=${g.bullpen?.today ? `${g.bullpen.today.date}:${g.bullpen.today.state}` : "另列／無已知前場"}；用量版=${bVersion ?? "無"}`, "前場逐投手用量齊備或逐日狀態版本變動時"));
       const contextVersion = `${g.scheduleVersion ?? "?"}|${bVersion ?? "?"}|${g.gameType}`;
       out.push(row(g, "情境", !b.ready || b.spring ? "暫不判定" : g.contextBuiltFor === contextVersion ? "沿用" : "重算",
         b.spring ? "跨春訓／例行賽視窗，S 登板只供閱讀，不參與 R 牛棚差距／連投門檻" : !b.ready ? b.reason : "依既有情境規則與完整輸入版判定；不改門檻",
@@ -123,13 +129,12 @@ export function planRound({ now, games, policy = TRIAL_POLICY, optionalRights = 
 }
 
 const source = (state, version, checkedAt, extra = {}) => ({ state, version, checkedAt, season: 2027, gameType: "R", ...extra });
-const offDays = ["2027-04-17", "2027-04-18", "2027-04-19"].map(date => ({ date, state: "confirmed_off", gameType: "R" }));
 const base = (gamePk, startUTC, phase = "scheduled") => ({ gamePk, season: 2027, gameType: "R", officialDate: startUTC.slice(0,10), startUTC, phase, scheduleVersion: "sch-1",
   sources: { schedule: source("unchanged", "sch-1", "2027-04-20T19:00:00Z"), lineup: source("unpublished", null, "2027-04-20T19:00:00Z"),
     stats: source("available", "stat-1", "2027-04-20T19:00:00Z", { usedVersion: "stat-1" }),
     roster: source("unchanged", "roster-1", "2027-04-20T19:00:00Z"), projection: source("unpublished", null, "2027-04-20T19:00:00Z"),
     weather: source("not_acquired", null, "2027-04-20T19:00:00Z") },
-  bullpen: { days: offDays, version: "usage-1", usedVersion: "usage-1" }, contextBuiltFor: "sch-1|usage-1|R" });
+  bullpen: { days: [3,2,1].map(n => ({ date:addDays(startUTC.slice(0,10),-n),state:"confirmed_off",gameType:"R" })), version: "usage-1", usedVersion: "usage-1" }, contextBuiltFor: "sch-1|usage-1|R" });
 
 export function demoCases() {
   const now = "2027-04-20T20:00:00Z";
@@ -143,7 +148,7 @@ export function demoCases() {
   const partial = { ...base(910004, "2027-04-20T12:00:00Z", "final"), post:{complete:false, inningsComplete:false, pitchingComplete:true, checkedAt:"2027-04-20T17:00:00Z"} };
   const complete = { ...base(910005, "2027-04-20T10:00:00Z", "final"), post:{complete:true, inningsComplete:true, pitchingComplete:true, checkedAt:"2027-04-20T17:00:00Z"} };
   const g1 = { ...base(920001, "2027-04-20T12:00:00Z", "final"), post:{complete:false, inningsComplete:false, pitchingComplete:true, checkedAt:"2027-04-20T19:50:00Z"} };
-  const g2 = { ...base(920002, "2027-04-20T23:00:00Z"), bullpen:{days:[...offDays.slice(1),{date:"2027-04-20", state:"played", gameType:"R", pitchingComplete:true, gamePk:g1.gamePk}],version:"usage-g1-complete",usedVersion:"usage-before-g1"}, contextBuiltFor:"sch-1|usage-before-g1|R" };
+  const g2 = { ...base(920002, "2027-04-20T23:00:00Z"), bullpen:{days:base(2,"2027-04-20T23:00:00Z").bullpen.days,today:{date:"2027-04-20", state:"played", gameType:"R", pitchingComplete:true, gamePk:g1.gamePk},version:"usage-g1-complete",usedVersion:"usage-before-g1"}, contextBuiltFor:"sch-1|usage-before-g1|R" };
   const x = { ...pre, gamePk:930001, sources:{...pre.sources,stats:source("available","stat-3",now,{usedVersion:"stat-2"})} };
   const oldFingerprint = matchupFingerprint({...x,sources:{...x.sources,stats:source("available","stat-2",now,{usedVersion:"stat-2"})}});
   const changedStats = {...x, matchupBuiltFor:oldFingerprint};
