@@ -43,21 +43,26 @@ export function pickSplits(splits) {
 
 // 多隊分列時取不分隊合計列；只有一列就用那列；多隊分列但缺合計＝null（不把其中一隊當全季、不平均）
 export const totalRow = rows => rows.length === 1 ? rows[0] : rows.find(x => !x.team) || null;
+// Explicit R queries are still checked against any scope returned by MLB. An S-only response is not proof of no R record.
+export const inRegularScope = (row, season) => (!row.season || String(row.season) === String(season)) && (!row.gameType || row.gameType === "R");
+export const scopeState = (all, scoped, value) => value ? "value" : scoped.length ? "unavailable" : all.length ? "scope_unconfirmed" : "no_record";
 // 名字比對鍵（預估打線對 40 人名單）：去重音、句點、Jr./II 等字尾後的全名
 export const normName = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[.,']/g, "").replace(/\s+(jr|sr|ii|iii|iv)$/, "").replace(/\s+/g, " ").trim();
 // 打者本季例行賽分項（code＝vl 對左投／vr 對右投）→ { vs, why }；why：noperson 未取得、nosplit 沒有這個分項、multi 多隊分列缺合計、invalid 數字無效
-export function batVs(person, code) {
+export function batVs(person, code, season) {
   if (!person) return { vs: null, why: "noperson" };
-  const rows = ((person.stats || []).find(x => x.type?.displayName === "statSplits")?.splits || []).filter(x => x.split?.code === code);
-  if (!rows.length) return { vs: null, why: "nosplit" };
+  const all = ((person.stats || []).find(x => x.type?.displayName === "statSplits")?.splits || []).filter(x => x.split?.code === code);
+  const rows = all.filter(x => inRegularScope(x, season));
+  if (!rows.length) return { vs: null, why: all.length ? "scope_unconfirmed" : "nosplit" };
   const r = totalRow(rows); if (!r) return { vs: null, why: "multi" };
   const pa = cnt(r.stat?.plateAppearances), ops = validOps(r.stat?.ops);
   if (pa === 0) return { vs: { pa: 0, avg: null, ops: null }, why: null };
   return pa && ops ? { vs: { pa, avg: r.stat.avg ?? null, ops }, why: null } : { vs: null, why: "invalid" };
 }
 // 打者本季例行賽整體（預估打線表就地比較用）；多隊分列缺合計＝null
-export function batSeason(person) {
-  const rows = (person?.stats || []).find(x => x.type?.displayName === "season")?.splits || [], r = rows.length ? totalRow(rows) : null;
+export function batSeason(person, season) {
+  const all = (person?.stats || []).find(x => x.type?.displayName === "season")?.splits || [];
+  const rows = all.filter(x => inRegularScope(x, season)), r = rows.length ? totalRow(rows) : null;
   const pa = cnt(r?.stat?.plateAppearances), ops = validOps(r?.stat?.ops);
   return r && pa != null && ops ? { pa, avg: r.stat.avg ?? null, ops } : null;
 }
@@ -134,6 +139,19 @@ export const lineupSig = (g, side) => { const L = g[side]?.lineup, P = g.proj?.[
   if (P?.slots?.length) return `proj:${P.sourceStatusKey || ""}:${P.slots.map(x => x.name).join(",")}`;
   return "none"; };
 
+// The reader must compare both the starter and the official nine before using a saved matchup.
+export const matchupState = (g, m) => {
+  if (!m || m.pk !== g.pk) return "unavailable";
+  const season = String(g.season || g.usDate?.slice(0, 4) || "");
+  return [["away", "home"], ["home", "away"]].every(([ps, bs]) => {
+    const p = m.pairs?.find(x => x.pitcherSide === ps && x.battingSide === bs);
+    return p?.basis?.sp === (g[ps].sp?.id ?? null)
+      && p.basis.spHand === (g[ps].sp?.hand ?? null)
+      && p.basis.season === season
+      && p.basis.lineup === lineupSig(g, bs);
+  }) ? "current" : "stale";
+};
+
 // 本場打線：官方優先，其次 RotoWire 預估；回傳 null＝都沒有
 export function lineupOf(g, side, batSide) {
   const t = g[side], L = t.lineup, P = g.proj?.[side];
@@ -160,7 +178,7 @@ async function getJson(url, tries = 3) {
 }
 
 export async function buildMatchup(g, nowISO, fetchJson = getJson) {
-  const season = (g.usDate || g.startUTC).slice(0, 4);
+  const season = String(g.season || (g.usDate || g.startUTC).slice(0, 4));
   const official = s => ["official", "late"].includes(g[s].lineup?.state) && g[s].lineup.slots?.length;
   // 預估打線（官方未出、對方先發已知才需要）：名字對這隊 40 人名單，全名相同且唯一才算
   const projId = {};
@@ -176,23 +194,69 @@ export async function buildMatchup(g, nowISO, fetchJson = getJson) {
   const pairs = [];
   for (const [ps, bs] of [["away", "home"], ["home", "away"]]) {
     const t = g[ps], sp = t.sp;
-    const basis = { sp: sp?.id ?? null, lineup: lineupSig(g, bs) };
+    const basis = { sp: sp?.id ?? null, spHand: sp?.hand ?? null, season, lineup: lineupSig(g, bs) };
     if (!sp?.id) { pairs.push({ pitcherSide: ps, battingSide: bs, pitcher: null, team: t.name, ab: t.ab, basis }); continue; }
     const [a, b] = await Promise.all([
       fetchJson(`${MLB}/people/${sp.id}/stats?stats=statSplits&group=pitching&season=${season}&sitCodes=vl,vr&gameType=R`),
       fetchJson(`${MLB}/people/${sp.id}/stats?stats=gameLog&group=pitching&season=${season}&gameType=R,F,D,L,W`)]);
-    const splits = pickSplits(a.stats?.[0]?.splits), recent = recentStarts(b.stats?.[0]?.splits), lineup = lineupOf(g, bs, batSide);
+    const allSplits = a.stats?.[0]?.splits || [], scopedSplits = allSplits.filter(x => inRegularScope(x, season));
+    const splits = pickSplits(scopedSplits);
+    const allLogs = b.stats?.[0]?.splits || [], scopedLogs = allLogs.filter(x => (!x.season || String(x.season) === season) && ["R", "F", "D", "L", "W"].includes(x.gameType || "R"));
+    const recent = recentStarts(scopedLogs), lineup = lineupOf(g, bs, batSide);
     const pitcher = { id: sp.id, name: sp.name, hand: sp.hand, team: t.name, ab: t.ab };
     // 打者端：每位打者對這位先發手別的分項（慣用手未知就不算，vsCode＝null）
     const vsCode = sp.hand === "L" ? "vl" : sp.hand === "R" ? "vr" : null;
     if (lineup && vsCode) for (const x of lineup.slots) {
-      if (!lineup.source.startsWith("proj")) Object.assign(x, batVs(people[x.id], vsCode));
+      if (!lineup.source.startsWith("proj")) Object.assign(x, batVs(people[x.id], vsCode, season));
       else { const m = projId[bs]?.[x.name] || { id: null, why: "nomatch" }; x.id = m.id;
-        Object.assign(x, m.id ? { ...batVs(people[m.id], vsCode), season: batSeason(people[m.id]) } : { vs: null, why: m.why }); }
+        Object.assign(x, m.id ? { ...batVs(people[m.id], vsCode, season), season: batSeason(people[m.id], season) } : { vs: null, why: m.why }); }
     }
-    pairs.push({ pitcherSide: ps, battingSide: bs, basis, pitcher, vsCode, splits, splitScope: `${season} 例行賽`, recentScope: { season, gameTypes: ["R","F","D","L","W"], kind: "最近先發，不含春訓所有登板" }, recent, lineup, eff: lineup ? effective(lineup.comp, sp.hand) : null, focus: lineup ? focusOf(lineup.comp, sp.hand) : null, ...notesOf({ pitcher, splits, recent, lineup }) });
+    pairs.push({ pitcherSide: ps, battingSide: bs, basis, pitcher, vsCode, splits,
+      splitStatus: { vl: scopeState(allSplits.filter(x => x.split?.code === "vl"), scopedSplits.filter(x => x.split?.code === "vl"), splits.vl),
+        vr: scopeState(allSplits.filter(x => x.split?.code === "vr"), scopedSplits.filter(x => x.split?.code === "vr"), splits.vr) },
+      splitScope: `${season} 例行賽`, recentScope: { season, gameTypes: ["R","F","D","L","W"], kind: "最近先發，不含春訓所有登板" },
+      recentStatus: scopedLogs.length ? "value" : allLogs.length ? "scope_unconfirmed" : "no_record",
+      recent, lineup, eff: lineup ? effective(lineup.comp, sp.hand) : null, focus: lineup ? focusOf(lineup.comp, sp.hand) : null, ...notesOf({ pitcher, splits, recent, lineup }) });
   }
   return { rules: MU_RULES, pk: g.pk, fetchedAt: nowISO, pairs };
+}
+
+// Separate previous-season R reference for the same player IDs and teams. Never fills current-season fields.
+export async function buildPriorReference(g, nowISO, fetchJson = getJson) {
+  const season = String(Number(g.season || g.usDate?.slice(0, 4)) - 1), gameType = "R";
+  const pitcherIds = [...new Set(["away", "home"].map(s => g[s].sp?.id).filter(Boolean))];
+  const batterIds = [...new Set(["away", "home"].flatMap(s => g[s].lineup?.slots?.map(x => x.id) || []).filter(Boolean))];
+  const teams = ["away", "home"].map(s => g[s].id);
+  const safe = async url => { try { return await fetchJson(url); } catch { return null; } };
+  const [pitchRes, batRes, teamHit, teamPit] = await Promise.all([
+    pitcherIds.length ? safe(`${MLB}/people?personIds=${pitcherIds.join(",")}&hydrate=stats(group=[pitching],type=[season],season=${season},gameType=R)`) : null,
+    batterIds.length ? safe(`${MLB}/people?personIds=${batterIds.join(",")}&hydrate=stats(group=[hitting],type=[season],season=${season},gameType=R)`) : null,
+    safe(`${MLB}/teams/stats?season=${season}&group=hitting&stats=season&sportIds=1&gameType=R`),
+    safe(`${MLB}/teams/stats?season=${season}&group=pitching&stats=season&sportIds=1&gameType=R`)]);
+  const peopleRow = (response, id, kind) => {
+    const person = response?.people?.find(p => p.id === id);
+    if (!person) return { id, status: "unavailable" };
+    const all = person.stats?.[0]?.splits || [], rows = all.filter(x => inRegularScope(x, season)), stat = totalRow(rows)?.stat;
+    if (kind === "pitching") {
+      const good = x => x != null && /^\d+(?:\.\d+)?$/.test(String(x));
+      const value = stat && good(stat.era) && good(stat.whip) && outs(stat.inningsPitched) != null
+        ? { era: String(stat.era), whip: String(stat.whip), ip: String(stat.inningsPitched), gs: cnt(stat.gamesStarted) } : null;
+      return { id, status: scopeState(all, rows, value), value };
+    }
+    const value = batSeason(person, season);
+    return { id, status: scopeState(all, rows, value), value };
+  };
+  const teamRow = (response, id, key) => {
+    if (!response) return { status: "unavailable", value: null };
+    const all = (response.stats?.[0]?.splits || []).filter(x => x.team?.id === id);
+    const rows = all.filter(x => inRegularScope(x, season)), val = totalRow(rows)?.stat?.[key];
+    const value = key === "ops" ? validOps(val) : val != null && /^\d+(?:\.\d+)?$/.test(String(val)) ? String(val) : null;
+    return { status: scopeState(all, rows, value), value };
+  };
+  return { season, gameType, fetchedAt: nowISO,
+    pitchers: Object.fromEntries(pitcherIds.map(id => [id, peopleRow(pitchRes, id, "pitching")])),
+    batters: Object.fromEntries(batterIds.map(id => [id, peopleRow(batRes, id, "hitting")])),
+    teams: Object.fromEntries(teams.map(id => [id, { ops: teamRow(teamHit, id, "ops"), era: teamRow(teamPit, id, "era") }])) };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

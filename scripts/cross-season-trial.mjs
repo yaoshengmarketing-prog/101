@@ -1,5 +1,5 @@
 // Branch-only, offline integration trial. All 2027 source responses below are artificial test input.
-// The output is generated through build-live, bullpen, ctx, and roster functions, never hand-curated for the page.
+// The output is generated through build-live, bullpen, ctx, roster, and matchup functions, never hand-curated for the page.
 import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
@@ -9,6 +9,7 @@ import { build } from "./build-live.mjs";
 import { buildBullpen } from "./bullpen.mjs";
 import { compute } from "./ctx.mjs";
 import { basisOf, classify } from "./roster.mjs";
+import { buildMatchup, buildPriorReference, matchupState } from "./matchup.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url)), root = path.resolve(here, "..");
 const nowISO = "2027-03-27T00:10:00Z";
@@ -118,6 +119,27 @@ ok("前三完整美國賽程日含 S 與確認休兵：近期登板保留 S、�
   && transition.bullpen.summary.away.days[1].st === "off"
   && transition.bullpen.summary.away.recentUsage.some(x => x.gameType === "S")
   && transition.context.bp_load.state === "na" && transition.context.bp_streak.state === "na");
+// A later artificial R game provides a plausible three-start reading state without using 2026 figures as 2027.
+const smallTarget = { ...target, pk: 9902715, gamePk: 9902715, officialDate: "2027-04-15", gameDate: "2027-04-15T23:10:00Z" };
+const smallR12 = { ...priorR, pk: 9902712, gamePk: 9902712, officialDate: "2027-04-12", gameDate: "2027-04-12T23:10:00Z" };
+const smallR14 = { ...priorR, pk: 9902714, gamePk: 9902714, officialDate: "2027-04-14", gameDate: "2027-04-14T23:10:00Z" };
+const smallFetch = async url => {
+  if (url.includes("/schedule?")) return { dates: splitDates([smallR12, smallR14, smallTarget]) };
+  if (url.includes("/standings?")) return { records: [{ teamRecords: [113, 158].map(id => ({ team: { id }, wins: 2, losses: 1, gamesPlayed: 3, winningPercentage: ".667", records: { splitRecords: [] } })) }] };
+  if (url.includes("/teams/stats?")) return { stats: [{ splits: [113, 158].map(id => ({ season: "2027", gameType: "R", team: { id }, stat: url.includes("group=hitting") ? { ops: ".650" } : { era: "2.25" } })) }] };
+  if (url.includes("/people?")) return { people: ids.filter(id => url.includes(String(id))).map(id => ({
+    id, pitchHand: { code: "R" }, stats: [{ splits: [{ season: "2027", gameType: "R", stat: id < 991000
+      ? { wins: 1, losses: 0, era: "2.25", whip: "1.00", inningsPitched: "8.0", gamesStarted: 2 }
+      : { avg: id === 991003 ? ".000" : ".250", ops: id === 991003 ? ".000" : ".625", plateAppearances: id === 991003 ? 3 : 6 } }] }]
+  })) };
+  const pk = Number(url.match(/\/game\/(\d+)\/boxscore/)?.[1]); if (pk) return mkBox(pk);
+  throw new Error("未預期的少樣本人工來源 URL: " + url);
+};
+const smallGame = (await build({ fetchJson: smallFetch, now: new Date("2027-04-16T00:10:00Z") })).games[smallTarget.pk];
+const smallUsage = await makeCase("small", smallTarget, [smallR12, smallR14]);
+ok("稍後的人工例行賽仍由 build-live 產生少樣本與完整官方九棒",
+  smallGame.season === "2027" && smallGame.away.lineup.slots.length === 9
+  && smallGame.away.lineup.slots[2].ops === ".000" && smallGame.away.lineup.slots[2].pa === 3);
 const rTarget = { ...target, pk: 9902805, gamePk: 9902805, officialDate: "2027-04-05", gameDate: "2027-04-05T23:10:00Z" };
 const r2 = { ...priorR, pk: 9902802, gamePk: 9902802, officialDate: "2027-04-02", gameDate: "2027-04-02T23:10:00Z" };
 const r4 = { ...priorR, pk: 9902804, gamePk: 9902804, officialDate: "2027-04-04", gameDate: "2027-04-04T23:10:00Z" };
@@ -134,17 +156,74 @@ vm.runInNewContext(fs.readFileSync(path.join(root, "preview/mlb-next/spring-fixt
 const spring = springCtx.window.SPRING_PREVIEW_DATA;
 ok("既存 2026 春訓資料僅作完賽後回查", spring.game.pk === 832077 && spring.game.gameType === "S"
   && spring.meta.status.includes("完賽後"));
+// Artificial source responses are input only; all displayed research is built by matchup.mjs.
+const researchFetch = mode => async url => {
+  if (mode === "failed") throw new Error("人工模擬重算取數失敗");
+  const prior = url.includes("season=2026"), peopleIds = [...url.matchAll(/(?:personIds=|,)(\d+)/g)].map(x => Number(x[1]));
+  if (url.includes("/people?")) {
+    const pitching = url.includes("group=[pitching]"), selected = peopleIds.length ? peopleIds : ids;
+    return { people: selected.map(id => {
+      if (prior) return { id, stats: [{ type: { displayName: "season" }, splits:
+        pitching && id === 990002 ? [] : [{ season: "2026", gameType: "R", stat: pitching
+          ? { era: "3.45", whip: "1.20", inningsPitched: "120.0", gamesStarted: 25 }
+          : { avg: ".245", ops: id === 991009 ? ".000" : ".710", plateAppearances: id === 991009 ? 2 : 110 } }] }] };
+      const active = mode === "small", vl = { plateAppearances: 4, avg: ".250", ops: ".450" },
+        vr = { plateAppearances: id === 991003 ? 3 : 6, avg: id === 991003 ? ".000" : ".250", ops: id === 991003 ? ".000" : ".625" };
+      return { id, batSide: { code: id % 2 ? "L" : "R" }, stats: [{ type: { displayName: "statSplits" },
+        splits: active ? [{ season: "2027", gameType: "R", split: { code: "vl" }, stat: vl },
+          { season: "2027", gameType: "R", split: { code: "vr" }, stat: vr }] : [] }] };
+    }) };
+  }
+  if (prior && url.includes("/teams/stats?")) return { stats: [{ splits: [113, 158].map(id => ({ season: "2026", gameType: "R", team: { id },
+    stat: url.includes("group=hitting") ? { ops: ".710" } : { era: "3.80" } })) }] };
+  const pitcherId = Number(url.match(/\/people\/(\d+)\/stats/)?.[1]);
+  if (pitcherId && url.includes("stats=statSplits")) return { stats: [{ splits: mode === "small"
+    ? [{ season: "2027", gameType: "R", split: { code: "vl" }, stat: { battersFaced: 8, ops: ".500" } },
+      { season: "2027", gameType: "R", split: { code: "vr" }, stat: { battersFaced: 10, ops: ".750" } }] : [] }] };
+  if (pitcherId && url.includes("stats=gameLog")) return { stats: [{ splits: mode === "small"
+    ? ["2027-04-04", "2027-04-09", "2027-04-14"].map((date, i) => ({
+      season: "2027", gameType: "R", date, game: { gamePk: 9902740 + i }, opponent: { id: 147, name: "洋基" },
+      isHome: i % 2 === 0, stat: { gamesStarted: 1, inningsPitched: ["3.0", "4.1", "5.0"][i],
+        numberOfPitches: [54, 69, 78][i], earnedRuns: [2, 1, 0][i] } })) : [] }] };
+  throw new Error("未預期的研究人工來源 URL: " + url);
+};
+const priorReference = await buildPriorReference(opening, nowISO, researchFetch("opening"));
+const openingMatchup = await buildMatchup(opening, nowISO, researchFetch("opening"));
+const transitionMatchup = await buildMatchup(transitionGame, nowISO, researchFetch("opening"));
+const smallMatchup = await buildMatchup(smallGame, nowISO, researchFetch("small"));
+ok("研究資料經 matchup 程式產生，人工來源與例行賽範圍明確",
+  priorReference.season === "2026" && priorReference.gameType === "R"
+  && openingMatchup.pairs[0].lineup.slots.length === 9
+  && smallMatchup.pairs[0].splits.vl.ops === ".500" && smallMatchup.pairs[0].recent.starts.length === 3
+  && smallMatchup.pairs[1].lineup.slots[2].vs.ops === ".000");
+const changedPitcher = { ...smallGame, home: { ...smallGame.home, sp: { ...smallGame.home.sp, id: 990003, hand: "L" } } };
+const changedLineup = { ...smallGame, away: { ...smallGame.away,
+  lineup: { ...smallGame.away.lineup, slots: [{ ...smallGame.away.lineup.slots[0], id: 991010, name: "測試打者 A10" }, ...smallGame.away.lineup.slots.slice(1)] } } };
+const changedMatchup = await buildMatchup(changedPitcher, nowISO, researchFetch("small"));
+const changedLineupMatchup = await buildMatchup(changedLineup, nowISO, researchFetch("small"));
+ok("先發改左投、名單換人會重算手別、球員 ID 與數值", matchupState(changedPitcher, smallMatchup) === "stale"
+  && changedMatchup.pairs[1].vsCode === "vl" && changedMatchup.pairs[1].lineup.slots[0].vs.ops === ".450"
+  && matchupState(changedLineup, smallMatchup) === "stale"
+  && changedLineupMatchup.pairs[1].lineup.slots[0].id === 991010);
+ok("重算失敗時舊對位仍判 stale，不回填舊數值", matchupState(changedPitcher, smallMatchup) === "stale"
+  && await researchFetch("failed")("https://statsapi.mlb.com/api/v1/people/990003/stats?stats=statSplits&group=pitching&season=2027&sitCodes=vl,vr&gameType=R")
+    .then(() => false, () => true));
 const oldPath = path.join(root, "live/data/games/849799.json");
 const oldSha256 = crypto.createHash("sha256").update(fs.readFileSync(oldPath)).digest("hex");
 ok("2026 舊單場仍可讀，未納入試跑輸出路徑", JSON.parse(fs.readFileSync(oldPath)).pk === 849799);
-const result = { meta: { title: "MLB 跨季接入離線試跑", status: "獨立分支人工測試，未部署", simulatedClock: nowISO, sourceCheckDate: "2026-10-30",
-  warning: "2027 賽程、球員、登板均為人工測試輸入；整理、判定與輸出走實際程式。2026 春訓是完賽後回查，不能證明當時賽前取得。2027 來源時機未驗證。",
+const result = { meta: { title: "MLB 跨季接入試跑", status: "獨立分支人工測試；靜態審閱非正式部署", simulatedClock: nowISO, sourceCheckDate: "2026-10-30",
+  warning: "2027 賽程、球員、登板及本包的 2026 上季參考均為人工測試輸入；整理、判定與輸出走實際程式。既有 2026 春訓頁是完賽後回查，不能證明當時賽前取得。2027 來源時機未驗證。",
   old2026GameSha256: oldSha256 },
   opening: { game: opening, bullpen: openingUsage.bullpen, context: openingUsage.context,
     roster: { basis: null, status: "no_applicable_basis", listed: opening.away.roster, in: noBasis.in, out: noBasis.out },
+    matchup: openingMatchup, matchupStatus: matchupState(opening, openingMatchup), priorReference,
     smallStats: { sampleType: "人工少樣本測試", pitcherR: small.away.sp, pitcherSOnly: small.home.sp,
       hitterR: small.away.lineup.slots.slice(0, 3), teamR: { ops: small.away.ops, era: small.away.era, gp: small.away.gp } } },
-  cases: { transition: { ...transition, liveGame: transitionGame }, r_off_day: rWindow, partial_failure: partial },
+  cases: { transition: { ...transition, liveGame: transitionGame, matchup: transitionMatchup,
+      matchupStatus: matchupState(transitionGame, transitionMatchup), priorReference },
+    small: { ...smallUsage, liveGame: smallGame, matchup: smallMatchup,
+      matchupStatus: matchupState(smallGame, smallMatchup), priorReference },
+    r_off_day: rWindow, partial_failure: partial },
   historicalSpring: { meta: spring.meta, game: spring.game, pitchers: spring.pitchers } };
 const reader = fs.readFileSync(path.join(root, "preview/mlb-next/trial-reader.js"), "utf8");
 const trialMarkup = (page, key, data = result) => {
@@ -181,6 +260,16 @@ ok("原新版 app.js 直接讀程式輸出：首頁、投手、九棒、近期�
   && coreMarkup("game","opening").includes("近期實際登板與用量")
   && coreMarkup("game","transition").includes("2027-03-27")
   && coreMarkup("game","transition").includes("暫不判定"));
+const openingHtml = coreMarkup("game","opening"), smallHtml = coreMarkup("game","small");
+ok("零樣本官方九棒與上季例行賽參考分開呈現，無上季資料照實標示",
+  openingHtml.includes("MLB 官方九棒") && openingHtml.includes("上季參考｜2026 例行賽：ERA 3.45")
+  && openingHtml.includes("上季確定無紀錄") && openingHtml.includes("展開上季逐棒參考")
+  && !openingHtml.includes("本季總 OPS .710"));
+ok("少樣本手別、有效零與最近三次先發逐筆進入原新版頁面",
+  smallHtml.includes("對左打被打 OPS .500（8 打席）")
+  && smallHtml.includes("對右投 OPS .000・3 打席")
+  && smallHtml.includes("2027-04-04") && smallHtml.includes("2027-04-09") && smallHtml.includes("2027-04-14")
+  && smallHtml.includes("78 球／0 自責"));
 ok("首頁與單場主時間同為台灣 2027/3/27 07:10；美國 3/26 另列",
   coreMarkup("home","opening").includes("<strong>07:10</strong><span>2027/3/27 台灣時間</span><small>美國賽程日 2027-03-26</small>")
   && coreMarkup("game","opening").includes("2027/3/27 07:10 台灣時間")
@@ -198,4 +287,4 @@ if (process.argv.includes("--write")) {
   fs.writeFileSync(dest, "/* Generated by scripts/cross-season-trial.mjs --write; branch-only test artifact. */\nwindow.MLB_CROSS_SEASON_TRIAL = " + JSON.stringify(result, null, 2) + ";\n");
   console.log("WROTE " + dest);
 }
-console.log("PASS 17/17 integrated checks");
+console.log("PASS 23/23 integrated checks");

@@ -1,7 +1,7 @@
 // 對位卡離線測試：node scripts/test-matchup.mjs
 // 數字取自 2026-09-29 MLB Stats API 實查（Tolle 分項、Schlittler 最近三次先發、洋基預估打線打擊側）
 import assert from "node:assert/strict";
-import { outs, validOps, pickSplits, recentStarts, composition, effective, unknownOf, notesOf, lineupOf, lineupSig, buildMatchup, totalRow, normName, batVs, batSeason } from "./matchup.mjs";
+import { outs, validOps, pickSplits, recentStarts, composition, effective, unknownOf, notesOf, lineupOf, lineupSig, buildMatchup, buildPriorReference, matchupState, totalRow, normName, batVs, batSeason } from "./matchup.mjs";
 
 let n = 0; const t = (name, f) => { const r = f(); n++; console.log("ok", name); return r; };
 const split = (code, pa, ops, team) => ({ split: { code }, stat: { battersFaced: pa, ops }, ...(team ? { team: { id: team } } : {}) });
@@ -117,7 +117,10 @@ await (async () => { const urls = [];
   assert.deepEqual(m.pairs.map(p => [p.pitcher.name, p.lineup.ab, p.lineup.source]), [["Tolle", "NYY", "official"], ["Schlittler", "BOS", "proj"]]);
   assert.ok(urls.some(u => u.includes("sitCodes=vl,vr&gameType=R")) && urls.some(u => u.includes("gameLog") && u.includes("gameType=R,F,D,L,W")));
   assert.equal(m.pairs[0].splitScope, "2026 例行賽");
-  assert.deepEqual(m.pairs.map(p => p.basis), [{ sp: 10, lineup: "official:101,102" }, { sp: 20, lineup: `proj:expected:${NYY.map(x => x.name).join(",")}` }]); n++; console.log("ok 組裝：客隊先發對主隊官方打線、主隊先發對客隊預估；分項只取例行賽、最近先發含季後賽"); })();
+  assert.deepEqual(m.pairs.map(p => p.basis), [{ sp: 10, spHand: "L", season: "2026", lineup: "official:101,102" }, { sp: 20, spHand: "R", season: "2026", lineup: `proj:expected:${NYY.map(x => x.name).join(",")}` }]);
+  assert.equal(matchupState(G,m),"current");
+  assert.equal(matchupState({ ...G, away: { ...G.away, sp: { ...G.away.sp, hand: "R" } } },m),"stale");
+  n++; console.log("ok 組裝：手別與賽季納入對位版本；對方先發改手別即判舊值過期"); })();
 // ── 打者端今日對位（v0.5） ──
 const bsp = (code, pa, ops, team, avg = ".250") => ({ split: { code }, stat: { plateAppearances: pa, ops, avg }, ...(team ? { team: { id: team } } : {}) });
 const person = (id, splits, season, bats = "R") => ({ id, batSide: { code: bats }, stats: [{ type: { displayName: "statSplits" }, splits }, ...(season ? [{ type: { displayName: "season" }, splits: season }] : [])] });
@@ -129,6 +132,7 @@ t("打者分項：單列直接用、多隊取合計、多隊缺合計不取（�
   assert.deepEqual(batVs(person(1, [bsp("vl", 0, ".000")]), "vl"), { vs: { pa: 0, avg: null, ops: null }, why: null });
   assert.deepEqual(batVs(person(1, [bsp("vl", 10, "-.---")]), "vl"), { vs: null, why: "invalid" });
   assert.deepEqual(batVs(undefined, "vl"), { vs: null, why: "noperson" });
+  assert.deepEqual(batVs(person(1, [{ ...bsp("vl", 4, ".800"), gameType: "S", season: "2027" }]), "vl", "2027"), { vs: null, why: "scope_unconfirmed" });
   assert.equal(totalRow([{ team: 1 }, { team: 2 }]), null);
   assert.equal(batSeason(person(1, [], [bsp(undefined, 216, ".733", 143), bsp(undefined, 90, ".659", 145)])), null);
   assert.equal(batSeason(person(1, [], [bsp(undefined, 700, ".675", 143)])).ops, ".675"); });
@@ -154,5 +158,18 @@ await (async () => { const urls = [];
   const m2 = await buildMatchup({ ...G2, away: { ...G2.away, sp: { id: 30, name: "Sanchez", hand: null } } }, "2026-10-01T00:00:00Z", fj);
   assert.equal(m2.pairs[0].vsCode, null); assert.ok(m2.pairs[0].lineup.slots.every(x => !("vs" in x)));
   n++; console.log("ok 打者端：官方用 id、預估用 40 人名單唯一全名（不唯一、對不到記原因）、手別決定 vl／vr、慣用手未知不算"); })();
+await (async () => {
+  const prior = await buildPriorReference(G, "2026-09-29T00:00:00Z", async u => {
+    if (u.includes("group=[pitching]")) return { people: [{ id: 10, stats: [{ splits: [{ season: "2025", gameType: "R", stat: { era: "0.00", whip: "1.00", inningsPitched: "2.0", gamesStarted: 1 } }] }] },
+      { id: 20, stats: [{ splits: [{ season: "2025", gameType: "S", stat: { era: "1.00", whip: "1.00", inningsPitched: "2.0" } }] }] }] };
+    if (u.includes("group=[hitting]")) return { people: [{ id: 101, stats: [{ type: { displayName: "season" }, splits: [{ season: "2025", gameType: "R", stat: { avg: ".000", ops: ".000", plateAppearances: 2 } }] }] },
+      { id: 102, stats: [{ type: { displayName: "season" }, splits: [] }] }] };
+    return { stats: [{ splits: [] }] };
+  });
+  assert.equal(prior.season, "2025"); assert.equal(prior.pitchers[10].status, "value");
+  assert.equal(prior.pitchers[10].value.era, "0.00"); assert.equal(prior.pitchers[20].status, "scope_unconfirmed");
+  assert.equal(prior.batters[101].value.ops, ".000"); assert.equal(prior.batters[102].status, "no_record");
+  n++; console.log("ok 上季例行賽參考：有效 0、無紀錄、錯誤賽別分開，且不改本季欄位");
+})();
 console.log(`${n}/${n} 通過`);
 

@@ -45,19 +45,19 @@
 
 ## 跨季資料接入離線試跑（獨立分支，未部署）
 
-此段只適用於 `mlb/2027-cross-season-trial` 分支。Pages 目前由 `main` 根目錄發布；本分支沒有自動發布。可下載 [固定離線預覽包](./mlb-cross-season-offline.zip)，解壓縮後直接開啟 `offline-start.html`；以下入口也可在本機靜態伺服器開啟，或由 GitHub 讀取程式輸出：
+此段只適用於 `mlb/2027-cross-season-trial` 分支。Pages 由 `main` 根目錄發布；本分支沒有自動發布。需要共同審閱畫面時，另外將必要靜態檔放到 `main` 的固定版本目錄，保留先前的 `3fc085a-r1`、`3fc085a-r2`。本分支的原始程式仍不合併 `main`。
 
 - [試跑賽事入口](./index.html?trial=opening)、[開幕零樣本](./game.html?trial=opening)
-- [春訓銜接](./game.html?trial=transition)、[例行賽休兵日](./game.html?trial=r_off_day)、[部分取數失敗](./game.html?trial=partial_failure)
+- [春訓銜接](./game.html?trial=transition)、[本季少樣本](./game.html?trial=small)、[例行賽休兵日](./game.html?trial=r_off_day)、[部分取數失敗](./game.html?trial=partial_failure)
 - [既有 2026 春訓完賽回查](./game.html?trial=spring)
 - [程式產出的固定測試檔](./trial-data.js)；重建：`node scripts/cross-season-trial.mjs --write`
 
-以上 2027 賽程、球員、登板是**人工測試輸入**；`cross-season-trial.mjs` 呼叫現有的 `build-live`、`bullpen`、`ctx`、`roster` 邏輯，輸出 `trial-data.js`。`?trial=opening` 與 `?trial=transition` 現由原新版 `app.js` 的首頁、投手、九棒、條件與近期用量區塊直接讀取程式輸出；休兵日、部分失敗、春訓回查仍由診斷用的 `trial-reader.js` 顯示。未帶 `?trial=` 的固定 2026 閱讀模式保持原樣。春訓 832077 取既存 `spring-fixture.js`，性質為完賽後回查。
+以上 2027 賽程、球員、登板及本次使用的 2026 上季參考，都是**人工測試輸入**；`cross-season-trial.mjs` 呼叫現有的 `build-live`、`bullpen`、`ctx`、`roster`、`matchup`，再輸出 `trial-data.js`。三個主要案例由原新版 `app.js` 直接讀取程式輸出；休兵日、部分失敗、春訓回查仍由診斷用 `trial-reader.js` 顯示。未帶 `?trial=` 的固定 2026 閱讀模式保持原樣。春訓 832077 是既存的完賽後回查。
 
 | 開季缺口 | 這次試跑的結果 | 仍待真實來源驗證 |
 | --- | --- | --- |
 | 賽季／賽別／完整度 | 遊戲年取 `officialDate`；牛棚逐場保留 S／R、每日日狀態與缺筆；未知賽別不歸季後賽 | 2027 實際賽程、異動與來源時機 |
-| 本季統計 | team hitting/pitching、先發、打者要求該場賽季的 R；回應分項再核對 R 與 season；只回 S／其他範圍標「當季例行賽資料未確認」，不標無紀錄；有效 0 保留 | 2027 開幕 API 實際空回應型態；上季參考如何取入獨立欄位 |
+| 本季統計 | team hitting/pitching、先發、打者要求該場賽季的 R；回應分項再核對 R 與 season；只回 S／其他範圍標「當季例行賽資料未確認」，不標無紀錄；有效 0 保留。上季 R 參考獨立取數，不填本季欄位 | 2027 開幕 API 實際空回應型態；真實 2026 人員上季參考的覆蓋率 |
 | 近期登板／情境 | S 登板保留日期、賽別、投手、局數、球數；跨 S／R 的兩條牛棚情境暫不判定；R 視窗休兵日可判定，部分失敗不判定 | 正式 R 視窗含補賽、延賽的來源完整性 |
 | 開幕名單 | 上一場 S 僅列打線參考，不作增減基準；本場名單照列，沒有基準不報增減 0 | 2027 官方名單公布時機與合理基準是否存在 |
 
@@ -69,6 +69,15 @@
 
 統計狀態補正：指定 R 但人員或團隊回應只有 S／其他賽季時，標 `scope_unconfirmed`，只表示未取得可確認的當季 R 成績；正確 R 查詢的空分項才在本次試跑標 `no_record`。人工少樣本案例驗證 `.000` 與 3 打席仍保留。賽別標籤依既有 roster 對照：F＝外卡賽、W＝世界大賽；試跑有直接檢查兩個標籤。
 
-離線包包含 `index.html`、`game.html`、`app.js`、`trial-reader.js`、`trial-data.js`、原固定 2026 與春訓檔、`style.css` 及本說明。它供本機閱讀，不是公開部署。程式輸出與頁面 DOM 內容檢查通過；受目前本機瀏覽器連線限制，**桌機／手機畫面及點擊操作尚未實際驗證**，須在可用瀏覽器開啟離線包後補走讀。
+舊離線包只供備份與追溯，畫面交付以可直接開啟的固定 HTTPS 靜態預覽為準。
 
-首頁與單場的主要開賽時間統一採 `twDate + twTime` 並標「台灣時間」；美國 `usDate` 只作另列的賽程日。人工開幕案例在兩頁均為 **2027/3/27 07:10 台灣時間**，美國賽程日 2027-03-26。資料檔未改；這項一致性已加入試跑檢查。畫面、展開與返回操作仍待實際瀏覽器走讀。
+首頁與單場的主要開賽時間統一採 `twDate + twTime` 並標「台灣時間」；美國 `usDate` 只作另列的賽程日。人工開幕案例在兩頁均為 **2027/3/27 07:10 台灣時間**，美國賽程日 2027-03-26。資料檔未改。
+
+## 投打研究與上季參考接回原新版（本次分支試跑）
+
+- 投手卡展開：當季 R 對左／右打「被打 OPS＋打席」，以及最近至多三次先發的日期、對手、賽別、局數、用球、自責分；近期所有登板仍在用量區，兩者不混稱。
+- 官方完整九棒：逐棒顯示本季整體 OPS／打席，另依**本場對方先發手別**顯示 R 分項 OPS／打席。這是對左／右投，不是對該投手的生涯交手。
+- 完全無本季紀錄：2026 R 的投手或團隊一行摘要另列，投手完整值與九棒逐人參考收合；2026 人工參考不填進 2027 欄位，也不參與情境。缺上季資料則標無紀錄／未取得／範圍未確認。
+- 新增人工 2027/4/15 美國賽程日的少樣本案例，3 次先發日期皆由人工 `gameLog` 輸入；開幕與春訓銜接案例維持。換先發手別、換九棒球員 ID 會重算；重算失敗的舊對位標過期並隱藏。
+
+這批新值由 `scripts/matchup.mjs`、`scripts/build-live.mjs` 與 `scripts/cross-season-trial.mjs` 處理後才進 `app.js`，不是前端手填。執行 `node scripts/test-matchup.mjs` 及 `node scripts/cross-season-trial.mjs --write` 可重建檢查。歷史 2026 固定資料仍為既有版本；人工球員與上季資料不可當作真實 2027 來源已確認。正式 `/live/`、資料與排程未改。

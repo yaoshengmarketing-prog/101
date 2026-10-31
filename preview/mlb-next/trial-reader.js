@@ -3,7 +3,7 @@
   "use strict";
   const qs = new URLSearchParams(location.search);
   if (!qs.has("trial")) return;
-  if (["opening","transition"].includes(qs.get("trial"))) return; // core app.js renders these two program-output cases
+  if (["opening","transition","small"].includes(qs.get("trial"))) return; // core app.js renders these program-output cases
   const D = window.MLB_CROSS_SEASON_TRIAL, root = document.getElementById("app");
   const key = qs.get("trial") || "opening";
   const esc = x => String(x ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -16,7 +16,7 @@
   document.querySelector(".site-foot").innerHTML = "獨立分支試跑：2027 為人工輸入，2026 春訓為完賽後回查；沒有修改正式資料。<a href=\"README.md\">資料與限制</a>";
   const ribbon = `<div class="source-ribbon"><span class="source-dot"></span><span>下季接入試跑 · 程式產出的固定測試檔</span><strong>2027 人工案例／2026 歷史回查，非即時資料</strong></div>`;
   const title = `<div class="page-title"><div><p class="overline">MLB / DATA TRIAL</p><h1>跨季資料接入試跑</h1></div><p>沿用第一版閱讀草案。這裡只展示實際建置、牛棚、情境與名單程式的輸出。</p></div>`;
-  const nav = `<div class="state-controls"><span>試跑案例</span><nav>${[["opening","開幕零樣本"],["transition","春訓銜接"],["r_off_day","例行賽休兵日"],["partial_failure","部分取數失敗"],["spring","2026 春訓回查"]].map(([k,n]) => `<a href="game.html?trial=${k}" ${key===k?'aria-current="page"':""}>${n}</a>`).join("")}</nav></div>`;
+  const nav = `<div class="state-controls"><span>試跑案例</span><nav>${[["opening","開幕零樣本"],["transition","春訓銜接"],["small","本季少樣本"],["r_off_day","例行賽休兵日"],["partial_failure","部分取數失敗"],["spring","2026 春訓回查"]].map(([k,n]) => `<a href="game.html?trial=${k}" ${key===k?'aria-current="page"':""}>${n}</a>`).join("")}</nav></div>`;
   const opening = D.opening.game;
   const rows = [
     ["opening", opening.usDate, "2027 例行賽開幕", "官方九棒、尚無本季成績、無合理名單比較基準"],
@@ -50,7 +50,7 @@
   const heading = key === "opening" ? "開幕零樣本" : key === "transition" ? "春訓銜接" : key === "r_off_day" ? "例行賽休兵日" : "部分取數失敗";
   let body = `<div class="match-hero"><div class="match-meta"><span>${gt("R")} · ${esc(date)}</span><span>${esc(heading)} · 人工測試</span></div><div class="match-header"><div class="club"><b class="club-code">CIN</b><strong>紅人</strong></div><div class="versus"><span class="at">@</span><small>賽前</small></div><div class="club home-club"><b class="club-code">MIL</b><strong>釀酒人</strong></div></div><p class="hero-caption">這一頁是固定的程式試跑輸出，並非 2027 真實賽事。</p></div>`;
   if (key === "opening") {
-    body += section("先發與本季成績",`<div class="trial-columns">${["away","home"].map(side=>{const t=opening[side],p=t.sp;return `<div><h3>${side==="away"?"紅人":"釀酒人"} · ${esc(p.name)}</h3><p>2027 例行賽 ERA／WHIP：${readState(p.statStatus)}</p><p>球隊戰績：${esc(t.rec)}（已確認出賽 ${t.gp} 場）</p><p>團隊 OPS／ERA：${readState(t.statStatus.ops)}／${readState(t.statStatus.era)}</p></div>`}).join("")}</div><p>上季參考維持獨立；本試跑未載入，不填入本季欄位。春訓成績不混入例行賽。</p>`);
+    body += section("先發與本季成績",`<div class="trial-columns">${["away","home"].map(side=>{const t=opening[side],p=t.sp;return `<div><h3>${side==="away"?"紅人":"釀酒人"} · ${esc(p.name)}</h3><p>2027 例行賽 ERA／WHIP：${readState(p.statStatus)}</p><p>球隊戰績：${esc(t.rec)}（已確認出賽 ${t.gp} 場）</p><p>團隊 OPS／ERA：${readState(t.statStatus.ops)}／${readState(t.statStatus.era)}</p></div>`}).join("")}</div><p>上季參考另由原新版研究頁獨立呈現，不填入本季欄位。春訓成績不混入例行賽。</p>`);
     body += section("本場名單與打線",`<div class="trial-columns">${lineup("away","紅人")}${lineup("home","釀酒人")}</div><p>上一場打線是春訓參考（${esc(opening.away.prev.date)}，${gt(opening.away.prev.gameType)}）；名單增減沒有合理的同季同賽別基準，因此暫不比較。已取得本場名單 ${D.opening.roster.listed.length} 人，不報增減 0。</p>`);
     const S=D.opening.smallStats;
     body += section("少樣本與有效 0：另一組人工來源回應",`<details><summary>展開 2027 R 的少樣本變體（與上方零樣本輸入分開）</summary><p>測試先發 A：ERA ${esc(S.pitcherR.s.era)}、WHIP ${esc(S.pitcherR.s.whip)}／${esc(S.pitcherR.s.ip)} 局。測試先發 B 只有 S 回應，R 為「${readState(S.pitcherSOnly.statStatus)}」，不能稱尚無紀錄。</p><p>${esc(S.hitterR[0].name)}：OPS ${esc(S.hitterR[0].ops)}／${S.hitterR[0].pa} 打席；${esc(S.hitterR[1].name)} 只有 S 回應，R 為「${readState(S.hitterR[1].statStatus)}」；${esc(S.hitterR[2].name)}：OPS ${esc(S.hitterR[2].ops)}／${S.hitterR[2].pa} 打席，這是有分母的有效 0。</p><p>團隊 OPS ${esc(S.teamR.ops)}、ERA ${esc(S.teamR.era)}／已賽 ${S.teamR.gp} 場。所有數值均為人工測試，沒有混用春訓。</p></details>`);

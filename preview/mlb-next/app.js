@@ -3,7 +3,7 @@
   const qs=new URLSearchParams(location.search);
   const trialKey=qs.get("trial");
   const T=window.MLB_CROSS_SEASON_TRIAL;
-  const pipelineTrial=!!T&&["opening","transition"].includes(trialKey);
+  const pipelineTrial=!!T&&["opening","transition","small"].includes(trialKey);
   if(trialKey&&!pipelineTrial)return; // other diagnostic cases remain in trial-reader.js
   const D=window.PREVIEW_DATA, root=document.getElementById("app");
   const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -16,7 +16,11 @@
   const fmtOut=o=>o==null?"—":`${Math.floor(o/3)}.${o%3}`;
   const base=(p)=>`<div class="source-ribbon"><span class="source-dot"></span><span>${p}／第一版閱讀草案已成形</span><strong>${pipelineTrial?"人工來源輸入・實際程式輸出":"固定歷史資料，不是即時頁面"}</strong></div>`;
   const link=(title,href,active)=>`<a href="${href}" class="${active?"active":""}" ${active?'aria-current="page"':""}>${title}</a>`;
-  const g=pipelineTrial?(trialKey==="opening"?T.opening.game:T.cases.transition.liveGame):D.game;
+  const trialCase=pipelineTrial?(trialKey==="opening"?T.opening:T.cases[trialKey]):null;
+  const g=pipelineTrial?(trialCase.liveGame||trialCase.game):D.game;
+  const researchPair=side=>trialCase?.matchupStatus==="current"?trialCase.matchup?.pairs?.find(x=>x.pitcherSide===side):null;
+  const prior=()=>trialCase?.priorReference;
+  const priorStatus=s=>s==="no_record"?"上季確定無紀錄":s==="scope_unconfirmed"?"上季例行賽範圍未確認":"上季資料未取得";
   const heroTeams=(post)=>`<div class="match-header">
     <div class="club"><span class="club-code">${esc(g.away.ab)}</span><strong>${esc(g.away.name)}</strong><small>客隊</small></div>
     <div class="versus">${post?`<span class="score">${D.post.final.away.runs}<i>:</i>${D.post.final.home.runs}</span><small>已結束</small>`:`<span class="at">對</span><small>賽前資料</small>`}</div>
@@ -24,9 +28,9 @@
   </div>`;
   function renderHome(){
     if(pipelineTrial){
-      const cases=[["opening",T.opening.game,"開幕零樣本"],["transition",T.cases.transition.liveGame,"春訓銜接"]];
+      const cases=[["opening",T.opening.game,"開幕零樣本"],["transition",T.cases.transition.liveGame,"春訓銜接"],["small",T.cases.small.liveGame,"本季少樣本"]];
       root.innerHTML=`${base("設計預覽 / 賽事入口")}
-        <section class="page-title"><div><p class="overline">MLB / 跨季離線試跑</p><h1>從賽事進入研究</h1><p>以下兩場為人工輸入，資料由本分支實際處理程式產出。</p></div></section>
+        <section class="page-title"><div><p class="overline">MLB / 跨季離線試跑</p><h1>從賽事進入研究</h1><p>以下三場為人工輸入，資料由本分支實際處理程式產出。</p></div></section>
         <div class="test-notice"><b>固定離線試跑</b><span>${esc(T.meta.warning)}</span></div>
         <section class="list-heading"><h2>2027 例行賽・人工案例</h2><span>賽季與賽別取自程式輸出</span></section>
         ${cases.map(([key,x,label])=>`<article class="game-row"><div class="game-time"><strong>${esc(x.twTime||"未定")}</strong><span>${esc(twDateLabel(x.twDate))} 台灣時間</span><small>美國賽程日 ${esc(x.usDate)}</small></div><div class="game-clubs"><div><b>${esc(x.away.ab)}</b><strong>${esc(x.away.name)}</strong></div><div><b>${esc(x.home.ab)}</b><strong>${esc(x.home.name)}</strong></div></div><div class="game-essential"><span>${esc(label)}</span><p>${esc(x.away.sp?.name??"先發未取得")}／${esc(x.home.sp?.name??"先發未取得")}</p><small>本場打線：${x.lineup==="official"?"官方九棒已取得":"未完整取得"}</small></div><div class="game-action"><a class="action-link" href="game.html?trial=${key}">看單場研究 <span aria-hidden="true">↗</span></a></div></article>`).join("")}
@@ -57,13 +61,22 @@
   const trialType=x=>({R:"例行賽",S:"春訓",F:"外卡賽",D:"分區賽",L:"聯盟冠軍賽",W:"世界大賽"}[x]||"賽別未確認");
   function pitcherRow(){
     if(pipelineTrial){
-      const card=(team)=>{
-        const p=team.sp, s=p?.s, status=trialState(p?.statStatus);
+      const card=(team,side)=>{
+        const p=team.sp, s=p?.s, status=trialState(p?.statStatus), pair=researchPair(side);
+        const split=(code,label)=>{const v=pair?.splits?.[code],st=pair?.splitStatus?.[code];
+          return v?`${label}被打 OPS ${esc(v.ops)}（${esc(v.pa)} 打席）`:`${label}被打 OPS：${pair?trialState(st):"對位版本未確認"}`};
+        const starts=pair?.recent?.starts||[];
+        const recent=pair?.recentStatus==="value"
+          ?`${starts.length?`<ol class="recent-starts">${[...starts].reverse().map(x=>`<li><b>${esc(x.date)}</b><span>${esc(x.ha??"")}對${esc(x.opp??"對手未取得")}・${trialType(x.gameType)}</span><span>${esc(x.ip??"?")} 局／${x.np==null?"?":esc(x.np)} 球／${x.er==null?"?":esc(x.er)} 自責</span></li>`).join("")}</ol>`:"<p>已取得登板，尚無先發紀錄。</p>"}<small>最近先發逐筆標賽別；不同於近期所有登板。記錄 ${pair.recent.totalStarts} 次先發，最多列最近三次。</small>`
+          :`<p>最近先發：${pair?trialState(pair.recentStatus):"對位版本未確認"}；近期所有登板另看下方用量。</p>`;
+        const old=prior()?.pitchers?.[p?.id];
+        const previous=p?.statStatus==="no_record"
+          ?`<p class="last-season-line">上季參考｜${esc(prior()?.season??"上季")} 例行賽：${old?.status==="value"?`ERA ${esc(old.value.era)}、WHIP ${esc(old.value.whip)}，${esc(old.value.ip)} 局`:priorStatus(old?.status)}。非本季成績。</p><details class="last-season"><summary>展開上季完整資料</summary><p>${old?.status==="value"?`${esc(prior().season)} 例行賽：ERA ${esc(old.value.era)}、WHIP ${esc(old.value.whip)}、${esc(old.value.ip)} 局／${esc(old.value.gs??"?")} 場先發。`:priorStatus(old?.status)} 資料只作獨立參考，不參與本季情境。</p></details>`:"";
         return `<div class="pitcher"><span class="pitcher-label">${esc(team.ab)} 預計先發</span><strong>${esc(p?.name??"未取得")}</strong><span>${p?.hand==="R"?"右投":p?.hand==="L"?"左投":"慣用手未取得"}</span>
           ${s?`<div class="pitcher-metrics"><span>ERA <b>${esc(s.era??"?")}</b></span><span>WHIP <b>${esc(s.whip??"?")}</b></span><span>IP <b>${esc(s.ip??"?")}</b></span></div><small>${esc(g.season)} 例行賽・${esc(s.gs??"?")} 場先發；小樣本仍顯示數字與分母。</small>`:`<div class="sample-message"><b>${status}</b><span>ERA、WHIP、局數沒有可確認的當季 R 數字；不補 0。</span></div>`}
-          <details class="pitcher-research"><summary>對左右打與最近三次先發</summary><p>本次最小試跑未產出投手手別分項與最近三次先發；不以近期所有登板代替最近先發。</p></details></div>`;
+          ${previous}<details class="pitcher-research"><summary>對左右打與最近三次先發</summary><p>${split("vl","對左打")}；${split("vr","對右打")}。手別分項為 ${esc(g.season)} 例行賽。</p>${recent}</details></div>`;
       };
-      return `<section class="primary-block"><div class="section-head"><h2>先發投手</h2><span>客隊在左・主隊在右</span></div><div class="pitcher-grid">${card(g.away)}${card(g.home)}</div></section>`;
+      return `<section class="primary-block"><div class="section-head"><h2>先發投手</h2><span>客隊在左・主隊在右</span></div><div class="pitcher-grid">${card(g.away,"away")}${card(g.home,"home")}</div></section>`;
     }
     const t=(team,side)=>{
       const sample=D.testOnly.small.pitchers[side];
@@ -104,10 +117,22 @@
     if(pipelineTrial){
       const slots=team.lineup?.slots||[], status=team.lineup?.state;
       const prev=team.prev;
+      const pair=researchPair(side==="away"?"home":"away"), hand=pair?.pitcher?.hand;
+      const vsLabel=hand==="L"?"對左投":hand==="R"?"對右投":"對手先發手別未取得";
+      const vsText=x=>{const v=pair?.lineup?.slots?.find(y=>y.id===x.id&&y.n===x.n);
+        if(!pair)return "本場對位版本未確認";
+        if(!hand)return "對手先發手別未取得";
+        if(v?.vs?.pa===0)return `${vsLabel} 0 打席・OPS 尚無計算基礎`;
+        if(v?.vs?.ops!=null)return `${vsLabel} OPS ${esc(v.vs.ops)}・${esc(v.vs.pa)} 打席`;
+        return `${vsLabel}：${v?.why==="scope_unconfirmed"?"本季例行賽範圍未確認":v?.why==="nosplit"?"本季尚無手別紀錄":"資料未取得"}`;};
+      const noSeason=slots.length>0&&slots.every(x=>x.statStatus==="no_record");
+      const lastTeam=prior()?.teams?.[team.id]?.ops, lastSeason=prior()?.season;
+      const previous=noSeason?`<p class="last-season-line">上季參考｜${esc(lastSeason??"上季")} 例行賽團隊 OPS ${lastTeam?.status==="value"?esc(lastTeam.value):priorStatus(lastTeam?.status)}；逐棒上季數字可展開。非本季成績。</p><details class="last-season"><summary>展開上季逐棒參考</summary><ol class="reference-lineup">${slots.map(x=>{const old=prior()?.batters?.[x.id];return `<li><b>${x.n}</b><strong>${esc(x.name)}</strong><span>${old?.status==="value"?`OPS ${esc(old.value.ops)}／${esc(old.value.pa)} 打席`:priorStatus(old?.status)}</span></li>`}).join("")}</ol><p>${esc(lastSeason??"上季")} 例行賽；不填入本季欄位或情境。</p></details>`:"";
       const prevText=prev?`<p>上一場打線參考：${esc(prev.date)} ${trialType(prev.gameType)}，對${esc(prev.opp)}；僅作參考，不作開幕名單增減基準。</p>${prev.slots?.length?`<ol class="reference-lineup">${prev.slots.map(x=>`<li><b>${x.n}</b><strong>${esc(x.name)}</strong><span>${esc(x.pos??"?")}</span></li>`).join("")}</ol>`:"<p>上一場逐棒未取得。</p>"}`:"<p>沒有可確認的上一場逐棒資料。</p>";
       return `<div class="lineup-panel"><div class="lineup-title"><h3>${esc(team.ab)} ${esc(team.name)}</h3><span class="status-tag ${slots.length?"confirmed":"muted"}">${status==="official"?"MLB 官方九棒":status==="late"?"臨場異動":status==="withdrawn"?"來源撤回":"本場打線未取得"}</span></div>
-        ${slots.length?`<ol class="lineup-list">${slots.map(x=>`<li><span>${x.n}</span><strong>${esc(x.name)}</strong><em>${esc(x.pos??"?")}</em><small>${x.ops!=null?`OPS ${esc(x.ops)}・${esc(x.pa??"?")} 打席`:trialState(x.statStatus)}</small></li>`).join("")}</ol>`:"<p class=\"empty-copy\">本場九棒尚未取得；不從上一場填入。</p>"}
-        <p class="lineup-foot">${esc(g.season)} 例行賽成績與打席；名單為人工來源輸入，整理與輸出由 build-live 執行。</p>
+        ${slots.length?`<ol class="lineup-list">${slots.map(x=>`<li><span>${x.n}</span><strong>${esc(x.name)}</strong><em>${esc(x.pos??"?")}</em><small>本季總 ${x.ops!=null?`OPS ${esc(x.ops)}・${esc(x.pa??"?")} 打席`:trialState(x.statStatus)}<br>${vsText(x)}</small></li>`).join("")}</ol>`:"<p class=\"empty-copy\">本場九棒尚未取得；不從上一場填入。</p>"}
+        <p class="lineup-foot">${esc(g.season)} 例行賽；手別成績是對左／右投，不是對本場先發的生涯交手。名單為人工來源輸入。</p>
+        ${previous}
         <details class="lineup-more"><summary>整體成績與計算基礎</summary><p>${slots.map(x=>`${esc(x.name)}：${x.ops!=null?`OPS ${esc(x.ops)}／${esc(x.pa??"?")} 打席`:trialState(x.statStatus)}`).join("；")||"尚無可確認的當季 R 成績"}。</p></details>
         <details class="lineup-more"><summary>預估與官方來源狀態</summary><p>本次程式輸出僅提供官方打線；第三方預估、確認及來源發布時刻未取得，不補逐棒版本。本站首次取得：${esc(team.lineup.firstSeen??"未取得")}（人工時鐘）。</p></details>
         <details class="lineup-more"><summary>上一場打線參考</summary>${prevText}</details></div>`;
@@ -152,7 +177,7 @@
   }
   function contextSection(){
     if(pipelineTrial){
-      const c=trialKey==="opening"?T.opening.context:T.cases.transition.context, rows=[c.bp_load,c.bp_streak];
+      const c=trialCase.context, rows=[c.bp_load,c.bp_streak];
       return `<section class="context-block"><div class="section-head"><h2>值得一起看的條件</h2><span>依既有規則輸出；暫不判定不等於未達門檻</span></div><div class="context-list">${rows.map(x=>`<div class="context-row"><div><span class="context-rule">${esc(x.title)}</span><strong>${x.state==="na"?"暫不判定":x.state==="hit"?"符合門檻":"未達門檻"}</strong></div><details><summary>依據與範圍</summary><p>${esc(x.why||x.value||"")}</p><p>既有門檻：${esc(x.threshold)}</p></details></div>`).join("")}</div><p class="page-note">其他情境條件未納入這兩場最小試跑的頁面接入，不借 2026 結果填入。</p></section>`;
     }
     if(test&&legit!=="bp_missing")return `<section class="context-block"><div class="section-head"><h2>值得一起看的條件</h2><span>固定規則產生的事實提示</span></div><div class="empty-copy inset">此測試狀態未用真實輸入重算情境卡，因此不顯示條件判斷。</div></section>`;
@@ -203,7 +228,7 @@
   }
   function bullpenSection(){
     if(pipelineTrial){
-      const B=trialKey==="opening"?T.opening.bullpen:T.cases.transition.bullpen;
+      const B=trialCase.bullpen;
       const card=(side,team)=>{
         const s=B.summary[side], usage=s.recentUsage||[], known=usage.filter(x=>Number.isFinite(x.pitches));
         const count=known.reduce((n,x)=>n+x.pitches,0), missing=usage.length-known.length+B.summary[side].days.reduce((n,x)=>n+x.gamesMissing,0);
@@ -230,7 +255,8 @@
     if(pipelineTrial){
       const cell=(t,key)=>t.statStatus?.[key]==="value"?`${esc(t[key])}${key==="rec"&&t.gp!=null?`（${t.gp} 場）`:""}`:trialState(t.statStatus?.[key]);
       const line=(left,label,right)=>`<div class="compare-row"><strong>${left}</strong><span>${esc(label)}</span><strong>${right}</strong></div>`;
-      return `<section class="comparison primary-block"><div class="section-head"><h2>比賽總覽</h2><span>客隊　｜　項目　｜　主隊</span></div><div class="compare-table"><div class="compare-team"><b>${esc(g.away.ab)} ${esc(g.away.name)}</b><span>客｜主</span><b>${esc(g.home.ab)} ${esc(g.home.name)}</b></div>${line(cell(g.away,"rec"),g.season+" 例行賽戰績",cell(g.home,"rec"))}${line(cell(g.away,"ops"),g.season+" 例行賽 OPS",cell(g.home,"ops"))}${line(cell(g.away,"era"),g.season+" 例行賽團隊 ERA",cell(g.home,"era"))}</div><p class="season-scope">春訓統計與上季參考不填進本季欄位；此試跑沒有上季參考資料。</p></section>`;
+      const previous=["away","home"].map(side=>{const t=g[side],row=prior()?.teams?.[t.id];return `${esc(t.ab)}：OPS ${row?.ops?.status==="value"?esc(row.ops.value):priorStatus(row?.ops?.status)}、ERA ${row?.era?.status==="value"?esc(row.era.value):priorStatus(row?.era?.status)}`}).join("；");
+      return `<section class="comparison primary-block"><div class="section-head"><h2>比賽總覽</h2><span>客隊　｜　項目　｜　主隊</span></div><div class="compare-table"><div class="compare-team"><b>${esc(g.away.ab)} ${esc(g.away.name)}</b><span>客｜主</span><b>${esc(g.home.ab)} ${esc(g.home.name)}</b></div>${line(cell(g.away,"rec"),g.season+" 例行賽戰績",cell(g.home,"rec"))}${line(cell(g.away,"ops"),g.season+" 例行賽 OPS",cell(g.home,"ops"))}${line(cell(g.away,"era"),g.season+" 例行賽團隊 ERA",cell(g.home,"era"))}</div><details class="season-reference"><summary>查看 ${esc(prior()?.season??"上季")} 例行賽團隊參考</summary><p>${previous}。這些是獨立參考，不參與本季欄位或情境。</p></details><p class="season-scope">春訓統計不併入例行賽；上季參考另列。</p></section>`;
     }
     const next=newSeason;
     const row=(left,label,right,note="")=>`<div class="compare-row"><strong>${esc(left)}</strong><span>${esc(label)}${note?`<small>${esc(note)}</small>`:""}</span><strong>${esc(right)}</strong></div>`;
@@ -252,9 +278,9 @@
         <nav class="crumb"><a href="index.html?trial=opening">賽事入口</a><span>／</span><span>gamePk ${g.pk}・人工測試</span></nav>
         <div class="mode-nav" aria-label="閱讀模式"><a class="active" aria-current="page" href="game.html?trial=${trialKey}">賽前研究</a><span>賽後結果未取得</span></div>
         <div class="test-notice"><b>人工來源輸入・實際程式輸出</b><span>${esc(T.meta.warning)}</span></div>
-        <section class="match-hero"><div class="match-meta"><span>${esc(g.season)} ${trialType(g.gameType)}・${trialKey==="opening"?"開幕零樣本":"春訓銜接"}</span><span>${esc(twDateLabel(g.twDate))} ${esc(g.twTime)} 台灣時間・${esc(g.venue)}</span></div>${heroTeams(false)}<p class="hero-caption">美國賽程日 ${esc(g.usDate)}。先核對比賽、先發與官方九棒，再看條件及近期實際用量。賽後資料在此人工案例未取得。</p></section>
+        <section class="match-hero"><div class="match-meta"><span>${esc(g.season)} ${trialType(g.gameType)}・${trialKey==="opening"?"開幕零樣本":trialKey==="transition"?"春訓銜接":"本季少樣本"}</span><span>${esc(twDateLabel(g.twDate))} ${esc(g.twTime)} 台灣時間・${esc(g.venue)}</span></div>${heroTeams(false)}<p class="hero-caption">美國賽程日 ${esc(g.usDate)}。先核對比賽、先發與官方九棒，再看條件及近期實際用量。賽後資料在此人工案例未取得。</p></section>
         ${preBody()}
-        <div class="end-note"><b>資料與限制</b><p>本頁核心區塊直接讀取本分支 build-live、bullpen、ctx 的固定試跑輸出；2027 賽程、球員與登板是人工測試輸入，不能當真實 2027 來源證據。2026 賽前快照與正式資料沒有改寫。</p></div>`;
+        <div class="end-note"><b>資料與限制</b><p>本頁直接讀取本分支 build-live、bullpen、ctx、matchup 的固定試跑輸出；2027 賽程、球員、登板及 2026 上季參考是人工測試輸入，不能當真實來源證據。2026 賽前快照與正式資料沒有改寫。</p></div>`;
       return;
     }
     const stateLinks=["official","projection","partial","new","small","official_empty","bp_missing"].map((s,i)=>link(["官方打線","預估示例","部分未取得","新季零樣本","開季少樣本","官方九棒・無成績","牛棚缺值"][i],`game.html?mode=pre&state=${s}`,mode==="pre"&&legit===s)).join("");
