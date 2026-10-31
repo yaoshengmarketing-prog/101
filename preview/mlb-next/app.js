@@ -404,9 +404,14 @@
       const id=prior.mlbPreviewEntry||String(Date.now())+"-"+Math.random().toString(36).slice(2);
       if(!prior.mlbPreviewEntry)window.history.replaceState({...prior,mlbPreviewEntry:id},"");
       const key="mlb-preview-reading:"+id;
+      const routeKey="mlb-preview-reading-route:"+location.pathname+location.search;
       const details=()=>[...document.querySelectorAll("details")];
-      const save=()=>window.sessionStorage.setItem(key,JSON.stringify({y:window.scrollY,open:details().flatMap((x,i)=>x.open?[i]:[])}));
-      const raw=window.sessionStorage.getItem(key);
+      const save=()=>{
+        const state=JSON.stringify({y:window.scrollY,open:details().flatMap((x,i)=>x.open?[i]:[])});
+        window.sessionStorage.setItem(key,state);
+        window.sessionStorage.setItem(routeKey,state);
+      };
+      const raw=window.sessionStorage.getItem(key)||window.sessionStorage.getItem(routeKey);
       if(raw){
         const saved=JSON.parse(raw);
         details().forEach((x,i)=>{x.open=Array.isArray(saved.open)&&saved.open.includes(i)});
