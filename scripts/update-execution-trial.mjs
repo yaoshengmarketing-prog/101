@@ -1,0 +1,176 @@
+// 同一人工 gamePk 的離線串接：計畫決定函式呼叫，成功才提交處理版本。
+// 不使用外部 fetch、不啟動排程、不寫 live/data 或公開預覽。
+import assert from "node:assert/strict";
+import crypto from "node:crypto";
+import { pathToFileURL } from "node:url";
+import { build } from "./build-live.mjs";
+import { buildBullpen } from "./bullpen.mjs";
+import { compute, decide, CHECKS } from "./ctx.mjs";
+import { buildMatchup, matchupState } from "./matchup.mjs";
+import { summarizePost } from "./post.mjs";
+import { pk, steps, source, entryOf, boxOf } from "./same-game-fixture.mjs";
+import { planRound, matchupFingerprint, contextFingerprint } from "./update-decision-trial.mjs";
+
+const events=[
+  {key:"no_lineup", step:steps[0], schedule:"g1", lineup:null, stats:"s1"},
+  {key:"official", step:steps[1], schedule:"g1", lineup:"l1", stats:"s1"},
+  {key:"recalc_failed", step:steps[2], schedule:"g2", lineup:"l2", stats:"s1"},
+  {key:"recalc_ok", step:steps[3], schedule:"g2", lineup:"l2", stats:"s1"},
+  {key:"stat_update", step:steps[3], at:"2027-04-20T22:15:00Z", schedule:"g2", lineup:"l2", stats:"s2"},
+  {key:"same_version", step:steps[3], at:"2027-04-20T22:20:00Z", schedule:"g2", lineup:"l2", stats:"s2"},
+  {key:"stat_failed", step:steps[3], at:"2027-04-20T22:25:00Z", schedule:"g2", lineup:"l2", stats:"s3", failStats:true},
+  {key:"stat_recovered", step:steps[3], at:"2027-04-20T22:30:00Z", schedule:"g2", lineup:"l2", stats:"s3"},
+  {key:"live", step:steps[4], schedule:"g3", lineup:"l2", stats:"s3"},
+  {key:"final_partial", step:steps[5], schedule:"g4", lineup:"l2", stats:"s3", post:"p1"},
+  {key:"final_complete", step:steps[6], schedule:"g5", lineup:"l2", stats:"s3", post:"p2"},
+];
+const stamp=e=>e.at||e.step.at;
+const clone=x=>structuredClone(x);
+const inputSource=(e)=>{
+  const base=source(e.step);
+  return async url=>{
+    if(e.failStats && url.includes("/teams/stats?") && url.includes("group=hitting"))
+      throw new Error("人工測試：s3 團隊打擊資料處理失敗");
+    const data=await base(url);
+    if(e.stats==="s1")return data;
+    const out=clone(data);
+    if(url.includes("/teams/stats?")&&url.includes("group=hitting"))
+      for(const row of out.stats?.[0]?.splits||[])row.stat.ops=e.stats==="s2"
+        ? row.team.id===113?".760":".620" : row.team.id===113?".780":".610";
+    if(url.includes("/people?")&&url.includes("statSplits"))
+      for(const p of out.people||[])for(const split of p.stats?.[0]?.splits||[])
+        if(split.stat?.ops)split.stat.ops=e.stats==="s2"?".731":".742";
+    return out;
+  };
+};
+
+const off=(date,state="confirmed_off",extra={})=>({date,state,gameType:"R",...extra});
+const initial=()=>({gamePk:pk,season:2027,gameType:"R",officialDate:"2027-04-20",startUTC:"2027-04-20T23:10:00Z",phase:"scheduled",
+  scheduleVersion:null,sources:{
+    schedule:{state:"not_acquired",version:null,usedVersion:null,season:2027,gameType:"R"},
+    lineup:{state:"unpublished",version:null,usedVersion:null,season:2027,gameType:"R"},
+    stats:{state:"not_acquired",version:null,usedVersion:null,season:2027,gameType:"R"},
+    roster:{state:"unchanged",version:"r1",usedVersion:"r1",checkedAt:"2027-04-20T14:00:00Z",season:2027,gameType:"R"}},
+  bullpen:{days:[off("2027-04-17"),off("2027-04-18","played",{pitchingComplete:true}),off("2027-04-19")],version:"u1",usedVersion:null},
+  contextDoneFor:{},contextVersions:{game:`${pk}/2027/R/113/158`,schedule:null,sp:null,rec:null,ops:null,bullpen:null},
+  matchupBuiltFor:null,matchupSaved:null,post:{complete:false,inningsComplete:false,pitchingComplete:false}});
+const pick=(rows,module)=>rows.find(r=>r.module===module);
+const needs=action=>["更新","重算","追補"].includes(action);
+
+export async function runTrial(){
+  let ledger=initial(),buildState={games:{}},game=null,bullpen=null,context=null,matchup=null,post=null;
+  const rounds=[];
+  for(const e of events){
+    const at=stamp(e),before={schedule:ledger.sources.schedule.usedVersion,lineup:ledger.sources.lineup.usedVersion,
+      stats:ledger.sources.stats.usedVersion,bullpen:ledger.bullpen.usedVersion,matchup:ledger.matchupBuiltFor,
+      context:clone(ledger.contextDoneFor),post:ledger.post.usedVersion??null};
+    const phase=e.step.status==="Final"?"final":e.step.status==="In Progress"?"live":"scheduled";
+    ledger.phase=phase;
+    ledger.sources.schedule={...ledger.sources.schedule,state:e.schedule===ledger.sources.schedule.usedVersion?"unchanged":"available",version:e.schedule,checkedAt:at};
+    ledger.sources.lineup={...ledger.sources.lineup,state:e.lineup?e.lineup===ledger.sources.lineup.usedVersion?"unchanged":"available":"unpublished",version:e.lineup,checkedAt:at};
+    ledger.sources.stats={...ledger.sources.stats,state:e.stats===ledger.sources.stats.usedVersion?"unchanged":"available",version:e.stats,checkedAt:at};
+    if(e.post)ledger.post={...ledger.post,sourceVersion:e.post};
+    const calls=[],errors=[],fetchJson=inputSource(e);
+    let plan=planRound({now:at,games:[ledger]});
+    const buildRows=["賽程","先發／官方九棒","本季統計"].map(m=>pick(plan,m));
+    if(buildRows.some(r=>r.action==="更新")){
+      calls.push("build-live.build");
+      try{
+        const R=await build({fetchJson,now:new Date(at),state:buildState,prevGame:p=>p===pk?game:null});
+        if(R.errors.some(x=>x.what==="team hitting"))throw new Error("本季統計處理缺必要團隊 OPS；不提交 s3");
+        const fresh=R.games[pk];if(!fresh)throw new Error("build-live 未產生同一 gamePk");
+        buildState=R.state;game=fresh;ledger.matchupGame=fresh;ledger.startUTC=fresh.startUTC;ledger.officialDate=fresh.usDate;
+        for(const k of ["schedule","lineup","stats"]){const src=ledger.sources[k];if(src.version!=null){src.usedVersion=src.version;src.lastGoodAt=at;}}
+        ledger.scheduleVersion=ledger.sources.schedule.usedVersion;
+        ledger.contextVersions.game=`${pk}/2027/R/${game.away.id}/${game.home.id}`;
+        ledger.contextVersions.schedule=ledger.scheduleVersion;
+        ledger.contextVersions.sp=`${ledger.sources.stats.usedVersion}|${game.away.sp?.id}:${game.away.sp?.hand}|${game.home.sp?.id}:${game.home.sp?.hand}`;
+        ledger.contextVersions.rec=ledger.sources.stats.usedVersion;
+        ledger.contextVersions.ops=ledger.sources.stats.usedVersion;
+      }catch(err){
+        ledger.sources.stats={...ledger.sources.stats,state:"failed",lastGoodAt:before.stats?ledger.sources.stats.lastGoodAt:null};
+        errors.push(`build-live.build：${err.message}`);
+      }
+    }
+    plan=planRound({now:at,games:[ledger]});
+    if(needs(pick(plan,"牛棚").action)&&game){
+      calls.push("bullpen.buildBullpen");
+      try{const R=await buildBullpen({games:[game],fetchJson,nowISO:at});const b=R.files[pk];
+        if(!b||b.status==="failed")throw new Error(b?.error||"牛棚輸出未取得");
+        bullpen=b;ledger.bullpen.usedVersion=ledger.bullpen.version;ledger.bullpen.lastSuccessAt=at;
+        ledger.contextVersions.bullpen=ledger.bullpen.usedVersion;
+      }catch(err){errors.push(`bullpen.buildBullpen：${err.message}`);}
+    }
+    plan=planRound({now:at,games:[ledger]});
+    const matchupRow=pick(plan,"投打對位");
+    if(needs(matchupRow.action)&&game){
+      calls.push("matchup.buildMatchup");
+      try{const next=await buildMatchup(game,at,fetchJson);if(matchupState(game,next)!=="current")throw new Error("處理後對位仍不合既有基準");
+        matchup=next;ledger.matchupSaved=next;ledger.matchupBuiltFor=matchupFingerprint(ledger);ledger.matchupSuccessAt=at;
+      }catch(err){errors.push(`matchup.buildMatchup：${err.message}`);}
+    }
+    plan=planRound({now:at,games:[ledger]});
+    const ctxRows=plan.filter(r=>r.module.startsWith("情境/")&&r.action==="重算");
+    if(ctxRows.length&&game){
+      calls.push("ctx.compute");
+      try{const fresh=compute(game,bullpen,[game],at);context=decide(game,context,fresh,at);
+        for(const r of ctxRows){const check=CHECKS.find(c=>`情境/${c.id}`===r.module);ledger.contextDoneFor[check.id]=contextFingerprint(ledger,check);}
+        ledger.contextSuccessAt=at;
+      }catch(err){errors.push(`ctx.compute：${err.message}`);}
+    }
+    if(phase!=="scheduled"&&context){calls.push("ctx.decide（凍結／沿用）");context=decide(game,context,context,at);}
+    plan=planRound({now:at,games:[ledger]});
+    if(pick(plan,"賽後結果")?.action==="追補"&&game){
+      calls.push("post.summarizePost");
+      try{post=summarizePost(entryOf(e.step),boxOf(e.step),at);
+        ledger.post={...ledger.post,complete:post.complete,inningsComplete:!post.incomplete?.some(x=>x.includes("得分")),
+          pitchingComplete:!post.incomplete?.some(x=>x.includes("投手")),usedVersion:e.post,checkedAt:at,lastSuccessAt:at};
+        if(context)context={...context,post};
+      }catch(err){errors.push(`post.summarizePost：${err.message}`);}
+    }
+    const after={schedule:ledger.sources.schedule.usedVersion,lineup:ledger.sources.lineup.usedVersion,
+      stats:ledger.sources.stats.usedVersion,bullpen:ledger.bullpen.usedVersion,matchup:ledger.matchupBuiltFor,
+      context:clone(ledger.contextDoneFor),post:ledger.post.usedVersion??null};
+    rounds.push({key:e.key,at,sourceVersions:{schedule:e.schedule,lineup:e.lineup,stats:e.stats,post:e.post??null},
+      sourceStatsState:ledger.sources.stats.state,planBefore:buildRows.map(r=>({module:r.module,action:r.action})),
+      calls,errors,before,after,contextRecomputed:ctxRows.map(r=>r.module.slice(3)),matchupState:game?matchupState(game,matchup):"unavailable",
+      matchupSuccessAt:ledger.matchupSuccessAt??null,contextSuccessAt:ledger.contextSuccessAt??null,
+      contextChecks:context?.checks?.map(x=>({id:x.id,state:x.state}))??[],postComplete:post?.complete??null,
+      contextEvidenceSha256:context?.checks?crypto.createHash("sha256").update(JSON.stringify(context.checks)).digest("hex"):null,
+      frozenAt:context?.frozen?.at??null});
+  }
+  assert.equal(new Set(rounds.map(x=>pk)).size,1);
+  const by=key=>rounds.find(x=>x.key===key);
+  assert.equal(by("official").matchupState,"current");
+  assert.equal(by("recalc_failed").matchupState,"stale");
+  assert.equal(by("recalc_failed").after.matchup,by("official").after.matchup);
+  assert.equal(by("recalc_failed").matchupSuccessAt,by("official").matchupSuccessAt);
+  assert.equal(by("recalc_ok").matchupState,"current");
+  assert.equal(by("stat_update").after.stats,"s2");
+  assert.notEqual(by("stat_update").after.matchup,by("recalc_ok").after.matchup);
+  assert.deepEqual(by("same_version").calls,[]);
+  assert.equal(by("stat_failed").after.stats,"s2");
+  assert.equal(by("stat_recovered").after.stats,"s3");
+  assert.ok(by("stat_recovered").calls.includes("matchup.buildMatchup"));
+  assert.equal(by("final_partial").postComplete,false);
+  assert.equal(by("final_complete").postComplete,true);
+  assert.equal(by("live").frozenAt,by("final_complete").frozenAt);
+  assert.equal(by("live").contextEvidenceSha256,by("final_complete").contextEvidenceSha256);
+  assert.equal(by("live").after.matchup,by("final_complete").after.matchup);
+  assert.ok(by("stat_update").contextChecks.some(x=>x.id==="ops"));
+  assert.deepEqual(by("stat_update").contextRecomputed.sort(),["home","l10","ops","rapg","rpg","whip"].sort());
+  assert.equal(by("no_lineup").contextChecks.find(x=>x.id==="ops").state,"miss");
+  assert.equal(by("stat_update").contextChecks.find(x=>x.id==="ops").state,"hit");
+  return {meta:{gamePk:pk,kind:"人工來源離線串接",rules:"只在成功後提交處理版；模組呼叫不是 HTTP 次數",source:"same-game-fixture.mjs；既有 build-live／bullpen／matchup／ctx／post"},rounds};
+}
+
+export function renderTrial(result){
+  const count=Object.entries(result.rounds.flatMap(r=>r.calls).reduce((o,k)=>(o[k]=(o[k]||0)+1,o),{})).map(([k,n])=>`${k} ${n} 次`).join("、");
+  const lines=["# 更新決策與既有試跑執行串接", "", "人工 2027 同一 gamePk 離線輸入；使用既有處理函式，沒有外部 HTTP、排程或正式資料寫入。模組函式呼叫次數不是 HTTP 請求量或供應商帳單。", "", `本演練實際函式呼叫：${count}。`, "", "| 輪次／時間 UTC | 來源版 | 規劃後實際呼叫 | 失敗 | 已完成版及變化 | 對位與情境 |", "|---|---|---|---|---|---|"];
+  for(const r of result.rounds){const v=r.after,w=r.before,changed=["schedule","lineup","stats","bullpen","post"].filter(k=>v[k]!==w[k]).map(k=>`${k}:${w[k]||"—"}→${v[k]||"—"}`);lines.push(`| ${r.key} ${r.at} | game ${r.sourceVersions.schedule}、lineup ${r.sourceVersions.lineup||"—"}、stats ${r.sourceVersions.stats}（${r.sourceStatsState}）、post ${r.sourceVersions.post||"—"} | ${r.calls.join("、")||"無；同版沿用"} | ${r.errors.join("；")||"無"} | game ${v.schedule||"—"}／lineup ${v.lineup||"—"}／stats ${v.stats||"—"}／bullpen ${v.bullpen||"—"}／post ${v.post||"—"}；變化 ${changed.join("、")||"無"} | 對位 ${r.matchupState}（最後成功 ${r.matchupSuccessAt||"無"}）；本輪情境輸入變動 ${r.contextRecomputed.join(",")||"無"}（最後成功 ${r.contextSuccessAt||"無"}） |`);}
+  lines.push("",`賽前情境 checks SHA-256：開賽凍結 ${result.rounds.find(x=>x.key==="live").contextEvidenceSha256}；賽後完整 ${result.rounds.find(x=>x.key==="final_complete").contextEvidenceSha256}。兩者相同；完整逐輪指紋在同目錄 JSON。`);
+  lines.push("", "## 查核重點", "", "- `recalc_failed` 的新先發／九棒已進單場資料，但 matchup 舊版與最後成功時間保留；既有 `matchupState` 標 stale，不能當新對位。`recalc_ok` 用相同版本恢復後才提交新指紋。", "- `stat_update` 先讓 build-live 成功處理新統計版，同輪再次規劃才准 matchup 與 OPS／WHIP／戰績相依情境使用它；六條統計相依條件重算，兩條牛棚條件沿用。`same_version` 沒有模組函式呼叫。", "- `stat_failed` 的 s3 來源處理失敗，已完成版仍為 s2；舊對位的 current 僅指對已完成 s2 與已保存名單仍適用，並非 s3 已成功。最後成功時間照列。`stat_recovered` 的來源內容即使標 unchanged，s3 仍會補處理。", "- `live` 凍結最後成功賽前內容；Final 的逐局未齊與完整分兩輪，post 另存，不改對位與賽前情境版本。", "- 情境範圍直接取 `ctx.CHECKS` 九條；跨 S／R 或牛棚缺值時僅 `bp_load`、`bp_streak` 暫不判定，其餘條件按各自相依輸入。規則門檻沒有變。", "", "## 待供應商確認", "", "正式 feed 的版本／更新事件、可用時間、額度、重試與授權、可重用期限及費用；這些尚未由人工離線回應證明。", "");
+  return lines.join("\n");
+}
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){const r=await runTrial();process.stdout.write(renderTrial(r));}
+
