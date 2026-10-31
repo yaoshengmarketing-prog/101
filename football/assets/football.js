@@ -54,29 +54,71 @@ function openContext(key, opener) {
   $('#close-context').focus();
 }
 
+const validScore = score => score && Number.isInteger(score.home) && score.home >= 0
+  && Number.isInteger(score.away) && score.away >= 0;
+const sameScore = (a, b) => a.home === b.home && a.away === b.away;
+
+function verifiedTimeline(g, detail) {
+  if (!g?.finished || !validScore(g.score) || detail?.status !== 'acquired'
+    || !Array.isArray(detail.events)) return null;
+  let score = { home: 0, away: 0 }, firstSide = null, goalCount = 0;
+  const substitutionScores = new Map();
+  for (const event of detail.events) {
+    if (event.type === 'goal') {
+      if (!validScore(event.scoreAfter)) return null;
+      const homeAdded = event.scoreAfter.home - score.home;
+      const awayAdded = event.scoreAfter.away - score.away;
+      if (!((homeAdded === 1 && awayAdded === 0) || (homeAdded === 0 && awayAdded === 1))) return null;
+      firstSide ||= homeAdded === 1 ? 'home' : 'away';
+      goalCount++;
+      score = event.scoreAfter;
+    } else if (event.type === 'substitution') {
+      substitutionScores.set(event, validScore(event.scoreAt) && sameScore(event.scoreAt, score) ? { ...score } : null);
+    }
+  }
+  return sameScore(score, g.score) ? { firstSide, goalCount, substitutionScores } : null;
+}
+
 export function scoreFormation(g, detail) {
   const missing = '進球先後本次未取得';
-  if (!g?.finished || detail?.status !== 'acquired' || !Array.isArray(detail.events)
-    || !['home', 'away'].includes(g.side)) return missing;
-  const final = g.score;
-  const validScore = score => score && Number.isInteger(score.home) && score.home >= 0
-    && Number.isInteger(score.away) && score.away >= 0;
-  if (!validScore(final) || !Number.isInteger(g.goalsFor) || !Number.isInteger(g.goalsAgainst)
-    || g.goalsFor !== final[g.side] || g.goalsAgainst !== final[g.side === 'home' ? 'away' : 'home']) return missing;
-  const goals = detail.events.filter(event => event.type === 'goal');
-  let score = { home: 0, away: 0 }, firstSide = null;
-  for (const event of goals) {
-    if (!validScore(event.scoreAfter)) return missing;
-    const homeAdded = event.scoreAfter.home - score.home;
-    const awayAdded = event.scoreAfter.away - score.away;
-    if (!((homeAdded === 1 && awayAdded === 0) || (homeAdded === 0 && awayAdded === 1))) return missing;
-    firstSide ||= homeAdded === 1 ? 'home' : 'away';
-    score = event.scoreAfter;
-  }
-  if (score.home !== final.home || score.away !== final.away) return missing;
-  if (!goals.length) return final.home === 0 && final.away === 0 ? '雙方未進球' : missing;
+  if (!['home', 'away'].includes(g?.side) || !Number.isInteger(g.goalsFor) || !Number.isInteger(g.goalsAgainst)
+    || !validScore(g.score) || g.goalsFor !== g.score[g.side]
+    || g.goalsAgainst !== g.score[g.side === 'home' ? 'away' : 'home']) return missing;
+  const timeline = verifiedTimeline(g, detail);
+  if (!timeline) return missing;
+  if (!timeline.goalCount) return '雙方未進球';
   const result = g.goalsFor > g.goalsAgainst ? '獲勝' : g.goalsFor < g.goalsAgainst ? '落敗' : '和局';
-  return `${firstSide === g.side ? '先進球' : '先失球'}，最後${result}`;
+  return `${timeline.firstSide === g.side ? '先進球' : '先失球'}，最後${result}`;
+}
+
+export function substitutionNotes(g, detail, player, record, team) {
+  if (!g || !team || !['home', 'away'].includes(g.side)
+    || team.id !== g[g.side]?.id || !['starter', 'sub_on'].includes(record.role)) return [];
+  const timeline = verifiedTimeline(g, detail);
+  const scoreText = event => {
+    const score = timeline?.substitutionScores.get(event);
+    if (!score || !Number.isInteger(g.goalsFor) || !Number.isInteger(g.goalsAgainst)
+      || g.goalsFor !== g.score[g.side] || g.goalsAgainst !== g.score[g.side === 'home' ? 'away' : 'home']) {
+      return '換人時比分未取得';
+    }
+    const own = score[g.side], against = score[g.side === 'home' ? 'away' : 'home'];
+    return `當時${teamName(team.name)} ${own}–${against} ${own > against ? '領先' : own < against ? '落後' : '平手'}`;
+  };
+  const notes = [];
+  if (record.role === 'sub_on') {
+    const event = detail?.events?.find(item => item.type === 'substitution' && item.team === team.name
+      && item.in?.id === player.id);
+    const matched = event && (!record.subOnMinute || event.minute === record.subOnMinute);
+    const counterpart = matched && event.out?.name ? `換下 ${event.out.name} · ` : '';
+    notes.push(`${counterpart}${scoreText(matched ? event : null)}`);
+  }
+  if (record.subOffMinute) {
+    const event = detail?.events?.find(item => item.type === 'substitution' && item.team === team.name
+      && item.out?.id === player.id);
+    const matched = event && event.minute === record.subOffMinute;
+    notes.push(scoreText(matched ? event : null));
+  }
+  return notes;
 }
 
 function resultBlock(t, details, snapshotThreshold = null) {
@@ -218,14 +260,16 @@ function pairBlock(t, d) {
     }).join('') : '<p class="empty">相鄰場次本次未取得。</p>'}</div>`;
 }
 
-function personBlock(t) {
+function personBlock(t, details) {
   return `<div class="pair-team"><h3>${esc(teamName(t.team.name))} · 已列 ${t.players.length} 名球員</h3>
     ${t.players.map(p => `<details class="person-card" id="person-${esc(t.team.id)}-${esc(p.id)}"><summary>${esc(p.name)}　<span class="tiny">${p.games.filter(g => g.role === 'starter').length}/${t.recent14.length} 場先發</span></summary>
       <div class="person-rows">${p.games.map(rec => {
         const g = t.recent14.find(x => x.key === rec.key);
-        const extra = [rec.subOnMinute ? `${rec.subOnMinute} 換上` : '', rec.subOffMinute ? `${rec.subOffMinute} 換下` : '', rec.goals ? `${rec.goals} 球` : '', rec.assists ? `${rec.assists} 助攻` : ''].filter(Boolean).join(' · ');
+        const extra = [rec.subOnMinute ? `${rec.subOnMinute} 換上` : '', rec.subOffMinute ? `${rec.subOffMinute} 被換下` : '', rec.goals ? `${rec.goals} 球` : '', rec.assists ? `${rec.assists} 助攻` : ''].filter(Boolean).join(' · ');
+        const notes = substitutionNotes(g, details?.[rec.key], p, rec, t.team);
         return `<div class="person-row"><strong>${esc(fmt(g.kickoffUTC))} · ${esc(g.leagueLabel)} · ${esc(gameLabel(g))}</strong>
           <span class="role">${esc(roleLabel[rec.role] || rec.role)}${extra ? ` · ${esc(extra)}` : ''}</span>
+          ${notes.map(note => `<span class="sub-score">${esc(note)}</span>`).join('')}
           <button class="text-button" type="button" data-context="${esc(rec.key)}">這場背景 ↗</button></div>`;
       }).join('')}</div></details>`).join('')}</div>`;
 }
@@ -290,7 +334,7 @@ async function renderGame() {
       <section class="section"><h2>近期用人 · 近 14 日跨賽事</h2><p class="section-sub">已查英超、歐冠、歐聯、歐協、足總盃與聯賽盃；只列取得的已完賽。替補是當場狀態。</p>
         ${[away, home].map((t, i) => `<div class="usage-card${i ? ' alt' : ''}"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.recent14.length} 場</h3><p>${esc(summarizeUsage(t, target))}</p></div>`).join('')}
         <details class="expander" id="pairs"><summary class="action">查看相鄰場次與開球間隔 <span>⌄</span></summary><div class="expander-body">${pairBlock(away, d)}${pairBlock(home, d)}</div></details>
-        <details class="expander" id="people"><summary class="action">直接查看球員逐場紀錄 <span>⌄</span></summary><div class="expander-body">${personBlock(away)}${personBlock(home)}</div></details>
+        <details class="expander" id="people"><summary class="action">直接查看球員逐場紀錄 <span>⌄</span></summary><div class="expander-body">${personBlock(away, d.details)}${personBlock(home, d.details)}</div></details>
       </section>
       <section class="section"><h2>來源、時間與缺漏</h2><p class="meta">賽事與歷史資料查詢：${esc(fmt(d.generatedAt))}（台灣）；本場名單查詢：${esc(fmt(d.lineupCheckedAt))}（台灣）；台彩${odds.status === 'snapshot' ? `快照取得：${esc(fmt(odds.capturedAt))}（台灣）` : '快照未取得'}。本次來源錯誤 ${d.errors.length} 筆。</p>
         <ul class="source-list"><li><a href="https://www.premierleague.com/en/news/4675097/all-380-fixtures-for-season-2026-27" target="_blank" rel="noopener noreferrer">英超官方賽程</a>（目標場核對）</li><li><a href="${esc(target.source)}" target="_blank" rel="noopener noreferrer">ESPN 目標賽事</a>（本次自動資料）</li><li><a href="${esc(odds.source)}" target="_blank" rel="noopener noreferrer">台彩官方入口</a>（最新賠率由讀者查看）</li></ul>

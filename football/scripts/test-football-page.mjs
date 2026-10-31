@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderOverview, renderGame, venueResults, venueLine, summarizeUsage, scoreFormation } from '../assets/football.js';
+import { renderOverview, renderGame, venueResults, venueLine, summarizeUsage, scoreFormation, substitutionNotes } from '../assets/football.js';
 import { dueWindow, decide } from './football-due.mjs';
 
 test('失敗與逾期狀態先行，總覽及單場不讀已移除 JSON', async () => {
@@ -169,4 +169,53 @@ test('進球比分缺漏、跳號、倒退或與終場不符時不猜進球先�
   assert.equal(scoreFormation(game, { status: 'not_acquired', events: [] }), missing);
   assert.equal(scoreFormation({ ...game, finished: false }, detail([{ home: 1, away: 0 }])), missing);
   assert.equal(scoreFormation({ ...game, score: { home: 0, away: 0 }, goalsFor: 0, goalsAgainst: 0 }, detail([{ home: 1, away: 0 }])), missing);
+});
+
+test('球員 ID 對應同一次換上換下，比分依球員所屬隊伍顯示', () => {
+  const g = { finished: true, side: 'home', home: { id: '384' }, away: { id: '361' },
+    score: { home: 0, away: 2 }, goalsFor: 0, goalsAgainst: 2 };
+  const team = { id: '384', name: 'Crystal Palace' };
+  const detail = { status: 'acquired', events: [
+    { type: 'goal', scoreAfter: { home: 0, away: 1 } },
+    { type: 'goal', scoreAfter: { home: 0, away: 2 } },
+    { type: 'substitution', team: 'Crystal Palace', minute: "62'", in: { id: '259486', name: 'Eddie Nketiah' },
+      out: { id: '241187', name: 'Jean-Philippe Mateta' }, scoreAt: { home: 0, away: 2 } },
+  ] };
+  const mateta = { id: '241187', name: 'Jean-Philippe Mateta' };
+  const nketiah = { id: '259486', name: 'Eddie Nketiah' };
+  assert.deepEqual(substitutionNotes(g, detail, mateta, { role: 'starter', subOffMinute: "62'" }, team),
+    ['當時水晶宮 0–2 落後']);
+  assert.deepEqual(substitutionNotes(g, detail, nketiah, { role: 'sub_on', subOnMinute: "62'" }, team),
+    ['換下 Jean-Philippe Mateta · 當時水晶宮 0–2 落後']);
+  assert.deepEqual(substitutionNotes(g, detail, nketiah, { role: 'bench_unused' }, team), []);
+  assert.deepEqual(substitutionNotes(g, detail, nketiah, { role: 'not_listed' }, team), []);
+
+  const away = { ...g, side: 'away', goalsFor: 2, goalsAgainst: 0 };
+  const newcastle = { id: '361', name: 'Newcastle United' };
+  assert.deepEqual(substitutionNotes(away, detail, nketiah, { role: 'sub_on', subOnMinute: "62'" }, newcastle),
+    ['換人時比分未取得']);
+  const awayPlayer = { id: 'visitor' };
+  const awayDetail = { ...detail, events: [...detail.events,
+    { type: 'substitution', team: 'Newcastle United', minute: "77'", in: { id: 'visitor', name: 'Visitor' },
+      out: { id: 'other', name: 'Other' }, scoreAt: { home: 0, away: 2 } }] };
+  assert.deepEqual(substitutionNotes(away, awayDetail, awayPlayer, { role: 'sub_on', subOnMinute: "77'" }, newcastle),
+    ['換下 Other · 當時紐卡索 2–0 領先']);
+});
+
+test('換人當時比分或全場進球鏈不可靠時，保留換人關係但標比分未取得', () => {
+  const g = { finished: true, side: 'home', home: { id: '384' }, away: { id: '361' },
+    score: { home: 0, away: 2 }, goalsFor: 0, goalsAgainst: 2 };
+  const player = { id: '259486' }, record = { role: 'sub_on', subOnMinute: "62'" };
+  const team = { id: '384', name: 'Crystal Palace' };
+  const sub = { type: 'substitution', team: 'Crystal Palace', minute: "62'", in: { id: player.id },
+    out: { id: '241187', name: 'Jean-Philippe Mateta' }, scoreAt: { home: 0, away: 2 } };
+  const detail = events => ({ status: 'acquired', events });
+  const fallback = ['換下 Jean-Philippe Mateta · 換人時比分未取得'];
+  assert.deepEqual(substitutionNotes(g, detail([{ type: 'goal', scoreAfter: { home: 0, away: 2 } }, sub]), player, record, team), fallback);
+  assert.deepEqual(substitutionNotes(g, detail([{ type: 'goal', scoreAfter: { home: 0, away: 1 } },
+    { type: 'goal', scoreAfter: { home: 0, away: 2 } }, { ...sub, scoreAt: { home: 1, away: 1 } }]), player, record, team), fallback);
+  assert.deepEqual(substitutionNotes(g, detail([{ type: 'goal', scoreAfter: { home: 0, away: 1 } },
+    { type: 'goal', scoreAfter: { home: 0, away: 2 } }, { ...sub, minute: "63'" }]), player, record, team),
+  ['換人時比分未取得']);
+  assert.deepEqual(substitutionNotes(g, detail([]), player, record, team), ['換人時比分未取得']);
 });
