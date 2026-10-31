@@ -84,17 +84,21 @@ export function validateSession(s){
   if(l.matchupBuiltFor&&(!s.matchup||s.matchup.pk!==pk||!l.matchupSaved))throw new Error("對位完成標記缺輸出");
   if(Object.keys(l.contextDoneFor||{}).length&&!s.context)throw new Error("情境完成標記缺輸出");
   if(l.post.usedVersion&&(!s.post||!s.context?.post))throw new Error("賽後完成標記缺輸出");
+  if(s.pregame&&(s.pregame.game?.pk!==pk||s.pregame.game?.status?.code!=="pre"))
+    throw new Error("賽前保存內容缺同場賽前身份");
   for(const part of Object.values(l.sources.stats.parts||{}))
     if(part.usedVersion&&!s.game)throw new Error("統計分項完成標記缺單場輸出");
   return s;
 }
-export function loadSession(dir){
+export function loadSession(dir,stageKey=null){
   const files=fs.readdirSync(dir).filter(x=>/^session-\d{4}-[a-f0-9]+\.json$/.test(x)).sort().reverse();
   for(const file of files){try{
     const saved=JSON.parse(fs.readFileSync(path.join(dir,file),"utf8"));
     const body=JSON.stringify(saved.session);
     if(crypto.createHash("sha256").update(body).digest("hex")!==saved.sha256)continue;
-    return validateSession(saved.session);
+    const session=validateSession(saved.session);
+    if(stageKey&&session.rounds.at(-1)?.key!==stageKey)continue;
+    return session;
   }catch{ /* 中斷在寫入途中時，讀上一個完整 checkpoint */ }}
   throw new Error("沒有可讀且驗證通過的測試 checkpoint");
 }
@@ -110,7 +114,8 @@ export async function runTrial({variant="base",resume=null,stopAfter=null,checkp
   if(resume)validateSession(resume);
   if(resume&&resume.variant!==variant)throw new Error("checkpoint 與案例版本不符");
   let ledger=resume?.ledger??initial(),buildState=resume?.buildState??{games:{}},game=resume?.game??null,
-    bullpen=resume?.bullpen??null,context=resume?.context??null,matchup=resume?.matchup??null,post=resume?.post??null;
+    bullpen=resume?.bullpen??null,context=resume?.context??null,matchup=resume?.matchup??null,post=resume?.post??null,
+    pregame=resume?.pregame??null;
   const rounds=resume?.rounds??[], trialEvents=eventSet(variant);
   for(let index=resume?.nextIndex??0;index<trialEvents.length;index++){
     const e=trialEvents[index];
@@ -139,9 +144,9 @@ export async function runTrial({variant="base",resume=null,stopAfter=null,checkp
         const failedPart=k=>["away","home"].some(side=>!!fresh[side]?.failed?.[k]);
         const failedError=what=>R.errors.some(x=>x.what===what);
         const lineupOk=!failedPart("lineup")&&!failedError(`boxscore ${pk}`);
-        if(ledger.sources.schedule.usedVersion!==e.schedule){ledger.sources.schedule.usedVersion=e.schedule;ledger.sources.schedule.lastGoodAt=at;}
-        if(e.lineup&&lineupOk&&ledger.sources.lineup.usedVersion!==e.lineup){ledger.sources.lineup.usedVersion=e.lineup;ledger.sources.lineup.lastGoodAt=at;}
-        if(e.lineup&&lineupOk&&ledger.sources.roster.usedVersion!==e.lineup){ledger.sources.roster.usedVersion=e.lineup;ledger.sources.roster.lastGoodAt=at;}
+        if(ledger.sources.schedule.usedVersion!==e.schedule){ledger.sources.schedule.usedVersion=e.schedule;ledger.sources.schedule.receivedAt=at;ledger.sources.schedule.lastGoodAt=at;}
+        if(e.lineup&&lineupOk&&ledger.sources.lineup.usedVersion!==e.lineup){ledger.sources.lineup.usedVersion=e.lineup;ledger.sources.lineup.receivedAt=at;ledger.sources.lineup.lastGoodAt=at;}
+        if(e.lineup&&lineupOk&&ledger.sources.roster.usedVersion!==e.lineup){ledger.sources.roster.usedVersion=e.lineup;ledger.sources.roster.receivedAt=at;ledger.sources.roster.lastGoodAt=at;}
         if(!lineupOk){ledger.sources.lineup.state="failed";ledger.sources.roster.state="failed";}
         const hasLineup=["away","home"].some(side=>!!fresh[side]?.lineup?.slots?.length);
         const ok={sp:!failedPart("sp")&&!failedError("pitchers"),rec:!failedPart("rec")&&!failedError("standings"),
@@ -150,11 +155,11 @@ export async function runTrial({variant="base",resume=null,stopAfter=null,checkp
         for(const [k,good] of Object.entries(ok)){
           const p=ledger.sources.stats.parts[k];
           if(good===null){p.state="not_applicable";delete p.error;}
-          else if(good){if(p.usedVersion!==e.stats){p.usedVersion=e.stats;p.lastGoodAt=at;}p.state="available";delete p.error;}
+          else if(good){p.usedVersion=e.stats;p.receivedAt=at;p.lastGoodAt=at;p.state="available";delete p.error;}
           else {p.state="failed";p.error=R.errors.find(x=>({sp:"pitchers",rec:"standings",ops:"team hitting",era:"team pitching",batters:"batters"})[k]===x.what)?.error||"本場模組失敗";}
         }
         const complete=Object.values(ledger.sources.stats.parts).every(p=>p.state==="not_applicable"||(p.usedVersion===e.stats&&p.state!=="failed"));
-        if(complete){if(ledger.sources.stats.usedVersion!==e.stats){ledger.sources.stats.usedVersion=e.stats;ledger.sources.stats.lastGoodAt=at;}ledger.sources.stats.state=e.statsState||"available";}
+        if(complete){ledger.sources.stats.usedVersion=e.stats;ledger.sources.stats.receivedAt=at;ledger.sources.stats.lastGoodAt=at;ledger.sources.stats.state=e.statsState||"available";}
         else ledger.sources.stats.state="failed";
         errors.push(...R.errors.map(x=>`build-live.${x.what}：${x.error}`));
         ledger.scheduleVersion=ledger.sources.schedule.usedVersion;
@@ -214,6 +219,11 @@ export async function runTrial({variant="base",resume=null,stopAfter=null,checkp
         if(context)context={...context,post};
       }catch(err){errors.push(`post.summarizePost：${err.message}`);}
     }
+    if(phase==="scheduled"&&game?.status?.code==="pre"){
+      pregame=clone({savedAt:at,game,bullpen,context,matchup,matchupStatus:matchupState(game,matchup),
+        sources:ledger.sources,done:{matchup:ledger.matchupBuiltFor,context:ledger.contextDoneFor}});
+    }
+    const pregameSha256=pregame?crypto.createHash("sha256").update(JSON.stringify(pregame)).digest("hex"):null;
     const after={schedule:ledger.sources.schedule.usedVersion,lineup:ledger.sources.lineup.usedVersion,roster:ledger.sources.roster.usedVersion,
       stats:ledger.sources.stats.usedVersion,bullpen:ledger.bullpen.usedVersion,matchup:ledger.matchupBuiltFor,
       context:clone(ledger.contextDoneFor),post:ledger.post.usedVersion??null};
@@ -223,8 +233,8 @@ export async function runTrial({variant="base",resume=null,stopAfter=null,checkp
       matchupSuccessAt:ledger.matchupSuccessAt??null,contextSuccessAt:ledger.contextSuccessAt??null,
       contextChecks:context?.checks?.map(x=>({id:x.id,state:x.state}))??[],postComplete:post?.complete??null,
       contextEvidenceSha256:context?.checks?crypto.createHash("sha256").update(JSON.stringify(context.checks)).digest("hex"):null,
-      frozenAt:context?.frozen?.at??null});
-    const session={schema:1,variant,nextIndex:index+1,ledger,buildState,game,bullpen,context,matchup,post,rounds};
+      frozenAt:context?.frozen?.at??null,pregameSha256});
+    const session={schema:1,variant,nextIndex:index+1,ledger,buildState,game,bullpen,context,matchup,post,pregame,rounds};
     validateSession(session);
     if(checkpointDir)saveSession(checkpointDir,session);
     if(e.key===stopAfter)break;
@@ -250,6 +260,8 @@ export async function runTrial({variant="base",resume=null,stopAfter=null,checkp
   assert.equal(by("live").frozenAt,by("final_complete").frozenAt);
   assert.equal(by("live").contextEvidenceSha256,by("final_complete").contextEvidenceSha256);
   assert.equal(by("live").after.matchup,by("final_complete").after.matchup);
+  assert.equal(by("live").pregameSha256,by("final_complete").pregameSha256);
+  assert.equal(pregame.game.status.code,"pre");
   assert.ok(by("stat_update").contextChecks.some(x=>x.id==="ops"));
   assert.deepEqual([...by("stat_update").contextRecomputed].sort(),["home","l10","ops","rapg","rpg","whip"].sort());
   assert.equal(by("no_lineup").contextChecks.find(x=>x.id==="ops").state,"miss");
@@ -266,7 +278,7 @@ export async function runTrial({variant="base",resume=null,stopAfter=null,checkp
     assert.equal(by("pitchers_recovered").after.stats,"s4");
   }
   }
-  const finalState={schema:1,variant,nextIndex:rounds.length,ledger,buildState,game,bullpen,context,matchup,post,rounds};
+  const finalState={schema:1,variant,nextIndex:rounds.length,ledger,buildState,game,bullpen,context,matchup,post,pregame,rounds};
   validateSession(finalState);
   return {meta:{gamePk:pk,variant,completed,kind:"人工來源離線串接",rules:"只在成功後提交處理版；模組呼叫不是 HTTP 次數",source:"same-game-fixture.mjs；既有 build-live／bullpen／matchup／ctx／post"},rounds,finalState};
 }
