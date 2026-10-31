@@ -40,6 +40,19 @@ try{
     &&pre.includes("值得一起看的條件")&&!pre.includes("Jacob Misiorowski"));
   check("缺對位時同場賽後仍可回看",post.includes("2<i>:</i>6")
     &&post.includes("展開當時保存的賽前研究資料"));
+  const rosterPath=path.join(temp,"roster/849844.json");
+  fs.rmSync(rosterPath);
+  const rosterOutput=path.join(temp,"roster-missing.js");
+  const withoutRoster=run("--test-copy","--global=MLB_REAL_GAMES_MISSING",`--output=${rosterOutput}`,"--write");
+  check("849844 無 series 且缺 roster 時仍完成共同轉接",withoutRoster.status===0);
+  const rosterWin={};
+  vm.runInNewContext(fs.readFileSync(rosterOutput,"utf8"),{window:rosterWin});
+  check("缺 roster 僅該場降級，另一場名單及其餘區塊保留",
+    rosterWin.MLB_REAL_GAMES_MISSING.games[849844].game.series===null
+    &&rosterWin.MLB_REAL_GAMES_MISSING.games[849844].roster===null
+    &&rosterWin.MLB_REAL_GAMES_MISSING.games[849844].game.away.lineup.slots.length===9
+    &&rosterWin.MLB_REAL_GAMES_MISSING.games[849799].roster!==null);
+  fs.copyFileSync(path.join(source,"roster/849844.json"),rosterPath);
   const wrong=path.join(temp,"roster/849844.json"),roster=JSON.parse(fs.readFileSync(wrong,"utf8"));
   roster.pk=849799;
   fs.writeFileSync(wrong,JSON.stringify(roster));
@@ -52,3 +65,4 @@ try{
     throw Error("拒絕清理未核對的測試目錄");
   fs.rmSync(resolved,{recursive:true,force:true});
 }
+

@@ -98,7 +98,7 @@ for(const pk of pks){
   };
   records[pk]={
     game:{pk,season:Number(g.usDate.slice(0,4)),gameType:type,twDate:g.twDate,twTime:g.twTime,
-      usDate:g.usDate,startUTC:g.startUTC,venue:g.venue,series:g.series||r.series||null,
+      usDate:g.usDate,startUTC:g.startUTC,venue:g.venue,series:g.series||r?.series||null,
       away:team("away"),home:team("home")},
     matchup:m?{fetchedAt:m.fetchedAt,rules:m.rules,pairs:m.pairs.map(p=>({...p,
       splitStatus:{vl:p.splits?.vl?"value":"unavailable",vr:p.splits?.vr?"value":"unavailable"},
@@ -124,3 +124,4 @@ if(process.argv.includes("--write")){
   console.log("WROTE "+file);
 }
 console.log(`PASS ${pks.length} real gamePk / shared adapter`);
+
