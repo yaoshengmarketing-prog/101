@@ -71,6 +71,7 @@
         "contextSuccessAt": "2027-04-20T15:00:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "788924ec8d10a686a1a383f2316c4b97c7821a49c618d6072fb704da6261ff8f",
+        "pregameSha256": "e76d955885980c9954272b9ec3272a9cccb47131c7543ce022cbb5abcc019b53",
         "frozenAt": null
       },
       {
@@ -124,6 +125,7 @@
         "contextSuccessAt": "2027-04-20T15:00:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "788924ec8d10a686a1a383f2316c4b97c7821a49c618d6072fb704da6261ff8f",
+        "pregameSha256": "e801f7156d04d91d86136d7fea76ca31adb5ba793e5ac2397b0ba459bbab2f44",
         "frozenAt": null
       },
       {
@@ -183,6 +185,7 @@
         "contextSuccessAt": "2027-04-20T21:50:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "c798afa6feb4e2b91cb018a16787431c026b369a1d3112d6c8521ea39cdc8a29",
+        "pregameSha256": "06e97fda8eda74e17b6eac4ab5517d6cb64d3c5747a7a7f28f65c23a8229e0bf",
         "frozenAt": null
       },
       {
@@ -235,6 +238,7 @@
         "contextSuccessAt": "2027-04-20T21:50:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "c798afa6feb4e2b91cb018a16787431c026b369a1d3112d6c8521ea39cdc8a29",
+        "pregameSha256": "5ff4fb5e604c5afc8ea73361704166d7db64d9077eb66bfb214efb0cbfecca8c",
         "frozenAt": null
       },
       {
@@ -296,6 +300,7 @@
         "contextSuccessAt": "2027-04-20T22:15:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "3aa35f2d92698a86dfc57cf7564227d5c39850607ab2d25571365997b2e9d21d",
+        "pregameSha256": "0998d624689f94c7ec91d572c7f689b566372c0bc7df6ff1a4dbfbd25ed69947",
         "frozenAt": null
       },
       {
@@ -346,6 +351,7 @@
         "contextSuccessAt": "2027-04-20T22:15:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "3aa35f2d92698a86dfc57cf7564227d5c39850607ab2d25571365997b2e9d21d",
+        "pregameSha256": "891bfd8bbe343c5b568bc0064efa8362be386b103e24a63f432e025c17b8f328",
         "frozenAt": null
       },
       {
@@ -407,6 +413,7 @@
         "contextSuccessAt": "2027-04-20T22:25:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "efb67388448b722c93a4adf28ffd8a948e9e5b725edb4771391c8301d19df8c1",
+        "pregameSha256": "e7627a079f44055b5ce5d1cb07d3b41b6b625bbfd35b595cd47ef8e41e5a4f5a",
         "frozenAt": null
       },
       {
@@ -463,6 +470,7 @@
         "contextSuccessAt": "2027-04-20T22:30:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "3b9a5c17b3812fe53386658f13ab54069b33d6692ab63c24d1da826a7bda8ff1",
+        "pregameSha256": "44fcbfe6cf1291ab402545fe67ff260df920077f0ab303dc41da6acee191ba29",
         "frozenAt": null
       },
       {
@@ -516,6 +524,7 @@
         "contextSuccessAt": "2027-04-20T22:30:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "3b9a5c17b3812fe53386658f13ab54069b33d6692ab63c24d1da826a7bda8ff1",
+        "pregameSha256": "44fcbfe6cf1291ab402545fe67ff260df920077f0ab303dc41da6acee191ba29",
         "frozenAt": "2027-04-20T23:35:00Z"
       },
       {
@@ -570,6 +579,7 @@
         "contextSuccessAt": "2027-04-20T22:30:00Z",
         "postComplete": false,
         "contextEvidenceSha256": "3b9a5c17b3812fe53386658f13ab54069b33d6692ab63c24d1da826a7bda8ff1",
+        "pregameSha256": "44fcbfe6cf1291ab402545fe67ff260df920077f0ab303dc41da6acee191ba29",
         "frozenAt": "2027-04-20T23:35:00Z"
       },
       {
@@ -624,6 +634,7 @@
         "contextSuccessAt": "2027-04-20T22:30:00Z",
         "postComplete": true,
         "contextEvidenceSha256": "3b9a5c17b3812fe53386658f13ab54069b33d6692ab63c24d1da826a7bda8ff1",
+        "pregameSha256": "44fcbfe6cf1291ab402545fe67ff260df920077f0ab303dc41da6acee191ba29",
         "frozenAt": "2027-04-20T23:35:00Z"
       }
     ]
@@ -700,6 +711,7 @@
         "contextSuccessAt": "2027-04-20T15:00:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "788924ec8d10a686a1a383f2316c4b97c7821a49c618d6072fb704da6261ff8f",
+        "pregameSha256": "e76d955885980c9954272b9ec3272a9cccb47131c7543ce022cbb5abcc019b53",
         "frozenAt": null
       },
       {
@@ -754,6 +766,7 @@
         "contextSuccessAt": "2027-04-20T15:00:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "788924ec8d10a686a1a383f2316c4b97c7821a49c618d6072fb704da6261ff8f",
+        "pregameSha256": "aa64f147351ada12122440434dfc7ae856fa4627c957154c1d40d238c486f5fa",
         "frozenAt": null
       },
       {
@@ -807,6 +820,7 @@
         "contextSuccessAt": "2027-04-20T15:00:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "788924ec8d10a686a1a383f2316c4b97c7821a49c618d6072fb704da6261ff8f",
+        "pregameSha256": "77607c53bebe1c1940cdae758248733f456aa9652ce3cd20e8099a287309fb46",
         "frozenAt": null
       },
       {
@@ -857,6 +871,7 @@
         "contextSuccessAt": "2027-04-20T15:00:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "788924ec8d10a686a1a383f2316c4b97c7821a49c618d6072fb704da6261ff8f",
+        "pregameSha256": "f89ba4cded45f8407d6382fd70bd5f818bbf5c9fd9c9bdfe35c7c9276e52b7f3",
         "frozenAt": null
       },
       {
@@ -916,6 +931,7 @@
         "contextSuccessAt": "2027-04-20T21:50:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "c798afa6feb4e2b91cb018a16787431c026b369a1d3112d6c8521ea39cdc8a29",
+        "pregameSha256": "28157e77a5baac59390070b32b8857431e1acf55efd86198be9ae559dd3b576e",
         "frozenAt": null
       },
       {
@@ -968,6 +984,7 @@
         "contextSuccessAt": "2027-04-20T21:50:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "c798afa6feb4e2b91cb018a16787431c026b369a1d3112d6c8521ea39cdc8a29",
+        "pregameSha256": "85278cc030f009cc5dd7971b7bcf3f85947553b9c5e04d11e4834ef3c1f752f8",
         "frozenAt": null
       },
       {
@@ -1029,6 +1046,7 @@
         "contextSuccessAt": "2027-04-20T22:15:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "3aa35f2d92698a86dfc57cf7564227d5c39850607ab2d25571365997b2e9d21d",
+        "pregameSha256": "a27b690a22c200c8512ad96d20a4070ae43c0d1d0fc9b8f67f482ee1dad2bcb3",
         "frozenAt": null
       },
       {
@@ -1079,6 +1097,7 @@
         "contextSuccessAt": "2027-04-20T22:15:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "3aa35f2d92698a86dfc57cf7564227d5c39850607ab2d25571365997b2e9d21d",
+        "pregameSha256": "a7fbce9e46e7b9895600df48f9038da9dd38c905ba5d96e09bb764ed5b63594a",
         "frozenAt": null
       },
       {
@@ -1140,6 +1159,7 @@
         "contextSuccessAt": "2027-04-20T22:25:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "efb67388448b722c93a4adf28ffd8a948e9e5b725edb4771391c8301d19df8c1",
+        "pregameSha256": "7033a39a10de2624d1f4f73f24b0a90bc67960fd952a30aa9fc74592050b322f",
         "frozenAt": null
       },
       {
@@ -1196,6 +1216,7 @@
         "contextSuccessAt": "2027-04-20T22:30:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "3b9a5c17b3812fe53386658f13ab54069b33d6692ab63c24d1da826a7bda8ff1",
+        "pregameSha256": "6c09bb65a76209e13517cc74ebdb9b9df46c00e196461c824bd5305f383451df",
         "frozenAt": null
       },
       {
@@ -1257,6 +1278,7 @@
         "contextSuccessAt": "2027-04-20T22:31:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "2272449cf0c16d2d68e61e25e6cc0702995427ae8c80aaa67cfa88a94337faaf",
+        "pregameSha256": "893a0f65677aade5088d6f070b9983f11dc2ea9d6dadd34f70f3fae479c33ea9",
         "frozenAt": null
       },
       {
@@ -1313,6 +1335,7 @@
         "contextSuccessAt": "2027-04-20T22:32:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "6a2cab175e8abcc5b1b8e56d22e910b34c2a0104285a6e0508323c391813cadb",
+        "pregameSha256": "2fcd8e32f5392e908779b4bef4160f8eee4de79bb5a8d62b8097d7a96776e0c6",
         "frozenAt": null
       },
       {
@@ -1366,6 +1389,7 @@
         "contextSuccessAt": "2027-04-20T22:32:00Z",
         "postComplete": null,
         "contextEvidenceSha256": "6a2cab175e8abcc5b1b8e56d22e910b34c2a0104285a6e0508323c391813cadb",
+        "pregameSha256": "2fcd8e32f5392e908779b4bef4160f8eee4de79bb5a8d62b8097d7a96776e0c6",
         "frozenAt": "2027-04-20T23:35:00Z"
       },
       {
@@ -1420,6 +1444,7 @@
         "contextSuccessAt": "2027-04-20T22:32:00Z",
         "postComplete": false,
         "contextEvidenceSha256": "6a2cab175e8abcc5b1b8e56d22e910b34c2a0104285a6e0508323c391813cadb",
+        "pregameSha256": "2fcd8e32f5392e908779b4bef4160f8eee4de79bb5a8d62b8097d7a96776e0c6",
         "frozenAt": "2027-04-20T23:35:00Z"
       },
       {
@@ -1474,6 +1499,7 @@
         "contextSuccessAt": "2027-04-20T22:32:00Z",
         "postComplete": true,
         "contextEvidenceSha256": "6a2cab175e8abcc5b1b8e56d22e910b34c2a0104285a6e0508323c391813cadb",
+        "pregameSha256": "2fcd8e32f5392e908779b4bef4160f8eee4de79bb5a8d62b8097d7a96776e0c6",
         "frozenAt": "2027-04-20T23:35:00Z"
       }
     ]
