@@ -32,8 +32,8 @@ const prior = { gamePk:9902748, officialDate:"2027-04-18", gameDate:"2027-04-18T
 const entryOf = s => {
   const final = s.status === "Final", live = s.status === "In Progress";
   const innings = final ? Array.from({length:9},(_,i)=>({num:i+1,
-    away:{runs:i===2||i===6?i===6&&s.partial?null:1:0},
-    home:i===8?null:{runs:[0,5,7].includes(i)?1:0}})) : null;
+    away:{runs:i===2||i===6?i===6&&s.partial?null:1:0,outs:3},
+    home:i===8?null:{runs:[0,5,7].includes(i)?1:0,outs:3}})) : null;
   return { gamePk:pk, officialDate:"2027-04-20", gameDate:start, gameType:"R",
     status:{abstractGameState:final?"Final":live?"Live":"Preview",detailedState:s.status},
     venue:{name:"人工測試球場",timeZone:{id:"America/Chicago"}},
@@ -52,7 +52,7 @@ const boxOf = (s, old=false) => {
     if(old||s.status==="Final"){
       const ids=old?(letter==="A"?[990011,990093]:[990012,990094]):letter==="A"?[990001,990091]:[990003,990092];
       for(const [i,id] of ids.entries()) players["ID"+id]={person:{id,fullName:`測試投手 ${letter}${i+1}`},
-        stats:{pitching:{inningsPitched:i?"3.0":"6.0",numberOfPitches:old?(i?21:68):i?42:87,
+        stats:{pitching:{inningsPitched:i?(letter==="A"?"2.0":"3.0"):"6.0",numberOfPitches:old?(i?21:68):i?42:87,
           runs:i?1:letter==="A"?2:1,earnedRuns:i?1:letter==="A"?2:1}}};
       return {players,pitchers:ids};
     }
@@ -135,6 +135,16 @@ assert("開賽後賽前快照凍結，仍為同一場賽前樣本",rows[4].conte
 assert("完賽未齊與完整分開，0／確定未打／未取得分開",rows[5].post.gameOver&&!rows[5].post.complete
   &&rows[5].post.innings[0].away===0&&rows[5].post.notPlayed.some(x=>x.n===9&&x.side==="home")
   &&rows[5].post.missing.some(x=>x.n===7&&x.side==="away")&&rows[6].post.complete&&!rows[6].post.missing.length);
+const outsOfIp=ip=>{const [whole,part]=String(ip).split(".").map(Number);return whole*3+(part||0)};
+assert("人工賽後投球出局數對齊實際半局，九下未打不計客隊投球",[steps[5],steps[6]].every(s=>{
+  const halves=entryOf(s).linescore.innings, box=boxOf(s);
+  return ["away","home"].every(side=>{
+    const battingSide=side==="away"?"home":"away";
+    const inningsOuts=halves.reduce((n,inning)=>n+(inning[battingSide]?.outs??0),0);
+    const pitchingOuts=box.teams[side].pitchers.reduce((n,id)=>n+outsOfIp(box.teams[side].players["ID"+id].stats.pitching.inningsPitched),0);
+    return inningsOuts===pitchingOuts;
+  });
+}));
 const preHash=x=>crypto.createHash("sha256").update(JSON.stringify(x)).digest("hex");
 const frozenHash=preHash(rows[4].pregame), lastHash=preHash(rows[6].pregame);
 assert("賽後只補 post，未改寫最後成功的賽前內容",frozenHash===lastHash

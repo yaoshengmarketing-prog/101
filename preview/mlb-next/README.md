@@ -90,3 +90,21 @@
 - `trial-batting.mjs` 是人工測試輸入的共同事件基礎；同球員當季 R 的總打席等於左右投分項之和，OPS 從安打、保送、壘打、打數與打席重新計算，不平均分項 OPS。正常少樣本 A1 現為整體 10 打席、對左 4、對右 6；刻意矛盾的資料不在正常案例。
 - `same-game-data.js` 的 `meta.frozenPregameSha256` 與 `afterPostPregameSha256` 相同；`oneGameRecord=1`。完賽未齊時 0 分、確定未打與 ? 未取得分開，下一輪補齊。首次看見時已開賽者另驗證為 `late`，不冒充賽前樣本。
 - 重建與檢查：`node scripts/cross-season-trial.mjs --write`、`node scripts/same-game-trial.mjs --write`、`node scripts/test-same-game-preview.mjs`。2027 仍全為人工輸入，尚未證明真實來源時機；正式資料、排程與規則未改。
+
+## 真實多場資料接入（獨立分支；正式站未改）
+
+- [真實場次清單](./index.html?trial=real)、[849799 世界大賽](./game.html?trial=real&pk=849799&mode=pre)、[849844 外卡賽](./game.html?trial=real&pk=849844&mode=pre)。同一份 `app.js` 依 gamePk 讀取 `real-games-data.js`；檔案由 `scripts/real-multi-trial.mjs` 從已保存的 `games/matchup/bullpen/ctx/roster` 複本產出，不為每場寫專屬頁面。人工 9902750 仍在獨立測試入口，不列真實場次。
+- 真實輸入固定於 101 commit `e14032cd8e1d502d476310e46e57c29cadaddf32`，複本在 `scripts/fixtures/real-2026/<模組>/<gamePk>.json`，產出檔逐模組記原始路徑、Git blob SHA 與時間。849799：美國 2026-10-28／台灣 10-29，MIL 4：1 TB；849844：美國 2026-10-01／台灣 10-02，PHI 2：6 ATL。849844 的 games 檔沒有 gameType，使用同場賽前 ctx 與 roster 均保存的 `F`，明列外卡賽。
+- 兩場 ctx 都是賽前樣本：849799 於 `2026-10-28T23:30:42.547Z` 更新、849844 於 `2026-10-01T23:45:42.528Z` 更新；對位分別於 `2026-10-28T23:30:41.192Z`、`2026-10-01T23:45:42.100Z` 保存。先發 ID、九棒 ID 與 matchup basis 已逐場核對，才展示賽前手別分項與最近三次先發。名單保存時間分別為 `2026-10-28T23:30:41.566Z`、`2026-10-01T14:50:22.058Z`。
+- 賽後結果讀同場 ctx 的獨立 post：849799 於 `2026-10-29T03:15:59.887Z`、849844 於 `2026-10-02T03:15:49.337Z` 取得。比賽檔與逐人牛棚檔最後更新都在開賽後，不能將其中整體 ERA、OPS、戰績或逐人用量冒充當時賽前快照。賽前牛棚第一層用 ctx 已保存的摘要；較晚更新的每日及逐人明細另標時間。只有 849799 的 ctx 保存逐筆相似案例；849844 缺清單就寫缺，不湊 0 或借別場。
+
+| 區塊 | 這次真實多場讀取 | 仍缺的固定證據／接入 |
+| --- | --- | --- |
+| 首頁與比分 | 同一清單列兩個 gamePk，台灣日期時間與賽別分開；賽後比分、逐局與實際投手使用讀同場 post | 尚非正式首頁或即時更新 |
+| 先發、官方九棒、投打對位 | 兩場均由 games 的首次取得時間與 matchup 的球員 ID／打線簽章核對；投手被打 OPS、最近三次先發及九棒手別 OPS／打席可讀 | games 檔較晚更新，整體 ERA/OPS/戰績缺可驗的賽前原值，故不補作當時成績 |
+| 情境與歷史案例 | 兩場 ctx 賽前 checks、門檻及範圍可讀；849799 的 similar 逐筆展開 | 849844 未保存 similar 清單；不據此推定符合 0 場 |
+| 牛棚 | ctx 賽前摘要可讀；bullpen 每日／逐人檔另標較晚更新時間 | 逐人檔無逐筆賽別，且不是可證的賽前逐人快照 |
+| 天氣、名單 | ctx 天氣與 roster 已保存的賽前比較基準可讀 | roster 的 people 是受檢查人物，不是完整名冊；逐棒第三方預估／確認快照和上一場逐棒賽前版本未接此共同讀取 |
+
+- 人工 9902750 的 boxscore 輸入已修正：主隊 3：2 勝且九下未打，客隊投球改為 6＋2＝8 局、主隊 6＋3＝9 局。檢查以人工 linescore 各半局明列的出局數對照 boxscore 投手出局數，沒有把 8／9 局寫成所有比賽的通則。
+- 重建與必要檢查：`node scripts/real-multi-trial.mjs --write`、`node scripts/test-real-multi-preview.mjs`、`node scripts/same-game-trial.mjs --write`、`node scripts/test-same-game-preview.mjs`。正式 `/live/`、原始 2026 資料、排程、統計門檻及網域都未修改。
