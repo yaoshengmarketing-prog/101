@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderOverview, renderGame, venueResults, venueLine, summarizeUsage } from '../assets/football.js';
+import { renderOverview, renderGame, venueResults, venueLine, summarizeUsage, scoreFormation } from '../assets/football.js';
 import { dueWindow, decide } from './football-due.mjs';
 
 test('失敗與逾期狀態先行，總覽及單場不讀已移除 JSON', async () => {
@@ -140,4 +140,33 @@ test('中間名單缺漏不拼成連續三場，本場正式名單不混入歷�
   team.pairs.push({ from: 'c', to: target.key, kickoffGapMinutes: 4185, continuation: 11 });
   team.players.push({ name: '本場新先發', games: [{ key: 'c', role: 'sub_on' }, { key: target.key, role: 'starter' }] });
   assert.equal(summarizeUsage(team, target), before);
+});
+
+test('逐場比分只在進球逐筆從 0–0 接到終場時產生本隊角度短句', () => {
+  const game = (side, home, away) => ({ side, finished: true, score: { home, away },
+    goalsFor: side === 'home' ? home : away, goalsAgainst: side === 'home' ? away : home });
+  const detail = scores => ({ status: 'acquired', events: scores.map(([home, away]) =>
+    ({ type: 'goal', scoreAfter: { home, away } })) });
+  assert.equal(scoreFormation(game('away', 1, 1), detail([[1, 0], [1, 1]])), '先失球，最後和局');
+  assert.equal(scoreFormation(game('home', 3, 1), detail([[0, 1], [1, 1], [2, 1], [3, 1]])), '先失球，最後獲勝');
+  assert.equal(scoreFormation(game('home', 2, 3), detail([[1, 0], [1, 1], [1, 2], [2, 2], [2, 3]])), '先進球，最後落敗');
+  // 烏龍球的文字或球員隊伍可能與得分方不同，只依比分哪一側 +1。
+  assert.equal(scoreFormation(game('away', 0, 1), { status: 'acquired', events: [
+    { type: 'goal', team: 'home', text: 'Own Goal', scoreAfter: { home: 0, away: 1 } },
+  ] }), '先進球，最後獲勝');
+  assert.equal(scoreFormation(game('home', 0, 0), detail([])), '雙方未進球');
+});
+
+test('進球比分缺漏、跳號、倒退或與終場不符時不猜進球先後', () => {
+  const game = { side: 'home', finished: true, score: { home: 2, away: 1 }, goalsFor: 2, goalsAgainst: 1 };
+  const missing = '進球先後本次未取得';
+  const detail = scores => ({ status: 'acquired', events: scores.map(scoreAfter => ({ type: 'goal', scoreAfter })) });
+  assert.equal(scoreFormation(game, detail([{ home: 1, away: 0 }, null, { home: 2, away: 1 }])), missing);
+  assert.equal(scoreFormation(game, detail([{ home: 2, away: 0 }, { home: 2, away: 1 }])), missing);
+  assert.equal(scoreFormation(game, detail([{ home: 1, away: 0 }, { home: 0, away: 1 }])), missing);
+  assert.equal(scoreFormation(game, detail([{ home: 1, away: 0 }, { home: 1, away: 1 }])), missing);
+  assert.equal(scoreFormation(game, detail([])), missing);
+  assert.equal(scoreFormation(game, { status: 'not_acquired', events: [] }), missing);
+  assert.equal(scoreFormation({ ...game, finished: false }, detail([{ home: 1, away: 0 }])), missing);
+  assert.equal(scoreFormation({ ...game, score: { home: 0, away: 0 }, goalsFor: 0, goalsAgainst: 0 }, detail([{ home: 1, away: 0 }])), missing);
 });

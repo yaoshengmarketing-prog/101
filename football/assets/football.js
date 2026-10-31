@@ -54,7 +54,32 @@ function openContext(key, opener) {
   $('#close-context').focus();
 }
 
-function resultBlock(t, snapshotThreshold = null) {
+export function scoreFormation(g, detail) {
+  const missing = '進球先後本次未取得';
+  if (!g?.finished || detail?.status !== 'acquired' || !Array.isArray(detail.events)
+    || !['home', 'away'].includes(g.side)) return missing;
+  const final = g.score;
+  const validScore = score => score && Number.isInteger(score.home) && score.home >= 0
+    && Number.isInteger(score.away) && score.away >= 0;
+  if (!validScore(final) || !Number.isInteger(g.goalsFor) || !Number.isInteger(g.goalsAgainst)
+    || g.goalsFor !== final[g.side] || g.goalsAgainst !== final[g.side === 'home' ? 'away' : 'home']) return missing;
+  const goals = detail.events.filter(event => event.type === 'goal');
+  let score = { home: 0, away: 0 }, firstSide = null;
+  for (const event of goals) {
+    if (!validScore(event.scoreAfter)) return missing;
+    const homeAdded = event.scoreAfter.home - score.home;
+    const awayAdded = event.scoreAfter.away - score.away;
+    if (!((homeAdded === 1 && awayAdded === 0) || (homeAdded === 0 && awayAdded === 1))) return missing;
+    firstSide ||= homeAdded === 1 ? 'home' : 'away';
+    score = event.scoreAfter;
+  }
+  if (score.home !== final.home || score.away !== final.away) return missing;
+  if (!goals.length) return final.home === 0 && final.away === 0 ? '雙方未進球' : missing;
+  const result = g.goalsFor > g.goalsAgainst ? '獲勝' : g.goalsFor < g.goalsAgainst ? '落敗' : '和局';
+  return `${firstSide === g.side ? '先進球' : '先失球'}，最後${result}`;
+}
+
+function resultBlock(t, details, snapshotThreshold = null) {
   const form = venueResults(t.leagueFive);
   return `<div class="team-block"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.leagueFive.length}/5 場</h3>
     ${t.leagueFive.length ? `<div class="venue-form"><p class="venue-form-title">這 ${t.leagueFive.length} 場英超中的主客成績</p>
@@ -62,7 +87,7 @@ function resultBlock(t, snapshotThreshold = null) {
       ${form.unknown ? `<p>另有 ${form.unknown} 場主客場本次未取得。</p>` : ''}</div>` : ''}
     ${t.leagueFive.length ? t.leagueFive.map(g => `<article class="result">
       <div class="result-top"><small>${esc(fmt(g.kickoffUTC))} · ${esc(gameLabel(g))}</small><span class="total">${g.totalGoals === null ? '總進球未取得' : `${g.totalGoals} 球`}</span></div>
-      <div class="result-bottom"><span class="score">${esc(ownScore(g))}</span>${snapshotThreshold !== null && g.totalGoals !== null ? `<span class="tiny">對照本場快照 ${snapshotThreshold}：${g.totalGoals > snapshotThreshold ? '大' : g.totalGoals < snapshotThreshold ? '小' : '恰等門檻'}</span>` : ''}<button class="text-button" type="button" data-context="${esc(g.key)}">比賽背景 ↗</button></div>
+      <div class="result-bottom"><div class="result-score"><span class="score">${esc(ownScore(g))}</span><span class="score-formation">${esc(scoreFormation(g, details?.[g.key]))}</span></div>${snapshotThreshold !== null && g.totalGoals !== null ? `<span class="tiny">對照本場快照 ${snapshotThreshold}：${g.totalGoals > snapshotThreshold ? '大' : g.totalGoals < snapshotThreshold ? '小' : '恰等門檻'}</span>` : ''}<button class="text-button" type="button" data-context="${esc(g.key)}">比賽背景 ↗</button></div>
     </article>`).join('') : '<p class="empty">英超逐場紀錄本次未取得。</p>'}</div>`;
 }
 
@@ -261,7 +286,7 @@ async function renderGame() {
         ${[away, home].map(t => `<div class="number-card"><small>${esc(teamName(t.team.name))} · ${t.goals.games}/${t.goals.requested} 場比分完整</small><b>${t.goals.for === null ? '進失球本次未能完整合計' : `${t.goals.for} 進 ${t.goals.against} 失`}</b></div>`).join('')}</div>
         <p class="compare-note">分母是各隊開球前最近取得的英超比賽；不是勝率或本場預測。</p></section>
       <section class="section"><h2>逐場紀錄 · 英超</h2><p class="section-sub">兩隊分開列，比分為本隊–對手；總進球由程式相加。${threshold === null ? '本場無大小快照門檻，不標大／小。' : `以下以本場快照 ${threshold} 球門檻對照歷史總進球，非各場當時盤口結果。`}</p>
-        ${resultBlock(away, threshold)}${resultBlock(home, threshold)}<p class="tiny">xG 本次未取得；每列「比賽背景」與下方球員紀錄連到同一場事件。</p></section>
+        ${resultBlock(away, d.details, threshold)}${resultBlock(home, d.details, threshold)}<p class="tiny">xG 本次未取得；每列「比賽背景」與下方球員紀錄連到同一場事件。</p></section>
       <section class="section"><h2>近期用人 · 近 14 日跨賽事</h2><p class="section-sub">已查英超、歐冠、歐聯、歐協、足總盃與聯賽盃；只列取得的已完賽。替補是當場狀態。</p>
         ${[away, home].map((t, i) => `<div class="usage-card${i ? ' alt' : ''}"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.recent14.length} 場</h3><p>${esc(summarizeUsage(t, target))}</p></div>`).join('')}
         <details class="expander" id="pairs"><summary class="action">查看相鄰場次與開球間隔 <span>⌄</span></summary><div class="expander-body">${pairBlock(away, d)}${pairBlock(home, d)}</div></details>
