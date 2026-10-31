@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MLB 多場固定預覽｜資料與版本</title><link rel="stylesheet" href="style.css"></head>
+<body><div class="site-shell"><header class="mast"><a class="brand" href="index.html?trial=real"><span>運彩 101</span></a><div class="mast-right"><span class="draft-pill">獨立測試預覽</span><span class="mast-id">原始程式 693b2e1</span></div></header><main>
+<div class="test-notice" role="note"><b>固定歷史預覽，非正式網站</b><span>兩場真實 2026 比賽取自 101 commit e14032c；缺檔示例是測試複本，不改原始檔。</span></div>
+<nav class="crumb"><a href="index.html?trial=real">賽事入口</a><span>／</span><span>版本與資料說明</span></nav>
+<section class="list-heading"><h1>共同讀取補齊與缺項降級</h1><span>固定預覽 693b2e1-r1</span></section>
+<p><a href="game.html?trial=real&amp;pk=849799&amp;mode=pre">849799 世界大賽</a>、<a href="game.html?trial=real&amp;pk=849844&amp;mode=pre">849844 外卡賽</a>共用同一頁面程式，依 gamePk 讀取已保存的 games、matchup、bullpen、ctx、roster。<a href="game.html?trial=real-missing&amp;pk=849844&amp;mode=pre">849844 缺對位測試複本</a>從相同轉接器產生，正式檔未刪。</p>
+<p>原始賽事檔固定於 101 commit e14032cd8e1d502d476310e46e57c29cadaddf32。兩場的 ctx、matchup 與 roster 有賽前保存時間；比賽與逐人牛棚檔後來更新，整體 OPS、ERA、戰績仍不能冒充當時賽前值。逐模組原始路徑、Git blob SHA 與時間記於 <code>real-games-data.js</code>。</p>
+<p>849799 的預估逐版保存於 2026-10-27T08:20:49.928Z、2026-10-27T20:15:37.227Z，客隊另有 2026-10-28T19:45:36.216Z；849844 的最早預估保存於 2026-09-30T07:20:52.541Z。每版只使用自己的保存時間；RotoGrinders 只有彙總而沒有逐棒快照，第三方確認逐棒未保存。</p>
+<p>上一場九棒核對固定來源 849803（2026-10-27）及 849841（2026-09-30），但本場 <code>prev</code> 區塊沒有獨立賽前保存時間，頁面明標「上一場歷史參考，非本場當時賽前快照」。849844 沒有保存相似案例逐筆清單。</p>
+<p>右上版本標籤與逐局「局／未打」中文字型備援已修在共用 <code>style.css</code>。此目錄只發布靜態預覽；資料處理程式留在獨立分支。正式 <code>/live/</code>、資料、網域、排程及統計門檻未改。<a href="https://github.com/yaoshengmarketing-prog/101/commit/693b2e1351b52800ed50e916c39fd16171d194e2">原始程式 commit</a>。</p>
+</main></div></body></html>
