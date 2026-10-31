@@ -129,7 +129,7 @@ const smallFetch = async url => {
   if (url.includes("/teams/stats?")) return { stats: [{ splits: [113, 158].map(id => ({ season: "2027", gameType: "R", team: { id }, stat: url.includes("group=hitting") ? { ops: ".650" } : { era: "2.25" } })) }] };
   if (url.includes("/people?")) return { people: ids.filter(id => url.includes(String(id))).map(id => ({
     id, pitchHand: { code: "R" }, stats: [{ splits: [{ season: "2027", gameType: "R", stat: id < 991000
-      ? { wins: 1, losses: 0, era: "2.25", whip: "1.00", inningsPitched: "8.0", gamesStarted: 2 }
+      ? { wins: 1, losses: 0, era: "2.19", whip: "1.00", inningsPitched: "12.1", gamesStarted: 3 }
       : { avg: id === 991003 ? ".000" : ".250", ops: id === 991003 ? ".000" : ".625", plateAppearances: id === 991003 ? 3 : 6 } }] }]
   })) };
   const pk = Number(url.match(/\/game\/(\d+)\/boxscore/)?.[1]); if (pk) return mkBox(pk);
@@ -182,7 +182,8 @@ const researchFetch = mode => async url => {
       { season: "2027", gameType: "R", split: { code: "vr" }, stat: { battersFaced: 10, ops: ".750" } }] : [] }] };
   if (pitcherId && url.includes("stats=gameLog")) return { stats: [{ splits: mode === "small"
     ? ["2027-04-04", "2027-04-09", "2027-04-14"].map((date, i) => ({
-      season: "2027", gameType: "R", date, game: { gamePk: 9902740 + i }, opponent: { id: 147, name: "洋基" },
+      season: "2027", gameType: "R", date, game: { gamePk: i === 2 ? smallR14.pk : 9902740 + i },
+      opponent: { id: i === 2 ? (pitcherId === 990001 ? 158 : 113) : 147 },
       isHome: i % 2 === 0, stat: { gamesStarted: 1, inningsPitched: ["3.0", "4.1", "5.0"][i],
         numberOfPitches: [54, 69, 78][i], earnedRuns: [2, 1, 0][i] } })) : [] }] };
   throw new Error("未預期的研究人工來源 URL: " + url);
@@ -269,7 +270,8 @@ ok("少樣本手別、有效零與最近三次先發逐筆進入原新版頁面"
   smallHtml.includes("對左打被打 OPS .500（8 打席）")
   && smallHtml.includes("對右投 OPS .000・3 打席")
   && smallHtml.includes("2027-04-04") && smallHtml.includes("2027-04-09") && smallHtml.includes("2027-04-14")
-  && smallHtml.includes("78 球／0 自責"));
+  && smallHtml.includes("78 球／0 自責") && smallHtml.includes("12.1")
+  && smallHtml.includes("3 場先發"));
 ok("首頁與單場主時間同為台灣 2027/3/27 07:10；美國 3/26 另列",
   coreMarkup("home","opening").includes("<strong>07:10</strong><span>2027/3/27 台灣時間</span><small>美國賽程日 2027-03-26</small>")
   && coreMarkup("game","opening").includes("2027/3/27 07:10 台灣時間")
