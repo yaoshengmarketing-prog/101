@@ -111,7 +111,27 @@ function eventScoreText(text, home, away) {
 
 function compactSummary(j, game) {
   if (!j) return { status: 'not_acquired', rosters: null, rosterPresence: {}, completeRosters: {},
-    events: [], source: game.source };
+    events: [], teamShots: null, source: game.source };
+  // 逐場候選只用同場雙方完整的全場數字；不能以缺值補零或依回應陣列順序猜主客。
+  const headerTeams = j.header?.competitions?.[0]?.competitors || [];
+  const sourceMatched = String(j.header?.id) === game.id && game.finished && game.score
+    && ['home', 'away'].every(side => {
+      const c = headerTeams.find(item => item.homeAway === side);
+      return c?.score !== null && c?.score !== undefined
+        && String(c?.team?.id) === game[side].id && Number(c.score) === game.score[side];
+    });
+  const shotValue = (team, name) => {
+    const raw = team?.statistics?.find(s => s.name === name)?.displayValue;
+    return /^(0|[1-9]\d*)$/.test(String(raw ?? '')) ? Number(raw) : null;
+  };
+  const shotSide = side => {
+    const team = j.boxscore?.teams?.find(t => String(t.team?.id) === game[side].id);
+    const total = shotValue(team, 'totalShots'), onTarget = shotValue(team, 'shotsOnTarget');
+    return total !== null && onTarget !== null && onTarget <= total ? { total, onTarget } : null;
+  };
+  const homeShots = sourceMatched ? shotSide('home') : null;
+  const awayShots = sourceMatched ? shotSide('away') : null;
+  const teamShots = homeShots && awayShots ? { home: homeShots, away: awayShots } : null;
   const rosters = {};
   const rosterPresence = {};
   const stat = (p, name) => {
@@ -157,7 +177,7 @@ function compactSummary(j, game) {
   // 只代表來源列出 11 位先發；不能由此推斷替補名單已完整。
   const completeRosters = Object.fromEntries(Object.entries(rosters).map(([id, list]) => [id, list.filter(p => p.role === 'starter').length === 11]));
   return { status: 'acquired', rosters, rosterPresence, completeRosters,
-    benchCompleteness: 'unverified', events, source: game.source };
+    benchCompleteness: 'unverified', events, teamShots, source: game.source };
 }
 
 function makePairs(games, target, teamId, details) {

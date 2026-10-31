@@ -38,6 +38,34 @@ test('11 名先發只證明先發已列，不能推定替補完整', () => {
   assert.equal(deriveLineupStatus(target, compactSummary(null, target)), 'fetch_failed');
 });
 
+test('同場雙方射門依隊伍 ID 配對；缺值、矛盾或比分不合時整組留空', () => {
+  const game = { id: '401878767', finished: true, score: { home: 0, away: 2 },
+    home: { id: 'home', name: 'Chelsea' }, away: { id: 'away', name: 'Tottenham Hotspur' }, source: 'ESPN' };
+  const source = { header: { id: game.id, competitions: [{ competitors: [
+    { homeAway: 'home', team: { id: 'home' }, score: '0' },
+    { homeAway: 'away', team: { id: 'away' }, score: '2' },
+  ] }] }, boxscore: { teams: [
+    { team: { id: 'away' }, statistics: [
+      { name: 'totalShots', displayValue: '15' }, { name: 'shotsOnTarget', displayValue: '4' }] },
+    { team: { id: 'home' }, statistics: [
+      { name: 'totalShots', displayValue: '7' }, { name: 'shotsOnTarget', displayValue: '4' }] },
+  ] } };
+  assert.deepEqual(compactSummary(source, game).teamShots,
+    { home: { total: 7, onTarget: 4 }, away: { total: 15, onTarget: 4 } });
+  const missing = structuredClone(source);
+  missing.boxscore.teams[0].statistics.pop();
+  assert.equal(compactSummary(missing, game).teamShots, null);
+  const impossible = structuredClone(source);
+  impossible.boxscore.teams[0].statistics[1].displayValue = '16';
+  assert.equal(compactSummary(impossible, game).teamShots, null);
+  const otherScore = structuredClone(source);
+  otherScore.header.competitions[0].competitors[1].score = '1';
+  assert.equal(compactSummary(otherScore, game).teamShots, null);
+  const wrongId = structuredClone(source);
+  wrongId.header.id = 'other';
+  assert.equal(compactSummary(wrongId, game).teamShots, null);
+});
+
 test('台彩快照配對不符時不呈現賠率', () => {
   const snapshot = { eventId: target.id, lotteryEventId: '1234', matchedHomeId: '367',
     matchedAwayId: '384', kickoffUTC: target.kickoffUTC, capturedAt: '2026-10-30T08:00:00Z',

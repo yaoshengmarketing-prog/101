@@ -10,6 +10,7 @@ on:
       - football/assets/**
       - football/index.html
       - football/game.html
+      - football/shots-preview.html
       - football/official-odds-snapshots.json
   schedule:
     # 台灣約 06:07、18:07 重建；避開 GitHub 整點排程尖峰。

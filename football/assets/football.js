@@ -121,7 +121,17 @@ export function substitutionNotes(g, detail, player, record, team) {
   return notes;
 }
 
-function resultBlock(t, details, snapshotThreshold = null) {
+export function shotLine(g, detail) {
+  if (!['home', 'away'].includes(g?.side)) return '全場射門／射正本次未取得';
+  const shots = detail?.teamShots;
+  const own = shots?.[g.side], other = shots?.[g.side === 'home' ? 'away' : 'home'];
+  const valid = s => s && Number.isInteger(s.total) && s.total >= 0
+    && Number.isInteger(s.onTarget) && s.onTarget >= 0 && s.onTarget <= s.total;
+  if (!valid(own) || !valid(other)) return '全場射門／射正本次未取得';
+  return `全場射門 ${own.total}–${other.total}｜射正 ${own.onTarget}–${other.onTarget}`;
+}
+
+export function resultBlock(t, details, snapshotThreshold = null, showShots = false) {
   const form = venueResults(t.leagueFive);
   return `<div class="team-block"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.leagueFive.length}/5 場</h3>
     ${t.leagueFive.length ? `<div class="venue-form"><p class="venue-form-title">這 ${t.leagueFive.length} 場英超中的主客成績</p>
@@ -129,7 +139,7 @@ function resultBlock(t, details, snapshotThreshold = null) {
       ${form.unknown ? `<p>另有 ${form.unknown} 場主客場本次未取得。</p>` : ''}</div>` : ''}
     ${t.leagueFive.length ? t.leagueFive.map(g => `<article class="result">
       <div class="result-top"><small>${esc(fmt(g.kickoffUTC))} · ${esc(gameLabel(g))}</small><span class="total">${g.totalGoals === null ? '總進球未取得' : `${g.totalGoals} 球`}</span></div>
-      <div class="result-bottom"><div class="result-score"><span class="score">${esc(ownScore(g))}</span><span class="score-formation">${esc(scoreFormation(g, details?.[g.key]))}</span></div>${snapshotThreshold !== null && g.totalGoals !== null ? `<span class="tiny">對照本場快照 ${snapshotThreshold}：${g.totalGoals > snapshotThreshold ? '大' : g.totalGoals < snapshotThreshold ? '小' : '恰等門檻'}</span>` : ''}<button class="text-button" type="button" data-context="${esc(g.key)}">比賽背景 ↗</button></div>
+      <div class="result-bottom"><div class="result-score"><span class="score">${esc(ownScore(g))}</span><span class="score-formation">${esc(scoreFormation(g, details?.[g.key]))}</span>${showShots ? `<span class="shot-line">${esc(shotLine(g, details?.[g.key]))}</span>` : ''}</div>${snapshotThreshold !== null && g.totalGoals !== null ? `<span class="tiny">對照本場快照 ${snapshotThreshold}：${g.totalGoals > snapshotThreshold ? '大' : g.totalGoals < snapshotThreshold ? '小' : '恰等門檻'}</span>` : ''}<button class="text-button" type="button" data-context="${esc(g.key)}">比賽背景 ↗</button></div>
     </article>`).join('') : '<p class="empty">英超逐場紀錄本次未取得。</p>'}</div>`;
 }
 
@@ -296,6 +306,7 @@ function lineupBlock(d) {
 async function renderGame() {
   const node = $('#game');
   try {
+    const showShots = document.body?.dataset?.shotsPreview === 'true';
     const id = new URLSearchParams(location.search).get('id') || '401878761';
     if (!/^\d+$/.test(id)) throw new Error('賽事 ID 格式不正確');
     const status = await getJson('status.json');
@@ -319,7 +330,7 @@ async function renderGame() {
       ${odds.markets.map(m => `<div class="market-grid"><div><div class="market-label">${esc(m.play)}${m.threshold === null || m.threshold === undefined ? '' : ` · 門檻 ${esc(m.threshold)}`}</div><div class="market-number">${m.odds.map(o => `${esc(o.choice)} ${esc(o.price)}`).join('　')}</div></div></div>`).join('')}
       <a class="source-link" href="${esc(odds.sourcePage)}" target="_blank" rel="noopener noreferrer">前往台彩查看最新賠率 ↗</a></div>`
       : `<div class="panel missing"><strong>台彩官方賠率快照：本場未取得</strong><p class="meta">${esc(odds.reason)}不顯示舊樣本賠率。</p><a class="source-link" href="${esc(odds.source)}" target="_blank" rel="noopener noreferrer">前往台彩查看最新賠率 ↗</a></div>`;
-    node.innerHTML = `<div class="sample">當季資料試行 · 本次取數 ${esc(fmt(d.generatedAt))}（台灣） · 非即時 · 賽事 ID ${esc(id)}</div>
+    node.innerHTML = `${showShots ? `<div class="preview-note">內容候選：全場射門與射正 · 供閱讀試看 <a href="game.html?id=${esc(id)}">查看現有公開頁 ↗</a></div>` : ''}<div class="sample">當季資料試行 · 本次取數 ${esc(fmt(d.generatedAt))}（台灣） · 非即時 · 賽事 ID ${esc(id)}</div>
       <p class="match-meta">英超 · ${esc(phaseLabel[target.phase] || '狀態未取得')} · 賽前研究資料</p><h1>${esc(sides(target))}</h1>
       <p class="match-time">預定開球 ${esc(day(target.kickoffUTC))} ${esc(fmt(target.kickoffUTC).slice(-5))}（台灣）</p>
       ${target.score ? `<p class="status">目前來源比分：${esc(scoreAt(target.score, target))}</p>` : ''}
@@ -329,8 +340,8 @@ async function renderGame() {
       <section class="section"><h2>兩隊英超近況</h2><div class="number-grid">
         ${[away, home].map(t => `<div class="number-card"><small>${esc(teamName(t.team.name))} · ${t.goals.games}/${t.goals.requested} 場比分完整</small><b>${t.goals.for === null ? '進失球本次未能完整合計' : `${t.goals.for} 進 ${t.goals.against} 失`}</b></div>`).join('')}</div>
         <p class="compare-note">分母是各隊開球前最近取得的英超比賽；不是勝率或本場預測。</p></section>
-      <section class="section"><h2>逐場紀錄 · 英超</h2><p class="section-sub">兩隊分開列，比分為本隊–對手；總進球由程式相加。${threshold === null ? '本場無大小快照門檻，不標大／小。' : `以下以本場快照 ${threshold} 球門檻對照歷史總進球，非各場當時盤口結果。`}</p>
-        ${resultBlock(away, d.details, threshold)}${resultBlock(home, d.details, threshold)}<p class="tiny">xG 本次未取得；每列「比賽背景」與下方球員紀錄連到同一場事件。</p></section>
+      <section class="section"><h2>逐場紀錄 · 英超</h2><p class="section-sub">兩隊分開列，比分${showShots ? '、全場射門與射正均' : ''}為本隊–對手；總進球由程式相加。${threshold === null ? '本場無大小快照門檻，不標大／小。' : `以下以本場快照 ${threshold} 球門檻對照歷史總進球，非各場當時盤口結果。`}</p>
+        ${resultBlock(away, d.details, threshold, showShots)}${resultBlock(home, d.details, threshold, showShots)}<p class="tiny">xG 本次未取得；${showShots ? '全場射門與射正不等於機會品質或勝負預測；' : ''}每列「比賽背景」與下方球員紀錄連到同一場事件。</p></section>
       <section class="section"><h2>近期用人 · 近 14 日跨賽事</h2><p class="section-sub">已查英超、歐冠、歐聯、歐協、足總盃與聯賽盃；只列取得的已完賽。替補是當場狀態。</p>
         ${[away, home].map((t, i) => `<div class="usage-card${i ? ' alt' : ''}"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.recent14.length} 場</h3><p>${esc(summarizeUsage(t, target))}</p></div>`).join('')}
         <details class="expander" id="pairs"><summary class="action">查看相鄰場次與開球間隔 <span>⌄</span></summary><div class="expander-body">${pairBlock(away, d)}${pairBlock(home, d)}</div></details>
