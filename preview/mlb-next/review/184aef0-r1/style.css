@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap');
+:root{--ink:#183044;--ink-soft:#486174;--blue:#1c5b87;--blue-soft:#eaf2f7;--paper:#f5f7f8;--white:#fff;--line:#ced9df;--quiet:#758995;--test:#8a4f22;--test-bg:#fff6e9;--radius:10px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;font-size:15px;line-height:1.58}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #76a6c7;outline-offset:3px}
+h1,h2,h3,h4,p{margin-top:0}
+h1{font-size:clamp(29px,4vw,47px);letter-spacing:-.04em;line-height:1.17;margin-bottom:13px}
+h2{font-size:22px;line-height:1.3;letter-spacing:-.025em;margin-bottom:0}h3{font-size:17px;margin-bottom:0}h4{font-size:15px;margin-bottom:8px}
+small,.site-foot{font-size:12px;color:var(--ink-soft)}
+.site-shell{max-width:1200px;padding:0 32px;margin:auto}
+.mast{height:80px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;color:var(--ink);font-weight:700;font-size:20px;letter-spacing:-.05em}.brand:hover{text-decoration:none}
+.brand-mark{display:grid;place-items:center;background:var(--ink);color:#fff;width:43px;height:43px;border-radius:4px;font-family:"Barlow Condensed",Impact,sans-serif;font-size:28px;letter-spacing:0;line-height:1}
+.brand small{display:block;font-size:11px;line-height:1.2;letter-spacing:.04em;font-weight:500;color:var(--ink-soft)}
+.mast-right{display:flex;align-items:center;gap:14px}.draft-pill{border:1px solid var(--blue);border-radius:20px;color:var(--blue);font-size:12px;font-weight:700;padding:3px 10px;white-space:nowrap}.mast-id{font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC","Heiti TC",system-ui,sans-serif;font-weight:600;letter-spacing:.04em;color:var(--ink-soft)}
+.source-ribbon{display:flex;gap:9px;align-items:center;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid var(--line);font-size:12px;color:var(--ink-soft)}
+.source-ribbon strong{font-weight:600;color:var(--blue);margin-left:auto}.source-dot{width:7px;height:7px;border-radius:50%;background:var(--blue)}
+.page-title{display:flex;justify-content:space-between;gap:30px;align-items:end;padding:46px 0 36px}.page-title p:last-child{margin:0;color:var(--ink-soft);max-width:46ch}.overline{font-size:12px;color:var(--blue);font-weight:700;letter-spacing:.08em;margin-bottom:13px}
+.date-stamp{display:flex;flex-direction:column;align-items:flex-end;border-left:1px solid var(--line);padding-left:22px;white-space:nowrap}.date-stamp b{font:700 33px/1 "Barlow Condensed",Impact,sans-serif}.date-stamp span{font-size:12px;color:var(--ink-soft);margin-top:4px}
+.segment-tabs,.mode-nav{display:flex;gap:7px;flex-wrap:wrap}.segment-tabs{border-bottom:2px solid var(--ink);padding-bottom:10px}.segment-tabs a,.mode-nav a,.state-controls a{display:inline-block;padding:8px 15px;border:1px solid var(--line);border-radius:5px;color:var(--ink);background:#fff;font-size:13px;font-weight:600}.segment-tabs a.active,.mode-nav a.active,.state-controls a.active{background:var(--ink);color:#fff;border-color:var(--ink);text-decoration:none}.segment-tabs a:hover,.mode-nav a:hover,.state-controls a:hover{text-decoration:none;border-color:var(--blue)}
+.list-heading,.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px}.list-heading{margin:25px 0 13px}.list-heading span,.section-head span{font-size:12px;color:var(--ink-soft)}
+.game-row{background:#fff;border:1px solid var(--line);border-left:5px solid var(--blue);display:grid;grid-template-columns:120px minmax(160px,1.05fr) minmax(190px,1.3fr) 150px;gap:0;min-height:166px}
+.game-row>div{padding:24px 21px;border-right:1px solid var(--line)}.game-row>div:last-child{border:0}
+.game-time strong{display:block;font:700 38px/1 "Barlow Condensed",Impact,sans-serif}.game-time span{display:block;font-size:12px;color:var(--blue);font-weight:700;margin-top:5px}.game-time small{display:block;margin-top:15px}
+.game-clubs{display:grid;align-content:center;gap:16px}.game-clubs>div{display:grid;grid-template-columns:40px 1fr 22px;align-items:center;gap:7px}.game-clubs b{font:700 20px/1 "Barlow Condensed",Impact,sans-serif;color:var(--blue)}.game-clubs strong{font-size:19px;letter-spacing:-.03em}.game-clubs span{font-size:12px;color:var(--quiet)}
+.game-essential{display:flex;flex-direction:column;justify-content:center}.game-essential>span{font-size:12px;color:var(--ink-soft)}.game-essential p{margin:4px 0 6px;line-height:1.7;font-weight:600}.game-essential small{color:var(--blue)}
+.game-action{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:15px}.action-link{font-weight:700;line-height:1.2}.action-link span{font-size:20px;vertical-align:-1px}.text-link{font-size:12px}
+.quiet-intro{padding:40px 0;border-bottom:1px solid var(--line)}.quiet-intro p{max-width:66ch;color:var(--ink-soft);margin:10px 0 0}
+.recent-section{margin:54px 0 0}.section-head{padding-bottom:13px;border-bottom:1px solid var(--ink)}.recent-list{list-style:none;padding:0;margin:0}.recent-row{display:grid;grid-template-columns:120px 1fr 120px;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}.recent-date{color:var(--ink-soft);font:600 18px/1 "Barlow Condensed",Impact,sans-serif}.recent-pair{font-size:15px}.recent-pair b{display:inline-block;min-width:65px;text-align:center;font:700 20px/1 "Barlow Condensed",Impact,sans-serif}.recent-row>a{justify-self:end;font-size:12px;font-weight:700}.page-note{color:var(--ink-soft);font-size:12px;margin:16px 0 40px}
+.crumb{display:flex;gap:9px;align-items:center;color:var(--ink-soft);font-size:12px;margin:17px 0}.mode-nav{margin:21px 0 10px}.mode-nav a{font-size:15px;padding:9px 17px}
+.state-controls{display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin:0 0 19px}.state-controls>span{font-size:12px;color:var(--ink-soft)}.state-controls nav{display:flex;gap:5px;flex-wrap:wrap}.state-controls a{font-size:12px;padding:5px 9px}
+.test-notice{display:flex;flex-direction:column;gap:3px;background:var(--test-bg);border:1px solid #e9c99e;border-left:4px solid var(--test);color:#714422;padding:12px 17px;margin:0 0 17px}.test-notice b{font-size:14px}.test-notice span{font-size:12px}
+.match-hero{background:var(--white);border:1px solid var(--line);border-top:4px solid var(--ink);padding:20px 26px 15px}.match-meta{display:flex;justify-content:space-between;gap:12px;color:var(--ink-soft);font-size:12px;font-weight:600;border-bottom:1px solid var(--line);padding-bottom:14px}.match-meta span:first-child{color:var(--blue)}
+.match-header{display:grid;grid-template-columns:1fr 110px 1fr;align-items:center;min-height:145px;gap:15px}.club{display:grid;grid-template-columns:55px 1fr;align-items:baseline;column-gap:10px}.club-code{font:700 27px/1 "Barlow Condensed",Impact,sans-serif;color:var(--blue)}.club strong{font-size:clamp(21px,3vw,34px);line-height:1.2}.club small{grid-column:2;color:var(--ink-soft)}.home-club{justify-self:end}.versus{text-align:center;display:flex;flex-direction:column;align-items:center}.versus .at{font-size:14px;color:var(--ink-soft);border:1px solid var(--line);width:38px;height:38px;display:grid;place-items:center;border-radius:50%}.versus .score{white-space:nowrap;font:700 58px/1 "Barlow Condensed",Impact,sans-serif;color:var(--ink)}.versus .score i{font-style:normal;color:var(--line);margin:0 5px}.versus small{margin-top:7px}
+.hero-caption{border-top:1px solid var(--line);padding-top:10px;margin:0;color:var(--ink-soft);font-size:12px}
+.primary-block,.context-block,.deep-section{margin-top:34px}.pitcher-grid,.lineup-grid,.result-grid,.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.pitcher-grid,.lineup-grid,.result-grid{padding-top:15px}
+.pitcher,.lineup-panel,.result-pitch{background:#fff;border:1px solid var(--line);padding:20px}.pitcher-label{font-size:12px;color:var(--blue);display:block;font-weight:700}.pitcher>strong{display:block;font-size:21px;margin-top:6px;line-height:1.35}.pitcher>span:not(.pitcher-label){font-size:12px;color:var(--ink-soft)}.pitcher-metrics{display:flex;gap:20px;flex-wrap:wrap;margin-top:13px;border-top:1px solid var(--line);padding-top:11px}.pitcher-metrics span{font-size:12px;color:var(--ink-soft)}.pitcher-metrics b{font:700 22px/1 "Barlow Condensed",Impact,sans-serif;color:var(--ink);margin-left:5px}.pitcher>small{display:block;margin-top:9px}
+.lineup-title{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding-bottom:11px}.status-tag{font-size:11px;font-weight:700;border:1px solid var(--line);padding:3px 8px;border-radius:4px;white-space:nowrap}.status-tag.confirmed{color:var(--blue);background:var(--blue-soft);border-color:#b8d0e0}.status-tag.projected{color:var(--test);background:var(--test-bg);border-color:#e9c99e}.status-tag.muted{color:var(--ink-soft)}
+.lineup-list{list-style:none;padding:0;margin:0}.lineup-list li{display:grid;grid-template-columns:23px minmax(0,1fr) 37px 74px;gap:5px;align-items:center;padding:8px 0;border-bottom:1px solid #e7edef}.lineup-list li>span{font:700 18px/1 "Barlow Condensed",Impact,sans-serif;color:var(--blue)}.lineup-list strong{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lineup-list em{font-style:normal;font-size:11px;color:var(--ink-soft)}.lineup-list small{text-align:right}.lineup-more summary{font-size:12px;color:var(--blue);font-weight:700;cursor:pointer;padding:10px 0}.lineup-more .lineup-list{margin-top:-2px}.lineup-foot{font-size:11px;color:var(--ink-soft);margin:12px 0 0}.empty-copy{color:var(--ink-soft);font-size:13px;line-height:1.75;margin:16px 0}.inset{border:1px dashed var(--line);padding:20px;background:#fff}
+.context-list{background:#fff;border:1px solid var(--line);margin-top:15px}.context-row{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:15px;padding:16px 20px;border-bottom:1px solid var(--line)}.context-row:last-child{border:0}.context-row>div{display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:baseline}.context-rule{font-size:12px;color:var(--ink-soft)}.context-row strong{font-size:16px;font-weight:700}.context-row details{text-align:right}.context-row summary{font-size:12px;color:var(--blue);font-weight:700;cursor:pointer}.context-row details[open]{text-align:left;grid-column:1/-1}.context-row details p{font-size:12px;color:var(--ink-soft);margin:8px 0 0}
+.deep-list{border-top:0}.deep-list>details{border-bottom:1px solid var(--line);background:#fff}.deep-list>details>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:17px 20px;cursor:pointer}.deep-list>details>summary::-webkit-details-marker{display:none}.deep-list>details>summary:after{content:"＋";font-size:18px;color:var(--blue)}.deep-list>details[open]>summary:after{content:"−"}.deep-list>details>summary span{font-weight:700}.deep-list>details>summary small{margin-left:auto}.detail-grid{padding:0 20px 20px}.deep-item{padding:14px;background:var(--paper);border:1px solid var(--line)}.deep-item p{font-size:13px;margin-bottom:8px}.deep-item small{display:block}.day-list{list-style:none;padding:0;margin:0 0 10px}.day-list li{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:4px 0;border-bottom:1px solid var(--line)}.day-list strong{white-space:nowrap}.deep-list>details>.deep-item{margin:0 20px 20px}
+.inning-grid{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:7px;padding-top:15px}.inning{background:#fff;border:1px solid var(--line);padding:9px 6px;display:flex;flex-direction:column;gap:4px;text-align:center}.inning b{font:700 17px/1 "Barlow Condensed",Impact,sans-serif;color:var(--blue);margin-bottom:4px}.inning span{font:600 16px/1.15 "Barlow Condensed",Impact,sans-serif;white-space:nowrap}
+.result-pitch h3{border-bottom:1px solid var(--line);padding-bottom:11px;margin-bottom:6px}.result-pitch>div{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:9px 0;border-bottom:1px solid #e7edef}.result-pitch>div:last-child{border:0}.result-pitch span{font-size:12px;color:var(--ink-soft)}.result-pitch strong{font:700 19px/1 "Barlow Condensed",Impact,sans-serif}
+.pregame-archive{margin-top:34px;border:1px solid var(--line);background:#fff;padding:0 20px 24px}.pregame-archive>summary{cursor:pointer;padding:18px 0;display:flex;justify-content:space-between;gap:12px;align-items:baseline;font-weight:700}.pregame-archive>summary small{font-weight:400}.pregame-archive .primary-block,.pregame-archive .context-block,.pregame-archive .deep-section{margin-top:25px}
+.end-note{border-top:2px solid var(--ink);padding:14px 0 28px;margin-top:43px;font-size:12px;color:var(--ink-soft)}.end-note b{color:var(--ink)}.end-note p{margin:4px 0 0}
+.site-foot{border-top:1px solid var(--line);padding:23px 0 35px;margin-top:30px}.site-foot a{font-weight:700}
+@media(max-width:900px){.game-row{grid-template-columns:105px 1fr 1.2fr}.game-row .game-action{grid-column:1/-1;border-top:1px solid var(--line);padding:12px 20px;flex-direction:row;justify-content:space-between}.game-row>div:nth-child(3){border-right:0}.match-header{grid-template-columns:1fr 95px 1fr}.club{grid-template-columns:1fr}.club small{grid-column:1}.context-row{grid-template-columns:1fr 150px}}
+@media(max-width:650px){.site-shell{padding:0 16px}.mast{height:68px}.mast-id{display:none}.brand{font-size:18px}.brand-mark{width:39px;height:39px}.source-ribbon strong{width:100%;margin-left:16px}.page-title{padding:31px 0 27px;align-items:start}.date-stamp{display:none}.page-title p:last-child{font-size:13px}.game-row{display:block}.game-row>div{border-right:0;border-bottom:1px solid var(--line);padding:15px 17px}.game-row .game-time{display:flex;align-items:baseline;gap:9px}.game-time strong{font-size:30px}.game-time span{margin:0}.game-time small{margin:0 0 0 auto}.game-clubs{gap:6px}.game-clubs>div{grid-template-columns:38px 1fr 22px}.game-clubs strong{font-size:18px}.game-essential p{margin:2px 0}.game-action{border-bottom:0!important}.recent-row{grid-template-columns:78px 1fr;gap:3px 8px}.recent-row>a{grid-column:2;justify-self:start}.recent-pair{font-size:13px}.recent-pair b{font-size:17px;min-width:52px}.recent-section{margin-top:38px}.section-head{align-items:start;flex-direction:column;gap:4px}.match-hero{padding:15px 15px 12px}.match-meta{flex-wrap:wrap;gap:2px}.match-header{grid-template-columns:1fr 76px 1fr;min-height:126px;gap:6px}.club strong{font-size:21px}.club-code{font-size:21px}.versus .score{font-size:43px}.pitcher-grid,.lineup-grid,.result-grid,.detail-grid{grid-template-columns:1fr;gap:10px}.primary-block,.context-block,.deep-section{margin-top:29px}.pitcher,.lineup-panel,.result-pitch{padding:15px}.lineup-list li{grid-template-columns:18px minmax(0,1fr) 30px 68px}.context-row{display:block;padding:13px 15px}.context-row>div{grid-template-columns:1fr;gap:0}.context-row details{text-align:left;margin-top:7px}.context-row details[open]{grid-column:auto}.inning-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.deep-list>details>summary{padding:14px}.deep-list>details>summary small{display:none}.detail-grid{padding:0 14px 15px}.deep-list>details>.deep-item{margin:0 14px 15px}.pregame-archive{padding:0 14px 15px}.pregame-archive>summary{display:block}.pregame-archive>summary small{display:block}.state-controls nav{width:100%}.state-controls a{flex:1}.test-notice{padding:11px 13px}}
+@media(max-width:340px){.club strong{font-size:18px}.club-code{font-size:19px}.match-header{grid-template-columns:1fr 65px 1fr}.versus .score{font-size:38px}.lineup-list li{grid-template-columns:18px minmax(0,1fr) 29px 60px}.lineup-list small{font-size:11px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Next-season reading preview follows the existing /live/ palette and comparison pattern. */
+:root{--ink:#151F1A;--ink-soft:#5E6B64;--blue:#1F5E8C;--blue-soft:#E3EEF7;--paper:#F2F4F1;--white:#fff;--line:#D5DCD3;--quiet:#6B776F;--radius:10px}
+.site-shell{max-width:1100px}
+.mast{height:auto;min-height:66px}.brand{font-family:"Barlow Condensed","Noto Sans TC",sans-serif;font-size:27px;letter-spacing:0}.brand-mark{display:none}.brand small{display:inline;margin-left:9px;font-family:"Noto Sans TC",sans-serif;font-weight:400;letter-spacing:0}
+.draft-pill{border:0;background:#EAE4D3;color:#6B5A22}
+.page-title{padding:25px 0 23px}.page-title h1{font-size:29px;letter-spacing:-.02em}.date-stamp b{font-size:25px}
+.segment-tabs{border-bottom:0;background:#E6EAE4;border-radius:8px;padding:3px;display:inline-flex}
+.segment-tabs a{border:0;background:transparent;border-radius:6px;padding:6px 12px}
+.segment-tabs a.active{background:#fff;color:var(--ink);box-shadow:0 1px 2px #0001}
+.mode-nav a.active,.state-controls a.active{background:var(--ink)}
+.game-row,.match-hero,.pitcher,.lineup-panel,.result-pitch,.compare-table,.context-list,.deep-list>details,.quiet-intro{border-radius:10px}
+.game-row{border-left:1px solid var(--line);min-height:150px}.match-hero{border-top:1px solid var(--line)}
+.game-time span{color:var(--ink-soft)}.source-dot{background:var(--blue)}
+.comparison .section-head{margin-bottom:10px}
+.compare-table{border:1px solid var(--line);background:var(--white);overflow:hidden}
+.compare-team,.compare-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(95px,1.2fr) minmax(0,1fr);align-items:center;text-align:center}
+.compare-team{padding:13px 12px;font-size:13px;border-bottom:1px solid var(--line)}
+.compare-team b:first-child,.compare-row strong:first-child{text-align:right}.compare-team b:last-child,.compare-row strong:last-child{text-align:left}
+.compare-team>span{font-size:11px;color:var(--ink-soft)}
+.compare-row{padding:11px 12px;border-bottom:1px solid var(--line);gap:9px}.compare-row:last-child{border:0}
+.compare-row strong{font-family:"Barlow Condensed","Noto Sans TC",sans-serif;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.compare-row>span{font-size:12px;color:var(--ink-soft);line-height:1.35}.compare-row small{display:block;font-size:10px;color:var(--ink-soft)}
+.season-reference{margin-top:10px}.season-reference>summary,.last-season>summary{cursor:pointer;color:var(--blue);font-weight:700;font-size:12px;padding:8px 0}.season-reference p,.last-season p,.season-scope{font-size:12px;color:var(--ink-soft);margin:7px 0}
+.season-scope{border-left:3px solid var(--blue);padding:8px 11px;background:var(--blue-soft);margin-top:10px}
+.sample-message{display:flex;flex-direction:column;gap:4px;border:1px dashed var(--line);border-radius:7px;padding:10px;margin:12px 0;color:var(--ink)}
+.sample-message b{font-size:13px}.sample-message span{font-size:12px;color:var(--ink-soft)}
+@media(max-width:650px){.brand{font-size:24px}.brand small{display:none}.page-title{padding:23px 0 17px}.page-title h1{font-size:27px}.compare-row{grid-template-columns:minmax(0,1fr) minmax(84px,1fr) minmax(0,1fr);padding:9px 7px;gap:5px}.compare-row strong{font-size:19px}.compare-team{grid-template-columns:minmax(0,1fr) 68px minmax(0,1fr);padding:11px 6px}.state-controls a{flex:0 1 auto}.game-row>div{padding:13px 15px}}
+
+/* Lineup and bullpen reading refinements, preview only. */
+.lineup-list li{grid-template-columns:24px minmax(0,1fr) 40px minmax(125px,auto)}
+.lineup-list strong{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+.lineup-list small{font-size:12px;color:var(--ink-soft)}
+.lineup-more{border-top:1px solid var(--line);margin-top:10px}
+.lineup-more p{font-size:12px;color:var(--ink-soft);line-height:1.65;margin:3px 0 9px}
+.last-season-line{font-size:12px;color:var(--ink-soft);border-left:3px solid var(--blue);padding:6px 9px;background:var(--blue-soft);margin:12px 0 0}
+.bp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.bp-team{border:1px solid var(--line);border-radius:10px;background:var(--white);padding:16px;min-width:0}
+.bp-team h3{margin-bottom:7px}.bp-summary{font-size:13px;line-height:1.65;margin:0 0 12px}
+.bp-calendar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.bp-calendar>div{border:1px solid var(--line);border-radius:6px;padding:6px;min-width:0}.bp-calendar b,.bp-calendar span{display:block;font-size:11px;white-space:normal}.bp-calendar span{color:var(--ink-soft)}
+.bp-details,.bp-reference{margin-top:11px}.bp-details>summary,.bp-reference>summary{cursor:pointer;color:var(--blue);font-size:12px;font-weight:700;padding:5px 0}
+.bp-player{border-top:1px solid var(--line);padding:9px 0}.bp-player>div:first-child{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.bp-player strong{font-size:12px;overflow-wrap:anywhere}.bp-player>div:first-child small{font-size:10px;white-space:nowrap}
+.bp-day-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:5px}.bp-day-grid span{display:flex;justify-content:space-between;gap:3px;padding:4px 5px;background:var(--paper);border-radius:4px}.bp-day-grid small,.bp-day-grid b{font-size:10px;white-space:nowrap}
+.bp-reference .bp-grid{margin-top:10px}.bp-reference .bp-team{background:#fff}
+@media(max-width:650px){.lineup-list li{grid-template-columns:20px minmax(0,1fr) 36px;row-gap:1px}.lineup-list li>small{grid-column:2/-1;text-align:left}.bp-grid{grid-template-columns:1fr}.bp-team{padding:13px}.bp-player>div:first-child{display:block}.bp-player>div:first-child small{display:block}.bp-day-grid span{display:block}.bp-day-grid b{display:block}}
+
+/* Existing matchup data beside its pitcher and lineup, preview only. */
+.pitcher-research{border-top:1px solid var(--line);margin-top:10px;padding-top:5px}
+.pitcher-research>summary{cursor:pointer;color:var(--blue);font-size:12px;font-weight:700;padding:6px 0}
+.pitcher-research p,.pitcher-research>small{display:block;font-size:11px;line-height:1.55;color:var(--ink-soft);margin:6px 0}
+.recent-starts{list-style:none;padding:0;margin:9px 0}
+.recent-starts li{display:grid;grid-template-columns:82px minmax(0,1fr);gap:3px 8px;border-top:1px solid var(--line);padding:6px 0;font-size:11px}
+.recent-starts li b{font-weight:700}
+.recent-starts li span:last-child{grid-column:2;color:var(--ink-soft)}
+@media(max-width:650px){.recent-starts li{grid-template-columns:76px minmax(0,1fr)}.lineup-list li>small{line-height:1.45}}
+
+/* Fixed historical research layers: context cases and lineup provenance. */
+.research-note{font-size:12px;color:var(--ink-soft);line-height:1.6;margin:8px 0}
+.research-link{display:inline-block;font-size:12px;font-weight:700;color:var(--blue);margin:7px 0}
+.reference-lineup{list-style:none;padding:0;margin:8px 0}
+.reference-lineup li{display:grid;grid-template-columns:22px minmax(0,1fr) 36px;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);font-size:12px;align-items:center}
+.reference-lineup li b{color:var(--blue)}.reference-lineup li strong{overflow-wrap:anywhere}.reference-lineup li span{text-align:right;color:var(--ink-soft)}
+.source-diff{background:var(--blue-soft);border-radius:6px;padding:7px 9px;margin:8px 0}.source-diff p{margin:4px 0;font-size:12px;line-height:1.6}.source-diff b,.source-status b{display:block;color:var(--ink);font-size:11px}
+.source-table{border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:8px 0}.source-table>div{display:grid;grid-template-columns:31px minmax(0,1fr) minmax(0,1fr);gap:6px;border-top:1px solid var(--line);padding:6px 7px;font-size:11px;align-items:start}.source-table>div:first-child{border-top:0}.source-table .source-table-head{background:var(--blue-soft);color:var(--ink)}.source-table .changed{background:#fff9ef}.source-table span,.source-table strong{overflow-wrap:anywhere;white-space:normal}.source-table strong{font-weight:600}
+.source-earlier{border-top:1px solid var(--line);margin:9px 0}.source-earlier>summary{padding:9px 0;cursor:pointer;color:var(--blue);font-size:12px;font-weight:700}
+.source-status{border-top:1px solid var(--line);margin-top:10px;padding-top:6px}.source-status p{font-size:11px;line-height:1.6}
+.history-list{margin-top:10px;border-top:1px solid var(--line);padding-top:7px}.history-list>p{font-size:11px;line-height:1.65;color:var(--ink-soft);margin:7px 0}.history-list ol{padding:0;margin:9px 0;list-style:none;max-height:500px;overflow:auto}
+.history-list li{border:1px solid var(--line);background:#fff;border-radius:6px;padding:9px 10px;margin:6px 0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 10px;font-size:11px}
+.history-list li>div{display:flex;flex-direction:column;gap:2px}.history-list li>div span,.history-list li small{color:var(--ink-soft)}.history-list li strong{font-size:12px;align-self:center;white-space:nowrap}.history-list li small{grid-column:1/-1}.history-list li a{grid-column:1/-1;color:var(--blue);font-weight:700;font-size:11px}
+@media(max-width:650px){.source-table>div{grid-template-columns:25px minmax(0,1fr) minmax(0,1fr);gap:4px;padding:6px 5px}.history-list li{grid-template-columns:1fr}.history-list li strong{justify-self:start}.history-list ol{max-height:460px}}
+
+/* Keep mode switching reachable while reading long opened sections. */
+.mode-nav{position:sticky;top:0;z-index:12;background:var(--paper);padding:7px 0;box-shadow:0 1px 0 var(--line)}
+.history-list ol{max-height:none;overflow:visible}
+@media(max-width:650px){.history-list ol{max-height:none;overflow:visible}}
+
+/* Spring replay uses the existing cards and two-column layout. */
+.spring-section{margin-top:34px}.spring-section .game-row{margin-top:13px}.spring-section .page-note{margin:10px 0 0}
+.spring-lineup li{grid-template-columns:23px minmax(0,1fr) 48px}.spring-lineup strong{white-space:normal;overflow:visible;text-overflow:clip}.spring-lineup em{text-align:right}
+.spring-rule-note{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);margin:30px 0 0;padding:15px 18px;color:var(--ink-soft);font-size:13px}.spring-rule-note b{color:var(--ink)}
+.spring-replay-notice{background:var(--blue-soft);border:1px solid var(--line);border-left:4px solid var(--blue);margin:16px 0;padding:12px 16px;display:flex;gap:7px 16px;flex-wrap:wrap;font-size:13px}.spring-replay-notice b{color:var(--ink)}.spring-replay-notice span{color:var(--ink-soft)}
+
+.trial-alert{margin:0 0 20px;padding:12px 15px;background:#fff7e9;border-left:3px solid #b78536;color:#59492e;font-size:12px;line-height:1.7}
+.trial-panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;margin:22px 0}
+.trial-panel h2{margin:0 0 15px;font-size:20px}.trial-panel h3{margin:10px 0;font-size:15px}
+.trial-panel p{font-size:13px;line-height:1.7;color:var(--ink-soft)}
+.trial-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.trial-columns>div,.trial-columns>.trial-panel{min-width:0}
+.trial-columns>.trial-panel{margin:0}
+.trial-table{border-top:1px solid var(--line)}
+.trial-table>div{display:grid;grid-template-columns:minmax(80px,1fr) minmax(80px,1fr) minmax(80px,1fr);gap:8px;padding:9px 0;border-bottom:1px solid var(--line);font-size:12px;line-height:1.5}
+.trial-table span:last-child{text-align:right}.trial-back{padding:15px 0 35px;font-size:13px}
+@media(max-width:720px){.trial-columns{grid-template-columns:1fr}.trial-panel{padding:16px}.trial-table>div{grid-template-columns:minmax(80px,1fr) minmax(85px,1fr);gap:4px}.trial-table span:last-child{grid-column:2;text-align:left}}
