@@ -52,6 +52,16 @@ try{
     &&rosterWin.MLB_REAL_GAMES_MISSING.games[849844].roster===null
     &&rosterWin.MLB_REAL_GAMES_MISSING.games[849844].game.away.lineup.slots.length===9
     &&rosterWin.MLB_REAL_GAMES_MISSING.games[849799].roster!==null);
+  const rosterApp={innerHTML:""},rosterEls={".mast-id":{},".brand":{},".site-foot":{}};
+  vm.runInNewContext(appJs,{window:rosterWin,document:{body:{dataset:{page:"game"}},
+    getElementById:()=>rosterApp,querySelector:k=>rosterEls[k]},
+    location:{search:"?trial=real-missing&pk=849844&mode=pre"},
+    URLSearchParams,encodeURIComponent});
+  check("缺名單畫面仍列官方九棒與情境，且不報增減 0",
+    rosterApp.innerHTML.includes("Trea Turner")
+    &&rosterApp.innerHTML.includes("值得一起看的條件")
+    &&rosterApp.innerHTML.includes("名單比較模組未取得；本場官方九棒")
+    &&!rosterApp.innerHTML.includes("已保存新增 0 人"));
   fs.copyFileSync(path.join(source,"roster/849844.json"),rosterPath);
   const wrong=path.join(temp,"roster/849844.json"),roster=JSON.parse(fs.readFileSync(wrong,"utf8"));
   roster.pk=849799;
