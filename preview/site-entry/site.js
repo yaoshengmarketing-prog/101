@@ -62,19 +62,19 @@
   }
   function mlbFeature(d){
     const r = d.ok && Array.isArray(d.manifest.recent) ? d.manifest.recent.find(g => numberId(g.pk)) : null;
-    if(!r) return {html:'<div class="feature"><small>最近完賽</small><strong>目前沒有可核對的單場回看入口</strong></div>',href:null};
+    if(!r) return {html:'<div class="feature"><small>最近完賽</small><strong>目前沒有可核對的單場回看入口</strong></div>',href:null,directLabel:null};
     const score = r.away?.score != null && r.home?.score != null ? ` ${esc(r.away.score)}：${esc(r.home.score)}` : '';
     const names = `${esc(r.away?.name || r.away?.ab || '客隊')} @ ${esc(r.home?.name || r.home?.ab || '主隊')}`;
-    return {html:`<div class="feature"><small>最近完賽 · ${esc(r.twDate || '日期未取得')}（台灣）</small><strong>${names}${score}</strong><span>歷史單場，非今日賽事</span></div>`,href:readHref('mlb',r.pk)};
+    return {html:`<div class="feature"><small>最近完賽 · ${esc(r.twDate || '日期未取得')}（台灣）</small><strong>${names}${score}</strong><span>歷史單場，非今日賽事</span></div>`,href:readHref('mlb',r.pk),directLabel:`回看 ${esc(r.twDate || '日期未取得')} ${names}`};
   }
   function featuredFootball(d){
-    if(!d.ok) return {html:`<div class="feature football"><small>近期賽事</small><strong>${esc(d.reason)}</strong><span>不顯示逾期或版本不明的比賽</span></div>`,href:null};
+    if(!d.ok) return {html:`<div class="feature football"><small>近期賽事</small><strong>${esc(d.reason)}</strong><span>不顯示逾期或版本不明的比賽</span></div>`,href:null,directLabel:null};
     const ready = d.games.filter(g => g.dataStatus === 'ready' && numberId(g.id));
     const upcoming = ready.filter(g => g.phase === 'live' || g.phase === 'pre').sort((a,b) => (a.phase === 'live' ? -1 : 0) - (b.phase === 'live' ? -1 : 0) || Date.parse(a.kickoffUTC) - Date.parse(b.kickoffUTC));
     const game = upcoming[0] || ready.filter(g => g.phase === 'final').sort((a,b) => Date.parse(b.kickoffUTC) - Date.parse(a.kickoffUTC))[0];
-    if(!game) return {html:'<div class="feature football"><small>近期賽事</small><strong>本次沒有可讀單場</strong></div>',href:null};
+    if(!game) return {html:'<div class="feature football"><small>近期賽事</small><strong>本次沒有可讀單場</strong></div>',href:null,directLabel:null};
     const title = `${esc(game.away?.name || '客隊')} @ ${esc(game.home?.name || '主隊')}`;
-    return {html:`<div class="feature football"><small>${esc(fmt(game.kickoffUTC))}（台灣） · ${esc(phaseLabel[game.phase] || '狀態未取得')}</small><strong>${title}</strong><span>英超單場資料；比分與名單依原頁取得狀態顯示</span></div>`,href:readHref('football',game.id)};
+    return {html:`<div class="feature football"><small>${esc(fmt(game.kickoffUTC))}（台灣） · ${esc(phaseLabel[game.phase] || '狀態未取得')}</small><strong>${title}</strong><span>英超單場資料；比分與名單依原頁取得狀態顯示</span></div>`,href:readHref('football',game.id),directLabel:`${esc(fmt(game.kickoffUTC))} ${title}`};
   }
   function panelMlb(d){
     const f = mlbFeature(d), count = d.ok ? (d.manifest.days || []).reduce((n,x) => n + (Number(x.count)||0),0) : null;
@@ -91,7 +91,8 @@
   async function renderHome(){
     nav('home');
     const [mlb,football] = await Promise.all([loadMlb(),loadFootball()]);
-    $('#app').innerHTML = `<div class="hero"><div><p class="eyebrow">賽事入口 · ${esc(todayTW())} 台灣時間</p><h1>先找到比賽，再讀單場資料。</h1><p>棒球與足球各保留現有資料狀態。尚無賽事、來源未取得與資料逾期都照實呈現。</p></div><div class="hero-aside">兩條現有閱讀線<strong>MLB ／ 足球</strong>本站目前只整理已公開的賽事資料，不提供勝負預測。</div></div><nav class="sport-jumps" aria-label="選擇運動"><a href="${sportHref('mlb')}">MLB 棒球<small>${esc(mlbSummary(mlb))}</small></a><a href="${sportHref('football')}">足球<small>${esc(footballSummary(football))}</small></a></nav><div class="sport-grid">${panelMlb(mlb)}${panelFootball(football)}</div>`;
+    const mlbDirect = mlbFeature(mlb), footballDirect = featuredFootball(football);
+    $('#app').innerHTML = `<div class="hero"><div><p class="eyebrow">賽事入口 · ${esc(todayTW())} 台灣時間</p><h1>先找到比賽，再讀單場資料。</h1><p>棒球與足球各保留現有資料狀態。尚無賽事、來源未取得與資料逾期都照實呈現。</p></div><div class="hero-aside">兩條現有閱讀線<strong>MLB ／ 足球</strong>本站目前只整理已公開的賽事資料，不提供勝負預測。</div></div><nav class="sport-jumps" aria-label="選擇運動"><div class="sport-jump"><a class="jump-sport" href="${sportHref('mlb')}">MLB 棒球<small>${esc(mlbSummary(mlb))}</small></a>${mlbDirect.href?`<a class="jump-direct" href="${mlbDirect.href}">${mlbDirect.directLabel} →</a>`:''}</div><div class="sport-jump football"><a class="jump-sport" href="${sportHref('football')}">足球<small>${esc(footballSummary(football))}</small></a>${footballDirect.href?`<a class="jump-direct" href="${footballDirect.href}">${footballDirect.directLabel} →</a>`:''}</div></nav><div class="sport-grid">${panelMlb(mlb)}${panelFootball(football)}</div>`;
   }
   function mlbRow(g,historical = false){
     const id = numberId(g.pk); if(!id) return '';
