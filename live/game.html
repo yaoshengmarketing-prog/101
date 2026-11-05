@@ -8,14 +8,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="../style.css">
 <link rel="stylesheet" href="./assets/live.css">
+<link rel="stylesheet" href="../site/nav.css">
 </head>
 <body>
+<header class="site-shell-header"><div class="site-shell-inner"><a class="site-shell-brand" href="../site/index.html">運彩 101<small>把一場比賽該看的資料，整理在同一頁。</small></a><nav class="site-shell-nav" aria-label="全站運動導覽"><a href="../site/index.html">全部賽事</a><a href="../site/sport.html?sport=mlb" aria-current="page">MLB 棒球</a><a href="../site/sport.html?sport=football">足球</a></nav><span class="site-shell-tag">試營運</span></div></header>
 <div class="wrap">
-  <header class="top">
-    <a class="brand" href="./">運彩 101<small>把一場比賽該看的資料，整理在同一頁。</small></a>
-    <span class="demo">試營運｜MLB 官方資料</span>
-  </header>
-  <nav class="crumb" id="crumb"><a href="./">← 本日比賽</a></nav>
+  <nav class="crumb" id="crumb"><a href="../site/sport.html?sport=mlb">← MLB 棒球列表</a></nav>
   <div class="hero" id="hero"><div class="empty">載入中…</div></div>
   <main id="game"></main>
   <p class="foot" id="foot">資料來源：MLB 官方 Stats API（statsapi.mlb.com）。<span class="tag ok">已確認</span> 官方已公布　<span class="tag exp">預計</span> 官方預計先發，可能更動　<span class="tag na">尚未取得</span> 本站目前沒有這項資料，不以 0 或示範值填補。本頁不提供盤口、預測或推薦。</p>
