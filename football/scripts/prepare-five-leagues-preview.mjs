@@ -52,7 +52,7 @@ for (const sample of samples) {
     durationMs: status.durationMs, errors: status.sourceErrors.length });
 }
 const cards = rows.map(row => `<a class="overview-card featured" href="./${row.league}/game.html?id=${row.id}">
-  <span class="meta">${esc(row.label)} · ${esc(row.target.twDate)}（台灣） · ${esc(row.target.phase)}</span>
+  <span class="meta">${esc(row.label)} · ${esc(row.target.twDate)}（台灣） · ${esc({ pre: '賽前', live: '進行中', final: '已完賽', postponed: '延期／取消' }[row.target.phase] || '狀態未取得')}</span>
   <b>${esc(row.target.away.name)} @ ${esc(row.target.home.name)}</b>
   <span class="visit">開啟固定單場樣本 →</span></a>`).join('');
 await fs.writeFile(path.join(root, 'index.html'), page({ title: '五大聯賽總覽', assetPrefix: '../', body:
