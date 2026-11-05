@@ -1,5 +1,7 @@
 # 足球當季資料頁試行（英超）
 
+五大聯賽的[獨立可操作候選](https://yaoshengmarketing-prog.github.io/101/football/five-leagues-preview/)已備妥：西甲、義甲、德甲、法甲各一場固定取數樣本。共用來源與頁面程式見 `football/five-leagues-preview/README.md`；正式自動更新目前仍只有英超。
+
 2026-10-30 更新。足球總覽、各場固定 ID 單場頁、獨立取數與 Pages 部署已可運作；正式產品採用及長期穩定供應仍待驗證。與 `/live/` 棒球流程分開。
 
 ## 開啟與重跑

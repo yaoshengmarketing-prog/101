@@ -4,27 +4,27 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { personnelChange } from './personnel-change.mjs';
+import { LEAGUES, FORM_GAMES, USAGE_DAYS, competitionsFor, competitionLabel } from './football-leagues.mjs';
 
 const API = 'https://site.api.espn.com/apis/site/v2/sports/soccer';
 const LOTTERY = 'https://www-talo-ssb-pr.sportslottery.com.tw/daily-coupons';
-const LEAGUES = [
-  { id: 'eng.1', label: '英超' },
-  { id: 'uefa.champions', label: '歐冠' },
-  { id: 'uefa.europa', label: '歐聯' },
-  { id: 'uefa.europa.conf', label: '歐協' },
-  { id: 'eng.fa', label: '足總盃' },
-  { id: 'eng.league_cup', label: '聯賽盃' },
-];
 const TZ = 'Asia/Taipei';
 const args = process.argv.slice(2);
 const arg = key => { const i = args.indexOf(key); return i < 0 ? null : args[i + 1]; };
 const outDir = path.resolve(arg('--out') || 'football/data');
 const requestedEvent = arg('--event');
+const targetLeague = arg('--league') || 'eng.1';
+if (!LEAGUES[targetLeague]) throw new Error(`不支援的目標聯賽 ${targetLeague}`);
+const sourceLeagues = competitionsFor(targetLeague);
+const singleEvent = args.includes('--single');
+if (singleEvent && !requestedEvent) throw new Error('--single 必須指定 --event');
 const oddsFile = arg('--odds-file');
 const now = new Date();
+const startedMs = Date.now();
 const generatedAt = now.toISOString();
 const errors = [];
 const sourceChecks = [];
+let httpAttempts = 0;
 const responseCache = new Map();
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -44,6 +44,7 @@ async function getJson(url, label, required = false) {
   const started = new Date().toISOString();
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
+      httpAttempts++;
       const r = await fetch(url, { signal: AbortSignal.timeout(12000), headers: { Accept: 'application/json' } });
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const json = await r.json();
@@ -81,7 +82,7 @@ function normalEvent(e, league) {
     : rawStatus.state === 'post' ? 'final' : rawStatus.state === 'in' ? 'live' : 'pre';
   return {
     id: String(e.id), key: gameKey(league, e.id), league,
-    leagueLabel: LEAGUES.find(x => x.id === league)?.label || league,
+    leagueLabel: competitionLabel(league),
     kickoffUTC: e.date, twDate: twDay(e.date),
     home: teamOf(home), away: teamOf(away),
     score: finished(e) && homeScore !== null && awayScore !== null ? { home: homeScore, away: awayScore } : null,
@@ -230,7 +231,7 @@ async function loadOddsSnapshots() {
     throw error;
   }
   const parsed = JSON.parse(raw);
-  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('台彩快照必須是以英超賽事 ID 為鍵的物件');
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('台彩快照必須是以賽事 ID 為鍵的物件');
   return parsed;
 }
 
@@ -266,28 +267,29 @@ function deriveLineupStatus(target, detail) {
 async function main() {
   // 查詢起點對齊台灣昨天零時，並保留未來賽程供指定 event 驗證。
   const boardDays = scoreboardDays(now);
-  const boards = await Promise.all(boardDays.map(d => getJson(`${API}/eng.1/scoreboard?dates=${d}`, `英超賽程 ${d}`, true)));
-  const fixtures = [...new Map(boards.flatMap(b => b.events || []).map(e => [String(e.id), normalEvent(e, 'eng.1')]).filter(([, e]) => e)).values()]
+  const boards = await Promise.all(boardDays.map(d => getJson(`${API}/${targetLeague}/scoreboard?dates=${d}`, `${LEAGUES[targetLeague].label}賽程 ${d}`, true)));
+  const fixtures = [...new Map(boards.flatMap(b => b.events || []).map(e => [String(e.id), normalEvent(e, targetLeague)]).filter(([, e]) => e)).values()]
     .sort((a, b) => a.kickoffUTC.localeCompare(b.kickoffUTC));
   const today = twDay(generatedAt);
   const displayDates = [-1, 0, 1, 2].map(n => twDay(plusDays(now, n)));
   let selected = fixtures.filter(g => displayDates.includes(g.twDate));
   if (requestedEvent) {
     const explicit = fixtures.find(g => g.id === requestedEvent);
-    if (!explicit) throw new Error(`找不到指定英超賽事 ${requestedEvent}`);
+    if (!explicit) throw new Error(`找不到指定${LEAGUES[targetLeague].label}賽事 ${requestedEvent}`);
     if (!selected.some(g => g.id === explicit.id)) selected.push(explicit);
   }
+  if (singleEvent) selected = selected.filter(g => g.id === requestedEvent);
   if (!selected.length) {
     const next = fixtures.find(g => Date.parse(g.kickoffUTC) > now.getTime());
     if (next) selected = fixtures.filter(g => g.twDate === next.twDate);
   }
   selected.sort((a, b) => a.kickoffUTC.localeCompare(b.kickoffUTC));
-  if (!selected.length) throw new Error('目前賽程來源未提供可顯示的英超場次');
+  if (!selected.length) throw new Error(`目前賽程來源未提供可顯示的${LEAGUES[targetLeague].label}場次`);
   const expiresAt = new Date(now.getTime() + 18 * 3600000).toISOString();
   const snapshots = await loadOddsSnapshots();
-  const overview = { generatedAt, expiresAt, scope: '英超', dates: [...new Set(selected.map(g => g.twDate))],
+  const overview = { generatedAt, expiresAt, scope: LEAGUES[targetLeague].label, league: targetLeague, dates: [...new Set(selected.map(g => g.twDate))],
     games: selected.map(g => ({ ...g, dataStatus: 'pending' })),
-    source: `${API}/eng.1/scoreboard`, coverage: '台灣昨天至後天的已知英超場次；空窗時顯示下一個賽事日' };
+    source: `${API}/${targetLeague}/scoreboard`, coverage: `台灣昨天至後天的已知${LEAGUES[targetLeague].label}場次；空窗時顯示下一個賽事日` };
   await fs.mkdir(outDir, { recursive: true });
   await fs.mkdir(path.join(outDir, 'games'), { recursive: true });
   const gameReports = [];
@@ -295,7 +297,7 @@ async function main() {
     const teamData = {}, gameMap = new Map(), gameErrorsStart = errors.length;
     for (const team of [target.away, target.home]) {
       const teamGames = [];
-      for (const league of LEAGUES) {
+      for (const league of sourceLeagues) {
         const url = `${API}/${league.id}/teams/${team.id}/schedule?season=${seasonOf(target.kickoffUTC)}`;
         const j = await getJson(url, `${team.name} ${league.label}賽程`);
         for (const raw of j?.events || []) {
@@ -304,13 +306,14 @@ async function main() {
         }
       }
       const unique = [...new Map(teamGames.map(g => [g.key, g])).values()];
-      const leagueFive = unique.filter(g => g.league === 'eng.1').sort((a, b) => b.kickoffUTC.localeCompare(a.kickoffUTC)).slice(0, 5);
-      const start14 = Date.parse(target.kickoffUTC) - 14 * 86400000;
+      const leagueFive = unique.filter(g => g.league === targetLeague).sort((a, b) => b.kickoffUTC.localeCompare(a.kickoffUTC)).slice(0, FORM_GAMES);
+      const start14 = Date.parse(target.kickoffUTC) - USAGE_DAYS * 86400000;
       const recent14 = unique.filter(g => Date.parse(g.kickoffUTC) >= start14)
         .sort((a, b) => a.kickoffUTC.localeCompare(b.kickoffUTC));
       for (const g of [...leagueFive, ...recent14]) gameMap.set(g.key, g);
-      teamData[team.id] = { team, leagueFive: leagueFive.map(g => g.key), recent14: recent14.map(g => g.key),
-        scheduleStatus: LEAGUES.map(l => ({ league: l.id,
+      teamData[team.id] = { team, league: targetLeague, leagueLabel: LEAGUES[targetLeague].label, formTarget: FORM_GAMES,
+        leagueFive: leagueFive.map(g => g.key), recent14: recent14.map(g => g.key),
+        scheduleStatus: sourceLeagues.map(l => ({ league: l.id,
           status: responseCache.has(`${API}/${l.id}/teams/${team.id}/schedule?season=${seasonOf(target.kickoffUTC)}`) ? 'acquired' : 'not_acquired' })) };
     }
     const details = {}, games = Object.fromEntries([...gameMap]);
@@ -339,21 +342,23 @@ async function main() {
         games: complete.length, requested: t.leagueFive.length };
     }
     const lottery = oddsForTarget(target, snapshots);
-    const detail = { generatedAt, expiresAt, target, lineupStatus, lineupCheckedAt: new Date().toISOString(),
+    const detail = { generatedAt, expiresAt, target, formTarget: FORM_GAMES, usageDays: USAGE_DAYS,
+      lineupStatus, lineupCheckedAt: new Date().toISOString(),
       lottery, teamData, games, details, errors: errors.slice(gameErrorsStart),
       limitations: ['ESPN 網頁資料端點未提供公開穩定性承諾；此為試行版本。', 'xG 本次未取得。',
-        '14 日跨賽事已查英超、歐冠、歐聯、歐協、足總盃與聯賽盃；其他賽事未涵蓋。',
+        `${USAGE_DAYS} 日跨賽事已查${sourceLeagues.map(x => x.label).join('、')}；其他賽事未涵蓋。`,
         '來源列出 11 位先發不代表替補名單完整；未列來源名單不等於未被正式報名。'] };
     await fs.writeFile(path.join(outDir, 'games', `${target.id}.json`), JSON.stringify(detail) + '\n');
     overview.games.find(g => g.id === target.id).dataStatus = 'ready';
-    gameReports.push({ id: target.id, phase: target.phase, lineupStatus, lottery: lottery.status,
+    gameReports.push({ id: target.id, league: targetLeague, phase: target.phase, lineupStatus, lottery: lottery.status,
       teams: Object.values(teamData).map(t => ({ name: t.team.name, leagueFive: t.leagueFive.length,
         leagueScores: t.goals.games, recent14: t.recent14.length,
         pairsWithContinuation: t.pairs.filter(p => p.continuation !== null).length })) });
   }
-  const status = { status: errors.length ? 'partial' : 'ok', generatedAt, expiresAt,
+  const status = { status: errors.length ? 'partial' : 'ok', league: targetLeague, generatedAt, expiresAt,
     runId: process.env.GITHUB_RUN_ID || null,
     gameCount: gameReports.length, gameIds: gameReports.map(g => g.id), sourceChecks: sourceChecks.length,
+    httpAttempts, durationMs: Date.now() - startedMs,
     sourceErrors: errors, updateMode: 'current_snapshot', oddsMode: 'official_one_time_snapshot' };
   await fs.writeFile(path.join(outDir, 'overview.json'), JSON.stringify(overview) + '\n');
   await fs.writeFile(path.join(outDir, 'status.json'), JSON.stringify(status) + '\n');

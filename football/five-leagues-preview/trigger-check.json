@@ -1,0 +1,138 @@
+{
+  "checkedAt": "2026-11-05T08:40:34.109Z",
+  "kind": "read_only_candidate_trigger_check",
+  "liveLeagues": [
+    "eng.1"
+  ],
+  "note": "僅驗證候選規則與真實 ESPN 賽程；正式 Cloudflare Worker 與 GitHub workflow 仍只啟用英超。",
+  "results": [
+    {
+      "league": "esp.1",
+      "id": "401882812",
+      "kickoffUTC": "2026-11-07T13:00Z",
+      "scheduledAt": "2026-11-07T11:35:00.000Z",
+      "windowMinutes": 90,
+      "matched": true,
+      "githubGate": {
+        "build": true,
+        "checkFailed": false,
+        "reason": "賽前 esp.1/401882812:90分"
+      },
+      "externalWindow": 90,
+      "scoreboardRequests": 2,
+      "durationMs": 283
+    },
+    {
+      "league": "esp.1",
+      "id": "401882812",
+      "kickoffUTC": "2026-11-07T13:00Z",
+      "scheduledAt": "2026-11-07T12:35:00.000Z",
+      "windowMinutes": 30,
+      "matched": true,
+      "githubGate": {
+        "build": true,
+        "checkFailed": false,
+        "reason": "賽前 esp.1/401882812:30分"
+      },
+      "externalWindow": 30,
+      "scoreboardRequests": 2,
+      "durationMs": 30
+    },
+    {
+      "league": "ita.1",
+      "id": "401874791",
+      "kickoffUTC": "2026-11-07T14:00Z",
+      "scheduledAt": "2026-11-07T12:35:00.000Z",
+      "windowMinutes": 90,
+      "matched": true,
+      "githubGate": {
+        "build": true,
+        "checkFailed": false,
+        "reason": "賽前 ita.1/401874791:90分, ita.1/401874811:90分"
+      },
+      "externalWindow": 90,
+      "scoreboardRequests": 2,
+      "durationMs": 222
+    },
+    {
+      "league": "ita.1",
+      "id": "401874791",
+      "kickoffUTC": "2026-11-07T14:00Z",
+      "scheduledAt": "2026-11-07T13:35:00.000Z",
+      "windowMinutes": 30,
+      "matched": true,
+      "githubGate": {
+        "build": true,
+        "checkFailed": false,
+        "reason": "賽前 ita.1/401874791:30分, ita.1/401874811:30分"
+      },
+      "externalWindow": 30,
+      "scoreboardRequests": 2,
+      "durationMs": 25
+    },
+    {
+      "league": "ger.1",
+      "id": "401884745",
+      "kickoffUTC": "2026-11-07T14:30Z",
+      "scheduledAt": "2026-11-07T13:05:00.000Z",
+      "windowMinutes": 90,
+      "matched": true,
+      "githubGate": {
+        "build": true,
+        "checkFailed": false,
+        "reason": "賽前 ger.1/401884745:90分, ger.1/401884740:90分, ger.1/401884744:90分, ger.1/401884737:90分"
+      },
+      "externalWindow": 90,
+      "scoreboardRequests": 2,
+      "durationMs": 182
+    },
+    {
+      "league": "ger.1",
+      "id": "401884745",
+      "kickoffUTC": "2026-11-07T14:30Z",
+      "scheduledAt": "2026-11-07T14:05:00.000Z",
+      "windowMinutes": 30,
+      "matched": true,
+      "githubGate": {
+        "build": true,
+        "checkFailed": false,
+        "reason": "賽前 ger.1/401884745:30分, ger.1/401884740:30分, ger.1/401884744:30分, ger.1/401884737:30分"
+      },
+      "externalWindow": 30,
+      "scoreboardRequests": 2,
+      "durationMs": 39
+    },
+    {
+      "league": "fra.1",
+      "id": "401876411",
+      "kickoffUTC": "2026-11-07T18:00Z",
+      "scheduledAt": "2026-11-07T16:35:00.000Z",
+      "windowMinutes": 90,
+      "matched": true,
+      "githubGate": {
+        "build": true,
+        "checkFailed": false,
+        "reason": "賽前 fra.1/401876411:90分"
+      },
+      "externalWindow": 90,
+      "scoreboardRequests": 2,
+      "durationMs": 177
+    },
+    {
+      "league": "fra.1",
+      "id": "401876411",
+      "kickoffUTC": "2026-11-07T18:00Z",
+      "scheduledAt": "2026-11-07T17:35:00.000Z",
+      "windowMinutes": 30,
+      "matched": true,
+      "githubGate": {
+        "build": true,
+        "checkFailed": false,
+        "reason": "賽前 fra.1/401876411:30分"
+      },
+      "externalWindow": 30,
+      "scoreboardRequests": 2,
+      "durationMs": 21
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "status": "ok",
+  "league": "esp.1",
+  "generatedAt": "2026-11-05T08:40:21.232Z",
+  "expiresAt": "2026-11-06T02:40:21.232Z",
+  "runId": null,
+  "gameCount": 1,
+  "gameIds": [
+    "401882812"
+  ],
+  "sourceChecks": 35,
+  "httpAttempts": 35,
+  "durationMs": 3197,
+  "sourceErrors": [],
+  "updateMode": "current_snapshot",
+  "oddsMode": "official_one_time_snapshot",
+  "explicitValidationEventId": "401882812",
+  "games": [
+    {
+      "id": "401882812",
+      "league": "esp.1",
+      "phase": "pre",
+      "lineupStatus": "unannounced",
+      "lottery": "not_acquired",
+      "teams": [
+        {
+          "name": "Racing Santander",
+          "leagueFive": 5,
+          "leagueScores": 5,
+          "recent14": 3,
+          "pairsWithContinuation": 2
+        },
+        {
+          "name": "Málaga",
+          "leagueFive": 5,
+          "leagueScores": 5,
+          "recent14": 2,
+          "pairsWithContinuation": 1
+        }
+      ]
+    }
+  ]
+}

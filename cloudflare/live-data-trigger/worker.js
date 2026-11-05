@@ -11,31 +11,35 @@
 //         unknown（找不到判定步驟，例如舊版 workflow）；這是該次 run 自己的判定，不是從 manifest 時間推測
 // 公開：GET /log 回傳最近 200 列 JSON（不含任何密鑰）。101 的 live-data 會讀它做健康檢查，並隨資料一起存進 repo。
 // 密鑰：GH_TOKEN＝站長自建的 fine-grained token（只限 101、Actions 讀寫），設在 Cloudflare Secret，不進 repo。
+import { LIVE_LEAGUE_IDS, LEAGUES, PREMATCH_MINUTES } from "../../football/scripts/football-leagues.mjs";
+
 const REPO = "yaoshengmarketing-prog/101", WF = "live-data.yml", API = "https://api.github.com";
 const call = (env, path, init = {}) => fetch(API + path, { ...init, signal: AbortSignal.timeout(15000),
   headers: { authorization: `Bearer ${env.GH_TOKEN}`, accept: "application/vnd.github+json", "x-github-api-version": "2022-11-28", "user-agent": "live-data-trigger" } });
 const errText = e => e?.name === "TimeoutError" ? "逾時（15 秒沒有回應）" : String(e?.message || e).slice(0, 300);
 const BASEBALL_CRON = "*/15 0-3,13-23 * * *", FOOTBALL_EXTRA_CRON = "*/15 8-12 * * *";
-const FOOTBALL_WF = "football-data.yml", FOOTBALL_API = "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard";
+const FOOTBALL_WF = "football-data.yml", FOOTBALL_API = "https://site.api.espn.com/apis/site/v2/sports/soccer";
 const footballDay = ms => new Date(ms).toISOString().slice(0, 10).replaceAll("-", "");
 export function footballDue(kickoff, scheduledTime) {
   const minutes = (Date.parse(kickoff) - scheduledTime) / 60000;
-  if (Math.abs(minutes - 90) <= 8) return 90;
-  if (Math.abs(minutes - 30) <= 8) return 30;
+  if (Math.abs(minutes - PREMATCH_MINUTES[0]) <= 8) return PREMATCH_MINUTES[0];
+  if (Math.abs(minutes - PREMATCH_MINUTES[1]) <= 8) return PREMATCH_MINUTES[1];
   return null;
 }
 
 // 足球另用一張表；賽程檢查失敗只留紀錄，絕不觸發 football-data 的失敗發布。
-export async function checkFootball(env, scheduledTime, fetcher = fetch) {
+export async function checkFootball(env, scheduledTime, fetcher = fetch, leagueIds = LIVE_LEAGUE_IDS) {
   const at = new Date(scheduledTime).toISOString(), days = [footballDay(scheduledTime), footballDay(scheduledTime + 86400000)];
   let fixtures;
   try {
-    const boards = await Promise.all(days.map(async day => {
-      const response = await fetcher(`${FOOTBALL_API}?dates=${day}`, { signal: AbortSignal.timeout(12000), headers: { accept: "application/json" } });
-      if (!response.ok) throw new Error(`ESPN ${day} HTTP ${response.status}`);
-      return response.json();
-    }));
-    fixtures = [...new Map(boards.flatMap(board => board.events || []).map(game => [String(game.id), game])).values()];
+    const boards = await Promise.all(leagueIds.flatMap(league => days.map(async day => {
+      if (!LEAGUES[league]) throw new Error(`未知目標聯賽 ${league}`);
+      const response = await fetcher(`${FOOTBALL_API}/${league}/scoreboard?dates=${day}`, { signal: AbortSignal.timeout(12000), headers: { accept: "application/json" } });
+      if (!response.ok) throw new Error(`ESPN ${league} ${day} HTTP ${response.status}`);
+      return { league, board: await response.json() };
+    })));
+    fixtures = [...new Map(boards.flatMap(({ league, board }) => (board.events || [])
+      .map(game => [`${league}:${game.id}`, { ...game, league }]))).values()];
   } catch (e) {
     await env.DB.prepare("INSERT OR IGNORE INTO football_triggers (id, kind, scheduled_at, checked_at, error) VALUES (?, 'check_failure', ?, ?, ?)")
       .bind(`check cf ${at.slice(0, 16)}Z`, at, new Date().toISOString(), errText(e)).run();

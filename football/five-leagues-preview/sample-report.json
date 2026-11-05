@@ -1,0 +1,133 @@
+{
+  "kind": "fixed_research_preview",
+  "samples": [
+    {
+      "league": "esp.1",
+      "id": "401882812",
+      "label": "西甲",
+      "target": {
+        "id": "401882812",
+        "key": "esp.1:401882812",
+        "league": "esp.1",
+        "leagueLabel": "西甲",
+        "kickoffUTC": "2026-11-07T13:00Z",
+        "twDate": "2026-11-07",
+        "home": {
+          "id": "99",
+          "name": "Málaga"
+        },
+        "away": {
+          "id": "87",
+          "name": "Racing Santander"
+        },
+        "score": null,
+        "status": "STATUS_SCHEDULED",
+        "phase": "pre",
+        "statusDetail": "Sat, November 7th at 8:00 AM EST",
+        "finished": false,
+        "source": "https://www.espn.com/soccer/match/_/gameId/401882812"
+      },
+      "generatedAt": "2026-11-05T08:40:21.232Z",
+      "sourceChecks": 35,
+      "httpAttempts": 35,
+      "durationMs": 3197,
+      "errors": 0
+    },
+    {
+      "league": "ita.1",
+      "id": "401874791",
+      "label": "義甲",
+      "target": {
+        "id": "401874791",
+        "key": "ita.1:401874791",
+        "league": "ita.1",
+        "leagueLabel": "義甲",
+        "kickoffUTC": "2026-11-07T14:00Z",
+        "twDate": "2026-11-07",
+        "home": {
+          "id": "2925",
+          "name": "Cagliari"
+        },
+        "away": {
+          "id": "4057",
+          "name": "Frosinone"
+        },
+        "score": null,
+        "status": "STATUS_SCHEDULED",
+        "phase": "pre",
+        "statusDetail": "Sat, November 7th at 9:00 AM EST",
+        "finished": false,
+        "source": "https://www.espn.com/soccer/match/_/gameId/401874791"
+      },
+      "generatedAt": "2026-11-05T08:40:22.342Z",
+      "sourceChecks": 33,
+      "httpAttempts": 33,
+      "durationMs": 3224,
+      "errors": 0
+    },
+    {
+      "league": "ger.1",
+      "id": "401884745",
+      "label": "德甲",
+      "target": {
+        "id": "401884745",
+        "key": "ger.1:401884745",
+        "league": "ger.1",
+        "leagueLabel": "德甲",
+        "kickoffUTC": "2026-11-07T14:30Z",
+        "twDate": "2026-11-07",
+        "home": {
+          "id": "124",
+          "name": "Borussia Dortmund"
+        },
+        "away": {
+          "id": "10388",
+          "name": "SV Elversberg"
+        },
+        "score": null,
+        "status": "STATUS_SCHEDULED",
+        "phase": "pre",
+        "statusDetail": "Sat, November 7th at 9:30 AM EST",
+        "finished": false,
+        "source": "https://www.espn.com/soccer/match/_/gameId/401884745"
+      },
+      "generatedAt": "2026-11-05T08:40:22.166Z",
+      "sourceChecks": 36,
+      "httpAttempts": 36,
+      "durationMs": 3269,
+      "errors": 0
+    },
+    {
+      "league": "fra.1",
+      "id": "401876411",
+      "label": "法甲",
+      "target": {
+        "id": "401876411",
+        "key": "fra.1:401876411",
+        "league": "fra.1",
+        "leagueLabel": "法甲",
+        "kickoffUTC": "2026-11-07T18:00Z",
+        "twDate": "2026-11-08",
+        "home": {
+          "id": "172",
+          "name": "AJ Auxerre"
+        },
+        "away": {
+          "id": "6851",
+          "name": "Paris FC"
+        },
+        "score": null,
+        "status": "STATUS_SCHEDULED",
+        "phase": "pre",
+        "statusDetail": "Sat, November 7th at 1:00 PM EST",
+        "finished": false,
+        "source": "https://www.espn.com/soccer/match/_/gameId/401876411"
+      },
+      "generatedAt": "2026-11-05T08:40:22.305Z",
+      "sourceChecks": 33,
+      "httpAttempts": 33,
+      "durationMs": 2917,
+      "errors": 0
+    }
+  ]
+}

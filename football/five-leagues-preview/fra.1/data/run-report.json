@@ -1,0 +1,43 @@
+{
+  "status": "ok",
+  "league": "fra.1",
+  "generatedAt": "2026-11-05T08:40:22.305Z",
+  "expiresAt": "2026-11-06T02:40:22.305Z",
+  "runId": null,
+  "gameCount": 1,
+  "gameIds": [
+    "401876411"
+  ],
+  "sourceChecks": 33,
+  "httpAttempts": 33,
+  "durationMs": 2917,
+  "sourceErrors": [],
+  "updateMode": "current_snapshot",
+  "oddsMode": "official_one_time_snapshot",
+  "explicitValidationEventId": "401876411",
+  "games": [
+    {
+      "id": "401876411",
+      "league": "fra.1",
+      "phase": "pre",
+      "lineupStatus": "unannounced",
+      "lottery": "not_acquired",
+      "teams": [
+        {
+          "name": "AJ Auxerre",
+          "leagueFive": 5,
+          "leagueScores": 5,
+          "recent14": 2,
+          "pairsWithContinuation": 1
+        },
+        {
+          "name": "Paris FC",
+          "leagueFive": 5,
+          "leagueScores": 5,
+          "recent14": 2,
+          "pairsWithContinuation": 1
+        }
+      ]
+    }
+  ]
+}
