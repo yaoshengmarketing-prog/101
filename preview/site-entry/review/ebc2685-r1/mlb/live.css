@@ -1,0 +1,136 @@
+/* /live/ 試營運專用：更新狀態提示、牛棚表。根目錄 style.css（V1.2.1 凍結）不動，共用其色票。 */
+.notice{margin:10px 0 0;padding:9px 12px;border-radius:8px;font-size:13px;line-height:1.55;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.notice b{color:var(--ink)}
+.notice.warn,.notice.bad{border-color:#E3B9A6;background:#F6E3DA;color:#6B2C16}
+.notice.warn b,.notice.bad b{color:#6B2C16}
+.notice.bad{border-width:2px}
+:root[data-theme="dark"] .notice.warn,:root[data-theme="dark"] .notice.bad{background:#3A241C;color:#F0C2AE;border-color:#6B3A28}
+:root[data-theme="dark"] .notice.warn b,:root[data-theme="dark"] .notice.bad b{color:#FFE2D4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .notice.warn,:root:not([data-theme="light"]) .notice.bad{background:#3A241C;color:#F0C2AE;border-color:#6B3A28}
+  :root:not([data-theme="light"]) .notice.warn b,:root:not([data-theme="light"]) .notice.bad b{color:#FFE2D4}}
+
+.bpt{margin-top:10px;overflow-x:auto}
+.bpt h3{font-size:15px;margin:0 0 6px}.bpt h3 span{font-size:11.5px;color:var(--muted);font-weight:400;margin-left:6px}
+table.bp{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+table.bp th,table.bp td{padding:5px 3px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle}
+table.bp thead th{font-size:12px;font-weight:600;color:var(--muted);border-bottom:2px solid var(--line)}
+table.bp thead th small{display:block;font-size:10px;font-weight:400}
+table.bp thead th.hl small{color:var(--accent);font-weight:600}
+table.bp .nm,table.bp tbody th{text-align:left;width:30%;font-weight:400;word-break:break-word}
+table.bp .sk{width:11%}
+table.bp tr.gms td,table.bp tr.gms th{font-size:11px;color:var(--muted);border-bottom:1px dashed var(--line)}
+table.bp tr.gms a{text-decoration:none}
+table.bp .gs{display:block;font-size:10px}
+table.bp .miss{display:block;font-size:10px;color:#8F3A1E;font-weight:600}
+table.bp tr.sum th{font-weight:600}
+table.bp tr.sum td b{font-family:var(--num);font-size:14px}
+table.bp tr.sum td small{display:block;font-size:10px;color:var(--muted);line-height:1.35}
+table.bp td.part{background:#F6E3DA}
+:root[data-theme="dark"] table.bp td.part{background:#3A241C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) table.bp td.part{background:#3A241C}}
+table.bp td.st{font-size:11.5px;color:var(--muted)}
+table.bp td.n{font-family:var(--num)}
+table.bp td.n small{display:block;font-family:inherit;font-size:9.5px;color:var(--muted)}
+table.bp td.unk{color:#8F3A1E;font-weight:600}
+table.bp tr.recent th{font-weight:700}
+table.bp .s1,table.bp .s2{display:inline-block;min-width:22px;font-family:var(--num);font-weight:700;border-radius:4px;padding:0 4px}
+table.bp .s2{background:var(--accent);color:#fff}
+table.bp .s1{background:var(--accent-soft);color:var(--accent)}
+table.bp .s0{color:var(--muted)}
+table.bp .sq{color:#8F3A1E;font-weight:700}
+table.bp td.empty{color:var(--muted);font-size:12px}
+.bpnote{font-size:12px;color:var(--muted);margin:8px 0 0;padding-left:18px}
+.bpnote li{margin-top:2px}
+
+/* 今天值得一起看（情境卡） */
+.ctxg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.ctx{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:12px 14px;min-width:0}
+.ctx h3{font-size:15px;margin:0 0 8px}
+.ctx .nums{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:6px}
+.ctx .nums div{display:flex;flex-direction:column;min-width:0}
+.ctx .nums b{font-size:20px;line-height:1.2;color:var(--ink)}
+.ctx .nums span{font-size:11.5px;color:var(--muted)}
+.ctx ul{margin:0 0 6px;padding-left:18px;font-size:13.5px;line-height:1.6}
+.ctxmore{margin-top:8px}
+.ctxmore table{width:100%;margin-top:6px}
+.ctxmore .tbl td{white-space:normal;vertical-align:top}
+.ctxmore ul{margin:6px 0 0;padding-left:18px}
+.ctx .stale,.ctxmore .stale{font-size:12px;color:#6B2C16;background:#F6E3DA;border-radius:6px;padding:4px 8px;margin:0 0 8px;display:inline-block}
+:root[data-theme="dark"] .ctx .stale,:root[data-theme="dark"] .ctxmore .stale{background:#3A241C;color:#F0C2AE}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ctx .stale,:root:not([data-theme="light"]) .ctxmore .stale{background:#3A241C;color:#F0C2AE}}
+#post .panel>p{margin:0 0 8px}
+.lsw{overflow-x:auto;margin-bottom:8px}
+.tbl.ls td,.tbl.ls th{padding:4px 5px}
+.tbl.ls td.lt{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.tbl.ls .q{color:#B4441C;font-weight:700}
+/* ---- 球場天氣與風向圖、預估打線 ---- */
+.wxp{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:14px;align-items:start}
+.wxfig{width:100%;height:auto;color:var(--ink)}
+.wxfig text{font-size:11px;fill:var(--muted)}
+.wxdl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:8px 0}
+.wxdl dt{color:var(--muted);font-size:13px}
+.wxdl dd{margin:0}
+.tbl.lu tr.unc td{background:color-mix(in srgb,var(--tag) 55%,transparent)}
+@media (max-width:560px){.wxp{grid-template-columns:1fr}.wxfig{max-width:240px;margin:0 auto}}
+.tbl.lu.pj td.l:nth-child(2){white-space:nowrap}
+/* 手機：預估打線表的表頭、打擊側、比對欄可換行，表格寬度才不會超過卡片、把整頁撐寬；球員名到 380px 以下才換行 */
+@media (max-width:560px){.tbl.lu.pj th,.tbl.lu.pj td:not(.l){white-space:normal}.tbl.lu.pj td.l:not(:nth-child(2)){white-space:normal}}
+@media (max-width:380px){.tbl.lu.pj td.l:nth-child(2){white-space:normal}}
+/* 打者端今日對位：「對左投／對右投 OPS（打席）」欄可換行，多一欄也不撐寬整頁 */
+.tbl.lu th.vs,.tbl.lu td.vs{white-space:normal;width:5em}
+@media (max-width:560px){.tbl.lu.pj:has(th.vs) td.l:nth-child(2){white-space:normal}}
+/* 手機 320px：首頁比賽卡欄寬最少 330px（根目錄 style.css .grid）會把整頁撐寬 → 欄寬上限改為容器寬；寬螢幕仍是 330px 起跳，排法不變 */
+.grid{grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr))}
+/* 手機：頁首試營運標籤（style.css .demo 不換行）文字較長時可換行，不再撐寬 */
+@media (max-width:480px){.top .demo{white-space:normal;border-radius:12px}}
+.vsbox{margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;background:var(--surface)}
+.vsbox ul{margin:6px 0 4px;padding-left:18px}
+
+/* 先發 × 對方打線（對位卡試作） */
+.mu .muobs{margin:8px 0;padding:8px 10px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 6px 6px 0;font-size:14px;line-height:1.6}
+.mu .muobs p{margin:0}.mu .muobs p+p{margin-top:4px}
+.mu .mug{margin:8px 0}.mu .mug>p{margin:0 0 4px}
+.mu .mur{display:grid;grid-template-columns:96px 1fr 44px 58px;align-items:center;gap:8px;padding:5px 6px;border-radius:6px;font-size:13px}
+.mu .mur .k{font-weight:600;line-height:1.25}.mu .mur .k small{display:block;font-weight:400;font-size:11px;color:var(--muted)}
+.mu .mur .bar{height:10px;background:var(--line);border-radius:5px;overflow:hidden}.mu .mur .bar i{display:block;height:100%;background:var(--muted)}
+.mu .mur.hl{outline:2px solid var(--accent);outline-offset:-2px}.mu .mur.hl .bar i{background:var(--accent)}
+.mu .mur b.num{font-family:var(--num);font-size:15px;text-align:right}.mu .mur>small{font-size:11px;color:var(--muted);text-align:right}
+.mu .lus{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0 2px}
+.mu .chip{display:inline-flex;flex-direction:column;align-items:center;min-width:30px;padding:2px 0;border-radius:6px;font-size:12px;line-height:1.2;border:1px solid var(--line);color:var(--muted)}
+.mu .chip b{font-family:var(--num);font-size:11px;font-weight:400}
+.mu .chip.L{background:var(--accent-soft);color:var(--accent);border-color:var(--accent);font-weight:600}
+.mu .chip.R{background:var(--surface);color:var(--ink);border-color:var(--ink);font-weight:600}
+.mu .chip.S{border-style:dashed;color:var(--ink)}
+.mu table.mut{margin-top:8px;font-size:13px}.mu table.mut th small,.mu table.mut td small{display:block;font-size:10.5px;color:var(--muted);font-weight:400}
+.bpnote.bpsum{margin:0 0 10px;color:var(--ink);font-size:12.5px}
+
+/* 名單狀態（試作）：清單排版、長英文原文可換行，不撐寬 */
+#rs>details>summary{display:block;list-style:none;cursor:pointer}#rs>details>summary::-webkit-details-marker{display:none}
+#rs>details>summary h2::after{content:" ▸";font-size:14px;color:var(--muted)}#rs>details[open]>summary h2::after{content:" ▾"}
+#rs .notice{margin:0 0 10px}
+.rs ul{margin:6px 0;padding-left:18px;font-size:13.5px;line-height:1.6;overflow-wrap:anywhere}
+.rs .rs1>li+li{margin-top:4px}.rs .rsil{margin:2px 0 0}
+.rs h4{font-size:13.5px;margin:10px 0 2px}
+.rs .rsp>li{margin-top:8px}.rs .rstx{margin:2px 0;font-size:13px}
+.rs .en,.rs .sub{display:block;font-size:12px;color:var(--muted)}
+.rs details{margin-top:8px}
+/* 手機：完賽頁「賽後結果」的先發／牛棚表、打線區「逐棒對照」表頭可換行，不再把整頁撐寬（10-02 在 320／360 寬發現） */
+#post .tbl:not(.ls) th,#post .tbl:not(.ls) td{white-space:normal}
+.vsbox .tbl.lu th{white-space:normal}
+/* 近期無賽：最近完賽清單（10-18 B1） */
+.recent ul{list-style:none;margin:8px 0 0;padding:0;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.recent li+li{border-top:1px solid var(--line)}
+.recent a{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;padding:10px 12px;color:inherit;text-decoration:none}
+.recent .d{flex:0 0 100%;font-size:12px;color:var(--muted)}
+.recent .d em{font-style:normal;margin-left:6px}
+.recent .m{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+.recent .go{color:var(--muted)}
+/* 情境卡：歷史相似情境紀錄（10-18 A） */
+.ctx .sim{margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.ctx .sim ul{list-style:none;margin:6px 0;padding:0}
+.ctx .sim li+li{border-top:1px solid var(--line)}
+.ctx .sim a{display:flex;flex-wrap:wrap;gap:2px 8px;padding:6px 0;color:inherit;text-decoration:none;font-size:13px}
+.ctx .sim .d{flex:0 0 100%;font-size:12px;color:var(--muted)}
+.ctx .sim .d em{font-style:normal;margin-left:4px}
+.ctx .sim .m{min-width:0;overflow-wrap:anywhere}
+.ctx .sim .sub{display:block;font-size:12px;color:var(--muted)}
