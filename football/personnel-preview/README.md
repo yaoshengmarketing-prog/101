@@ -7,3 +7,5 @@
 `data/` 的兩份 JSON 是 `node football/scripts/make-personnel-preview.mjs <ESPN ID>` 以 ESPN 既有賽程／summary 正規化流程於台灣 2026-11-05 回讀的歷史名單研究樣本，供候選固定呈現，不參與正式足球更新。熱刺樣本的 `10/11`、Maddison 與 Solanke 角色，另與研究 repo 記錄的賽前固定 run `41222385143` 核對；本候選沒有接入球會公告原因。利物浦對阿森納用相同計算規則，前一場各自是聯賽盃。
 
 驗證：`node --test football/scripts/test-personnel-change.mjs football/scripts/test-football.mjs`。完整取數另於台灣 11/5 對當期英超重跑到暫存目錄，4 場、99 次來源檢查、0 錯誤；未公布正式名單的場次兩隊均輸出 `target_lineup_unavailable`、`continued=null`、轉換清單為空。暫存資料已移除。正式 `football/game.html`、台彩快照、排程與棒球流程均未修改。
+
+實際瀏覽器驗證：Codex 內建瀏覽器點開熱刺、收合，再切換利物浦場並展開阿森納；前場聯賽盃、角色名單均可讀。另用已安裝 Chromium 的裝置模擬補足精確 390px 截圖，腳本 `football/scripts/capture-personnel-preview.mjs` 檢查 `innerWidth=390`、文件寬度 390、展開狀態正確。圖檔為 [`screenshots/mobile-collapsed.png`](screenshots/mobile-collapsed.png) 與 [`screenshots/mobile-expanded.png`](screenshots/mobile-expanded.png)；均是公開候選頁實際瀏覽器畫面，實體手機尚未試。
