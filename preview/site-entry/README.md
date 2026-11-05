@@ -4,16 +4,21 @@
 
 ## 閱讀路徑
 
-- 首頁 `index.html` → MLB `sport.html?sport=mlb` → 現有 `/live/game.html?pk=...` 的導覽候選包裝頁 `read.html?sport=mlb&pk=...`。
-- 首頁 `index.html` → 足球 `sport.html?sport=football` → 現有 `/football/game.html?id=...` 的導覽候選包裝頁 `read.html?sport=football&id=...`。
-- 共用導覽只存在候選頁。單場由同源 iframe 顯示原有公開頁面，不複製或改寫其資料處理；若內嵌不可用，可按「原頁直接開啟」。正式整合時，需另決定是否將共用導覽放入兩條原頁，並確認使用條件。
+- 首頁 `index.html` → MLB `sport.html?sport=mlb` → 候選單場 `mlb/game.html?pk=...`。
+- 首頁 `index.html` → 足球 `sport.html?sport=football` → 候選單場 `football/game.html?id=...`。
+- 單場 HTML 本身包含共用頁首、所在運動與返回分類連結。舊候選 `read.html?sport=...` 在本版轉到相應單場網址。原有研究呈現由既有渲染程式的固定副本提供，沒有內嵌頁。
+
+## 單場程式基線
+
+- MLB `live/game.html`、`live/assets/app.js`、`live/assets/live.css` 與根目錄 `style.css`，以及足球 `football/game.html`、`football/assets/football.js`、`football/assets/football.css`，均取自 main `f5d5ec108205e7520c89d01432fdc33cc3b6d285`（含足球工作線當時已發布的內容）。
+- 候選副本只調整資料讀取路徑、共用導覽與返回連結；仍讀既有公開 `live/data/` 與 `football/data/`。原 `/live/`、`/football/` 及其程式未改。
 
 ## 資料界線
 
 - MLB 近期沒有已知賽事時，只顯示休賽狀態及 `manifest.recent` 已保存的真實完賽入口；2027 人工試跑不列入。
 - 足球快照狀態若為 failed、逾期或與 overview 版本不一致，就不列場次；單場缺失不阻擋其他有效場次。總覽未提供比分時不補猜。
 - 時間明標台灣時間；首頁標示各來源本次取得時間。資料會依既有公開輸出改變，因此固定網址固定的是候選程式版本，頁面資料仍以顯示的取得時間為準。
-- MLB 今天／明天逐日核對清單日期、日期檔版本與場數；缺一日保留已讀場次並標缺口，兩日核對且流程狀態成功才顯示「已確認無賽」。單場內的返回連結在候選包裝頁指向相同運動的候選列表與場次位置。
+- MLB 今天／明天逐日核對清單日期、日期檔版本與場數；缺一日保留已讀場次並標缺口，兩日核對且流程狀態成功才顯示「已確認無賽」。單場返回相同運動的候選列表與場次位置。
 
 ## 候選檢查
 

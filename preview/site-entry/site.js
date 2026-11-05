@@ -15,7 +15,7 @@
   const phaseLabel = {pre:'賽前',live:'比賽進行中',final:'已完賽',postponed:'延期／取消'};
   const sportLabel = sport => sport === 'mlb' ? 'MLB 棒球' : '足球';
   const numberId = x => /^\d+$/.test(String(x ?? '')) ? String(x) : null;
-  const readHref = (sport,id) => `read.html?sport=${sport}&${sport === 'mlb' ? 'pk' : 'id'}=${encodeURIComponent(id)}`;
+  const readHref = (sport,id) => `${sport}/game.html?${sport === 'mlb' ? 'pk' : 'id'}=${encodeURIComponent(id)}`;
   const sportHref = sport => `sport.html?sport=${sport}`;
   const label = (name,value) => `<div><dt>${esc(name)}</dt><dd>${esc(value)}</dd></div>`;
   const facts = rows => `<dl class="fact-list">${rows.map(([name,value]) => label(name,value)).join('')}</dl>`;
@@ -177,44 +177,7 @@
     const q = new URLSearchParams(location.search), sport = q.get('sport');
     const id = numberId(sport === 'mlb' ? q.get('pk') : q.get('id'));
     if((sport !== 'mlb' && sport !== 'football') || !id){ $('#app').innerHTML = '<div class="empty-box">單場編號無效。<a href="index.html">返回全部賽事</a></div>'; return; }
-    nav(sport);
-    const path = sport === 'mlb' ? `live/game.html?pk=${id}` : `football/game.html?id=${id}`;
-    const original = publicPath(path);
-    const back = `${sportHref(sport)}#game-${id}`;
-    $('#app').innerHTML = `<div class="reader-bar"><div><a class="eyebrow" href="index.html">全部賽事</a><p>／ <a href="${back}">${sportLabel(sport)}</a> ／ 單場 ${id} · 現有公開試營運頁</p></div><div class="panel-actions"><a class="action subtle" href="${back}">返回${sportLabel(sport)}列表</a><a class="action" href="${original}">原頁直接開啟 ↗</a></div></div><iframe class="embedded" id="reading-frame" title="${sportLabel(sport)}既有單場資料" src="${original}"></iframe><p class="reader-fallback">此頁只加共用導覽。若內嵌頁未載入，使用「原頁直接開啟」。</p>`;
-    const frame = $('#reading-frame');
-    frame.addEventListener('load', () => {
-      try{
-        const doc = frame.contentDocument;
-        if(!doc) return;
-        const style = doc.createElement('style');
-        style.textContent = '.top{display:none!important}';
-        doc.head.appendChild(style);
-        const legacyList = new URL(publicPath(sport === 'mlb' ? 'live/' : 'football/'),location.href);
-        const candidateList = new URL(back,location.href).href;
-        const isLegacyList = a => {
-          const url = new URL(a.href,doc.baseURI);
-          return url.origin === legacyList.origin && (url.pathname === legacyList.pathname || url.pathname === `${legacyList.pathname}index.html`);
-        };
-        const rewriteReturn = () => doc.querySelectorAll('a[href]').forEach(a => {
-          if(!isLegacyList(a)) return;
-          a.href = candidateList;
-          a.target = '_top';
-          a.textContent = `← ${sportLabel(sport)}列表`;
-        });
-        rewriteReturn();
-        new MutationObserver(rewriteReturn).observe(doc.body,{subtree:true,childList:true,attributes:true,attributeFilter:['href']});
-        doc.addEventListener('click',event => {
-          const a = event.target.closest?.('a[href]');
-          if(!a || !isLegacyList(a) || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-          event.preventDefault();
-          location.assign(candidateList);
-        },true);
-        const resize = () => { frame.style.height = `${Math.max(doc.body.scrollHeight,doc.documentElement.scrollHeight,800)}px`; };
-        resize();
-        new ResizeObserver(resize).observe(doc.body);
-      }catch{ /* The direct public page link remains available. */ }
-    });
+    location.replace(readHref(sport,id));
   }
   const page = document.body.dataset.page;
   if(page === 'home') renderHome();
