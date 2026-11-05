@@ -10,6 +10,8 @@
     return Number.isFinite(d.getTime()) ? new Intl.DateTimeFormat('zh-TW', {timeZone:'Asia/Taipei', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:false, ...options}).format(d) : '時間未取得';
   };
   const todayTW = () => new Intl.DateTimeFormat('en-CA', {timeZone:'Asia/Taipei', year:'numeric', month:'2-digit', day:'2-digit'}).format(new Date());
+  const tomorrowTW = today => new Date(Date.parse(`${today}T00:00:00Z`) + 86400000).toISOString().slice(0,10);
+  const shortDate = date => /^\d{4}-\d{2}-\d{2}$/.test(date) ? date.slice(5).replace('-', '/') : '日期未取得';
   const phaseLabel = {pre:'賽前',live:'比賽進行中',final:'已完賽',postponed:'延期／取消'};
   const sportLabel = sport => sport === 'mlb' ? 'MLB 棒球' : '足球';
   const numberId = x => /^\d+$/.test(String(x ?? '')) ? String(x) : null;
@@ -25,18 +27,27 @@
     if(!response.ok) throw new Error(`HTTP ${response.status}`);
     return response.json();
   }
-  async function loadMlb(includeDates = false){
+  async function loadMlb(){
+    const today = todayTW(), expected = [today,tomorrowTW(today)];
     const [manifestResult,statusResult] = await Promise.allSettled([json('live/data/manifest.json'),json('live/data/status.json')]);
-    if(manifestResult.status !== 'fulfilled') return {ok:false,reason:'本站 MLB 賽程資料未取得',status:statusResult.status === 'fulfilled' ? statusResult.value : null};
+    if(manifestResult.status !== 'fulfilled') return {ok:false,reason:'本站 MLB 賽程清單讀取失敗',status:statusResult.status === 'fulfilled' ? statusResult.value : null,expected};
     const manifest = manifestResult.value;
     const status = statusResult.status === 'fulfilled' ? statusResult.value : null;
-    let games = [];
-    if(includeDates){
-      const days = (manifest.days || []).filter(d => Number(d.count) > 0 && /^\d{4}-\d{2}-\d{2}$/.test(d.date));
-      const results = await Promise.allSettled(days.map(d => json(`live/data/dates/${d.date}.json`)));
-      games = results.filter(r => r.status === 'fulfilled').flatMap(r => r.value.games || []);
-    }
-    return {ok:true,manifest,status,games};
+    const listed = Array.isArray(manifest.days) ? manifest.days : [];
+    const listedDates = listed.map(d => d.date).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d));
+    const reports = await Promise.all(expected.map(async date => {
+      const meta = listed.find(d => d.date === date);
+      if(!meta) return {date,state:'not_listed',games:[]};
+      if(!Number.isInteger(meta.count) || meta.count < 0) return {date,state:'invalid_count',games:[]};
+      let file;
+      try{ file = await json(`live/data/dates/${date}.json`); }
+      catch{ return {date,state:'fetch_failed',games:[]}; }
+      if(file?.date !== date || !Array.isArray(file.games)) return {date,state:'invalid_file',games:[]};
+      const games = file.games.filter(g => numberId(g.pk) && (!g.twDate || g.twDate === date));
+      const consistent = file.generatedAt === manifest.generatedAt && file.games.length === meta.count && games.length === file.games.length;
+      return {date,state:consistent ? 'ready' : 'mismatch',games,count:meta.count};
+    }));
+    return {ok:true,manifest,status,expected,listedDates,reports,games:reports.flatMap(r => r.games)};
   }
   async function loadFootball(){
     let status;
@@ -51,9 +62,31 @@
     return {ok:true,status,overview,games:Array.isArray(overview.games) ? overview.games : []};
   }
   function mlbSummary(d){
-    if(!d.ok) return '賽程資料暫缺';
-    const count = (d.manifest.days || []).reduce((n,x) => n + (Number(x.count) || 0),0);
-    return count ? `台灣今天／明天有 ${count} 場` : '近期沒有已知 MLB 賽事';
+    if(!d.ok) return '賽程清單未取得';
+    const ready = d.reports.filter(r => r.state === 'ready');
+    const count = ready.reduce((n,r) => n + r.games.length,0);
+    const range = d.expected.map(shortDate).join('–');
+    const missing = d.reports.filter(r => r.state !== 'ready');
+    if(missing.length){
+      const original = d.listedDates.length ? `（清單原列 ${d.listedDates.map(shortDate).join('、')}）` : '';
+      const details = missing.map(r => `${shortDate(r.date)} ${r.state === 'not_listed' ? '未列於清單' : r.state === 'fetch_failed' ? '日期檔讀取失敗' : '資料版本或內容未核對'}`).join('；');
+      return `${ready.length ? `已核對 ${ready.length} 日 ${count} 場；` : ''}${details}${missing.some(r => r.state === 'not_listed') ? original : ''}`;
+    }
+    const issue = mlbStatusIssue(d);
+    if(issue) return `${range} 已保存 ${count} 場；${issue}`;
+    return count ? `${range} 已取得 ${count} 場` : `${range} 已確認無賽`;
+  }
+  function mlbStatusIssue(d){
+    if(!d.status) return '流程狀態檔未取得';
+    if(d.status.lastAttemptOk === false) return '本次流程檢查失敗';
+    if(d.status.lastAttemptOk !== true) return '流程檢查狀態未確認';
+    return '';
+  }
+  function mlbState(d){
+    if(!d.ok) return '清單未取得';
+    if(d.reports.some(r => r.state === 'not_listed')) return '日期待更新';
+    if(d.reports.some(r => r.state !== 'ready')) return '部分未取得';
+    return mlbStatusIssue(d) || '賽程已查';
   }
   function footballSummary(d){
     if(!d.ok) return d.reason;
@@ -77,10 +110,10 @@
     return {html:`<div class="feature football"><small>${esc(fmt(game.kickoffUTC))}（台灣） · ${esc(phaseLabel[game.phase] || '狀態未取得')}</small><strong>${title}</strong><span>英超單場資料；比分與名單依原頁取得狀態顯示</span></div>`,href:readHref('football',game.id),directLabel:`${esc(fmt(game.kickoffUTC))} ${title}`};
   }
   function panelMlb(d){
-    const f = mlbFeature(d), count = d.ok ? (d.manifest.days || []).reduce((n,x) => n + (Number(x.count)||0),0) : null;
-    const update = d.ok ? fmt(d.manifest.generatedAt) : '未取得';
-    const state = !d.ok ? '資料暫缺' : d.status?.lastAttemptOk === false ? '本次檢查失敗' : '賽程已查';
-    return `<section class="sport-panel" aria-labelledby="mlb-title"><div class="panel-top"><div><span class="sport-mark">MLB</span><h2 id="mlb-title">棒球</h2><p>現有 MLB 試營運</p></div><span class="status-pill ${!d.ok || d.status?.lastAttemptOk === false ? 'warn':''}">${state}</span></div><p class="panel-summary">${esc(mlbSummary(d))}</p><p class="panel-sub">賽事時間與資料狀態取自本站已公開的 MLB 清單。</p>${facts([['台灣今天／明天',count === null ? '尚未取得' : `${count} 場`],['先發／打線',count ? '按各場資料顯示' : '近期無適用賽事'],['賽程資料更新',update+'（台灣）']])}${f.html}<div class="panel-actions"><a class="action primary" href="${sportHref('mlb')}">進入 MLB</a>${f.href?`<a class="action" href="${f.href}">回看這場</a>`:''}</div><p class="source-note">來源範圍：本站既有 /live/ 公開輸出；不使用人工 2027 試跑。</p></section>`;
+    const f = mlbFeature(d), state = mlbState(d);
+    const checked = d.ok ? d.reports.filter(r => r.state === 'ready').length : 0;
+    const update = d.ok ? fmt(d.manifest.generatedAt) + '（台灣）' : '未取得';
+    return `<section class="sport-panel" aria-labelledby="mlb-title"><div class="panel-top"><div><span class="sport-mark">MLB</span><h2 id="mlb-title">棒球</h2><p>現有 MLB 試營運</p></div><span class="status-pill ${state === '賽程已查' ? '' : 'warn'}">${esc(state)}</span></div><p class="panel-summary">${esc(mlbSummary(d))}</p><p class="panel-sub">台灣日期與各日期檔分開核對；缺一日仍保留已取得的場次。</p>${facts([['台灣今天／明天',d.expected.map(shortDate).join('–')],['已核對日期',`${checked}/2 日`],['可讀場次',d.ok ? `${d.games.length} 場` : '未取得'],['流程狀態',d.ok ? (mlbStatusIssue(d) || '最近一次檢查成功') : (d.status ? (mlbStatusIssue(d) || '最近一次檢查成功') : '未取得')],['清單產生時間',update]])}${f.html}<div class="panel-actions"><a class="action primary" href="${sportHref('mlb')}">進入 MLB</a>${f.href?`<a class="action" href="${f.href}">回看這場</a>`:''}</div><p class="source-note">來源範圍：本站既有 /live/ 公開輸出；不使用人工 2027 試跑。</p></section>`;
   }
   function panelFootball(d){
     const f = featuredFootball(d), ready = d.ok ? d.games.filter(g => g.dataStatus === 'ready').length : null;
@@ -117,15 +150,20 @@
     const id = location.hash.slice(1);
     if(/^game-\d+$/.test(id)) requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView());
   }
+  function mlbEmpty(d){
+    if(!d.ok) return `${d.reason}；今天／明天是否有賽尚未確認。`;
+    if(d.reports.every(r => r.state === 'ready') && !mlbStatusIssue(d)) return `已確認 ${d.expected.map(shortDate).join('–')} 沒有 MLB 賽事。`;
+    return `目前沒有可列場次；${mlbSummary(d)}。賽程狀態尚待核對。`;
+  }
   async function renderSport(){
     const sport = new URLSearchParams(location.search).get('sport');
     if(sport !== 'mlb' && sport !== 'football') {$('#app').innerHTML = '<div class="empty-box">未指定運動。<a href="index.html">返回全部賽事</a></div>'; return;}
     nav(sport);
     if(sport === 'mlb'){
-      const d = await loadMlb(true);
+      const d = await loadMlb();
       const active = d.ok ? d.games.filter(g => numberId(g.pk)) : [];
       const past = d.ok ? (d.manifest.recent || []).filter(g => numberId(g.pk)).slice(0,8) : [];
-      $('#app').innerHTML = `<p class="eyebrow"><a href="index.html">全部賽事</a> ／ MLB 棒球</p><div class="section-top"><div><h1>MLB 賽事</h1><p>${esc(mlbSummary(d))}。賽程與完賽回看分開閱讀。</p></div><a href="${publicPath('live/')}">開啟現有 MLB 試營運頁 ↗</a></div>${!d.ok ? `<div class="notice">${esc(d.reason)}；仍可由現有 MLB 頁確認最新狀態。</div>` : `<p class="source-note">賽程資料取得：${esc(fmt(d.manifest.generatedAt))}（台灣）；狀態依各場保存資料。${d.status?.lastAttemptOk === false ? '本次檢查失敗，已保存資料不代表剛剛成功更新。' : ''}</p>`}<h2>台灣今天與明天</h2>${active.length?`<div class="match-list">${active.map(g=>mlbRow(g)).join('')}</div>`:'<div class="empty-box">目前沒有已取得的近期 MLB 場次。這是已查賽程的空窗，不把缺賽事當資料 0。</div>'}<h2 style="margin-top:30px">最近完賽回看</h2>${past.length?`<div class="match-list">${past.map(g=>mlbRow(g,true)).join('')}</div>`:'<div class="empty-box">目前沒有可核對的歷史單場入口。</div>'}`;
+      $('#app').innerHTML = `<p class="eyebrow"><a href="index.html">全部賽事</a> ／ MLB 棒球</p><div class="section-top"><div><h1>MLB 賽事</h1><p>${esc(mlbSummary(d))}。賽程與完賽回看分開閱讀。</p></div><a href="${publicPath('live/')}">開啟現有 MLB 試營運頁 ↗</a></div>${!d.ok ? `<div class="notice">${esc(d.reason)}；仍可由現有 MLB 頁確認最新狀態。</div>` : `<p class="source-note">清單產生：${esc(fmt(d.manifest.generatedAt))}（台灣）；${esc(mlbStatusIssue(d) || '最近一次流程檢查成功')}。${d.reports.filter(r=>r.state==='ready').length}/2 日資料核對完成。</p>`}<h2>台灣今天與明天</h2>${active.length?`<div class="match-list">${active.map(g=>mlbRow(g)).join('')}</div>${d.reports.some(r=>r.state!=='ready') ? `<div class="notice">${esc(mlbSummary(d))}；上列僅為已取得部分。</div>` : ''}`:`<div class="empty-box">${esc(mlbEmpty(d))}</div>`}<h2 style="margin-top:30px">最近完賽回看</h2>${past.length?`<div class="match-list">${past.map(g=>mlbRow(g,true)).join('')}</div>`:'<div class="empty-box">目前沒有可核對的歷史單場入口。</div>'}`;
     }else{
       const d = await loadFootball();
       const future = d.ok ? d.games.filter(g => g.phase === 'pre' || g.phase === 'live').sort((a,b) => (a.phase === 'live' ? -1 : 0) - (b.phase === 'live' ? -1 : 0) || Date.parse(a.kickoffUTC) - Date.parse(b.kickoffUTC)) : [];
@@ -152,6 +190,16 @@
         const style = doc.createElement('style');
         style.textContent = '.top{display:none!important}';
         doc.head.appendChild(style);
+        const legacyList = new URL(publicPath(sport === 'mlb' ? 'live/' : 'football/'),location.href);
+        const candidateList = new URL(back,location.href).href;
+        doc.querySelectorAll('a[href]').forEach(a => {
+          const url = new URL(a.href,doc.baseURI);
+          if(url.origin === legacyList.origin && (url.pathname === legacyList.pathname || url.pathname === `${legacyList.pathname}index.html`)){
+            a.href = candidateList;
+            a.target = '_top';
+            a.textContent = `← ${sportLabel(sport)}列表`;
+          }
+        });
         const resize = () => { frame.style.height = `${Math.max(doc.body.scrollHeight,doc.documentElement.scrollHeight,800)}px`; };
         resize();
         new ResizeObserver(resize).observe(doc.body);
