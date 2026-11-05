@@ -192,14 +192,24 @@
         doc.head.appendChild(style);
         const legacyList = new URL(publicPath(sport === 'mlb' ? 'live/' : 'football/'),location.href);
         const candidateList = new URL(back,location.href).href;
-        doc.querySelectorAll('a[href]').forEach(a => {
+        const isLegacyList = a => {
           const url = new URL(a.href,doc.baseURI);
-          if(url.origin === legacyList.origin && (url.pathname === legacyList.pathname || url.pathname === `${legacyList.pathname}index.html`)){
-            a.href = candidateList;
-            a.target = '_top';
-            a.textContent = `← ${sportLabel(sport)}列表`;
-          }
+          return url.origin === legacyList.origin && (url.pathname === legacyList.pathname || url.pathname === `${legacyList.pathname}index.html`);
+        };
+        const rewriteReturn = () => doc.querySelectorAll('a[href]').forEach(a => {
+          if(!isLegacyList(a)) return;
+          a.href = candidateList;
+          a.target = '_top';
+          a.textContent = `← ${sportLabel(sport)}列表`;
         });
+        rewriteReturn();
+        new MutationObserver(rewriteReturn).observe(doc.body,{subtree:true,childList:true,attributes:true,attributeFilter:['href']});
+        doc.addEventListener('click',event => {
+          const a = event.target.closest?.('a[href]');
+          if(!a || !isLegacyList(a) || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          location.assign(candidateList);
+        },true);
         const resize = () => { frame.style.height = `${Math.max(doc.body.scrollHeight,doc.documentElement.scrollHeight,800)}px`; };
         resize();
         new ResizeObserver(resize).observe(doc.body);
