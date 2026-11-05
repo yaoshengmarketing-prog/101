@@ -3,6 +3,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { personnelChange } from './personnel-change.mjs';
 
 const API = 'https://site.api.espn.com/apis/site/v2/sports/soccer';
 const LOTTERY = 'https://www-talo-ssb-pr.sportslottery.com.tw/daily-coupons';
@@ -327,6 +328,8 @@ async function main() {
       const t = teamData[teamId], recent = t.recent14.map(k => games[k]);
       t.pairs = makePairs(recent, target, teamId, details);
       t.players = makePlayers(recent, teamId, details);
+      t.personnelChange = personnelChange({ target, teamId, recentGames: recent,
+        details, scheduleStatus: t.scheduleStatus });
       t.leagueFive = t.leagueFive.map(k => pairForTeam(games[k], teamId));
       t.recent14 = t.recent14.map(k => pairForTeam(games[k], teamId));
       const complete = t.leagueFive.filter(g => g.goalsFor !== null && g.goalsAgainst !== null);

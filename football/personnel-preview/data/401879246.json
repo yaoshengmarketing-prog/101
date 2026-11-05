@@ -1,0 +1,943 @@
+{
+  "kind": "historical_research_fixture",
+  "sourceCheckedAt": "2026-11-05T05:25:07.048Z",
+  "target": {
+    "id": "401879246",
+    "key": "eng.1:401879246",
+    "league": "eng.1",
+    "leagueLabel": "英超",
+    "kickoffUTC": "2026-11-01T16:30Z",
+    "twDate": "2026-11-02",
+    "home": {
+      "id": "364",
+      "name": "Liverpool"
+    },
+    "away": {
+      "id": "359",
+      "name": "Arsenal"
+    },
+    "score": null,
+    "status": "STATUS_FULL_TIME",
+    "phase": "final",
+    "statusDetail": "FT",
+    "finished": true,
+    "source": "https://www.espn.com/soccer/match/_/gameId/401879246"
+  },
+  "teams": [
+    {
+      "id": "359",
+      "name": "Arsenal",
+      "change": {
+        "status": "available",
+        "previous": {
+          "key": "eng.league_cup:401921835",
+          "id": "401921835",
+          "leagueLabel": "聯賽盃",
+          "kickoffUTC": "2026-10-27T20:00Z",
+          "source": "https://www.espn.com/soccer/match/_/gameId/401921835"
+        },
+        "continued": 2,
+        "previousStarterCount": 11,
+        "targetStarterCount": 11,
+        "fromStarterToBench": [
+          {
+            "id": "328497",
+            "name": "Cristhian Mosquera"
+          },
+          {
+            "id": "292062",
+            "name": "Piero Hincapié"
+          },
+          {
+            "id": "352758",
+            "name": "Myles Lewis-Skelly"
+          },
+          {
+            "id": "287266",
+            "name": "Martín Zubimendi"
+          },
+          {
+            "id": "258906",
+            "name": "Viktor Gyökeres"
+          }
+        ],
+        "fromBenchToStarter": [
+          {
+            "id": "231859",
+            "name": "Ezri Konsa"
+          },
+          {
+            "id": "203669",
+            "name": "Martin Ødegaard"
+          },
+          {
+            "id": "218522",
+            "name": "Bruno Guimarães"
+          }
+        ]
+      },
+      "currentRoster": [
+        {
+          "id": "196176",
+          "name": "David Raya",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "236322",
+          "name": "Gabriel Magalhães",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "231859",
+          "name": "Ezri Konsa",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "298329",
+          "name": "Riccardo Calafiori",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "282716",
+          "name": "Jurriën Timber",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "203669",
+          "name": "Martin Ødegaard",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "218522",
+          "name": "Bruno Guimarães",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "238262",
+          "name": "Declan Rice",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 1
+        },
+        {
+          "id": "231182",
+          "name": "Kai Havertz",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 1,
+          "assists": 0
+        },
+        {
+          "id": "303793",
+          "name": "Christos Tzolis",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "293236",
+          "name": "Noni Madueke",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "169532",
+          "name": "Kepa Arrizabalaga",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "292062",
+          "name": "Piero Hincapié",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "258906",
+          "name": "Viktor Gyökeres",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "241077",
+          "name": "Ben White",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "287266",
+          "name": "Martín Zubimendi",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "352758",
+          "name": "Myles Lewis-Skelly",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "209581",
+          "name": "Mikel Merino",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "251400",
+          "name": "Eberechi Eze",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "328497",
+          "name": "Cristhian Mosquera",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        }
+      ],
+      "previousGame": {
+        "id": "401921835",
+        "key": "eng.league_cup:401921835",
+        "league": "eng.league_cup",
+        "leagueLabel": "聯賽盃",
+        "kickoffUTC": "2026-10-27T20:00Z",
+        "twDate": "2026-10-28",
+        "home": {
+          "id": "3891",
+          "name": "Fleetwood Town"
+        },
+        "away": {
+          "id": "359",
+          "name": "Arsenal"
+        },
+        "score": {
+          "home": 1,
+          "away": 1
+        },
+        "status": "STATUS_FINAL_PEN",
+        "phase": "final",
+        "statusDetail": "FT-Pens",
+        "finished": true,
+        "source": "https://www.espn.com/soccer/match/_/gameId/401921835"
+      },
+      "previousRoster": [
+        {
+          "id": "265921",
+          "name": "Illan Meslier",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "400284",
+          "name": "Marli Salmon",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "328497",
+          "name": "Cristhian Mosquera",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "292062",
+          "name": "Piero Hincapié",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "282716",
+          "name": "Jurriën Timber",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "231182",
+          "name": "Kai Havertz",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "352758",
+          "name": "Myles Lewis-Skelly",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "287266",
+          "name": "Martín Zubimendi",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "258906",
+          "name": "Viktor Gyökeres",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 1,
+          "assists": 0
+        },
+        {
+          "id": "381341",
+          "name": "Ceadach O’Neill",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "397263",
+          "name": "Max Dowman",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "241077",
+          "name": "Ben White",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "251400",
+          "name": "Eberechi Eze",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "218522",
+          "name": "Bruno Guimarães",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "390975",
+          "name": "Andre Annous",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "399893",
+          "name": "Marcell Washington",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "399007",
+          "name": "Maalik Hashi",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "231859",
+          "name": "Ezri Konsa",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "203669",
+          "name": "Martin Ødegaard",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "169532",
+          "name": "Kepa Arrizabalaga",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        }
+      ],
+      "recentGames": [
+        {
+          "id": "401915312",
+          "key": "uefa.champions:401915312",
+          "league": "uefa.champions",
+          "leagueLabel": "歐冠",
+          "kickoffUTC": "2026-10-21T19:00Z",
+          "home": {
+            "id": "132",
+            "name": "Bayern Munich"
+          },
+          "away": {
+            "id": "359",
+            "name": "Arsenal"
+          }
+        },
+        {
+          "id": "401878768",
+          "key": "eng.1:401878768",
+          "league": "eng.1",
+          "leagueLabel": "英超",
+          "kickoffUTC": "2026-10-24T14:00Z",
+          "home": {
+            "id": "359",
+            "name": "Arsenal"
+          },
+          "away": {
+            "id": "368",
+            "name": "Everton"
+          }
+        },
+        {
+          "id": "401921835",
+          "key": "eng.league_cup:401921835",
+          "league": "eng.league_cup",
+          "leagueLabel": "聯賽盃",
+          "kickoffUTC": "2026-10-27T20:00Z",
+          "home": {
+            "id": "3891",
+            "name": "Fleetwood Town"
+          },
+          "away": {
+            "id": "359",
+            "name": "Arsenal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "364",
+      "name": "Liverpool",
+      "change": {
+        "status": "available",
+        "previous": {
+          "key": "eng.league_cup:401921842",
+          "id": "401921842",
+          "leagueLabel": "聯賽盃",
+          "kickoffUTC": "2026-10-28T20:00Z",
+          "source": "https://www.espn.com/soccer/match/_/gameId/401921842"
+        },
+        "continued": 4,
+        "previousStarterCount": 11,
+        "targetStarterCount": 11,
+        "fromStarterToBench": [
+          {
+            "id": "274742",
+            "name": "Giorgi Mamardashvili"
+          },
+          {
+            "id": "226177",
+            "name": "Kostas Tsimikas"
+          },
+          {
+            "id": "102053",
+            "name": "Joe Gomez"
+          },
+          {
+            "id": "274632",
+            "name": "Ryan Gravenberch"
+          },
+          {
+            "id": "379588",
+            "name": "Rio Ngumoha"
+          },
+          {
+            "id": "350661",
+            "name": "Lewis Koumas"
+          }
+        ],
+        "fromBenchToStarter": [
+          {
+            "id": "196876",
+            "name": "Alisson Becker"
+          },
+          {
+            "id": "355980",
+            "name": "Jérémy Jacquet"
+          },
+          {
+            "id": "303748",
+            "name": "Florian Wirtz"
+          },
+          {
+            "id": "249299",
+            "name": "Alexis Mac Allister"
+          },
+          {
+            "id": "235662",
+            "name": "Alexander Isak"
+          },
+          {
+            "id": "328238",
+            "name": "Bradley Barcola"
+          }
+        ]
+      },
+      "currentRoster": [
+        {
+          "id": "196876",
+          "name": "Alisson Becker",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "157892",
+          "name": "Virgil van Dijk",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "355980",
+          "name": "Jérémy Jacquet",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "323110",
+          "name": "Milos Kerkez",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "270821",
+          "name": "Ronald Araujo",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "303748",
+          "name": "Florian Wirtz",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "356075",
+          "name": "Trey Nyoni",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "249299",
+          "name": "Alexis Mac Allister",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "235662",
+          "name": "Alexander Isak",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "328238",
+          "name": "Bradley Barcola",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "249524",
+          "name": "Cody Gakpo",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "226177",
+          "name": "Kostas Tsimikas",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "397545",
+          "name": "Víctor Muñoz",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "350661",
+          "name": "Lewis Koumas",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "274632",
+          "name": "Ryan Gravenberch",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "379588",
+          "name": "Rio Ngumoha",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "152479",
+          "name": "Wataru Endo",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "102053",
+          "name": "Joe Gomez",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "274742",
+          "name": "Giorgi Mamardashvili",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "257206",
+          "name": "Dominik Szoboszlai",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        }
+      ],
+      "previousGame": {
+        "id": "401921842",
+        "key": "eng.league_cup:401921842",
+        "league": "eng.league_cup",
+        "leagueLabel": "聯賽盃",
+        "kickoffUTC": "2026-10-28T20:00Z",
+        "twDate": "2026-10-29",
+        "home": {
+          "id": "364",
+          "name": "Liverpool"
+        },
+        "away": {
+          "id": "363",
+          "name": "Chelsea"
+        },
+        "score": {
+          "home": 1,
+          "away": 1
+        },
+        "status": "STATUS_FINAL_PEN",
+        "phase": "final",
+        "statusDetail": "FT-Pens",
+        "finished": true,
+        "source": "https://www.espn.com/soccer/match/_/gameId/401921842"
+      },
+      "previousRoster": [
+        {
+          "id": "274742",
+          "name": "Giorgi Mamardashvili",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "157892",
+          "name": "Virgil van Dijk",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "270821",
+          "name": "Ronald Araujo",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "226177",
+          "name": "Kostas Tsimikas",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "102053",
+          "name": "Joe Gomez",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "326230",
+          "name": "James McConnell",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "356075",
+          "name": "Trey Nyoni",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "274632",
+          "name": "Ryan Gravenberch",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "249524",
+          "name": "Cody Gakpo",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 1,
+          "assists": 0
+        },
+        {
+          "id": "379588",
+          "name": "Rio Ngumoha",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "350661",
+          "name": "Lewis Koumas",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "355980",
+          "name": "Jérémy Jacquet",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "303748",
+          "name": "Florian Wirtz",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "152479",
+          "name": "Wataru Endo",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "196876",
+          "name": "Alisson Becker",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "328238",
+          "name": "Bradley Barcola",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "32572",
+          "name": "Luke Chambers",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "235662",
+          "name": "Alexander Isak",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "249299",
+          "name": "Alexis Mac Allister",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "234306",
+          "name": "Federico Chiesa",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        }
+      ],
+      "recentGames": [
+        {
+          "id": "401915397",
+          "key": "uefa.champions:401915397",
+          "league": "uefa.champions",
+          "leagueLabel": "歐冠",
+          "kickoffUTC": "2026-10-20T19:00Z",
+          "home": {
+            "id": "364",
+            "name": "Liverpool"
+          },
+          "away": {
+            "id": "102",
+            "name": "Villarreal"
+          }
+        },
+        {
+          "id": "401878765",
+          "key": "eng.1:401878765",
+          "league": "eng.1",
+          "leagueLabel": "英超",
+          "kickoffUTC": "2026-10-25T14:00Z",
+          "home": {
+            "id": "364",
+            "name": "Liverpool"
+          },
+          "away": {
+            "id": "331",
+            "name": "Brighton & Hove Albion"
+          }
+        },
+        {
+          "id": "401921842",
+          "key": "eng.league_cup:401921842",
+          "league": "eng.league_cup",
+          "leagueLabel": "聯賽盃",
+          "kickoffUTC": "2026-10-28T20:00Z",
+          "home": {
+            "id": "364",
+            "name": "Liverpool"
+          },
+          "away": {
+            "id": "363",
+            "name": "Chelsea"
+          }
+        }
+      ]
+    }
+  ],
+  "source": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879246"
+}
