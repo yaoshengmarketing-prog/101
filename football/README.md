@@ -1,38 +1,22 @@
-# 足球當季資料頁試行（英超）
+# 足球當季資料頁試行（五大聯賽）
 
-五大聯賽的[獨立可操作候選](https://yaoshengmarketing-prog.github.io/101/football/five-leagues-preview/)已備妥：西甲、義甲、德甲、法甲各一場固定取數樣本。共用來源與頁面程式見 `football/five-leagues-preview/README.md`；正式自動更新目前仍只有英超。
+2026-11-05 更新。正式足球入口為[英超總覽與五聯賽切換](https://yaoshengmarketing-prog.github.io/101/football/)；西甲、義甲、德甲、法甲各有 `/football/leagues/{聯賽 ID}/` 每日總覽及 `game.html?id={ESPN event ID}` 固定單場。原英超 `/football/` 與 `/football/game.html?id=...` 網址保留。先前的[每聯賽一場固定候選](https://yaoshengmarketing-prog.github.io/101/football/five-leagues-preview/)仍供研究比較，並非當期資料。
 
-2026-10-30 更新。足球總覽、各場固定 ID 單場頁、獨立取數與 Pages 部署已可運作；正式產品採用及長期穩定供應仍待驗證。與 `/live/` 棒球流程分開。
+## 取數與發布
 
-## 開啟與重跑
-
-- [每日英超總覽](https://yaoshengmarketing-prog.github.io/101/football/)
-- 單場固定網址：`/101/football/game.html?id={ESPN event ID}`。每次重建依比賽 ID 產出各場 JSON，網址不會被下一場覆寫。
-- 在 `101` 根目錄使用 Node 24（無 npm 套件依賴）：
+五聯賽共用 `football/scripts/football-leagues.mjs` 的聯賽、國內盃賽、歐戰、近五場、14 日用人與賽前 90／30 分鐘設定。各隊近五場只取所屬聯賽，近期用人查已接入的跨賽事來源。每聯賽重建台灣昨天至後天的賽程；空窗時顯示該聯賽下一個賽事日。
 
 ```sh
-node --test football/scripts/test-football.mjs football/scripts/test-football-page.mjs
-node football/scripts/build-football.mjs --event 401878761 --out .football-build/data
-node football/scripts/qa-football.mjs .football-build/data
+node --test football/scripts/test-football.mjs football/scripts/test-football-page.mjs football/scripts/test-personnel-change.mjs football/scripts/test-five-leagues.mjs cloudflare/live-data-trigger/test-football-trigger.mjs
+node football/scripts/build-five-leagues.mjs --out .football-build/data
 ```
 
-不指定 `--event` 時，重建台灣昨天至後天的已知英超場次；空窗時列下一個賽事日。指定 `--event` 用於明確驗證目標場。單場頁先讀 `status.json`；更新失敗或逾期時不再讀已移除的場次 JSON。
+英超 JSON 保留 `football/data/`，其他聯賽在 `football/data/leagues/{id}/`。同批 `manifest.json` 記錄 GitHub run ID、每聯賽賽事 ID、請求數、耗時與資料時間。單一聯賽建置失敗時發布該聯賽的失敗狀態，其他聯賽仍可讀；頁面先讀各自的狀態，逾期或失敗不回退舊資料。
 
-## 自動更新與發布
+`.github/workflows/football-data.yml` 在程式 push、手動觸發及每日台灣約 06:07／18:07 的 GitHub schedule 重建。另每半小時檢查賽前 90／30 分鐘時窗。Cloudflare `live-data-trigger` 的足球分支在 UTC 08:00–22:45 每 15 分鐘輕量檢查五聯賽，同一時點的聯賽與賽事 ID 合併派送一次 workflow。觸發、run、公開批次可用[足球觸發紀錄](https://live-data-trigger.yaosheng-marketing.workers.dev/football-log)、Actions 與公開 `manifest.json` 對照。輕量來源失敗只記錄，不撤下有效快照；完整重建失敗顯示明確失敗狀態。棒球更新分支維持原設定。
 
-`.github/workflows/football-data.yml` 在 push、手動觸發及自然排程運作。固定更新時點為台灣約 06:07、18:07；另每半小時做輕量賽程檢查，僅在開球前約 90 或 30 分鐘重建。GitHub 的 schedule 可延遲或漏觸發，因此仍須觀察自然排程紀錄，不能以手動成功代替。賽前加跑會重新查正式名單及賽事狀態，但不重抓台彩賠率。
+每次完整重建的兩天 artifact 供 Pages 部署及短期查核；例行球賽 JSON 不寫入 Git，也不建立長期球賽資料庫。成功快照 18 小時後於頁面標示逾期。台彩維持人工核對的一次官方賠率快照：比賽配對通過才呈現賽事編號、玩法、門檻、賠率、取得時間與[官方入口](https://www-talo-ssb-pr.sportslottery.com.tw/daily-coupons)；未取得留空，不追價。來源列出 11 名先發不代表替補完整；未列名單不推斷傷停或輪休。xG 缺值照實標示。
 
-賽前時效另由現有 Cloudflare 定時 Worker 的**足球獨立分支**試行：UTC 08:00–22:45 每 15 分鐘唯讀查英超賽程，到開球前約 90／30 分鐘才帶賽事 ID 派送本足球 workflow。排定／送出／GitHub run／公開頁證據分別記在 [足球觸發紀錄](https://live-data-trigger.yaosheng-marketing.workers.dev/football-log)；原棒球分支與原時段不變。GitHub 原生排程保留備援。輕量賽程檢查失敗只留 Actions 警告或 Cloudflare 紀錄，不撤下仍有效的公開快照、不延長原期限；完整重建失敗則照原規則只發布失敗 `status.json`。
+## 首次五聯賽正式批次
 
-每次完整重建從 ESPN 取得當季賽程、兩隊近五場英超及近 14 日跨賽事用人，產出各場資料；主工作流的兩天 artifact 供 Pages 部署與短期查核。部署直接以 GitHub Pages Actions 發布整站，保留原有棒球頁面；例行足球 JSON 不提交 Git，也不建立長期球賽資料庫。下次發布覆蓋前次足球快照。成功快照 18 小時後由頁面標逾期；失敗時只發布 `status.json`，不回退舊值。
-
-## 資料邊界
-
-- ESPN 來源涵蓋英超、歐冠、歐聯、歐協、足總盃與聯賽盃已取得的賽程、名單與事件。這些公開端點沒有穩定供應承諾。缺比分不合計總進球；來源列出 11 名先發不代表替補名單完整。
-- 本場正式名單分為尚無、已列出、部分列出、本次查詢失敗。先發延續只在相鄰兩場都有 11 名先發時計算。
-- 台彩採人工核對後的一次性**官方賠率快照**。只有賽事 ID、主客隊、開球時間、台彩賽事編號、玩法／門檻／賠率及取得時間通過配對檢查才呈現；未取得留空並提供[台彩官方入口](https://www-talo-ssb-pr.sportslottery.com.tw/daily-coupons)。不追蹤賠率變動、不把舊樣本套入新場次。
-- xG、未涵蓋賽事與缺少的球員統計維持缺值。台彩大小快照門檻對照歷史比分時，明示並非各場當時盤口。
-
-## 驗證狀態
-
-`site-pages` run 41036738596 已於台灣 2026-10-30 17:53 由 `live-data` 觸發，足球 artifact 下載、全站組合及 Pages 部署成功。足球 workflow 曾由 push／手動觸發並部署；**自然 schedule 觸發及賽前正式名單出現仍須以實際 run 與公開頁驗證**。失敗與逾期的狀態優先讀取邏輯及台灣日期邊界已有自動測試；實體手機尚未試看。
+[push run 42004303798](https://github.com/yaoshengmarketing-prog/101/actions/runs/42004303798) 在台灣 2026-11-05 17:40 取數，五聯賽共 16 場（英 4、西 3、義 3、德 5、法 1）、397 次 HTTP 嘗試，整批建置約 31 秒；QA、Pages 及公開同批賽事 ID／資料時間回查均成功。這證明首次正式批次發布；五聯賽版自然固定 schedule、外部賽前派送與正式名單接入須各以後續實際 run 驗證。實體手機尚未試看。

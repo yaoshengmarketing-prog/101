@@ -1,5 +1,11 @@
 # live-data-trigger（Cloudflare 外部觸發）
 
+## 2026-11-05 五聯賽接入
+
+足球分支現讀 `football/scripts/football-leagues.mjs` 的五聯賽集合（英超、西甲、義甲、德甲、法甲）。每次 15 分鐘時點對五聯賽當日與次日賽程做輕量查詢，同時到期的 `league:id:windowMinutes` 目標以 `trigger_matches_json` 合併派送一次 `football-data.yml`。D1 `football_triggers.match_ids` 保存帶聯賽前綴的目標 ID，公開 `football/data/manifest.json`、各聯賽狀態與單場 JSON 可對照 run ID、同批資料時間及賽事 ID。單一聯賽輕量查詢失敗會留 `check_failure`，其餘成功聯賽仍可派送；既有棒球 Cron、D1 與 `GH_TOKEN` 繫結不變。
+
+程式版本 `f32af46` 已透過 Cloudflare Worker multipart upload 部署；部署後回讀確認 `DB`（D1）、`GH_TOKEN`（Secret）與兩條原 cron 均保留。GitHub [push run 42004303798](https://github.com/yaoshengmarketing-prog/101/actions/runs/42004303798) 已完成五聯賽正式資料首次發布。此段覆蓋下方 2026-10-31 試行時「只查英超／傳 event_id」的歷史描述；真正五聯賽外部時窗派送仍待實際到期賽事驗收。
+
 目的：把棒球賽前時段（台灣 21:00–11:45）的更新間隔從「GitHub 排程每 30 分鐘、而且常延遲」縮短到排定每 15 分鐘觸發一次；另加一條獨立足球分支檢查開球前 90／30 分鐘。
 這個 Worker 只負責定時觸發。棒球仍由 `.github/workflows/live-data.yml`，足球由 `.github/workflows/football-data.yml` 各自取數、QA 與發布。GitHub 原生排程保留為備援。
 
