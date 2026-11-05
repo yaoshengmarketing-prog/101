@@ -26,7 +26,7 @@ function teamCard(team) {
   const roleHeadline = before.length + after.length <= 2
     ? [before.length ? `${listNames(before)}：先發轉替補` : '', after.length ? `${listNames(after)}：替補轉先發` : ''].filter(Boolean).join('；')
     : `先發轉替補 ${before.length} 人；替補轉先發 ${after.length} 人`;
-  return `<details class="personnel-card"><summary><h3>${escapeHtml(name(team.name))}</h3>
+  return `<details class="personnel-card" data-team-id="${escapeHtml(team.id)}"><summary><h3>${escapeHtml(name(team.name))}</h3>
     <span class="personnel-count">上場 11 名先發，${change.continued} 名本場續先發</span>
     <span class="personnel-roles">${roleHeadline || '兩場已列名單中，無先發與替補之間的轉換。'}</span>
     <span class="personnel-open">查看前場與球員名單 ↓</span></summary>
@@ -59,6 +59,12 @@ try {
       <p class="notice">這是歷史資料候選，用於試看閱讀方式。球會公告的傷停、停賽及回歸原因未接入本候選。</p>
       <p class="tiny">資料來源：<a href="${escapeHtml(data.target.source)}" target="_blank" rel="noopener noreferrer">ESPN 本場賽事 ↗</a>。本頁不追蹤即時名單。</p>
     </section>`;
+  const requestedTeam = new URLSearchParams(location.search).get('team');
+  const card = [...document.querySelectorAll('.personnel-card')].find(element => element.dataset.teamId === requestedTeam);
+  if (card) {
+    card.open = true;
+    requestAnimationFrame(() => card.scrollIntoView({ block: 'start' }));
+  }
 } catch (error) {
   $('#preview').className = 'empty';
   $('#preview').textContent = `候選資料本次未取得：${error.message}`;
