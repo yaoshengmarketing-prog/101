@@ -1,7 +1,38 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderOverview, renderGame, venueResults, venueLine, summarizeUsage, scoreFormation, substitutionNotes, shotLine, resultBlock } from '../assets/football.js';
+import { readFileSync } from 'node:fs';
+import { renderOverview, renderGame, venueResults, venueLine, summarizeUsage, scoreFormation, substitutionNotes, shotLine, resultBlock, lineupBlock } from '../assets/football.js';
 import { dueWindow, decide } from './football-due.mjs';
+
+test('正式名單使用當批人員比較；前場缺漏仍保留本場名單', () => {
+  const sample = JSON.parse(readFileSync(new URL('../personnel-preview/data/401878761.json', import.meta.url)));
+  const data = { target: sample.target, lineupStatus: 'source_listed',
+    lineupCheckedAt: sample.sourceCheckedAt,
+    details: { [sample.target.key]: { rosters: Object.fromEntries(sample.teams.map(t => [t.id, t.currentRoster])) } },
+    teamData: Object.fromEntries(sample.teams.map(t => [t.id, { personnelChange: t.change }])),
+    games: { 'eng.1:401878767': { home: { id: '363', name: 'Chelsea' }, away: sample.target.home } } };
+  const full = lineupBlock(data);
+  assert.match(full, /上場 11 名先發，10 名本場續先發/);
+  assert.match(full, /James Maddison先發轉替補/);
+  assert.match(full, /Dominic Solanke替補轉先發/);
+  assert.match(full, /前場：.*英超.*客場對切爾西/);
+  assert.match(full, /本場先發 11\/11 人/);
+  assert.doesNotMatch(full, /受傷|輪休|停賽/);
+
+  const missingPrevious = structuredClone(data);
+  missingPrevious.teamData['367'].personnelChange = { status: 'previous_lineup_incomplete', continued: null };
+  const partial = lineupBlock(missingPrevious);
+  assert.match(partial, /前場或本場先發資料未齊，無法確認/);
+  assert.match(partial, /本場先發 11\/11 人/);
+  assert.match(partial, /James Maddison/);
+  assert.doesNotMatch(partial, /上場 11 名先發，10 名本場續先發/);
+
+  const incompleteCurrent = structuredClone(data);
+  incompleteCurrent.details[sample.target.key].rosters['367'] = incompleteCurrent.details[sample.target.key].rosters['367'].slice(1);
+  const partialCurrent = lineupBlock(incompleteCurrent);
+  assert.match(partialCurrent, /本場先發 10\/11 人/);
+  assert.doesNotMatch(partialCurrent, /上場 11 名先發，10 名本場續先發/);
+});
 
 test('失敗與逾期狀態先行，總覽及單場不讀已移除 JSON', async () => {
   const node = { innerHTML: '' };

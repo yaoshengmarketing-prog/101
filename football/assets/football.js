@@ -284,7 +284,7 @@ function personBlock(t, details) {
       }).join('')}</div></details>`).join('')}</div>`;
 }
 
-function lineupBlock(d) {
+export function lineupBlock(d) {
   const target = d.target, detail = d.details[target.key];
   if (d.lineupStatus === 'fetch_failed') return `<p class="notice">本場名單本次取得失敗；查詢 ${esc(fmt(d.lineupCheckedAt))}（台灣）。以下只看近期用人。</p>`;
   if (d.lineupStatus === 'unannounced') return `<p class="status">本場來源尚無正式名單；查詢 ${esc(fmt(d.lineupCheckedAt))}（台灣）。以下只看近期用人。</p>`;
@@ -293,12 +293,26 @@ function lineupBlock(d) {
       const roster = detail.rosters?.[team.id] || [];
       const starts = roster.filter(p => p.role === 'starter');
       const bench = roster.filter(p => p.role !== 'starter');
-      const pair = d.teamData[team.id]?.pairs?.at(-1);
-      return `<details class="expander"><summary class="action">${esc(teamName(team.name))} · 先發 ${starts.length}/11 人</summary><div class="expander-body">
+      const change = d.teamData?.[team.id]?.personnelChange;
+      const available = change?.status === 'available' && starts.length === 11;
+      const moved = available ? [...change.fromStarterToBench, ...change.fromBenchToStarter] : [];
+      const moveLabel = (players, label) => players.length
+        ? `${players.length <= 2 ? players.map(p => esc(p.name)).join('、') : `${players.length} 人`}${label}` : '';
+      const moves = available ? [moveLabel(change.fromStarterToBench, '先發轉替補'),
+        moveLabel(change.fromBenchToStarter, '替補轉先發')].filter(Boolean).join('；') : '';
+      const previous = available ? d.games?.[change.previous?.key] : null;
+      const opponent = previous ? (previous.home.id === team.id ? previous.away : previous.home) : null;
+      const previousLabel = available ? `前場：${esc(fmt(change.previous.kickoffUTC))}（台灣） · ${esc(change.previous.leagueLabel)} · ${previous ? `${previous.home.id === team.id ? '主場' : '客場'}對${teamName(opponent.name)}` : '對手本次未取得'}` : '';
+      return `<details class="expander"><summary class="action personnel-action"><strong>${esc(teamName(team.name))} · ${available ? `上場 11 名先發，${change.continued} 名本場續先發` : `本場先發 ${starts.length}/11 人`}</strong>
+        <small>${available ? (moves || '本場沒有已確認的先發與替補互換') : '前場與本場名單未齊，無法確認人員比較'} · 展開名單 ↓</small></summary><div class="expander-body">
+        ${available ? `<p class="personnel-previous">${previousLabel}</p>
+          <p class="facts">上場 11 名先發，本場續先發 ${change.continued} 人</p>
+          <p>先發轉替補：${change.fromStarterToBench.length ? change.fromStarterToBench.map(p => esc(p.name)).join('、') : '無已確認球員'}</p>
+          <p>替補轉先發：${change.fromBenchToStarter.length ? change.fromBenchToStarter.map(p => esc(p.name)).join('、') : '無已確認球員'}</p>` : '<p class="notice">前場或本場先發資料未齊，無法確認沿用人數與角色變化；以下仍列出本場已取得名單。</p>'}
+        <p class="personnel-roster-title">本場先發 ${starts.length}/11 人</p>
         <p>${starts.length ? starts.map(p => esc(p.name)).join('、') : '先發名單本次未取得'}</p>
         <p class="tiny">來源列出替補 ${bench.length} 人；不能由 11 名先發推定替補名單完整。</p>
         ${bench.length ? `<p class="tiny">${bench.map(p => esc(p.name)).join('、')}</p>` : ''}
-        <p class="facts">${pair?.continuation === null || pair?.continuation === undefined ? '與前場先發延續：本次不能判定' : `與前場沿用 ${pair.continuation}/11 名先發`}</p>
       </div></details>`;
     }).join('')}</section>`;
 }
