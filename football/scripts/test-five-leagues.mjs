@@ -14,9 +14,9 @@ const samples = [
   { league: 'fra.1', id: '401876411', kickoff: '2026-11-07T18:00Z' },
 ];
 
-test('五大聯賽各有本國盃賽與歐戰來源，正式啟用集合仍只有英超', () => {
+test('五大聯賽各有本國盃賽與歐戰來源，正式啟用集合包含五聯賽', () => {
   assert.deepEqual(TOP_LEAGUE_IDS, ['eng.1', 'esp.1', 'ita.1', 'ger.1', 'fra.1']);
-  assert.deepEqual(LIVE_LEAGUE_IDS, ['eng.1']);
+  assert.deepEqual(LIVE_LEAGUE_IDS, TOP_LEAGUE_IDS);
   for (const id of TOP_LEAGUE_IDS) {
     const sources = competitionsFor(id).map(source => source.id);
     assert.equal(sources[0], id);
@@ -62,8 +62,21 @@ test('四個新增聯賽的 90／30 分鐘時窗同時被 GitHub 閘門與外部
       } });
     assert.equal(calls.length, 10);
     assert.equal(result.build, true);
+    assert.deepEqual(result.matches, [{ league, id, windowMinutes: Number(expected) }]);
     assert.match(result.reason, new RegExp(`${league}/${id}:${expected}分`));
     assert.equal(dueWindow(kickoff, at), expected);
     assert.equal(footballDue(kickoff, at.getTime()), Number(expected));
   }
+});
+
+test('一個聯賽賽程失敗時，其他聯賽的賽前場次仍可觸發', async () => {
+  const at = new Date('2026-11-07T11:35:00Z');
+  const result = await decide({ schedule: '5,35 * * * *', now: at, leagueIds: ['eng.1', 'esp.1'],
+    fetcher: async url => {
+      if (url.includes('/eng.1/')) throw new Error('英超來源暫時失敗');
+      return { ok: true, json: async () => ({ events: [{ id: '401882812', date: '2026-11-07T13:00Z' }] }) };
+    } });
+  assert.equal(result.build, true);
+  assert.equal(result.checkFailed, true);
+  assert.deepEqual(result.matches, [{ league: 'esp.1', id: '401882812', windowMinutes: 90 }]);
 });
