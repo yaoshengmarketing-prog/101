@@ -50,7 +50,7 @@ try {
   await fs.mkdir(folder, { recursive: true });
   for (const sample of [
     { file: 'mobile-collapsed.png', height: 844, query: '?id=401878761' },
-    { file: 'mobile-expanded.png', height: 1100, query: '?id=401878761&team=367' },
+    { file: 'mobile-expanded.png', height: 1100, query: '?id=401878761', clickFirstTeam: true },
   ]) {
     await command('Emulation.setDeviceMetricsOverride', { width: 390, height: sample.height,
       deviceScaleFactor: 1, mobile: true, screenWidth: 390, screenHeight: sample.height });
@@ -61,11 +61,24 @@ try {
         width:innerWidth,documentWidth:document.documentElement.scrollWidth,
         expanded:!!document.querySelector('.personnel-card[open]')})`, returnByValue: true });
       state = evaluation.result?.value;
-      if (state?.ready && (sample.query.includes('team=') ? state.expanded : true)) break;
+      if (state?.ready) break;
       await pause(100);
     }
-    if (!state?.ready || state.width !== 390 || state.documentWidth > 390
-      || (sample.query.includes('team=') && !state.expanded)) throw new Error(`${sample.file}: viewport/content mismatch ${JSON.stringify(state)}`);
+    if (!state?.ready || state.width !== 390 || state.documentWidth > 390)
+      throw new Error(`${sample.file}: viewport/content mismatch ${JSON.stringify(state)}`);
+    if (sample.clickFirstTeam) {
+      const location = await command('Runtime.evaluate', { expression: `(() => {
+        const box = document.querySelector('.personnel-card summary').getBoundingClientRect();
+        return {x:box.x+box.width/2,y:box.y+box.height/2};
+      })()`, returnByValue: true });
+      const { x, y } = location.result.value;
+      await command('Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', clickCount: 1 });
+      await command('Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', clickCount: 1 });
+      const after = await command('Runtime.evaluate', { expression: `({expanded:!!document.querySelector('.personnel-card[open]'),
+        documentWidth:document.documentElement.scrollWidth})`, returnByValue: true });
+      state = { ...state, ...after.result.value };
+      if (!state.expanded || state.documentWidth > 390) throw new Error(`${sample.file}: mobile click/overflow mismatch ${JSON.stringify(state)}`);
+    }
     const screenshot = await command('Page.captureScreenshot', { format: 'png', fromSurface: true,
       captureBeyondViewport: false });
     await fs.writeFile(path.join(folder, sample.file), Buffer.from(screenshot.data, 'base64'));

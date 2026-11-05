@@ -8,4 +8,4 @@
 
 驗證：`node --test football/scripts/test-personnel-change.mjs football/scripts/test-football.mjs`。完整取數另於台灣 11/5 對當期英超重跑到暫存目錄，4 場、99 次來源檢查、0 錯誤；未公布正式名單的場次兩隊均輸出 `target_lineup_unavailable`、`continued=null`、轉換清單為空。暫存資料已移除。正式 `football/game.html`、台彩快照、排程與棒球流程均未修改。
 
-實際瀏覽器驗證：Codex 內建瀏覽器點開熱刺、收合，再切換利物浦場並展開阿森納；前場聯賽盃、角色名單均可讀。另用已安裝 Chromium 的裝置模擬補足精確 390px 截圖，腳本 `football/scripts/capture-personnel-preview.mjs` 檢查 `innerWidth=390`、文件寬度 390、展開狀態正確。圖檔為 [`screenshots/mobile-collapsed.png`](screenshots/mobile-collapsed.png) 與 [`screenshots/mobile-expanded.png`](screenshots/mobile-expanded.png)；均是公開候選頁實際瀏覽器畫面，實體手機尚未試。
+實際瀏覽器驗證：Codex 內建瀏覽器點開熱刺、收合，再切換利物浦場並展開阿森納；前場聯賽盃、角色名單均可讀。另用已安裝 Chromium 的裝置模擬補足精確 390px 截圖，腳本 `football/scripts/capture-personnel-preview.mjs` 在 390px 視窗實際點擊熱刺卡片，檢查 `innerWidth=390`、文件寬度 390、點擊後展開。圖檔為 [`screenshots/mobile-collapsed.png`](screenshots/mobile-collapsed.png) 與 [`screenshots/mobile-expanded.png`](screenshots/mobile-expanded.png)；均是公開候選頁實際瀏覽器畫面，實體手機尚未試。
