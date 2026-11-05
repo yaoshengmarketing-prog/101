@@ -29,7 +29,7 @@ const target = normalEvent(rawTarget, 'eng.1');
 const targetSummary = compactSummary(await get(`${API}/eng.1/summary?event=${targetId}`), target);
 const details = { [target.key]: targetSummary };
 const teams = [];
-for (const team of [target.away, target.home]) {
+for (const team of [target.home, target.away]) {
   const games = [];
   const scheduleStatus = [];
   for (const league of LEAGUES) {

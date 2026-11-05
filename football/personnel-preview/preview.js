@@ -61,10 +61,7 @@ try {
     </section>`;
   const requestedTeam = new URLSearchParams(location.search).get('team');
   const card = [...document.querySelectorAll('.personnel-card')].find(element => element.dataset.teamId === requestedTeam);
-  if (card) {
-    card.open = true;
-    requestAnimationFrame(() => card.scrollIntoView({ block: 'start' }));
-  }
+  if (card) card.open = true;
 } catch (error) {
   $('#preview').className = 'empty';
   $('#preview').textContent = `候選資料本次未取得：${error.message}`;

@@ -1,6 +1,6 @@
 {
   "kind": "historical_research_fixture",
-  "sourceCheckedAt": "2026-11-05T05:24:56.163Z",
+  "sourceCheckedAt": "2026-11-05T05:35:15.907Z",
   "target": {
     "id": "401878761",
     "key": "eng.1:401878761",
@@ -24,6 +24,416 @@
     "source": "https://www.espn.com/soccer/match/_/gameId/401878761"
   },
   "teams": [
+    {
+      "id": "367",
+      "name": "Tottenham Hotspur",
+      "change": {
+        "status": "available",
+        "previous": {
+          "key": "eng.1:401878767",
+          "id": "401878767",
+          "leagueLabel": "英超",
+          "kickoffUTC": "2026-10-24T16:30Z",
+          "source": "https://www.espn.com/soccer/match/_/gameId/401878767"
+        },
+        "continued": 10,
+        "previousStarterCount": 11,
+        "targetStarterCount": 11,
+        "fromStarterToBench": [
+          {
+            "id": "194450",
+            "name": "James Maddison"
+          }
+        ],
+        "fromBenchToStarter": [
+          {
+            "id": "194115",
+            "name": "Dominic Solanke"
+          }
+        ]
+      },
+      "currentRoster": [
+        {
+          "id": "324393",
+          "name": "Antonín Kinsky",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "296512",
+          "name": "Micky van de Ven",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "282583",
+          "name": "Jan Paul van Hecke",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 1,
+          "assists": 0
+        },
+        {
+          "id": "104943",
+          "name": "Andy Robertson",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "328050",
+          "name": "Archie Gray",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 1,
+          "assists": 0
+        },
+        {
+          "id": "303745",
+          "name": "Omar Marmoush",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "346820",
+          "name": "Mateus Fernandes",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "261047",
+          "name": "Sandro Tonali",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "194115",
+          "name": "Dominic Solanke",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "325042",
+          "name": "Mathys Tel",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "266599",
+          "name": "Mohammed Kudus",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 1
+        },
+        {
+          "id": "6327",
+          "name": "Ben Davies",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "126703",
+          "name": "Martin Dúbravka",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "233945",
+          "name": "Marcos Senesi",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "268533",
+          "name": "Pedro Porro",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "272695",
+          "name": "Dejan Kulusevski",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "194450",
+          "name": "James Maddison",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "395939",
+          "name": "Luca Williams-Barnett",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "290076",
+          "name": "Destiny Udogie",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "266696",
+          "name": "Conor Gallagher",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        }
+      ],
+      "previousGame": {
+        "id": "401878767",
+        "key": "eng.1:401878767",
+        "league": "eng.1",
+        "leagueLabel": "英超",
+        "kickoffUTC": "2026-10-24T16:30Z",
+        "twDate": "2026-10-25",
+        "home": {
+          "id": "363",
+          "name": "Chelsea"
+        },
+        "away": {
+          "id": "367",
+          "name": "Tottenham Hotspur"
+        },
+        "score": {
+          "home": 0,
+          "away": 2
+        },
+        "status": "STATUS_FULL_TIME",
+        "phase": "final",
+        "statusDetail": "FT",
+        "finished": true,
+        "source": "https://www.espn.com/soccer/match/_/gameId/401878767"
+      },
+      "previousRoster": [
+        {
+          "id": "324393",
+          "name": "Antonín Kinsky",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "296512",
+          "name": "Micky van de Ven",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "282583",
+          "name": "Jan Paul van Hecke",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "104943",
+          "name": "Andy Robertson",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "328050",
+          "name": "Archie Gray",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "194450",
+          "name": "James Maddison",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "261047",
+          "name": "Sandro Tonali",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "346820",
+          "name": "Mateus Fernandes",
+          "role": "starter",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "303745",
+          "name": "Omar Marmoush",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "325042",
+          "name": "Mathys Tel",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 1,
+          "assists": 0
+        },
+        {
+          "id": "266599",
+          "name": "Mohammed Kudus",
+          "role": "starter",
+          "subbedOut": true,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "372016",
+          "name": "Callum Olusesi",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "272695",
+          "name": "Dejan Kulusevski",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "266696",
+          "name": "Conor Gallagher",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "126703",
+          "name": "Martin Dúbravka",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "233945",
+          "name": "Marcos Senesi",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "6327",
+          "name": "Ben Davies",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "268533",
+          "name": "Pedro Porro",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "395939",
+          "name": "Luca Williams-Barnett",
+          "role": "bench_unused",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        },
+        {
+          "id": "194115",
+          "name": "Dominic Solanke",
+          "role": "sub_on",
+          "subbedOut": false,
+          "goals": 0,
+          "assists": 0
+        }
+      ],
+      "recentGames": [
+        {
+          "id": "401879257",
+          "key": "eng.1:401879257",
+          "league": "eng.1",
+          "leagueLabel": "英超",
+          "kickoffUTC": "2026-10-19T19:00Z",
+          "home": {
+            "id": "367",
+            "name": "Tottenham Hotspur"
+          },
+          "away": {
+            "id": "388",
+            "name": "Coventry City"
+          }
+        },
+        {
+          "id": "401878767",
+          "key": "eng.1:401878767",
+          "league": "eng.1",
+          "leagueLabel": "英超",
+          "kickoffUTC": "2026-10-24T16:30Z",
+          "home": {
+            "id": "363",
+            "name": "Chelsea"
+          },
+          "away": {
+            "id": "367",
+            "name": "Tottenham Hotspur"
+          }
+        }
+      ]
+    },
     {
       "id": "384",
       "name": "Crystal Palace",
@@ -504,416 +914,6 @@
           "away": {
             "id": "384",
             "name": "Crystal Palace"
-          }
-        }
-      ]
-    },
-    {
-      "id": "367",
-      "name": "Tottenham Hotspur",
-      "change": {
-        "status": "available",
-        "previous": {
-          "key": "eng.1:401878767",
-          "id": "401878767",
-          "leagueLabel": "英超",
-          "kickoffUTC": "2026-10-24T16:30Z",
-          "source": "https://www.espn.com/soccer/match/_/gameId/401878767"
-        },
-        "continued": 10,
-        "previousStarterCount": 11,
-        "targetStarterCount": 11,
-        "fromStarterToBench": [
-          {
-            "id": "194450",
-            "name": "James Maddison"
-          }
-        ],
-        "fromBenchToStarter": [
-          {
-            "id": "194115",
-            "name": "Dominic Solanke"
-          }
-        ]
-      },
-      "currentRoster": [
-        {
-          "id": "324393",
-          "name": "Antonín Kinsky",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "296512",
-          "name": "Micky van de Ven",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "282583",
-          "name": "Jan Paul van Hecke",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 1,
-          "assists": 0
-        },
-        {
-          "id": "104943",
-          "name": "Andy Robertson",
-          "role": "starter",
-          "subbedOut": true,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "328050",
-          "name": "Archie Gray",
-          "role": "starter",
-          "subbedOut": true,
-          "goals": 1,
-          "assists": 0
-        },
-        {
-          "id": "303745",
-          "name": "Omar Marmoush",
-          "role": "starter",
-          "subbedOut": true,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "346820",
-          "name": "Mateus Fernandes",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "261047",
-          "name": "Sandro Tonali",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "194115",
-          "name": "Dominic Solanke",
-          "role": "starter",
-          "subbedOut": true,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "325042",
-          "name": "Mathys Tel",
-          "role": "starter",
-          "subbedOut": true,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "266599",
-          "name": "Mohammed Kudus",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 1
-        },
-        {
-          "id": "6327",
-          "name": "Ben Davies",
-          "role": "bench_unused",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "126703",
-          "name": "Martin Dúbravka",
-          "role": "bench_unused",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "233945",
-          "name": "Marcos Senesi",
-          "role": "bench_unused",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "268533",
-          "name": "Pedro Porro",
-          "role": "sub_on",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "272695",
-          "name": "Dejan Kulusevski",
-          "role": "sub_on",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "194450",
-          "name": "James Maddison",
-          "role": "bench_unused",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "395939",
-          "name": "Luca Williams-Barnett",
-          "role": "sub_on",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "290076",
-          "name": "Destiny Udogie",
-          "role": "sub_on",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "266696",
-          "name": "Conor Gallagher",
-          "role": "sub_on",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        }
-      ],
-      "previousGame": {
-        "id": "401878767",
-        "key": "eng.1:401878767",
-        "league": "eng.1",
-        "leagueLabel": "英超",
-        "kickoffUTC": "2026-10-24T16:30Z",
-        "twDate": "2026-10-25",
-        "home": {
-          "id": "363",
-          "name": "Chelsea"
-        },
-        "away": {
-          "id": "367",
-          "name": "Tottenham Hotspur"
-        },
-        "score": {
-          "home": 0,
-          "away": 2
-        },
-        "status": "STATUS_FULL_TIME",
-        "phase": "final",
-        "statusDetail": "FT",
-        "finished": true,
-        "source": "https://www.espn.com/soccer/match/_/gameId/401878767"
-      },
-      "previousRoster": [
-        {
-          "id": "324393",
-          "name": "Antonín Kinsky",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "296512",
-          "name": "Micky van de Ven",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "282583",
-          "name": "Jan Paul van Hecke",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "104943",
-          "name": "Andy Robertson",
-          "role": "starter",
-          "subbedOut": true,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "328050",
-          "name": "Archie Gray",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "194450",
-          "name": "James Maddison",
-          "role": "starter",
-          "subbedOut": true,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "261047",
-          "name": "Sandro Tonali",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "346820",
-          "name": "Mateus Fernandes",
-          "role": "starter",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "303745",
-          "name": "Omar Marmoush",
-          "role": "starter",
-          "subbedOut": true,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "325042",
-          "name": "Mathys Tel",
-          "role": "starter",
-          "subbedOut": true,
-          "goals": 1,
-          "assists": 0
-        },
-        {
-          "id": "266599",
-          "name": "Mohammed Kudus",
-          "role": "starter",
-          "subbedOut": true,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "372016",
-          "name": "Callum Olusesi",
-          "role": "bench_unused",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "272695",
-          "name": "Dejan Kulusevski",
-          "role": "sub_on",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "266696",
-          "name": "Conor Gallagher",
-          "role": "sub_on",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "126703",
-          "name": "Martin Dúbravka",
-          "role": "bench_unused",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "233945",
-          "name": "Marcos Senesi",
-          "role": "bench_unused",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "6327",
-          "name": "Ben Davies",
-          "role": "sub_on",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "268533",
-          "name": "Pedro Porro",
-          "role": "sub_on",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "395939",
-          "name": "Luca Williams-Barnett",
-          "role": "bench_unused",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        },
-        {
-          "id": "194115",
-          "name": "Dominic Solanke",
-          "role": "sub_on",
-          "subbedOut": false,
-          "goals": 0,
-          "assists": 0
-        }
-      ],
-      "recentGames": [
-        {
-          "id": "401879257",
-          "key": "eng.1:401879257",
-          "league": "eng.1",
-          "leagueLabel": "英超",
-          "kickoffUTC": "2026-10-19T19:00Z",
-          "home": {
-            "id": "367",
-            "name": "Tottenham Hotspur"
-          },
-          "away": {
-            "id": "388",
-            "name": "Coventry City"
-          }
-        },
-        {
-          "id": "401878767",
-          "key": "eng.1:401878767",
-          "league": "eng.1",
-          "leagueLabel": "英超",
-          "kickoffUTC": "2026-10-24T16:30Z",
-          "home": {
-            "id": "363",
-            "name": "Chelsea"
-          },
-          "away": {
-            "id": "367",
-            "name": "Tottenham Hotspur"
           }
         }
       ]
