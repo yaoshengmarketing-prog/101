@@ -18,7 +18,7 @@ const failNote = (t, keys) => keys.filter(k => t.failed?.[k]).map(k => { const f
   return `<div class="notice warn"><b>${esc(t.ab)} ${FK[k]}：自 ${stamp(f.since)} 起重抓失敗</b>（${esc(String(f.error).replace(/\s*https?:\S+/g, ""))}）。${f.fetchedAt ? `這裡仍是 ${stamp(f.fetchedAt)} 取得的版本，之後若來源有變動不在其中。` : "沒有先前取得的資料可用，這一項暫時空白，不代表來源沒有資料。"}</div>`; }).join("");
 const spLine = sp => sp ? `<b>${esc(sp.name)}</b> ${hand(sp.hand)}${sp.s ? ` <span class="num">${sp.s.wl}・${sp.s.era}</span>` : ` <span class="tag na">本季無大聯盟成績</span>`}` : `<span class="tag na">先發未公布</span>`;
 const noteTags = g => [g.dh && `雙重賽 ${g.dh}`, g.tbd && "開賽時間未定", g.rescheduledFrom && `補賽（原 ${g.rescheduledFrom.slice(5, 10)}）`, g.rescheduleDate && `改期至 ${g.rescheduleDate.slice(5, 10)}`].filter(Boolean).map(t => `<span class="tag">${esc(t)}</span>`).join("");
-async function load(f) { const r = await fetch(`./data/${f}?t=${Date.now()}`); if (!r.ok) throw new Error(`${f} HTTP ${r.status}`); return r.json(); }
+async function load(f) { const base = document.body.dataset.dataRoot || "./data/"; const r = await fetch(`${base}${f}?t=${Date.now()}`); if (!r.ok) throw new Error(`${f} HTTP ${r.status}`); return r.json(); }
 const fail = (el, e) => { el.innerHTML = `<div class="empty">資料載入失敗（${esc(e.message)}），請稍後重新整理。</div>`; };
 
 /* ================= 更新狀態：過期、失敗一定要看得出來 ================= */
@@ -58,7 +58,8 @@ async function freshness(M, extra = []) {
     : `頁面內容取得於 <b>${M.generatedAtTW}</b>（${ago(ageH)}）；目前連不到 GitHub，無法確認之後是否還有檢查`)
     + (late ? `。${dense() ? "賽前時段排定每 15 分鐘觸發一次（Cloudflare，GitHub 排程為備援）" : "原定每 3 小時取得一次"}，實際執行會有延遲，GitHub 排程有時會延遲數小時，這不代表已確認故障。` : `・${dense() ? "賽前時段排定每 15 分鐘自動取得（Cloudflare 觸發，GitHub 排程備援；實際會有延遲）" : "每 3 小時自動取得"}，內容有變才更新`)]);
   document.querySelectorAll("[data-fresh]").forEach(n => n.remove());
-  $(".top").insertAdjacentHTML("afterend", msgs.map(([c, t]) => `<div class="notice ${c}" data-fresh role="${c ? "alert" : "status"}">${t}</div>`).join(""));
+  const freshMount = $("#crumb") || $(".top");
+  if (freshMount) freshMount.insertAdjacentHTML("afterend", msgs.map(([c, t]) => `<div class="notice ${c}" data-fresh role="${c ? "alert" : "status"}">${t}</div>`).join(""));
   return today;
 }
 // 頁面一直開著：每分鐘重算提示、換日時重畫；每 5 分鐘看有沒有新資料，有就重新載入
@@ -184,7 +185,7 @@ async function renderGame() {
   const RS = await load(`roster/${pk}.json`).catch(() => null); // 名單狀態：今天／明天賽前比賽每次更新產生；沒有檔案（剛進範圍或這次失敗且沒有上一版）就不顯示
   const A = G.away, H = G.home;
   document.title = `運彩 101｜${A.name} @ ${H.name}（${dayLabel(G.twDate)}）`;
-  $("#crumb").innerHTML = `<a href="./${M?.days.find(d => d.date === G.twDate)?.key === "tomorrow" ? "?d=tomorrow" : ""}">← 本日比賽</a>　MLB　${dayLabel(G.twDate)}　gamePk ${G.pk}`;
+  $("#crumb").innerHTML = `<a href="../site/sport.html?sport=mlb#game-${G.pk}">← MLB 棒球列表</a>　MLB　${dayLabel(G.twDate)}　gamePk ${G.pk}`;
   const sc = ["final", "live"].includes(G.status.code);
   $("#hero").innerHTML = `
     <div class="vs">
