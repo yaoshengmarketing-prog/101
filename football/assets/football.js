@@ -14,6 +14,21 @@ const getJson = async file => { const base = document.body?.dataset?.footballDat
 const expired = status => !Number.isFinite(Date.parse(status?.expiresAt)) || Date.now() > Date.parse(status.expiresAt);
 const phaseLabel = { pre: '賽前', live: '比賽進行中', final: '已完賽', postponed: '延期／取消' };
 
+export function overviewResearchLines(g, scope) {
+  const teams = [g.away, g.home];
+  const values = teams.map(team => g.researchSummary?.[team.id]);
+  if (values.some(value => !value)) return ['進失球：本次未取得', '近 14 日跨賽事出賽：本次未取得'];
+  const fullFive = values.every(value => value.scoredGames === 5 && value.availableGames === 5 && value.targetGames === 5);
+  const scored = (team, value) => {
+    const count = `${value.scoredGames}/${value.targetGames} 場可計算`;
+    return `${teamName(team.name)} ${value.scoredGames ? `${value.goalsFor} 進 ${value.goalsAgainst} 失` : '比分未取得'}${fullFive ? '' : `（${count}）`}`;
+  };
+  return [
+    `${fullFive ? '近五場' : '已取得'}${scope}進失球｜${teams.map((team, i) => scored(team, values[i])).join(' · ')}`,
+    `近 14 日跨賽事已取得｜${teams.map((team, i) => `${teamName(team.name)} ${values[i].recent14Acquired} 場`).join(' · ')}`,
+  ];
+}
+
 async function renderOverview() {
   const node = $('#overview');
   try {
@@ -27,7 +42,9 @@ async function renderOverview() {
     const dateGroups = o.dates.map(date => {
       const games = o.games.filter(g => g.twDate === date);
       return `<section class="day-group"><h2>${esc(date)}（台灣）</h2>${games.length ? games.map(g => {
-        const content = `<span class="meta">${esc(fmt(g.kickoffUTC))} · ${esc(phaseLabel[g.phase] || '狀態未取得')}</span><b>${esc(sides(g))}</b><span class="visit">${g.dataStatus === 'ready' ? '查看固定單場頁 →' : '這場資料本次未取得'}</span>`;
+        const research = g.dataStatus === 'ready' ? overviewResearchLines(g, o.scope)
+          .map(line => `<span class="overview-research">${esc(line)}</span>`).join('') : '';
+        const content = `<span class="meta">${esc(fmt(g.kickoffUTC))} · ${esc(phaseLabel[g.phase] || '狀態未取得')}</span><b>${esc(sides(g))}</b>${research}<span class="visit">${g.dataStatus === 'ready' ? '查看固定單場頁 →' : '這場資料本次未取得'}</span>`;
         return g.dataStatus === 'ready' ? `<a class="overview-card featured" href="game.html?id=${esc(g.id)}">${content}</a>` : `<div class="overview-card disabled">${content}</div>`;
       }).join('') : `<div class="empty">這一天沒有已知${esc(o.scope)}賽程。</div>`}</section>`;
     }).join('');

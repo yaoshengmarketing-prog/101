@@ -44,6 +44,17 @@ for (const listed of overview.games) {
   for (const id of [game.target.away.id, game.target.home.id]) {
     const team = game.teamData[id];
     assert.ok(team, `缺隊伍 ${id}`);
+    const summary = listed.researchSummary?.[id];
+    assert.ok(summary, `總覽缺 ${id} 的研究摘要`);
+    assert.equal(summary.targetGames, FORM_GAMES);
+    assert.equal(summary.availableGames, team.leagueFive.length);
+    assert.equal(summary.scoredGames, team.goals.games);
+    assert.equal(summary.recent14Acquired, team.recent14.length);
+    const scored = team.leagueFive.filter(g => Number.isInteger(g.goalsFor) && Number.isInteger(g.goalsAgainst));
+    assert.equal(summary.goalsFor, scored.length ? scored.reduce((n, g) => n + g.goalsFor, 0) : null);
+    assert.equal(summary.goalsAgainst, scored.length ? scored.reduce((n, g) => n + g.goalsAgainst, 0) : null);
+    assert.equal(summary.goalsFor, team.goals.scoredFor);
+    assert.equal(summary.goalsAgainst, team.goals.scoredAgainst);
     assert.ok(team.leagueFive.length <= FORM_GAMES);
     const scoresComplete = team.leagueFive.every(g => g.goalsFor !== null && g.goalsAgainst !== null);
     if (!scoresComplete) {

@@ -338,9 +338,12 @@ async function main() {
       t.recent14 = t.recent14.map(k => pairForTeam(games[k], teamId));
       const complete = t.leagueFive.filter(g => g.goalsFor !== null && g.goalsAgainst !== null);
       const full = complete.length === t.leagueFive.length && complete.length > 0;
+      const scoredFor = complete.length ? complete.reduce((n, g) => n + g.goalsFor, 0) : null;
+      const scoredAgainst = complete.length ? complete.reduce((n, g) => n + g.goalsAgainst, 0) : null;
       t.goals = { for: full ? complete.reduce((n, g) => n + g.goalsFor, 0) : null,
         against: full ? complete.reduce((n, g) => n + g.goalsAgainst, 0) : null,
-        games: complete.length, requested: t.leagueFive.length };
+        games: complete.length, requested: t.leagueFive.length,
+        scoredFor, scoredAgainst };
     }
     const lottery = oddsForTarget(target, snapshots);
     const detail = { generatedAt, expiresAt, target, formTarget: FORM_GAMES, usageDays: USAGE_DAYS,
@@ -350,7 +353,14 @@ async function main() {
         `${USAGE_DAYS} 日跨賽事已查${sourceLeagues.map(x => x.label).join('、')}；其他賽事未涵蓋。`,
         '來源列出 11 位先發不代表替補名單完整；未列來源名單不等於未被正式報名。'] };
     await fs.writeFile(path.join(outDir, 'games', `${target.id}.json`), JSON.stringify(detail) + '\n');
-    overview.games.find(g => g.id === target.id).dataStatus = 'ready';
+    const listed = overview.games.find(g => g.id === target.id);
+    listed.dataStatus = 'ready';
+    listed.researchSummary = Object.fromEntries([target.away, target.home].map(team => {
+      const t = teamData[team.id];
+      return [team.id, { scoredGames: t.goals.games, availableGames: t.leagueFive.length,
+        targetGames: FORM_GAMES, goalsFor: t.goals.scoredFor, goalsAgainst: t.goals.scoredAgainst,
+        recent14Acquired: t.recent14.length }];
+    }));
     gameReports.push({ id: target.id, league: targetLeague, phase: target.phase, lineupStatus, lottery: lottery.status,
       teams: Object.values(teamData).map(t => ({ name: t.team.name, leagueFive: t.leagueFive.length,
         leagueScores: t.goals.games, recent14: t.recent14.length,

@@ -1,8 +1,27 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { renderOverview, renderGame, venueResults, venueLine, summarizeUsage, scoreFormation, substitutionNotes, shotLine, resultBlock, lineupBlock } from '../assets/football.js';
+import { renderOverview, renderGame, overviewResearchLines, venueResults, venueLine, summarizeUsage, scoreFormation, substitutionNotes, shotLine, resultBlock, lineupBlock } from '../assets/football.js';
 import { dueWindow, decide } from './football-due.mjs';
+
+test('總覽進失球與跨賽事場數依隊伍順序顯示；缺比分不補零', () => {
+  const g = { away: { id: 'a', name: '客隊' }, home: { id: 'h', name: '主隊' },
+    researchSummary: { a: { scoredGames: 5, availableGames: 5, targetGames: 5,
+      goalsFor: 8, goalsAgainst: 4, recent14Acquired: 3 },
+    h: { scoredGames: 5, availableGames: 5, targetGames: 5,
+      goalsFor: 6, goalsAgainst: 7, recent14Acquired: 2 } } };
+  assert.deepEqual(overviewResearchLines(g, '英超'), [
+    '近五場英超進失球｜客隊 8 進 4 失 · 主隊 6 進 7 失',
+    '近 14 日跨賽事已取得｜客隊 3 場 · 主隊 2 場',
+  ]);
+  g.researchSummary.h = { scoredGames: 0, availableGames: 2, targetGames: 5,
+    goalsFor: null, goalsAgainst: null, recent14Acquired: 0 };
+  const partial = overviewResearchLines(g, '英超');
+  assert.doesNotMatch(partial[0], /近五場/);
+  assert.match(partial[0], /客隊 8 進 4 失（5\/5 場可計算）/);
+  assert.match(partial[0], /主隊 比分未取得（0\/5 場可計算）/);
+  assert.match(partial[1], /主隊 0 場/);
+});
 
 test('正式名單使用當批人員比較；前場缺漏仍保留本場名單', () => {
   const sample = JSON.parse(readFileSync(new URL('../personnel-preview/data/401878761.json', import.meta.url)));
