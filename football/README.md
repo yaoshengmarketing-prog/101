@@ -19,4 +19,4 @@ node football/scripts/build-five-leagues.mjs --out .football-build/data
 
 ## 首次五聯賽正式批次
 
-[push run 42004303798](https://github.com/yaoshengmarketing-prog/101/actions/runs/42004303798) 在台灣 2026-11-05 17:40 取數，五聯賽共 16 場（英 4、西 3、義 3、德 5、法 1）、397 次 HTTP 嘗試，整批建置約 31 秒；QA、Pages 及公開同批賽事 ID／資料時間回查均成功。這證明首次正式批次發布；五聯賽版自然固定 schedule、外部賽前派送與正式名單接入須各以後續實際 run 驗證。實體手機尚未試看。
+[push run 42004303798](https://github.com/yaoshengmarketing-prog/101/actions/runs/42004303798) 在台灣 2026-11-05 17:40 取數，五聯賽共 16 場（英 4、西 3、義 3、德 5、法 1）、397 次 HTTP 嘗試，整批建置約 31 秒；QA、Pages 及公開同批賽事 ID／資料時間回查均成功。這是首次正式批次發布。後續 [自然 schedule run 42079526457](https://github.com/yaoshengmarketing-prog/101/actions/runs/42079526457) 與 [run 42148854541](https://github.com/yaoshengmarketing-prog/101/actions/runs/42148854541) 又各自完成五聯賽 35 場的取數、QA、Pages 與公開回查，故**無人固定更新已實跑成功兩次**。兩次實際生成時間分別為台灣 11/6 01:56:57、10:12:52，對照名義固定時點 11/5 18:07、11/6 06:07 有明顯延遲；完整對應與限制見研究 repo `research/football/2026-11-05_五大聯賽正式取數與排程接入.md`。外部賽前 90／30 分鐘真實派送及新增聯賽正式名單仍待各場驗收；實體手機尚未試看。
