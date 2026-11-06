@@ -1,4 +1,4 @@
-// 五大聯賽候選的共用設定。正式更新仍只啟用英超；新增聯賽先在獨立候選試跑。
+// 足球正式更新與候選共用的聯賽、來源及賽前時窗設定。
 export const EUROPE = [
   { id: 'uefa.champions', label: '歐冠' },
   { id: 'uefa.europa', label: '歐聯' },
@@ -16,7 +16,7 @@ export const LEAGUES = {
 };
 
 export const TOP_LEAGUE_IDS = Object.keys(LEAGUES);
-export const LIVE_LEAGUE_IDS = ['eng.1'];
+export const LIVE_LEAGUE_IDS = TOP_LEAGUE_IDS;
 export const FORM_GAMES = 5;
 export const USAGE_DAYS = 14;
 export const PREMATCH_MINUTES = [90, 30];

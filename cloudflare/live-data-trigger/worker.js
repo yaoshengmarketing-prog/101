@@ -32,12 +32,19 @@ export async function checkFootball(env, scheduledTime, fetcher = fetch, leagueI
   const at = new Date(scheduledTime).toISOString(), days = [footballDay(scheduledTime), footballDay(scheduledTime + 86400000)];
   let fixtures;
   try {
-    const boards = await Promise.all(leagueIds.flatMap(league => days.map(async day => {
+    const checked = await Promise.allSettled(leagueIds.flatMap(league => days.map(async day => {
       if (!LEAGUES[league]) throw new Error(`未知目標聯賽 ${league}`);
       const response = await fetcher(`${FOOTBALL_API}/${league}/scoreboard?dates=${day}`, { signal: AbortSignal.timeout(12000), headers: { accept: "application/json" } });
       if (!response.ok) throw new Error(`ESPN ${league} ${day} HTTP ${response.status}`);
       return { league, board: await response.json() };
     })));
+    const boards = checked.filter(row => row.status === 'fulfilled').map(row => row.value);
+    const failures = checked.filter(row => row.status === 'rejected').map(row => errText(row.reason));
+    if (!boards.length) throw new Error(failures.join('；'));
+    if (failures.length) await env.DB.prepare("INSERT OR IGNORE INTO football_triggers (id, kind, scheduled_at, checked_at, error) VALUES (?, 'check_failure', ?, ?, ?)")
+      .bind(`check cf ${at.slice(0, 16)}Z`, at, new Date().toISOString(), failures.join('；')).run();
+    else await env.DB.prepare("INSERT OR IGNORE INTO football_triggers (id, kind, scheduled_at, checked_at) VALUES (?, 'check_ok', ?, ?)")
+      .bind(`check cf ${at.slice(0, 16)}Z`, at, new Date().toISOString()).run();
     fixtures = [...new Map(boards.flatMap(({ league, board }) => (board.events || [])
       .map(game => [`${league}:${game.id}`, { ...game, league }]))).values()];
   } catch (e) {
@@ -46,13 +53,12 @@ export async function checkFootball(env, scheduledTime, fetcher = fetch, leagueI
     console.log("football check 失敗：" + errText(e));
     return;
   }
-  await env.DB.prepare("INSERT OR IGNORE INTO football_triggers (id, kind, scheduled_at, checked_at) VALUES (?, 'check_ok', ?, ?)")
-    .bind(`check cf ${at.slice(0, 16)}Z`, at, new Date().toISOString()).run();
   const due = fixtures.map(game => ({ game, windowMinutes: footballDue(game.date, scheduledTime) })).filter(item => item.windowMinutes);
   if (due.length) {
     // 一次完整重建涵蓋整個賽程；同時開球的多場只派送一次，避免 Actions 互相排隊。
-    const { game, windowMinutes } = due[0], matchIds = due.map(item => String(item.game.id));
-    const id = `cf ${at.slice(0, 16)}Z ${game.id} ${windowMinutes}`;
+    const { game, windowMinutes } = due[0], matchIds = due.map(item => `${item.game.league}:${item.game.id}`);
+    const targetMatches = due.map(item => ({ league: item.game.league, id: String(item.game.id), windowMinutes: item.windowMinutes }));
+    const id = `cf ${at.slice(0, 16)}Z ${game.league}/${game.id} ${windowMinutes}`;
     const ins = await env.DB.prepare("INSERT OR IGNORE INTO football_triggers (id, kind, scheduled_at, match_id, match_ids, kickoff_utc, window_minutes, checked_at) VALUES (?, 'dispatch', ?, ?, ?, ?, ?, ?)")
       .bind(id, at, String(game.id), JSON.stringify(matchIds), game.date, windowMinutes, new Date().toISOString()).run();
     if (!ins.meta.changes) return;
@@ -61,7 +67,7 @@ export async function checkFootball(env, scheduledTime, fetcher = fetch, leagueI
     try {
       if (!env.GH_TOKEN) throw new Error("GH_TOKEN 尚未設定");
       const response = await call(env, `/repos/${REPO}/actions/workflows/${FOOTBALL_WF}/dispatches`, { method: "POST",
-        body: JSON.stringify({ ref: "main", inputs: { event_id: String(game.id), trigger_id: id }, return_run_details: true }) });
+        body: JSON.stringify({ ref: "main", inputs: { trigger_matches_json: JSON.stringify(targetMatches), trigger_id: id }, return_run_details: true }) });
       http = response.status;
       const body = await response.text();
       if (response.ok) { try { runId = JSON.parse(body).workflow_run_id ?? null; } catch {} }
@@ -84,16 +90,27 @@ async function resolveFootball(env) {
     if (!run) continue;
     let publicGeneratedAt = null, lineupStatus = null, lineupCheckedAt = null;
     if (run.status === "completed" && run.conclusion === "success") {
-      const statusResponse = await fetch(`https://yaoshengmarketing-prog.github.io/101/football/data/status.json?cf=${run.id}`, { cache: "no-store" });
-      if (statusResponse.ok) {
-        const status = await statusResponse.json();
+      const base = 'https://yaoshengmarketing-prog.github.io/101/football/data';
+      const manifestResponse = await fetch(`${base}/manifest.json?cf=${run.id}`, { cache: "no-store" });
+      if (manifestResponse.ok) {
+        const manifest = await manifestResponse.json();
         const matchIds = JSON.parse(row.match_ids || JSON.stringify([String(row.match_id)]));
-        if (String(status.runId) === String(run.id) && matchIds.every(id => status.gameIds?.includes(id))) {
-          publicGeneratedAt = status.generatedAt;
-          const gameResponse = await fetch(`https://yaoshengmarketing-prog.github.io/101/football/data/games/${row.match_id}.json?cf=${run.id}`, { cache: "no-store" });
-          if (gameResponse.ok) {
-            const game = await gameResponse.json();
-            if (String(game.target?.id) === String(row.match_id)) {
+        const qualified = matchIds.map(key => key.includes(':') ? key : `eng.1:${key}`);
+        if (String(manifest.runId) === String(run.id) && qualified.every(key => {
+          const [league, id] = key.split(':');
+          return manifest.leagues?.[league]?.gameIds?.includes(id);
+        })) {
+          const first = qualified[0], [league, id] = first.split(':');
+          const dir = league === 'eng.1' ? base : `${base}/leagues/${league}`;
+          const [statusResponse, gameResponse] = await Promise.all([
+            fetch(`${dir}/status.json?cf=${run.id}`, { cache: "no-store" }),
+            fetch(`${dir}/games/${id}.json?cf=${run.id}`, { cache: "no-store" }),
+          ]);
+          if (statusResponse.ok && gameResponse.ok) {
+            const status = await statusResponse.json(), game = await gameResponse.json();
+            if (status.generatedAt === manifest.generatedAt && game.generatedAt === manifest.generatedAt
+              && String(game.target?.id) === id && game.target?.league === league) {
+              publicGeneratedAt = manifest.generatedAt;
               lineupStatus = game.lineupStatus;
               lineupCheckedAt = game.lineupCheckedAt;
             }

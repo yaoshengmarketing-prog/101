@@ -10,8 +10,8 @@ const teamName = name => ({ 'Tottenham Hotspur': '熱刺', 'Crystal Palace': '�
 const sides = g => `${teamName(g.away.name)} @ ${teamName(g.home.name)}`;
 const ownScore = g => g.goalsFor === null ? '比分未取得' : `${g.goalsFor}–${g.goalsAgainst}`;
 const gameLabel = g => `${g.side === 'home' ? '主' : '客'}對${teamName(g.opponent.name)}`;
-const getJson = async file => { const base = document.body.dataset.dataRoot || './data/'; const r = await fetch(`${base}${file}?t=${Date.now()}`, { cache: 'no-store' }); if (!r.ok) throw new Error(`${file} HTTP ${r.status}`); return r.json(); };
-const returnHref = id => `../site/sport.html?sport=football#game-${encodeURIComponent(id)}`;
+const getJson = async file => { const base = document.body?.dataset?.footballDataBase || './data'; const r = await fetch(`${base}/${file}?t=${Date.now()}`, { cache: 'no-store' }); if (!r.ok) throw new Error(`${file} HTTP ${r.status}`); return r.json(); };
+const gameReturnHref = id => `${location.pathname.includes('/football/leagues/') ? './' : '../site/sport.html?sport=football'}#game-${encodeURIComponent(id)}`;
 const expired = status => !Number.isFinite(Date.parse(status?.expiresAt)) || Date.now() > Date.parse(status.expiresAt);
 const phaseLabel = { pre: '賽前', live: '比賽進行中', final: '已完賽', postponed: '延期／取消' };
 
@@ -29,11 +29,12 @@ async function renderOverview() {
       const games = o.games.filter(g => g.twDate === date);
       return `<section class="day-group"><h2>${esc(date)}（台灣）</h2>${games.length ? games.map(g => {
         const content = `<span class="meta">${esc(fmt(g.kickoffUTC))} · ${esc(phaseLabel[g.phase] || '狀態未取得')}</span><b>${esc(sides(g))}</b><span class="visit">${g.dataStatus === 'ready' ? '查看固定單場頁 →' : '這場資料本次未取得'}</span>`;
-        return g.dataStatus === 'ready' ? `<a class="overview-card featured" href="game.html?id=${esc(g.id)}">${content}</a>` : `<div class="overview-card disabled">${content}</div>`;
+        return g.dataStatus === 'ready' ? `<a class="overview-card featured" id="game-${esc(g.id)}" href="game.html?id=${esc(g.id)}">${content}</a>` : `<div class="overview-card disabled" id="game-${esc(g.id)}">${content}</div>`;
       }).join('') : `<div class="empty">這一天沒有已知${esc(o.scope)}賽程。</div>`}</section>`;
     }).join('');
     node.innerHTML = `<p class="meta">${fixedCandidate ? '固定研究樣本取得' : '本次取得'}：${esc(fmt(o.generatedAt))}（台灣） · ${o.games.filter(g => g.dataStatus === 'ready').length}/${o.games.length} 場有單場資料</p>
       ${status.status === 'partial' ? '<p class="notice">部分來源本次未取得；各場缺漏請看單場頁。</p>' : ''}${dateGroups}`;
+    if (/^#game-\d+$/.test(location.hash)) requestAnimationFrame(() => document.getElementById(location.hash.slice(1))?.scrollIntoView({ block: 'center' }));
   } catch (e) { node.innerHTML = `<div class="empty">賽程資料載入失敗：${esc(e.message)}</div>`; }
 }
 
@@ -327,18 +328,19 @@ async function renderGame() {
   try {
     const isPreview = document.body?.dataset?.shotsPreview === 'true';
     const fixedCandidate = document.body?.dataset?.fiveLeaguesCandidate === 'true';
-    const id = new URLSearchParams(location.search).get('id') || '401878761';
+    const id = new URLSearchParams(location.search).get('id') || document.body?.dataset?.defaultGameId || '401878761';
     if (!/^\d+$/.test(id)) throw new Error('賽事 ID 格式不正確');
-    document.querySelector('.crumb a')?.setAttribute('href', returnHref(id));
+    document.querySelector('.crumb a')?.setAttribute('href', gameReturnHref(id));
     const status = await getJson('status.json');
     if (status.status === 'failed' || (!fixedCandidate && expired(status))) {
-      node.innerHTML = `<div class="empty">賽事 ${esc(id)} 的足球資料${status.status === 'failed' ? '本次更新失敗' : '已逾期'}，暫停顯示。本次狀態時間：${esc(fmt(status.generatedAt))}（台灣）。<a href="${returnHref(id)}">返回足球列表</a></div>`;
+      node.innerHTML = `<div class="empty">賽事 ${esc(id)} 的足球資料${status.status === 'failed' ? '本次更新失敗' : '已逾期'}，暫停顯示。本次狀態時間：${esc(fmt(status.generatedAt))}（台灣）。<a href="${gameReturnHref(id)}">返回聯賽總覽</a></div>`;
       return;
     }
     const d = await getJson(`games/${id}.json`);
     if (d.target.id !== id) throw new Error('賽事 ID 與資料不符，已停止顯示');
+    if (status.league && d.target.league !== status.league) throw new Error('聯賽與資料不符，已停止顯示');
     if (!fixedCandidate && expired(d)) {
-      node.innerHTML = `<div class="empty">賽事 ${esc(id)} 的足球資料已逾期，暫停顯示。上次取得：${esc(fmt(d.generatedAt))}（台灣）。<a href="${returnHref(id)}">返回足球列表</a></div>`;
+      node.innerHTML = `<div class="empty">賽事 ${esc(id)} 的足球資料已逾期，暫停顯示。上次取得：${esc(fmt(d.generatedAt))}（台灣）。<a href="${gameReturnHref(id)}">返回聯賽總覽</a></div>`;
       return;
     }
     pageData = d;
@@ -383,8 +385,8 @@ async function renderGame() {
     $('#close-context').addEventListener('click', () => $('#context').close());
     $('#context').addEventListener('close', () => lastOpener?.focus({ preventScroll: true }));
   } catch (e) {
-    const id = new URLSearchParams(location.search).get('id') || '401878761';
-    node.innerHTML = `<div class="empty">賽事 ${esc(id)} 的資料本次未取得或已超出保存期：${esc(e.message)}。<a href="${returnHref(id)}">返回足球列表</a></div>`;
+    const id = new URLSearchParams(location.search).get('id') || document.body?.dataset?.defaultGameId || '401878761';
+    node.innerHTML = `<div class="empty">賽事 ${esc(id)} 的資料本次未取得或已超出保存期：${esc(e.message)}。<a href="${gameReturnHref(id)}">返回聯賽總覽</a></div>`;
   }
 }
 

@@ -14,3 +14,6 @@ h1{font-size:27px;line-height:1.25;margin:4px 0 12px}h2{font-size:20px;margin:0 
 @media(min-width:640px){main.wrap{padding-left:25px;padding-right:25px}.sample{margin-left:-25px;margin-right:-25px}}
 .shot-line{display:block;color:#235f49;font-size:13px;font-weight:650;line-height:1.45;margin-top:4px}
 .personnel-action strong,.personnel-action small{display:block;float:none}.personnel-action small{font-size:13px;font-weight:500;line-height:1.45;margin-top:4px}.personnel-previous{font-size:13px;color:#526760}.personnel-roster-title{font-weight:700;margin-top:14px}
+.league-switch{display:flex;gap:8px;overflow-x:auto;white-space:nowrap;padding:5px 0 13px;margin-bottom:12px}
+.league-switch a{display:inline-block;padding:7px 10px;border:1px solid #b8d1c0;border-radius:7px;text-decoration:none;font-size:13px;font-weight:700;flex:none}
+.league-switch a[aria-current="page"]{background:#235f49;color:white}

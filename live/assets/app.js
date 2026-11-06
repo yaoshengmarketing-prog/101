@@ -58,7 +58,8 @@ async function freshness(M, extra = []) {
     : `頁面內容取得於 <b>${M.generatedAtTW}</b>（${ago(ageH)}）；目前連不到 GitHub，無法確認之後是否還有檢查`)
     + (late ? `。${dense() ? "賽前時段排定每 15 分鐘觸發一次（Cloudflare，GitHub 排程為備援）" : "原定每 3 小時取得一次"}，實際執行會有延遲，GitHub 排程有時會延遲數小時，這不代表已確認故障。` : `・${dense() ? "賽前時段排定每 15 分鐘自動取得（Cloudflare 觸發，GitHub 排程備援；實際會有延遲）" : "每 3 小時自動取得"}，內容有變才更新`)]);
   document.querySelectorAll("[data-fresh]").forEach(n => n.remove());
-  $("#crumb").insertAdjacentHTML("afterend", msgs.map(([c, t]) => `<div class="notice ${c}" data-fresh role="${c ? "alert" : "status"}">${t}</div>`).join(""));
+  const freshMount = $("#crumb") || $(".top");
+  if (freshMount) freshMount.insertAdjacentHTML("afterend", msgs.map(([c, t]) => `<div class="notice ${c}" data-fresh role="${c ? "alert" : "status"}">${t}</div>`).join(""));
   return today;
 }
 // 頁面一直開著：每分鐘重算提示、換日時重畫；每 5 分鐘看有沒有新資料，有就重新載入

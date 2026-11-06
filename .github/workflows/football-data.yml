@@ -10,6 +10,7 @@ on:
       - football/assets/**
       - football/index.html
       - football/game.html
+      - football/leagues/**
       - football/shots-preview.html
       - football/official-odds-snapshots.json
   schedule:
@@ -20,7 +21,15 @@ on:
   workflow_dispatch:
     inputs:
       event_id:
-        description: 首次驗證或指定加列的英超 ESPN event ID
+        description: 首次驗證或指定加列的 ESPN event ID
+        required: false
+        type: string
+      event_league:
+        description: event_id 所屬聯賽，預設 eng.1
+        required: false
+        type: string
+      trigger_matches_json:
+        description: 外部時窗同批的聯賽、賽事 ID 與 90／30 分鐘 JSON
         required: false
         type: string
       odds_snapshot_json:
@@ -55,29 +64,28 @@ jobs:
         run: node football/scripts/football-due.mjs
       - name: 足球缺資料與配對測試
         if: steps.due.outputs.build == 'true'
-        run: node --test football/scripts/test-football.mjs football/scripts/test-football-page.mjs
-      - name: 取數並組合各場英超資料
+        run: node --test football/scripts/test-football.mjs football/scripts/test-football-page.mjs football/scripts/test-personnel-change.mjs football/scripts/test-five-leagues.mjs cloudflare/live-data-trigger/test-football-trigger.mjs
+      - name: 取數並組合五聯賽各場資料
         if: steps.due.outputs.build == 'true'
         env:
           EVENT_ID: ${{ inputs.event_id }}
+          EVENT_LEAGUE: ${{ inputs.event_league }}
+          TRIGGER_ID: ${{ inputs.trigger_id }}
+          TRIGGER_MATCHES_JSON: ${{ inputs.trigger_matches_json || steps.due.outputs.matches_json }}
           ODDS_SNAPSHOT_JSON: ${{ inputs.odds_snapshot_json }}
         run: |
-          args=(--out .football-build/data)
-          if [ -n "$EVENT_ID" ]; then args+=(--event "$EVENT_ID"); fi
           if [ -n "$ODDS_SNAPSHOT_JSON" ]; then
             mkdir -p .football-build
             printf '%s' "$ODDS_SNAPSHOT_JSON" > .football-build/official-odds.json
-            args+=(--odds-file .football-build/official-odds.json)
+            export ODDS_FILE=.football-build/official-odds.json
           fi
-          node football/scripts/build-football.mjs "${args[@]}"
-      - name: 足球各場資料 QA
-        if: steps.due.outputs.build == 'true'
-        run: node football/scripts/qa-football.mjs .football-build/data
+          node football/scripts/build-five-leagues.mjs --out .football-build/data
       - name: 更新失敗時發布明確狀態
         if: failure()
         run: |
           mkdir -p .football-build/data
           node --input-type=module -e "import fs from 'node:fs'; const now=new Date(); fs.writeFileSync('.football-build/data/status.json', JSON.stringify({status:'failed',generatedAt:now.toISOString(),expiresAt:new Date(now.getTime()+7200000).toISOString(),reason:'本次足球取數或 QA 失敗；未回退舊快照',runId:process.env.GITHUB_RUN_ID})+'\n');"
+          node --input-type=module -e "import fs from 'node:fs'; const now=new Date(); fs.writeFileSync('.football-build/data/manifest.json', JSON.stringify({status:'failed',generatedAt:now.toISOString(),expiresAt:new Date(now.getTime()+7200000).toISOString(),runId:process.env.GITHUB_RUN_ID,reason:'整批建置失敗'})+'\n');"
           rm -f .football-build/data/overview.json .football-build/data/run-report.json
           rm -rf .football-build/data/games
       - name: 保留本次短期快照供部署與查核
@@ -120,21 +128,43 @@ jobs:
       - name: 部署到現有 GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-      - name: 公開頁資料時間回查
+      - name: 公開五聯賽批次與固定 ID 回查
         env:
           RUN_ID: ${{ github.run_id }}
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          const expected = JSON.parse(fs.readFileSync('.football-publish/status.json', 'utf8'));
-          const url = `https://yaoshengmarketing-prog.github.io/101/football/data/status.json?run=${process.env.RUN_ID}`;
+          const expected = JSON.parse(fs.readFileSync('.football-publish/manifest.json', 'utf8'));
+          const base = 'https://yaoshengmarketing-prog.github.io/101/football/data';
+          const url = `${base}/manifest.json?run=${process.env.RUN_ID}`;
           for (let attempt = 0; attempt < 20; attempt++) {
             try {
               const response = await fetch(url, { cache: 'no-store' });
               if (response.ok) {
                 const live = await response.json();
-                if (live.generatedAt === expected.generatedAt && live.status === expected.status) {
-                  console.log(JSON.stringify({ publicUrl: url, generatedAt: live.generatedAt, status: live.status, gameIds: live.gameIds || [] }));
+                if (live.generatedAt === expected.generatedAt && String(live.runId) === String(expected.runId)) {
+                  const checked = {};
+                  for (const [league, row] of Object.entries(expected.leagues || {})) {
+                    const dir = league === 'eng.1' ? base : `${base}/leagues/${league}`;
+                    const statusResponse = await fetch(`${dir}/status.json?run=${process.env.RUN_ID}`, { cache: 'no-store' });
+                    if (!statusResponse.ok) throw new Error(`${league} status HTTP ${statusResponse.status}`);
+                    const status = await statusResponse.json();
+                    if (status.generatedAt !== expected.generatedAt || status.status !== row.status || String(status.runId) !== String(expected.runId)) throw new Error(`${league} 批次狀態不一致`);
+                    if (status.status !== 'failed') {
+                      const overviewResponse = await fetch(`${dir}/overview.json?run=${process.env.RUN_ID}`, { cache: 'no-store' });
+                      if (!overviewResponse.ok) throw new Error(`${league} overview HTTP ${overviewResponse.status}`);
+                      const overview = await overviewResponse.json();
+                      if (overview.generatedAt !== expected.generatedAt || overview.games.length !== row.gameCount) throw new Error(`${league} 總覽批次不一致`);
+                      for (const id of row.gameIds) {
+                        const gameResponse = await fetch(`${dir}/games/${id}.json?run=${process.env.RUN_ID}`, { cache: 'no-store' });
+                        if (!gameResponse.ok) throw new Error(`${league}/${id} HTTP ${gameResponse.status}`);
+                        const game = await gameResponse.json();
+                        if (game.target.id !== id || game.target.league !== league || game.generatedAt !== expected.generatedAt) throw new Error(`${league}/${id} 身分或批次不一致`);
+                      }
+                    }
+                    checked[league] = { status: status.status, gameIds: row.gameIds };
+                  }
+                  console.log(JSON.stringify({ publicUrl: url, runId: live.runId, generatedAt: live.generatedAt, triggerId: live.triggerId, triggerMatches: live.triggerMatches, leagues: checked }));
                   process.exit(0);
                 }
               }

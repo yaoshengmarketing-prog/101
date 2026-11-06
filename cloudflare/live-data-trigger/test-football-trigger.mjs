@@ -27,7 +27,7 @@ test('到 90 分鐘時窗同時到期的賽事只派送一次，並留下各場 
   };
   try {
     await checkFootball(env, Date.parse('2026-10-31T16:00:37Z'), async url => ({ ok: true,
-      json: async () => ({ events: url.includes('20261031') ? [
+      json: async () => ({ events: url.includes('/eng.1/') && url.includes('20261031') ? [
         { id: '401878761', date: '2026-10-31T17:30:00Z' },
         { id: 'second', date: '2026-10-31T17:30:00Z' },
         { id: 'other', date: '2026-10-31T20:00:00Z' },
@@ -35,11 +35,14 @@ test('到 90 分鐘時窗同時到期的賽事只派送一次，並留下各場 
     assert.equal(calls.length, 1);
     assert.match(calls[0].url, /football-data\.yml\/dispatches$/);
     const body = JSON.parse(calls[0].init.body);
-    assert.equal(body.inputs.event_id, '401878761');
-    assert.match(body.inputs.trigger_id, /2026-10-31T16:00Z 401878761 90/);
+    assert.deepEqual(JSON.parse(body.inputs.trigger_matches_json), [
+      { league: 'eng.1', id: '401878761', windowMinutes: 90 },
+      { league: 'eng.1', id: 'second', windowMinutes: 90 },
+    ]);
+    assert.match(body.inputs.trigger_id, /2026-10-31T16:00Z eng\.1\/401878761 90/);
     assert.equal(writes.length, 3);
     assert.match(writes[0].sql, /check_ok/);
-    assert.deepEqual(JSON.parse(writes[1].values[3]), ['401878761', 'second']);
+    assert.deepEqual(JSON.parse(writes[1].values[3]), ['eng.1:401878761', 'eng.1:second']);
     assert.equal(writes[2].values[3], 12345);
   } finally { globalThis.fetch = originalFetch; }
 });
@@ -64,5 +67,29 @@ test('新增足球 cron 不派送棒球；舊 cron 仍派送原棒球 workflow',
     calls.length = 0;
     await fire('*/15 0-3,13-23 * * *', '2026-10-31T13:00:37Z');
     assert.equal(calls.filter(x => x.url.includes('/live-data.yml/dispatches')).length, 1);
+  } finally { globalThis.fetch = originalFetch; }
+});
+
+test('一個聯賽 ESPN 輕量檢查失敗，仍派送另一聯賽同窗場次', async () => {
+  const writes = [], calls = [], originalFetch = globalThis.fetch;
+  const env = { GH_TOKEN: 'test-token', DB: { prepare: sql => ({ bind: (...values) => ({
+    run: async () => { writes.push({ sql, values }); return { meta: { changes: 1 } }; },
+  }) }) } };
+  globalThis.fetch = async (url, init) => {
+    calls.push({ url, init });
+    return { ok: true, status: 200, text: async () => JSON.stringify({ workflow_run_id: 54321 }) };
+  };
+  try {
+    await checkFootball(env, Date.parse('2026-11-07T11:35:00Z'), async url => {
+      if (url.includes('/eng.1/')) throw new Error('英超檢查失敗');
+      return { ok: true, json: async () => ({ events: url.includes('/esp.1/') ? [
+        { id: '401882812', date: '2026-11-07T13:00Z' },
+      ] : [] }) };
+    });
+    assert.equal(calls.length, 1);
+    assert.deepEqual(JSON.parse(JSON.parse(calls[0].init.body).inputs.trigger_matches_json),
+      [{ league: 'esp.1', id: '401882812', windowMinutes: 90 }]);
+    assert.match(writes[0].sql, /check_failure/);
+    assert.match(writes[1].values[0], /esp\.1\/401882812/);
   } finally { globalThis.fetch = originalFetch; }
 });
