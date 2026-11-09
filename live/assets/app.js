@@ -173,6 +173,7 @@ async function renderProj() {
 async function renderGame() {
   const pk = new URLSearchParams(location.search).get("pk");
   if (!/^\d+$/.test(pk || "")) { $("#hero").innerHTML = `<div class="empty">網址缺少 gamePk。<a href="./">回本日比賽</a></div>`; return; }
+  $("#crumb").innerHTML = `<a href="../site/sport.html?sport=mlb#game-${pk}">← MLB 棒球列表</a>`;
   let G; try { G = await load(`games/${pk}.json`); } catch (e) { $("#hero").innerHTML = `<div class="empty">找不到 gamePk ${esc(pk)} 的資料（${esc(e.message)}）。<a href="./">回本日比賽</a></div>`; return; }
   const D = { generatedAtTW: stamp(G.updatedAt) };
   const M = await load("manifest.json").catch(() => null);
