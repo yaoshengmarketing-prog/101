@@ -6,6 +6,7 @@
 
 五聯賽共用 `football/scripts/football-leagues.mjs` 的聯賽、國內盃賽、歐戰、近五場、14 日用人與賽前 90／30 分鐘設定。各隊近五場只取所屬聯賽，近期用人查已接入的跨賽事來源。每聯賽重建台灣昨天至後天的賽程；空窗時顯示該聯賽下一個賽事日。
 每日總覽同批帶入各場單場已計算的該聯賽進／失球與近 14 日跨賽事已取得場數，不另向來源取數，也不讓總覽頁逐場下載單場 JSON。只有兩隊各有五場完整比分才共用「近五場」標示；其他情況逐隊寫出實際可計算場數，零場不顯示 0 進 0 失。
+總覽、單場及比賽背景的繁中球隊顯示共用 `football/scripts/football-team-names.mjs`，以 ESPN 球隊 ID 對照。表內保存當次核對的來源原名；比賽 JSON 仍保留 ESPN 原名，賽事配對和數值運算仍用 ID。未確認譯名的 ID 直接顯示當次來源原名，不靠英文名稱猜測中文隊伍。
 
 ```sh
 node --test football/scripts/test-football.mjs football/scripts/test-football-page.mjs football/scripts/test-personnel-change.mjs football/scripts/test-five-leagues.mjs cloudflare/live-data-trigger/test-football-trigger.mjs
