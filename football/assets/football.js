@@ -1,4 +1,5 @@
 import { FORM_GAMES, USAGE_DAYS } from '../scripts/football-leagues.mjs';
+import { teamDisplayName } from '../scripts/football-team-names.mjs';
 
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -6,10 +7,10 @@ const fmt = iso => iso ? new Intl.DateTimeFormat('zh-TW', { timeZone: 'Asia/Taip
 const day = iso => iso ? new Intl.DateTimeFormat('zh-TW', { timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(iso)) : '日期未取得';
 const gap = minutes => Number.isFinite(minutes) ? `${Math.floor(minutes / 60)} 小時${minutes % 60 ? ` ${minutes % 60} 分` : ''}` : '未取得';
 const roleLabel = { starter: '先發', sub_on: '替補上場', bench_unused: '列替補未上', not_listed: '本次來源名單未列', not_acquired: '本次未取得' };
-const teamName = name => ({ 'Tottenham Hotspur': '熱刺', 'Crystal Palace': '水晶宮', 'Brighton & Hove Albion': '布萊頓', 'Newcastle United': '紐卡索', 'Coventry City': '考文垂', 'Chelsea': '切爾西', 'Fulham': '富勒姆', Besiktas: '貝西克塔斯' }[name] || name);
-const sides = g => `${teamName(g.away.name)} @ ${teamName(g.home.name)}`;
+const teamName = teamDisplayName;
+const sides = g => `${teamName(g.away)} @ ${teamName(g.home)}`;
 const ownScore = g => g.goalsFor === null ? '比分未取得' : `${g.goalsFor}–${g.goalsAgainst}`;
-const gameLabel = g => `${g.side === 'home' ? '主' : '客'}對${teamName(g.opponent.name)}`;
+const gameLabel = g => `${g.side === 'home' ? '主' : '客'}對${teamName(g.opponent)}`;
 const getJson = async file => { const base = document.body?.dataset?.footballDataBase || './data'; const r = await fetch(`${base}/${file}?t=${Date.now()}`, { cache: 'no-store' }); if (!r.ok) throw new Error(`${file} HTTP ${r.status}`); return r.json(); };
 const expired = status => !Number.isFinite(Date.parse(status?.expiresAt)) || Date.now() > Date.parse(status.expiresAt);
 const phaseLabel = { pre: '賽前', live: '比賽進行中', final: '已完賽', postponed: '延期／取消' };
@@ -21,11 +22,11 @@ export function overviewResearchLines(g, scope) {
   const fullFive = values.every(value => value.scoredGames === 5 && value.availableGames === 5 && value.targetGames === 5);
   const scored = (team, value) => {
     const count = `${value.scoredGames}/${value.targetGames} 場可計算`;
-    return `${teamName(team.name)} ${value.scoredGames ? `${value.goalsFor} 進 ${value.goalsAgainst} 失` : '比分未取得'}${fullFive ? '' : `（${count}）`}`;
+    return `${teamName(team)} ${value.scoredGames ? `${value.goalsFor} 進 ${value.goalsAgainst} 失` : '比分未取得'}${fullFive ? '' : `（${count}）`}`;
   };
   return [
     `${fullFive ? '近五場' : '已取得'}${scope}進失球｜${teams.map((team, i) => scored(team, values[i])).join(' · ')}`,
-    `近 14 日跨賽事已取得｜${teams.map((team, i) => `${teamName(team.name)} ${values[i].recent14Acquired} 場`).join(' · ')}`,
+    `近 14 日跨賽事已取得｜${teams.map((team, i) => `${teamName(team)} ${values[i].recent14Acquired} 場`).join(' · ')}`,
   ];
 }
 
@@ -54,7 +55,7 @@ async function renderOverview() {
 }
 
 let pageData = null, lastOpener = null;
-function scoreAt(score, g) { return score ? `${teamName(g.home.name)} ${score.home}–${score.away} ${teamName(g.away.name)}` : '當時比分未取得'; }
+function scoreAt(score, g) { return score ? `${teamName(g.home)} ${score.home}–${score.away} ${teamName(g.away)}` : '當時比分未取得'; }
 function openContext(key, opener) {
   const d = pageData, g = d?.games?.[key], context = d?.details?.[key];
   if (!g) return;
@@ -122,7 +123,7 @@ export function substitutionNotes(g, detail, player, record, team) {
       return '換人時比分未取得';
     }
     const own = score[g.side], against = score[g.side === 'home' ? 'away' : 'home'];
-    return `當時${teamName(team.name)} ${own}–${against} ${own > against ? '領先' : own < against ? '落後' : '平手'}`;
+    return `當時${teamName(team)} ${own}–${against} ${own > against ? '領先' : own < against ? '落後' : '平手'}`;
   };
   const notes = [];
   if (record.role === 'sub_on') {
@@ -154,7 +155,7 @@ export function shotLine(g, detail) {
 export function resultBlock(t, details, snapshotThreshold = null) {
   const form = venueResults(t.leagueFive);
   const scope = t.leagueLabel || t.leagueFive[0]?.leagueLabel || '所屬聯賽';
-  return `<div class="team-block"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.leagueFive.length}/${t.formTarget || FORM_GAMES} 場</h3>
+  return `<div class="team-block"><h3>${esc(teamName(t.team))} · 已取得 ${t.leagueFive.length}/${t.formTarget || FORM_GAMES} 場</h3>
     ${t.leagueFive.length ? `<div class="venue-form"><p class="venue-form-title">這 ${t.leagueFive.length} 場${esc(scope)}中的主客成績</p>
       <p>${venueLine('主場', form.home)}</p><p>${venueLine('客場', form.away)}</p>
       ${form.unknown ? `<p>另有 ${form.unknown} 場主客場本次未取得。</p>` : ''}</div>` : ''}
@@ -281,7 +282,7 @@ function fixtureLine(g) {
 }
 
 function pairBlock(t, d) {
-  return `<div class="pair-team"><h3>${esc(teamName(t.team.name))} · ${t.recent14.length} 場跨賽事</h3>
+  return `<div class="pair-team"><h3>${esc(teamName(t.team))} · ${t.recent14.length} 場跨賽事</h3>
     ${t.pairs.length ? t.pairs.map(p => {
       const from = d.games[p.from], to = d.games[p.to];
       return `<article class="pair-card"><p class="fixture-line">${esc(fixtureLine({ ...from, side: from.home.id === t.team.id ? 'home' : 'away', opponent: from.home.id === t.team.id ? from.away : from.home }))}</p>
@@ -292,7 +293,7 @@ function pairBlock(t, d) {
 }
 
 function personBlock(t, details) {
-  return `<div class="pair-team"><h3>${esc(teamName(t.team.name))} · 已列 ${t.players.length} 名球員</h3>
+  return `<div class="pair-team"><h3>${esc(teamName(t.team))} · 已列 ${t.players.length} 名球員</h3>
     ${t.players.map(p => `<details class="person-card" id="person-${esc(t.team.id)}-${esc(p.id)}"><summary>${esc(p.name)}　<span class="tiny">${p.games.filter(g => g.role === 'starter').length}/${t.recent14.length} 場先發</span></summary>
       <div class="person-rows">${p.games.map(rec => {
         const g = t.recent14.find(x => x.key === rec.key);
@@ -323,8 +324,8 @@ export function lineupBlock(d) {
         moveLabel(change.fromBenchToStarter, '替補轉先發')].filter(Boolean).join('；') : '';
       const previous = available ? d.games?.[change.previous?.key] : null;
       const opponent = previous ? (previous.home.id === team.id ? previous.away : previous.home) : null;
-      const previousLabel = available ? `前場：${esc(fmt(change.previous.kickoffUTC))}（台灣） · ${esc(change.previous.leagueLabel)} · ${previous ? `${previous.home.id === team.id ? '主場' : '客場'}對${teamName(opponent.name)}` : '對手本次未取得'}` : '';
-      return `<details class="expander"><summary class="action personnel-action"><strong>${esc(teamName(team.name))} · ${available ? `上場 11 名先發，${change.continued} 名本場續先發` : `本場先發 ${starts.length}/11 人`}</strong>
+      const previousLabel = available ? `前場：${esc(fmt(change.previous.kickoffUTC))}（台灣） · ${esc(change.previous.leagueLabel)} · ${previous ? `${previous.home.id === team.id ? '主場' : '客場'}對${teamName(opponent)}` : '對手本次未取得'}` : '';
+      return `<details class="expander"><summary class="action personnel-action"><strong>${esc(teamName(team))} · ${available ? `上場 11 名先發，${change.continued} 名本場續先發` : `本場先發 ${starts.length}/11 人`}</strong>
         <small>${available ? (moves || '本場沒有已確認的先發與替補互換') : '前場與本場名單未齊，無法確認人員比較'} · 展開名單 ↓</small></summary><div class="expander-body">
         ${available ? `<p class="personnel-previous">${previousLabel}</p>
           <p class="facts">上場 11 名先發，本場續先發 ${change.continued} 人</p>
@@ -375,12 +376,12 @@ async function renderGame() {
       ${lineupBlock(d)}
       <section class="section"><h2>台灣運彩官方賠率快照</h2>${market}</section>
       <section class="section"><h2>兩隊${esc(target.leagueLabel)}近況</h2><div class="number-grid">
-        ${[away, home].map(t => `<div class="number-card"><small>${esc(teamName(t.team.name))} · ${t.goals.games}/${t.goals.requested} 場比分完整</small><b>${t.goals.for === null ? '進失球本次未能完整合計' : `${t.goals.for} 進 ${t.goals.against} 失`}</b></div>`).join('')}</div>
+        ${[away, home].map(t => `<div class="number-card"><small>${esc(teamName(t.team))} · ${t.goals.games}/${t.goals.requested} 場比分完整</small><b>${t.goals.for === null ? '進失球本次未能完整合計' : `${t.goals.for} 進 ${t.goals.against} 失`}</b></div>`).join('')}</div>
         <p class="compare-note">分母是各隊開球前最近取得的${esc(target.leagueLabel)}比賽；不是勝率或本場預測。</p></section>
       <section class="section"><h2>逐場紀錄 · ${esc(target.leagueLabel)}</h2><p class="section-sub">兩隊分開列，比分、全場射門與射正均為本隊–對手；總進球由程式相加。${threshold === null ? '本場無大小快照門檻，不標大／小。' : `以下以本場快照 ${threshold} 球門檻對照歷史總進球，非各場當時盤口結果。`}</p>
         ${resultBlock(away, d.details, threshold)}${resultBlock(home, d.details, threshold)}<p class="tiny">xG 本次未取得；全場射門與射正不等於機會品質或勝負預測；每列「比賽背景」與下方球員紀錄連到同一場事件。</p></section>
       <section class="section"><h2>近期用人 · 近 ${USAGE_DAYS} 日跨賽事</h2><p class="section-sub">${esc(d.limitations.find(x => x.startsWith(`${USAGE_DAYS} 日跨賽事已查`)) || '已查相關聯賽、國內盃賽及歐戰。')}只列取得的已完賽。替補是當場狀態。</p>
-        ${[away, home].map((t, i) => `<div class="usage-card${i ? ' alt' : ''}"><h3>${esc(teamName(t.team.name))} · 已取得 ${t.recent14.length} 場</h3><p>${esc(summarizeUsage(t, target))}</p></div>`).join('')}
+        ${[away, home].map((t, i) => `<div class="usage-card${i ? ' alt' : ''}"><h3>${esc(teamName(t.team))} · 已取得 ${t.recent14.length} 場</h3><p>${esc(summarizeUsage(t, target))}</p></div>`).join('')}
         <details class="expander" id="pairs"><summary class="action">查看相鄰場次與開球間隔 <span>⌄</span></summary><div class="expander-body">${pairBlock(away, d)}${pairBlock(home, d)}</div></details>
         <details class="expander" id="people"><summary class="action">直接查看球員逐場紀錄 <span>⌄</span></summary><div class="expander-body">${personBlock(away, d.details)}${personBlock(home, d.details)}</div></details>
       </section>

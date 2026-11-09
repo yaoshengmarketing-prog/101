@@ -2,7 +2,21 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { renderOverview, renderGame, overviewResearchLines, venueResults, venueLine, summarizeUsage, scoreFormation, substitutionNotes, shotLine, resultBlock, lineupBlock } from '../assets/football.js';
+import { TEAM_NAMES, teamDisplayName, teamSourceName } from './football-team-names.mjs';
 import { dueWindow, decide } from './football-due.mjs';
+
+test('五聯賽隊名只按 ESPN ID 顯示，原名保留、未知 ID 不猜譯', () => {
+  assert.equal(teamDisplayName({ id: '367', name: 'Tottenham Hotspur' }), '熱刺');
+  assert.equal(teamDisplayName({ id: '86', name: 'Real Madrid' }), '皇家馬德里');
+  assert.equal(teamDisplayName({ id: '110', name: 'Internazionale' }), '國際米蘭');
+  assert.equal(teamDisplayName({ id: '131', name: 'Bayer Leverkusen' }), '勒沃庫森');
+  assert.equal(teamDisplayName({ id: '160', name: 'Paris Saint-Germain' }), '巴黎聖日耳曼');
+  assert.equal(teamDisplayName({ id: '6851', name: 'Paris FC' }), '巴黎足球會');
+  assert.equal(teamDisplayName({ id: '999999', name: 'Tottenham Hotspur' }), 'Tottenham Hotspur');
+  assert.equal(teamSourceName({ id: '367', name: 'Tottenham Hotspur' }), 'Tottenham Hotspur');
+  assert.equal(TEAM_NAMES['367'].sourceName, 'Tottenham Hotspur');
+  assert.equal(teamDisplayName({ id: '2697', name: 'Le Mans' }), 'Le Mans');
+});
 
 test('總覽進失球與跨賽事場數依隊伍順序顯示；缺比分不補零', () => {
   const g = { away: { id: 'a', name: '客隊' }, home: { id: 'h', name: '主隊' },
