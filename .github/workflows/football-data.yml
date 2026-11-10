@@ -1,6 +1,6 @@
 name: football-data
 run-name: football ${{ inputs.trigger_id || github.event_name }}
-# 足球每次重建為短期快照，直接部署 Pages，不把例行 JSON 寫進 Git。
+# 足球只測試、取數並保存短期快照；site-pages 統一組合及發布全站。
 on:
   push:
     branches: [main]
@@ -43,14 +43,12 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: site-pages-deploy
+  group: football-data-producer-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
-    outputs:
-      should_deploy: ${{ steps.due.outputs.build }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -80,14 +78,42 @@ jobs:
             export ODDS_FILE=.football-build/official-odds.json
           fi
           node football/scripts/build-five-leagues.mjs --out .football-build/data
-      - name: 更新失敗時發布明確狀態
+      - name: 更新失敗時保存明確狀態
         if: failure()
         run: |
-          mkdir -p .football-build/data
-          node --input-type=module -e "import fs from 'node:fs'; const now=new Date(); fs.writeFileSync('.football-build/data/status.json', JSON.stringify({status:'failed',generatedAt:now.toISOString(),expiresAt:new Date(now.getTime()+7200000).toISOString(),reason:'本次足球取數或 QA 失敗；未回退舊快照',runId:process.env.GITHUB_RUN_ID})+'\n');"
-          node --input-type=module -e "import fs from 'node:fs'; const now=new Date(); fs.writeFileSync('.football-build/data/manifest.json', JSON.stringify({status:'failed',generatedAt:now.toISOString(),expiresAt:new Date(now.getTime()+7200000).toISOString(),runId:process.env.GITHUB_RUN_ID,reason:'整批建置失敗'})+'\n');"
-          rm -f .football-build/data/overview.json .football-build/data/run-report.json
-          rm -rf .football-build/data/games
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const root = '.football-build/data', now = new Date();
+          const common = { status: 'failed', generatedAt: now.toISOString(),
+            expiresAt: new Date(now.getTime() + 7200000).toISOString(),
+            reason: '本次足球取數或 QA 失敗；未回退舊快照', runId: process.env.GITHUB_RUN_ID };
+          fs.rmSync(root, { recursive: true, force: true });
+          const leagues = {};
+          for (const league of ['eng.1', 'esp.1', 'ger.1', 'ita.1', 'fra.1']) {
+            const dir = league === 'eng.1' ? root : `${root}/leagues/${league}`;
+            fs.mkdirSync(dir, { recursive: true });
+            fs.writeFileSync(`${dir}/status.json`, JSON.stringify({ ...common, league, gameIds: [], gameCount: 0 }) + '\n');
+            leagues[league] = { status: 'failed', generatedAt: common.generatedAt, gameIds: [], gameCount: 0 };
+          }
+          fs.writeFileSync(`${root}/manifest.json`, JSON.stringify({ ...common, leagues, gameCount: 0 }) + '\n');
+          NODE
+      - name: 記錄快照來源版本
+        if: always() && (steps.due.outputs.build == 'true' || failure())
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import { execFileSync } from 'node:child_process';
+          fs.mkdirSync('.football-build/data', { recursive: true });
+          fs.writeFileSync('.football-build/data/snapshot-source.json', JSON.stringify({
+            schemaVersion: 1,
+            repository: process.env.GITHUB_REPOSITORY,
+            workflow: '.github/workflows/football-data.yml',
+            branch: process.env.GITHUB_REF_NAME,
+            sourceSha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+            runId: process.env.GITHUB_RUN_ID,
+            runAttempt: Number(process.env.GITHUB_RUN_ATTEMPT)
+          }) + '\n');
+          NODE
       - name: 保留本次短期快照供部署與查核
         if: always() && (steps.due.outputs.build == 'true' || failure())
         uses: actions/upload-artifact@v4
@@ -96,80 +122,4 @@ jobs:
           path: .football-build/data/
           retention-days: 2
           if-no-files-found: error
-  deploy:
-    needs: build
-    if: always() && (needs.build.outputs.should_deploy == 'true' || needs.build.result == 'failure')
-    runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v4
-        with:
-          name: football-current
-          path: .football-publish
-      - name: 組合既有全站與本次足球快照
-        run: |
-          mkdir -p .site
-          tar --exclude='./.git' --exclude='./.github' --exclude='./.site' --exclude='./.football-publish' --exclude='./football/data' -cf - . | tar -xf - -C .site
-          mkdir -p .site/football/data
-          cp -a .football-publish/. .site/football/data/
-          touch .site/.nojekyll
-      - uses: actions/upload-pages-artifact@v4
-        with:
-          path: .site
-          retention-days: 2
-      - name: 部署到現有 GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-      - name: 公開五聯賽批次與固定 ID 回查
-        env:
-          RUN_ID: ${{ github.run_id }}
-        run: |
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const expected = JSON.parse(fs.readFileSync('.football-publish/manifest.json', 'utf8'));
-          const base = 'https://yaoshengmarketing-prog.github.io/101/football/data';
-          const url = `${base}/manifest.json?run=${process.env.RUN_ID}`;
-          for (let attempt = 0; attempt < 20; attempt++) {
-            try {
-              const response = await fetch(url, { cache: 'no-store' });
-              if (response.ok) {
-                const live = await response.json();
-                if (live.generatedAt === expected.generatedAt && String(live.runId) === String(expected.runId)) {
-                  const checked = {};
-                  for (const [league, row] of Object.entries(expected.leagues || {})) {
-                    const dir = league === 'eng.1' ? base : `${base}/leagues/${league}`;
-                    const statusResponse = await fetch(`${dir}/status.json?run=${process.env.RUN_ID}`, { cache: 'no-store' });
-                    if (!statusResponse.ok) throw new Error(`${league} status HTTP ${statusResponse.status}`);
-                    const status = await statusResponse.json();
-                    if (status.generatedAt !== expected.generatedAt || status.status !== row.status || String(status.runId) !== String(expected.runId)) throw new Error(`${league} 批次狀態不一致`);
-                    if (status.status !== 'failed') {
-                      const overviewResponse = await fetch(`${dir}/overview.json?run=${process.env.RUN_ID}`, { cache: 'no-store' });
-                      if (!overviewResponse.ok) throw new Error(`${league} overview HTTP ${overviewResponse.status}`);
-                      const overview = await overviewResponse.json();
-                      if (overview.generatedAt !== expected.generatedAt || overview.games.length !== row.gameCount) throw new Error(`${league} 總覽批次不一致`);
-                      for (const id of row.gameIds) {
-                        const gameResponse = await fetch(`${dir}/games/${id}.json?run=${process.env.RUN_ID}`, { cache: 'no-store' });
-                        if (!gameResponse.ok) throw new Error(`${league}/${id} HTTP ${gameResponse.status}`);
-                        const game = await gameResponse.json();
-                        if (game.target.id !== id || game.target.league !== league || game.generatedAt !== expected.generatedAt) throw new Error(`${league}/${id} 身分或批次不一致`);
-                      }
-                    }
-                    checked[league] = { status: status.status, gameIds: row.gameIds };
-                  }
-                  console.log(JSON.stringify({ publicUrl: url, runId: live.runId, generatedAt: live.generatedAt, triggerId: live.triggerId, triggerMatches: live.triggerMatches, leagues: checked }));
-                  process.exit(0);
-                }
-              }
-            } catch (error) { console.log(`回查重試 ${attempt + 1}: ${error.message}`); }
-            await new Promise(resolve => setTimeout(resolve, 15000));
-          }
-          throw new Error(`公開頁尚未顯示本次快照 ${expected.generatedAt}`);
-          NODE
+

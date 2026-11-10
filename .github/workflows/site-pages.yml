@@ -1,5 +1,5 @@
 name: site-pages
-# 保留原有 MLB 更新與一般網站提交的 Pages 發布，不修改 live-data 本身。
+# 資料工作只保存成果；本工作流是全站唯一的 Pages 發布者。
 on:
   push:
     branches: [main]
@@ -10,7 +10,8 @@ on:
       - data/**
       - research/daily-production/auto/**
   workflow_run:
-    workflows: [live-data]
+    workflows: [live-data, football-data]
+    branches: [main]
     types: [completed]
   workflow_dispatch:
 permissions:
@@ -18,71 +19,43 @@ permissions:
   actions: read
   pages: write
   id-token: write
+# 保留既有發布通道與環境；等待發布不再阻擋足球取數。
 concurrency:
   group: site-pages-deploy
   cancel-in-progress: false
 jobs:
   deploy:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository)
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 15
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # 取得發布資格後才選 main；不使用排隊事件的舊 checkout。
       - uses: actions/checkout@v5
         with:
           ref: main
-      - name: 只在一般提交或 MLB 公開資料有變化時發布
-        id: changed
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          RUN_ID: ${{ github.run_id }}
-        run: |
-          if [ "$EVENT_NAME" != workflow_run ]; then echo 'publish=true' >> "$GITHUB_OUTPUT"; exit 0; fi
-          if ! curl -fsSL --max-time 15 "https://yaoshengmarketing-prog.github.io/101/live/data/status.json?check=$RUN_ID" -o .public-live-status; then
-            echo 'publish=true' >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          if cmp -s live/data/status.json .public-live-status; then
-            echo 'publish=false' >> "$GITHUB_OUTPUT"
-          else
-            echo 'publish=true' >> "$GITHUB_OUTPUT"
-          fi
-      - name: 取得最新足球短期快照
-        if: steps.changed.outputs.publish == 'true'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: 發布版本選擇與組合測試
+        run: node --test scripts/test-site-publication.mjs
+      - name: 固定本次來源並組合全站
+        id: prepare
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          mkdir -p .football-publish
-          # 賽前時窗檢查可能成功略過且沒有 artifact；依實際快照 artifact 選最新一次。
-          run_id=$(gh api -X GET "repos/$GITHUB_REPOSITORY/actions/artifacts?name=football-current&per_page=30" --jq '[.artifacts[] | select(.name=="football-current" and .expired==false and .workflow_run.head_branch=="main")] | max_by(.created_at).workflow_run.id')
-          if [ -z "$run_id" ] || [ "$run_id" = null ] || ! gh run download "$run_id" --repo "$GITHUB_REPOSITORY" --name football-current --dir .football-publish; then
-            echo '{"status":"failed","reason":"足球短期快照本次未取得","generatedAt":null,"expiresAt":null}' > .football-publish/status.json
-          fi
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const path = '.football-publish/status.json';
-          const status = JSON.parse(fs.readFileSync(path, 'utf8'));
-          if (!Number.isFinite(Date.parse(status.expiresAt)) || Date.now() > Date.parse(status.expiresAt)) {
-            fs.rmSync('.football-publish', { recursive: true, force: true });
-            fs.mkdirSync('.football-publish');
-            fs.writeFileSync(path, JSON.stringify({ status: 'failed', reason: '足球快照已逾期，等待下次獨立更新', generatedAt: status.generatedAt || null, expiresAt: status.expiresAt || null }) + '\n');
-          }
-          NODE
-      - name: 組合既有全站與當前足球快照
-        if: steps.changed.outputs.publish == 'true'
-        run: |
-          mkdir -p .site
-          tar --exclude='./.git' --exclude='./.github' --exclude='./.site' --exclude='./.football-publish' --exclude='./football/data' -cf - . | tar -xf - -C .site
-          mkdir -p .site/football/data
-          cp -a .football-publish/. .site/football/data/
-          touch .site/.nojekyll
-      - if: steps.changed.outputs.publish == 'true'
+        run: node scripts/site-publication.mjs prepare
+      - if: steps.prepare.outputs.publish == 'true'
         uses: actions/upload-pages-artifact@v4
         with:
           path: .site
           retention-days: 2
       - name: 部署現有全站
         id: deployment
-        if: steps.changed.outputs.publish == 'true'
+        if: steps.prepare.outputs.publish == 'true'
         uses: actions/deploy-pages@v4
+      - name: 公開來源版本及五聯賽批次回查
+        if: steps.prepare.outputs.publish == 'true'
+        run: node scripts/site-publication.mjs verify
+

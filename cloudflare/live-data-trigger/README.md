@@ -7,7 +7,14 @@
 程式版本 `f32af46` 已透過 Cloudflare Worker multipart upload 部署；部署後回讀確認 `DB`（D1）、`GH_TOKEN`（Secret）與兩條原 cron 均保留。GitHub [push run 42004303798](https://github.com/yaoshengmarketing-prog/101/actions/runs/42004303798) 已完成五聯賽正式資料首次發布。此段覆蓋下方 2026-10-31 試行時「只查英超／傳 event_id」的歷史描述；真正五聯賽外部時窗派送仍待實際到期賽事驗收。
 
 目的：把棒球賽前時段（台灣 21:00–11:45）的更新間隔從「GitHub 排程每 30 分鐘、而且常延遲」縮短到排定每 15 分鐘觸發一次；另加一條獨立足球分支檢查開球前 90／30 分鐘。
-這個 Worker 只負責定時觸發。棒球仍由 `.github/workflows/live-data.yml`，足球由 `.github/workflows/football-data.yml` 各自取數、QA 與發布。GitHub 原生排程保留為備援。
+這個 Worker 只負責定時觸發與回查。棒球仍由 `.github/workflows/live-data.yml`、足球由 `.github/workflows/football-data.yml` 各自取數、QA 與保存結果，網站發布由 `site-pages` 統一整合；GitHub 原生排程保留為備援。
+
+### 足球資料完成與公開回查
+
+- `football-data` 成功只代表資料工作成功。D1 的 `run_id`、`run_status`、`conclusion` 繼續記錄足球資料工作；只有公開 `manifest.runId` 與該資料 run ID 相同、目標場次與同批時間核對成功，才寫 `public_generated_at`。網站發布 run ID 不取代資料內的 `runId`。
+- 資料已成功但仍等待發布，或公開站已採用其他批次時，`public_generated_at` 留空，不標成發布成功，也不因此重新派送或延長快照期限。留空表示尚未觀測到該批公開，不能推定它從未發布。
+- 回查維持最近 24 小時、每輪最多 20 列，按最久未回查的列輪轉。`dispatch` 列的 `checked_at` 記錄最近一次回查時間，查無對應 run 或單筆公開檔讀取失敗也會更新，避免舊待確認列一直占用名額；`check_ok`／`check_failure` 列的 `checked_at` 仍記錄輕量賽程檢查時間。
+- 超過 24 小時尚未核實公開的資料不再自動補查，仍保留原結果與空白公開時間；現有 30 天紀錄保留與 90／30 分鐘派送窗口不變。
 
 | 項目 | 內容 |
 |---|---|
