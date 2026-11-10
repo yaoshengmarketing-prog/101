@@ -21,7 +21,7 @@ permissions:
   id-token: write
 # 保留既有發布通道與環境；等待發布不再阻擋足球取數。
 concurrency:
-  group: site-pages-deploy
+  group: site-pages-deploy-20261111
   cancel-in-progress: false
 jobs:
   deploy:
