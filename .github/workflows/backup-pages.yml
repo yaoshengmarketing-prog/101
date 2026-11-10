@@ -46,6 +46,7 @@ jobs:
         run: |
           node scripts/site-publication.mjs prepare
           node scripts/prepare-backup.mjs
+          node --check .backup-site/site/site.js
       - name: Deploy existing Cloudflare Pages project
         if: steps.prepare.outputs.publish == 'true'
         uses: cloudflare/wrangler-action@v3
