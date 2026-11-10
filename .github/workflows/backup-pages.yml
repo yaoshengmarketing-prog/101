@@ -1,0 +1,63 @@
+name: backup-pages
+
+# 與 github-pages 無關；同一個 Cloudflare Pages 專案只允許單一有序發布。
+on:
+  workflow_run:
+    workflows: [football-data]
+    branches: [main]
+    types: [completed]
+  schedule:
+    - cron: '17 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: cloudflare-backup-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      # The candidate navigation is still under review as PR #85.
+      - name: Fetch reviewed backup navigation
+        run: |
+          git fetch --no-tags origin pull/85/head
+          git cat-file -e 1c47294622906605090f2a8aa430cc76b1bcfab8^{commit}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: Validate publisher
+        run: node --test scripts/test-site-publication.mjs
+      - name: Select valid snapshot and assemble both sports
+        id: prepare
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SITE_PUBLICATION_BASE_URL: https://yuncai101-fallback.pages.dev
+        run: |
+          node scripts/site-publication.mjs prepare
+          node scripts/prepare-backup.mjs
+      - name: Deploy existing Cloudflare Pages project
+        if: steps.prepare.outputs.publish == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_BACKUP_PAGES_TOKEN }}
+          accountId: 73304c8bf136dd0c432ae88c227c7a40
+          command: pages deploy .backup-site --project-name=yuncai101-fallback --branch=main
+      - name: Verify public football, baseball, and source batch
+        if: steps.prepare.outputs.publish == 'true'
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          SITE_PUBLICATION_BASE_URL: https://yuncai101-fallback.pages.dev
+        run: |
+          node scripts/site-publication.mjs verify
+          node scripts/verify-backup.mjs

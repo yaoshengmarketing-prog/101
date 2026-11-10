@@ -173,7 +173,7 @@ test('legacy root-only failure batches are normalized for all five leagues and c
 test('the actual producer failure step uses one timestamp and clears every league payload', async t => {
   const f = await fixture(t), output = path.join(f.root, '.football-build/data');
   await fs.cp(f.football, output, { recursive: true });
-  const workflow = await fs.readFile(new URL('../.github/workflows/football-data.yml', import.meta.url), 'utf8');
+  const workflow = (await fs.readFile(new URL('../.github/workflows/football-data.yml', import.meta.url), 'utf8')).replace(/\r\n/g, '\n');
   const step = workflow.split('- name: 更新失敗時保存明確狀態')[1];
   const code = step.match(/node --input-type=module <<'NODE'\n([\s\S]+?)\n          NODE/)[1];
   execFileSync(process.execPath, ['--input-type=module', '--eval', code], { cwd: f.root,
