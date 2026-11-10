@@ -1,6 +1,6 @@
 // live-data-trigger：Cloudflare Worker，只負責定時檢查、派送 GitHub Actions 和留紀錄。
 // 原棒球時段每 15 分鐘派送 live-data；足球在獨立分支檢查開球前 90／30 分鐘。
-// 抓賽事資料、QA 與發布仍由各自 GitHub Actions 執行；GitHub 原生排程照舊。
+// 抓賽事資料與 QA 由各自 GitHub Actions 執行，網站發布另由 site-pages 整合；GitHub 原生排程照舊。
 //
 // 紀錄（D1，binding DB，表 triggers，一次觸發一列）：
 //   id＝"cf <排定時間 UTC>"，也放進 run 名稱（live-data cf 2026-09-24T13:15Z），GitHub 那邊看得到是哪一次觸發
@@ -78,48 +78,58 @@ export async function checkFootball(env, scheduledTime, fetcher = fetch, leagueI
   }
 }
 
-async function resolveFootball(env) {
-  const { results } = await env.DB.prepare("SELECT id, match_id, match_ids, run_id FROM football_triggers WHERE kind='dispatch' AND http BETWEEN 200 AND 299 AND (conclusion IS NULL OR (conclusion='success' AND public_generated_at IS NULL)) AND scheduled_at > ? LIMIT 20")
+export async function resolveFootball(env) {
+  // 資料產生完成後仍可能等待發布；按最久未回查的列輪轉，避免舊成功批次佔滿每輪名額。
+  const { results } = await env.DB.prepare("SELECT id, match_id, match_ids, run_id FROM football_triggers WHERE kind='dispatch' AND http BETWEEN 200 AND 299 AND (conclusion IS NULL OR (conclusion='success' AND public_generated_at IS NULL)) AND scheduled_at > ? ORDER BY COALESCE(checked_at, scheduled_at), scheduled_at, id LIMIT 20")
     .bind(new Date(Date.now() - 86400000).toISOString()).all();
   if (!results.length) return;
   const response = await call(env, `/repos/${REPO}/actions/workflows/${FOOTBALL_WF}/runs?event=workflow_dispatch&per_page=100`);
   if (!response.ok) throw new Error(`football runs HTTP ${response.status}`);
   const runs = (await response.json()).workflow_runs;
   for (const row of results) {
+    const checkedAt = new Date().toISOString();
     const run = runs.find(item => row.run_id ? item.id === row.run_id : (item.display_title || "").endsWith(row.id));
-    if (!run) continue;
+    if (!run) {
+      await env.DB.prepare("UPDATE football_triggers SET checked_at=? WHERE id=?").bind(checkedAt, row.id).run();
+      continue;
+    }
     let publicGeneratedAt = null, lineupStatus = null, lineupCheckedAt = null;
-    if (run.status === "completed" && run.conclusion === "success") {
-      const base = 'https://yaoshengmarketing-prog.github.io/101/football/data';
-      const manifestResponse = await fetch(`${base}/manifest.json?cf=${run.id}`, { cache: "no-store" });
-      if (manifestResponse.ok) {
-        const manifest = await manifestResponse.json();
-        const matchIds = JSON.parse(row.match_ids || JSON.stringify([String(row.match_id)]));
-        const qualified = matchIds.map(key => key.includes(':') ? key : `eng.1:${key}`);
-        if (String(manifest.runId) === String(run.id) && qualified.every(key => {
-          const [league, id] = key.split(':');
-          return manifest.leagues?.[league]?.gameIds?.includes(id);
-        })) {
-          const first = qualified[0], [league, id] = first.split(':');
-          const dir = league === 'eng.1' ? base : `${base}/leagues/${league}`;
-          const [statusResponse, gameResponse] = await Promise.all([
-            fetch(`${dir}/status.json?cf=${run.id}`, { cache: "no-store" }),
-            fetch(`${dir}/games/${id}.json?cf=${run.id}`, { cache: "no-store" }),
-          ]);
-          if (statusResponse.ok && gameResponse.ok) {
-            const status = await statusResponse.json(), game = await gameResponse.json();
-            if (status.generatedAt === manifest.generatedAt && game.generatedAt === manifest.generatedAt
-              && String(game.target?.id) === id && game.target?.league === league) {
-              publicGeneratedAt = manifest.generatedAt;
-              lineupStatus = game.lineupStatus;
-              lineupCheckedAt = game.lineupCheckedAt;
+    try {
+      if (run.status === "completed" && run.conclusion === "success") {
+        const base = 'https://yaoshengmarketing-prog.github.io/101/football/data';
+        const manifestResponse = await fetch(`${base}/manifest.json?cf=${run.id}`, { cache: "no-store" });
+        if (manifestResponse.ok) {
+          const manifest = await manifestResponse.json();
+          const matchIds = JSON.parse(row.match_ids || JSON.stringify([String(row.match_id)]));
+          const qualified = matchIds.map(key => key.includes(':') ? key : `eng.1:${key}`);
+          if (String(manifest.runId) === String(run.id) && qualified.every(key => {
+            const [league, id] = key.split(':');
+            return manifest.leagues?.[league]?.gameIds?.includes(id);
+          })) {
+            const first = qualified[0], [league, id] = first.split(':');
+            const dir = league === 'eng.1' ? base : `${base}/leagues/${league}`;
+            const [statusResponse, gameResponse] = await Promise.all([
+              fetch(`${dir}/status.json?cf=${run.id}`, { cache: "no-store" }),
+              fetch(`${dir}/games/${id}.json?cf=${run.id}`, { cache: "no-store" }),
+            ]);
+            if (statusResponse.ok && gameResponse.ok) {
+              const status = await statusResponse.json(), game = await gameResponse.json();
+              if (status.generatedAt === manifest.generatedAt && game.generatedAt === manifest.generatedAt
+                && String(game.target?.id) === id && game.target?.league === league) {
+                publicGeneratedAt = manifest.generatedAt;
+                lineupStatus = game.lineupStatus;
+                lineupCheckedAt = game.lineupCheckedAt;
+              }
             }
           }
         }
       }
+    } catch (error) {
+      // 公開檔暫不可讀只代表本次無法確認發布，仍保存已查到的 producer 結果並繼續其他列。
+      console.log(`football 公開回查失敗 ${run.id}：${errText(error)}`);
     }
-    await env.DB.prepare("UPDATE football_triggers SET run_id=?, run_status=?, conclusion=?, run_started_at=?, run_updated_at=?, public_generated_at=?, lineup_status=?, lineup_checked_at=? WHERE id=?")
-      .bind(run.id, run.status, run.conclusion, run.run_started_at, run.updated_at, publicGeneratedAt, lineupStatus, lineupCheckedAt, row.id).run();
+    await env.DB.prepare("UPDATE football_triggers SET run_id=?, run_status=?, conclusion=?, run_started_at=?, run_updated_at=?, public_generated_at=?, lineup_status=?, lineup_checked_at=?, checked_at=? WHERE id=?")
+      .bind(run.id, run.status, run.conclusion, run.run_started_at, run.updated_at, publicGeneratedAt, lineupStatus, lineupCheckedAt, checkedAt, row.id).run();
   }
 }
 

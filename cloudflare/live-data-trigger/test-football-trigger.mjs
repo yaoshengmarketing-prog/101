@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker, { footballDue, checkFootball } from './worker.js';
+import { readFileSync } from 'node:fs';
+import { DatabaseSync } from 'node:sqlite';
+import worker, { footballDue, checkFootball, resolveFootball } from './worker.js';
 
 test('熱刺對水晶宮在開球前 90／30 分鐘各有一個觸發窗', () => {
   const kickoff = '2026-10-31T17:30:00Z';
@@ -92,4 +94,97 @@ test('一個聯賽 ESPN 輕量檢查失敗，仍派送另一聯賽同窗場次',
     assert.match(writes[0].sql, /check_failure/);
     assert.match(writes[1].values[0], /esp\.1\/401882812/);
   } finally { globalThis.fetch = originalFetch; }
+});
+
+function receiptStore() {
+  const db = new DatabaseSync(':memory:');
+  db.exec(readFileSync(new URL('./schema.sql', import.meta.url), 'utf8'));
+  const env = { GH_TOKEN: 'test-token', DB: { prepare: sql => ({ bind: (...values) => ({
+    all: async () => ({ results: db.prepare(sql).all(...values) }),
+    run: async () => ({ meta: { changes: db.prepare(sql).run(...values).changes } }),
+  }) }) } };
+  return { db, env };
+}
+
+function addReceipt(db, id, runId, at) {
+  db.prepare("INSERT INTO football_triggers (id, kind, scheduled_at, checked_at, http, run_id, match_id, match_ids) VALUES (?, 'dispatch', ?, ?, 200, ?, 'game-current', ?)")
+    .run(id, at, at, runId, JSON.stringify(['eng.1:game-current']));
+}
+
+function completedRun(id, at) {
+  return { id, status: 'completed', conclusion: 'success', run_started_at: at, updated_at: at };
+}
+
+function publicResponse(url, runId, generatedAt) {
+  if (url.includes('/manifest.json')) return { ok: true, json: async () => ({
+    runId, generatedAt, leagues: { 'eng.1': { gameIds: ['game-current'] } },
+  }) };
+  if (url.includes('/status.json')) return { ok: true, json: async () => ({ runId, generatedAt }) };
+  if (url.includes('/games/game-current.json')) return { ok: true, json: async () => ({
+    generatedAt, target: { id: 'game-current', league: 'eng.1' }, lineupStatus: 'official', lineupCheckedAt: generatedAt,
+  }) };
+  throw new Error(`未預期的回查 URL：${url}`);
+}
+
+test('資料成功後仍等待發布；只有公開批次符合 producer run ID 才完成回查', async () => {
+  const { db, env } = receiptStore(), originalFetch = globalThis.fetch;
+  const at = new Date(Date.now() - 3600000).toISOString(), runId = 777, generatedAt = new Date().toISOString();
+  addReceipt(db, 'current', runId, at);
+  let publicRunId = 776;
+  const calls = [];
+  globalThis.fetch = async (url, init) => {
+    calls.push({ url, method: init?.method || 'GET' });
+    if (url.includes('/actions/workflows/football-data.yml/runs')) return { ok: true, json: async () => ({ workflow_runs: [completedRun(runId, at)] }) };
+    return publicResponse(url, publicRunId, generatedAt);
+  };
+  try {
+    await resolveFootball(env);
+    const waiting = db.prepare("SELECT * FROM football_triggers WHERE id='current'").get();
+    assert.equal(waiting.run_status, 'completed');
+    assert.equal(waiting.conclusion, 'success');
+    assert.equal(waiting.public_generated_at, null);
+    assert.equal(waiting.lineup_status, null);
+    assert.notEqual(waiting.checked_at, at);
+    assert.equal(calls.filter(row => row.url.includes('/games/')).length, 0);
+
+    publicRunId = runId;
+    await resolveFootball(env);
+    const published = db.prepare("SELECT * FROM football_triggers WHERE id='current'").get();
+    assert.equal(published.run_id, runId);
+    assert.equal(published.public_generated_at, generatedAt);
+    assert.equal(published.lineup_status, 'official');
+    assert.equal(published.lineup_checked_at, generatedAt);
+    const checkedCalls = calls.length;
+    await resolveFootball(env);
+    assert.equal(calls.length, checkedCalls, '已核實公開的列不再候查');
+    assert.ok(calls.every(row => row.method === 'GET'), '等待公開不會重新派送、重跑或重抓來源');
+  } finally { globalThis.fetch = originalFetch; db.close(); }
+});
+
+test('舊待確認列輪轉；查無 run 或單筆公開回查失敗不會餓死較新列', async () => {
+  const { db, env } = receiptStore(), originalFetch = globalThis.fetch;
+  const oldAt = new Date(Date.now() - 7200000).toISOString();
+  const newAt = new Date(Date.now() - 300000).toISOString(), generatedAt = new Date().toISOString();
+  for (let i = 0; i < 20; i++) addReceipt(db, `old-${String(i).padStart(2, '0')}`, 1000 + i, oldAt);
+  addReceipt(db, 'new', 2000, newAt);
+  globalThis.fetch = async (url, init) => {
+    assert.equal(init?.method || 'GET', 'GET');
+    if (url.includes('/actions/workflows/football-data.yml/runs')) return { ok: true, json: async () => ({
+      workflow_runs: [completedRun(1000, oldAt), completedRun(2000, newAt)],
+    }) };
+    if (url.includes('cf=1000')) throw new Error('人工測試：舊批次公開回查失敗');
+    return publicResponse(url, 2000, generatedAt);
+  };
+  try {
+    await resolveFootball(env);
+    assert.equal(db.prepare("SELECT count(*) AS n FROM football_triggers WHERE id LIKE 'old-%' AND checked_at <> ?").get(oldAt).n, 20);
+    assert.equal(db.prepare("SELECT public_generated_at FROM football_triggers WHERE id='new'").get().public_generated_at, null);
+    assert.equal(db.prepare("SELECT count(*) AS n FROM football_triggers WHERE id LIKE 'old-%' AND public_generated_at IS NOT NULL").get().n, 0);
+
+    await resolveFootball(env);
+    assert.equal(db.prepare("SELECT public_generated_at FROM football_triggers WHERE id='new'").get().public_generated_at, generatedAt);
+    const old = db.prepare("SELECT conclusion, public_generated_at FROM football_triggers WHERE id='old-00'").get();
+    assert.equal(old.conclusion, 'success');
+    assert.equal(old.public_generated_at, null, '未觀測到舊批次公開，不補造公開時間');
+  } finally { globalThis.fetch = originalFetch; db.close(); }
 });
