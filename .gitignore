@@ -1,1 +1,6 @@
 .football-build/
+.football-publish/
+.site/
+.site-publication/
+.backup-site/
+backup-upload.zip

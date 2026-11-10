@@ -145,7 +145,7 @@ export async function readPublishedState(base, getJson) {
 export async function composeSite(root, footballRoot, output, record) {
   await fs.rm(output, { recursive: true, force: true });
   await fs.mkdir(output, { recursive: true });
-  const excluded = new Set(['.git', '.github', '.site', '.site-publication', '.football-publish', '_baseline']);
+  const excluded = new Set(['.git', '.github', '.site', '.backup-site', '.site-publication', '.football-publish', '_baseline', 'backup-upload.zip']);
   for (const entry of await fs.readdir(root)) {
     if (excluded.has(entry)) continue;
     await fs.cp(path.join(root, entry), path.join(output, entry), { recursive: true,
@@ -226,7 +226,7 @@ const publicFetch = async (url, text = false) => {
 async function main() {
   const root = process.cwd(), repository = process.env.GITHUB_REPOSITORY;
   assert(/^[\w.-]+\/[\w.-]+$/.test(repository || ''), '缺少有效 GITHUB_REPOSITORY');
-  const base = `https://${repository.split('/')[0]}.github.io/${repository.split('/')[1]}`;
+  const base = process.env.SITE_PUBLICATION_BASE_URL || `https://${repository.split('/')[0]}.github.io/${repository.split('/')[1]}`;
   const output = path.join(root, '.site'), footballRoot = path.join(root, '.football-publish');
   if (process.argv[2] === 'prepare') {
     const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
