@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { renderOverview, renderGame, overviewResearchLines, venueResults, venueLine, summarizeUsage, scoreFormation, substitutionNotes, shotLine, resultBlock, lineupBlock } from '../assets/football.js';
+import { renderOverview, renderGame, gameReturnHref, overviewResearchLines, venueResults, venueLine, summarizeUsage, scoreFormation, substitutionNotes, shotLine, resultBlock, lineupBlock } from '../assets/football.js';
 import { TEAM_NAMES, teamDisplayName, teamSourceName } from './football-team-names.mjs';
 import { dueWindow, decide } from './football-due.mjs';
 
@@ -101,6 +101,41 @@ test('失敗與逾期狀態先行，總覽及單場不讀已移除 JSON', async 
     delete globalThis.location;
     delete globalThis.fetch;
     delete globalThis.testStatus;
+  }
+});
+
+test('單場返回按聯賽目錄，缺路徑與缺賽事資料仍能顯示安全連結', async () => {
+  const node = { innerHTML: '' };
+  const crumb = { href: '', setAttribute(name, value) { if (name === 'href') this.href = value; } };
+  const calls = [];
+  globalThis.document = { body: { dataset: {} }, querySelector: selector => selector === '#game' ? node : selector === '.crumb a' ? crumb : null };
+  globalThis.location = { search: '?id=401878761' };
+  globalThis.fetch = async url => {
+    calls.push(url);
+    if (url.includes('status.json')) return { ok: true, json: async () => ({ status: 'ok', generatedAt: new Date().toISOString(), expiresAt: new Date(Date.now() + 3600000).toISOString() }) };
+    return { ok: false, status: 404 };
+  };
+  try {
+    assert.equal(gameReturnHref('401878761'), './#game-401878761');
+    await renderGame();
+    assert.match(node.innerHTML, /games\/401878761\.json HTTP 404/);
+    assert.match(node.innerHTML, /href="\.\/#game-401878761"/);
+    assert.equal(crumb.href, './#game-401878761');
+    globalThis.location.pathname = '/101/football/game.html';
+    assert.equal(gameReturnHref('401878761'), '../site/sport.html?sport=football#game-401878761');
+    globalThis.location.pathname = '/101/football/leagues/esp.1/game.html';
+    assert.equal(gameReturnHref('401878761'), './#game-401878761');
+    for (const league of ['ita.1', 'ger.1', 'fra.1']) {
+      globalThis.location.pathname = `/101/football/leagues/${league}/game.html`;
+      assert.equal(gameReturnHref('401878761'), './#game-401878761');
+    }
+    globalThis.location.pathname = '/101/unknown/game.html';
+    assert.equal(gameReturnHref('401878761'), './#game-401878761');
+    assert.equal(calls.filter(url => url.includes('games/')).length, 1);
+  } finally {
+    delete globalThis.document;
+    delete globalThis.location;
+    delete globalThis.fetch;
   }
 });
 
