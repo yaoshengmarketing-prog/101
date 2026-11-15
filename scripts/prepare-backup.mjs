@@ -99,3 +99,8 @@ for (const relative of files) {
   if (stat.isFile()) { count++; bytes += stat.size; }
 }
 console.log(JSON.stringify({ output, count, bytes }));
+
+await fs.writeFile(
+  path.join(output, '_headers'),
+  'https://:project.pages.dev/*\n  X-Robots-Tag: noindex, nofollow\n\nhttps://:version.:project.pages.dev/*\n  X-Robots-Tag: noindex, nofollow\n',
+);
