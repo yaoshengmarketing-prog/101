@@ -1,5 +1,950 @@
 {
  "rules": "proj v0.3",
  "note": "first＝本站第一次看到來源有這隊 9 人名單（受本站抓取時間限制，是上界）；versions＝每一版名單與當時時間、來源標示；noListBefore＝v0.2 只記了時間、沒存名單；inScopeAt＝第一次對到本站今天／明天的比賽；pk 空白＝來源有、本站首頁範圍還沒有這場（名單照樣已存，可在 proj.html 看）",
- "teams": {}
+ "teams": {
+  "RotoWire|2026-11-24|CHC@BOS|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "CHC",
+   "side": "away",
+   "game": "CHC@BOS",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "1:05 PM ET",
+   "n": 7,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|CHC@BOS|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "BOS",
+   "side": "home",
+   "game": "CHC@BOS",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "1:05 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|BAL@NYY|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "BAL",
+   "side": "away",
+   "game": "BAL@NYY",
+   "first": "2026-11-24T16:45:39.755Z",
+   "versions": [
+    {
+     "at": "2026-11-24T16:45:39.755Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Dylan Beavers",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Pete Alonso",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Gunnar Henderson",
+       "pos": "SS",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Coby Mayo",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Christian Encarnacion-Strand",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Colton Cowser",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Jeremiah Jackson",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Christian Franklin",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Carlos Narvaez",
+       "pos": "C",
+       "bats": "R"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "4:05 PM ET",
+   "n": 9,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|BAL@NYY|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "NYY",
+   "side": "home",
+   "game": "BAL@NYY",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "4:05 PM ET",
+   "n": 7,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|CHC@BOS#2|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "CHC",
+   "side": "away",
+   "game": "CHC@BOS",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "5:35 PM ET",
+   "n": 5,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|CHC@BOS#2|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "BOS",
+   "side": "home",
+   "game": "CHC@BOS",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "5:35 PM ET",
+   "n": 7,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|PIT@DET|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "PIT",
+   "side": "away",
+   "game": "PIT@DET",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "6:40 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|PIT@DET|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "DET",
+   "side": "home",
+   "game": "PIT@DET",
+   "first": "2026-11-24T16:45:39.755Z",
+   "versions": [
+    {
+     "at": "2026-11-24T16:45:39.755Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Max Clark",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Hao-Yu Lee",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Kevin McGonigle",
+       "pos": "3B",
+       "bats": "L"
+      },
+      {
+       "n": 4,
+       "name": "Eduardo Valencia",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Riley Greene",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Dillon Dingler",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Brett Callahan",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Spencer Torkelson",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "John Peck",
+       "pos": "SS",
+       "bats": "R"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "6:40 PM ET",
+   "n": 9,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|TB@PHI|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "TB",
+   "side": "away",
+   "game": "TB@PHI",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "6:40 PM ET",
+   "n": 7,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|TB@PHI|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "PHI",
+   "side": "home",
+   "game": "TB@PHI",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "6:40 PM ET",
+   "n": 7,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|NYM@WSH|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "NYM",
+   "side": "away",
+   "game": "NYM@WSH",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "6:45 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|NYM@WSH|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "WSH",
+   "side": "home",
+   "game": "NYM@WSH",
+   "first": "2026-11-24T16:45:39.755Z",
+   "versions": [
+    {
+     "at": "2026-11-24T16:45:39.755Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "James Wood",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Andres Chaparro",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Brady House",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Dylan Crews",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "CJ Abrams",
+       "pos": "SS",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Jacob Young",
+       "pos": "CF",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Daylen Lile",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Keibert Ruiz",
+       "pos": "C",
+       "bats": "S"
+      },
+      {
+       "n": 9,
+       "name": "Jorbit Vivas",
+       "pos": "2B",
+       "bats": "L"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "6:45 PM ET",
+   "n": 9,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|CIN@TOR|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "CIN",
+   "side": "away",
+   "game": "CIN@TOR",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:07 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|CIN@TOR|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "TOR",
+   "side": "home",
+   "game": "CIN@TOR",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:07 PM ET",
+   "n": 6,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|ATL@MIA|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "ATL",
+   "side": "away",
+   "game": "ATL@MIA",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:10 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|ATL@MIA|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "MIA",
+   "side": "home",
+   "game": "ATL@MIA",
+   "first": "2026-11-24T16:45:39.755Z",
+   "versions": [
+    {
+     "at": "2026-11-24T16:45:39.755Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Otto Lopez",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Jakob Marsee",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Heriberto Hernandez",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Javier Sanoja",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Griffin Conine",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 6,
+       "name": "Agustin Ramirez",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Deyvison De Los Santos",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Joe Mack",
+       "pos": "C",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Jared Serna",
+       "pos": "2B",
+       "bats": "R"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:10 PM ET",
+   "n": 9,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|BAL@NYY#2|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "BAL",
+   "side": "away",
+   "game": "BAL@NYY",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:35 PM ET",
+   "n": 6,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|BAL@NYY#2|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "NYY",
+   "side": "home",
+   "game": "BAL@NYY",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:35 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|COL@CWS|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "COL",
+   "side": "away",
+   "game": "COL@CWS",
+   "first": "2026-11-24T16:45:39.755Z",
+   "versions": [
+    {
+     "at": "2026-11-24T16:45:39.755Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jake McCarthy",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Adael Amador",
+       "pos": "2B",
+       "bats": "S"
+      },
+      {
+       "n": 3,
+       "name": "Hunter Goodman",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "TJ Rumfield",
+       "pos": "1B",
+       "bats": "L"
+      },
+      {
+       "n": 5,
+       "name": "Kyle Karros",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Mickey Moniak",
+       "pos": "LF",
+       "bats": "L"
+      },
+      {
+       "n": 7,
+       "name": "Troy Johnston",
+       "pos": "RF",
+       "bats": "L"
+      },
+      {
+       "n": 8,
+       "name": "Zac Veen",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Ezequiel Tovar",
+       "pos": "SS",
+       "bats": "R"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:40 PM ET",
+   "n": 9,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|COL@CWS|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "CWS",
+   "side": "home",
+   "game": "COL@CWS",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:40 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|CLE@KC|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "CLE",
+   "side": "away",
+   "game": "CLE@KC",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:40 PM ET",
+   "n": 7,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|CLE@KC|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "KC",
+   "side": "home",
+   "game": "CLE@KC",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:40 PM ET",
+   "n": 7,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|STL@MIL|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "STL",
+   "side": "away",
+   "game": "STL@MIL",
+   "first": "2026-11-24T16:45:39.755Z",
+   "versions": [
+    {
+     "at": "2026-11-24T16:45:39.755Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "JJ Wetherholt",
+       "pos": "2B",
+       "bats": "L"
+      },
+      {
+       "n": 2,
+       "name": "Ivan Herrera",
+       "pos": "DH",
+       "bats": "R"
+      },
+      {
+       "n": 3,
+       "name": "Jordan Walker",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Leo Bernal",
+       "pos": "1B",
+       "bats": "S"
+      },
+      {
+       "n": 5,
+       "name": "Jose Fermin",
+       "pos": "LF",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Thomas Saggese",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Masyn Winn",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Pedro Pages",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 9,
+       "name": "Victor Scott",
+       "pos": "CF",
+       "bats": "L"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:40 PM ET",
+   "n": 9,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|STL@MIL|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "MIL",
+   "side": "home",
+   "game": "STL@MIL",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "7:40 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|TEX@MIN|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "TEX",
+   "side": "away",
+   "game": "TEX@MIN",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "8:10 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|TEX@MIN|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "MIN",
+   "side": "home",
+   "game": "TEX@MIN",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "8:10 PM ET",
+   "n": 7,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|HOU@ATH|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "HOU",
+   "side": "away",
+   "game": "HOU@ATH",
+   "first": "2026-11-24T16:45:39.755Z",
+   "versions": [
+    {
+     "at": "2026-11-24T16:45:39.755Z",
+     "statusKey": "confirmed",
+     "status": "Confirmed Lineup",
+     "slots": [
+      {
+       "n": 1,
+       "name": "Jeremy Pena",
+       "pos": "SS",
+       "bats": "R"
+      },
+      {
+       "n": 2,
+       "name": "Yordan Alvarez",
+       "pos": "DH",
+       "bats": "L"
+      },
+      {
+       "n": 3,
+       "name": "Isaac Paredes",
+       "pos": "3B",
+       "bats": "R"
+      },
+      {
+       "n": 4,
+       "name": "Jose Altuve",
+       "pos": "2B",
+       "bats": "R"
+      },
+      {
+       "n": 5,
+       "name": "Yainer Diaz",
+       "pos": "C",
+       "bats": "R"
+      },
+      {
+       "n": 6,
+       "name": "Christian Walker",
+       "pos": "1B",
+       "bats": "R"
+      },
+      {
+       "n": 7,
+       "name": "Cam Smith",
+       "pos": "RF",
+       "bats": "R"
+      },
+      {
+       "n": 8,
+       "name": "Lucas Spence",
+       "pos": "CF",
+       "bats": "L"
+      },
+      {
+       "n": 9,
+       "name": "Jorge Barrosa",
+       "pos": "LF",
+       "bats": "S"
+      }
+     ]
+    }
+   ],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "9:40 PM ET",
+   "n": 9,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|HOU@ATH|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "ATH",
+   "side": "home",
+   "game": "HOU@ATH",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "9:40 PM ET",
+   "n": 7,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|AZ@SD|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "AZ",
+   "side": "away",
+   "game": "AZ@SD",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "9:40 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|AZ@SD|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "SD",
+   "side": "home",
+   "game": "AZ@SD",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "9:40 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|LAA@SEA|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "LAA",
+   "side": "away",
+   "game": "LAA@SEA",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "10:10 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|LAA@SEA|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "SEA",
+   "side": "home",
+   "game": "LAA@SEA",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "10:10 PM ET",
+   "n": 7,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|LAD@SF|away": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "LAD",
+   "side": "away",
+   "game": "LAD@SF",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "10:15 PM ET",
+   "n": 8,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  },
+  "RotoWire|2026-11-24|LAD@SF|home": {
+   "source": "RotoWire",
+   "date": "2026-11-24",
+   "team": "SF",
+   "side": "home",
+   "game": "LAD@SF",
+   "first": null,
+   "versions": [],
+   "pk": null,
+   "inScopeAt": null,
+   "time": "10:15 PM ET",
+   "n": 4,
+   "statusKey": "confirmed",
+   "fetchedAt": "2026-11-24T16:45:39.755Z"
+  }
+ }
 }
